@@ -1,0 +1,178 @@
+*** Starting uWSGI 2.0.19.1 (64bit) on [Mon Sep 13 16:16:09 2021] ***
+compiled with version: 8.4.1 20200928 (Red Hat 8.4.1-1) on 13 September 2021 08:05:02
+os: Linux-4.18.0-305.3.1.el8.x86_64 #1 SMP Tue Jun 1 16:14:33 UTC 2021
+nodename: VM-8-13-centos
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 2
+current working directory: /data/wwwroot/myproject
+writing pidfile to /data/wwwroot/myproject/uwsgi/uwsgi.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /data/wwwroot/myproject
+your processes number limit is 14826
+your memory page size is 4096 bytes
+detected max file descriptor number: 100001
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address :10000 fd 6
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.6.8 (default, Mar 19 2021, 05:13:41)  [GCC 8.4.1 20200928 (Red Hat 8.4.1-1)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x182df00
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 364600 bytes (356 KB) for 4 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x182df00 pid: 8682 (default app)
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 8682)
+spawned uWSGI worker 1 (pid: 8684, cores: 1)
+spawned uWSGI worker 2 (pid: 8685, cores: 1)
+spawned uWSGI worker 3 (pid: 8686, cores: 1)
+spawned uWSGI worker 4 (pid: 8687, cores: 1)
+*** Stats server enabled on /data/wwwroot/myproject/uwsgi/uwsgi.status fd: 21 ***
+*** Starting uWSGI 2.0.19.1 (64bit) on [Mon Sep 13 16:18:43 2021] ***
+compiled with version: 8.4.1 20200928 (Red Hat 8.4.1-1) on 13 September 2021 08:05:02
+os: Linux-4.18.0-305.3.1.el8.x86_64 #1 SMP Tue Jun 1 16:14:33 UTC 2021
+nodename: VM-8-13-centos
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 2
+current working directory: /data/wwwroot/myproject
+writing pidfile to /data/wwwroot/myproject/uwsgi/uwsgi.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /data/wwwroot/myproject
+your processes number limit is 14826
+your memory page size is 4096 bytes
+detected max file descriptor number: 100001
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+probably another instance of uWSGI is running on the same address (:10000).
+bind(): Address already in use [core/socket.c line 769]
+*** Starting uWSGI 2.0.19.1 (64bit) on [Mon Sep 13 16:19:25 2021] ***
+compiled with version: 8.4.1 20200928 (Red Hat 8.4.1-1) on 13 September 2021 08:05:02
+os: Linux-4.18.0-305.3.1.el8.x86_64 #1 SMP Tue Jun 1 16:14:33 UTC 2021
+nodename: VM-8-13-centos
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 2
+current working directory: /data/wwwroot/myproject
+writing pidfile to /data/wwwroot/myproject/uwsgi/uwsgi.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /data/wwwroot/myproject
+your processes number limit is 14826
+your memory page size is 4096 bytes
+detected max file descriptor number: 100001
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address :10101 fd 6
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.6.8 (default, Mar 19 2021, 05:13:41)  [GCC 8.4.1 20200928 (Red Hat 8.4.1-1)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x105cf00
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 364600 bytes (356 KB) for 4 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x105cf00 pid: 8923 (default app)
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 8923)
+spawned uWSGI worker 1 (pid: 8925, cores: 1)
+spawned uWSGI worker 2 (pid: 8926, cores: 1)
+spawned uWSGI worker 3 (pid: 8927, cores: 1)
+spawned uWSGI worker 4 (pid: 8928, cores: 1)
+*** Stats server enabled on /data/wwwroot/myproject/uwsgi/uwsgi.status fd: 21 ***
+[pid: 8927|app: 0|req: 1/1] 119.133.5.138 () {44 vars in 3018 bytes} [Mon Sep 13 08:27:43 2021] GET / => generated 10697 bytes in 11 msecs (HTTP/1.1 200) 5 headers in 153 bytes (1 switches on core 0)
+Not Found: /favicon.ico
+[pid: 8928|app: 0|req: 1/2] 119.133.5.138 () {46 vars in 2998 bytes} [Mon Sep 13 08:27:43 2021] GET /favicon.ico => generated 2117 bytes in 14 msecs (HTTP/1.1 404) 5 headers in 159 bytes (1 switches on core 0)
+[pid: 8928|app: 0|req: 2/3] 119.133.5.138 () {44 vars in 3018 bytes} [Mon Sep 13 08:34:19 2021] GET / => generated 10697 bytes in 2 msecs (HTTP/1.1 200) 5 headers in 153 bytes (1 switches on core 0)
+[pid: 8928|app: 0|req: 3/4] 119.133.5.138 () {44 vars in 3018 bytes} [Mon Sep 13 08:34:20 2021] GET / => generated 10697 bytes in 2 msecs (HTTP/1.1 200) 5 headers in 153 bytes (1 switches on core 0)
+[pid: 8928|app: 0|req: 4/5] 119.133.5.138 () {44 vars in 3018 bytes} [Mon Sep 13 08:34:20 2021] GET / => generated 10697 bytes in 2 msecs (HTTP/1.1 200) 5 headers in 153 bytes (1 switches on core 0)
+[pid: 8927|app: 0|req: 2/6] 119.133.5.138 () {44 vars in 3018 bytes} [Mon Sep 13 08:34:38 2021] GET / => generated 10697 bytes in 2 msecs (HTTP/1.1 200) 5 headers in 153 bytes (1 switches on core 0)
+[pid: 8928|app: 0|req: 5/7] 119.133.5.138 () {44 vars in 3018 bytes} [Mon Sep 13 08:34:41 2021] GET / => generated 10697 bytes in 2 msecs (HTTP/1.1 200) 5 headers in 153 bytes (1 switches on core 0)
+[pid: 8928|app: 0|req: 6/8] 119.133.5.138 () {44 vars in 3018 bytes} [Mon Sep 13 08:34:41 2021] GET / => generated 10697 bytes in 2 msecs (HTTP/1.1 200) 5 headers in 153 bytes (1 switches on core 0)
+[pid: 8928|app: 0|req: 7/9] 119.133.5.138 () {44 vars in 3018 bytes} [Mon Sep 13 08:34:41 2021] GET / => generated 10697 bytes in 2 msecs (HTTP/1.1 200) 5 headers in 153 bytes (1 switches on core 0)
+[pid: 8928|app: 0|req: 8/10] 119.133.5.138 () {44 vars in 3018 bytes} [Mon Sep 13 08:34:41 2021] GET / => generated 10697 bytes in 2 msecs (HTTP/1.1 200) 5 headers in 153 bytes (1 switches on core 0)
+[pid: 8928|app: 0|req: 9/11] 119.133.5.138 () {44 vars in 3018 bytes} [Mon Sep 13 08:34:41 2021] GET / => generated 10697 bytes in 2 msecs (HTTP/1.1 200) 5 headers in 153 bytes (1 switches on core 0)
+[pid: 8928|app: 0|req: 10/12] 119.133.5.138 () {44 vars in 3018 bytes} [Mon Sep 13 08:34:41 2021] GET / => generated 10697 bytes in 2 msecs (HTTP/1.1 200) 5 headers in 153 bytes (1 switches on core 0)
+[pid: 8925|app: 0|req: 1/13] 119.133.5.138 () {44 vars in 3018 bytes} [Mon Sep 13 08:34:41 2021] GET / => generated 10697 bytes in 11 msecs (HTTP/1.1 200) 5 headers in 153 bytes (1 switches on core 0)
+[pid: 8925|app: 0|req: 2/14] 119.133.5.138 () {44 vars in 3018 bytes} [Mon Sep 13 08:34:42 2021] GET / => generated 10697 bytes in 2 msecs (HTTP/1.1 200) 5 headers in 153 bytes (1 switches on core 0)
+[pid: 8928|app: 0|req: 11/15] 119.133.5.138 () {44 vars in 3018 bytes} [Mon Sep 13 08:34:42 2021] GET / => generated 10697 bytes in 2 msecs (HTTP/1.1 200) 5 headers in 153 bytes (1 switches on core 0)
+[pid: 8928|app: 0|req: 12/16] 119.133.5.138 () {44 vars in 3018 bytes} [Mon Sep 13 08:34:42 2021] GET / => generated 10697 bytes in 2 msecs (HTTP/1.1 200) 5 headers in 153 bytes (1 switches on core 0)
+[pid: 8928|app: 0|req: 13/17] 119.133.5.138 () {42 vars in 2987 bytes} [Mon Sep 13 08:34:47 2021] GET / => generated 10697 bytes in 2 msecs (HTTP/1.1 200) 5 headers in 153 bytes (1 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: pidfile removed.
+VACUUM: unix socket /data/wwwroot/myproject/uwsgi/uwsgi.status (stats) removed.
+*** Starting uWSGI 2.0.19.1 (64bit) on [Mon Sep 13 16:38:15 2021] ***
+compiled with version: 8.4.1 20200928 (Red Hat 8.4.1-1) on 13 September 2021 08:05:02
+os: Linux-4.18.0-305.3.1.el8.x86_64 #1 SMP Tue Jun 1 16:14:33 UTC 2021
+nodename: VM-8-13-centos
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 2
+current working directory: /data/wwwroot/myproject
+writing pidfile to /data/wwwroot/myproject/uwsgi/uwsgi.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /data/wwwroot/myproject
+your processes number limit is 14826
+your memory page size is 4096 bytes
+detected max file descriptor number: 100001
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address :10101 fd 6
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.6.8 (default, Mar 19 2021, 05:13:41)  [GCC 8.4.1 20200928 (Red Hat 8.4.1-1)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x87bf00
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 364600 bytes (356 KB) for 4 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x87bf00 pid: 10075 (default app)
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 10075)
+spawned uWSGI worker 1 (pid: 10077, cores: 1)
+spawned uWSGI worker 2 (pid: 10078, cores: 1)
+spawned uWSGI worker 3 (pid: 10079, cores: 1)
+spawned uWSGI worker 4 (pid: 10080, cores: 1)
+*** Stats server enabled on /data/wwwroot/myproject/uwsgi/uwsgi.status fd: 21 ***
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: pidfile removed.
+VACUUM: unix socket /data/wwwroot/myproject/uwsgi/uwsgi.status (stats) removed.

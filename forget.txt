@@ -1,0 +1,16 @@
+#重启uwsgi(常常出错 还是执行stop以后start效率高)
+uwsgi --reload uwsgi/uwsgi.pid
+#终止uwsgi(原理是启动uwsgi进程时会把pid写入该文件)
+uwsgi --stop uwsgi/uwsgi.pid
+#查看uwsgi各进程工作状况
+uwsgitop uwsgi/uwsgi.status
+#追踪uwsgi日志及动态刷新当前访问记录
+tail -f uwsgi/uwsgi.log
+#启动uwsgi
+uwsgi --ini myproject.ini
+
+nginx -s reload
+#重新载入配置文件
+
+
+
