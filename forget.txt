@@ -8,7 +8,6 @@ uwsgitop uwsgi/uwsgi.status
 tail -f uwsgi/uwsgi.log
 #启动uwsgi
 uwsgi --ini myproject.ini
-
 nginx -s reload
 #重新载入配置文件
 
