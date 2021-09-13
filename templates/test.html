@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static '/css/bootstrap.css' %}">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .box{
+            overflow: hidden;
+        }
+        .box img{
+            width: 50%;
+            float: left;
+        }
+        .box img:hover{
+            border: #0dcaf0 1px solid;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <img src="{% static 'images/1.jpeg' %}" alt="">
+        <img src="{% static 'images/2.jpeg' %}" alt="">
+    </div>
+    <div class="box">
+        <img src="{% static 'images/3.jpeg' %}" alt="">
+        <img src="{% static 'images/4.jpeg' %}" alt="">
+    </div>
+
+
+</body>
+</html>
