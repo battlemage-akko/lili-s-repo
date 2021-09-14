@@ -4,8 +4,87 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="{% static '/css/bootstrap.css' %}">
     <style>
+        @keyframes move1 {
+            0%{
+                transform: translate(0,0);
+            }
+            20%{
+                transform: translate(100%,0);
+            }
+            40%{
+                transform: translate(100%,100%);
+            }
+            60%{
+                transform: translate(0%,100%);
+            }
+            80%{
+                transform: translate(0,0);
+            }
+            100%{
+                transform: translate(0,0);
+            }
+        }
+        @keyframes move2 {
+            0%{
+                transform: translate(0,0);
+            }
+            20%{
+                transform: translate(0,100%);
+            }
+            40%{
+                transform: translate(-100%,100%);
+            }
+            60%{
+                transform: translate(-100%,0);
+            }
+            80%{
+                transform: translate(0,0);
+            }
+            100%{
+                transform: translate(0,0);
+            }
+        }
+        @keyframes move3 {
+            0%{
+                transform: translate(0,0);
+            }
+            20%{
+                transform: translate(-100%,0);
+            }
+            40%{
+                transform: translate(-100%,-100%);
+            }
+            60%{
+                transform: translate(0%,-100%);
+            }
+            80%{
+                transform: translate(0,0);
+            }
+            100%{
+                transform: translate(0,0);
+            }
+        }
+        @keyframes move4 {
+            0%{
+                transform: translate(0,0);
+            }
+            20%{
+                transform: translate(0,-100%);
+            }
+            40%{
+                transform: translate(100%,-100%);
+            }
+            60%{
+                transform: translate(100%,0);
+            }
+            80%{
+                transform: translate(0,0);
+            }
+            100%{
+                transform: translate(0,0);
+            }
+        }
         *{
             margin: 0;
             padding: 0;
@@ -16,9 +95,22 @@
         .box img{
             width: 50%;
             float: left;
+            animation-duration: 3s;
+            animation-iteration-count: infinite;
+            box-sizing: border-box;
+            animation-delay: .5S;
         }
-        .box img:hover{
-            border: #0dcaf0 1px solid;
+        .box img:nth-child(1){
+            animation-name: move1;
+        }
+        .box img:nth-child(2){
+            animation-name: move2;
+        }
+        .box img:nth-child(3){
+            animation-name: move4;
+        }
+        .box img:nth-child(4){
+            animation-name: move3;
         }
     </style>
 </head>
@@ -26,12 +118,15 @@
     <div class="box">
         <img src="{% static 'images/1.jpeg' %}" alt="">
         <img src="{% static 'images/2.jpeg' %}" alt="">
-    </div>
-    <div class="box">
         <img src="{% static 'images/3.jpeg' %}" alt="">
         <img src="{% static 'images/4.jpeg' %}" alt="">
     </div>
-
-
 </body>
+<script>
+    for(var i in document.getElementsByTagName("img")){
+        document.getElementsByTagName("img")[i].onclick = function(){
+            alert("丢臭你")
+        }
+    }
+</script>
 </html>
