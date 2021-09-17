@@ -17,23 +17,36 @@
             padding: 0;
             box-sizing: border-box;
         }
+        body{
+            width: 100vw;
+            height: 100vh;
+            min-width: 1280px;
+            min-height: 720px;
+        }
         .content{
             width: 100%;
             height: 100%;
             overflow: hidden;
         }
-        .middle{
+        .oldmiddle{
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%,-50%);
         }
+        .middle{
+            position: relative;
+        }
         .navigation{
             position: absolute;
-            bottom:50px;
-            left: 50%;
+            top:15px;
+            left: 230px;
             transform: translateX(-50%);
             display: flex;
+            transition: all 0.5s ease;
+        }
+        .navigation.active{
+            left: 50%;
         }
         .bar{
             width: 50px;
@@ -71,6 +84,12 @@
         }
         #r3:checked ~ .mark{
             margin-left: -40%;
+        }
+        #r4:checked ~ .mark{
+            margin-left: -60%;
+        }
+        #r5:checked ~ .mark{
+            margin-left: -80%;
         }
         footer{
             text-align: center;
@@ -287,16 +306,55 @@
             font-size: 20px;
             text-overflow:ellipsis;
         }
+        .leftorright{
+            position: fixed;
+            width: 100px;
+            height: 50px;
+            right: 0;
+            bottom: 30px;
+
+        }
+        .leftorright span{
+            display: block;
+            float: left;
+            margin: 0;
+            height: 50px;
+            width: 50px;
+            text-align: center;
+            transition: all 0.2s ease;
+            background-color: rgba(255,255,255,0.7);
+
+        }
+        .left::before{
+            position: relative;
+            content:"\ea38";
+            font-family: IcoMoon-Free;
+            font-size: 25px;
+            line-height: 50px;
+        }
+        .right::before{
+            position: relative;
+            content:"\ea34";
+            font-family: IcoMoon-Free;
+            font-size: 25px;
+            line-height: 50px;
+        }
+        .leftorright span:hover{
+            background-color: rgba(0,0,0,0.1);
+            color: white;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-{#    <nav></nav>#}
+
     <div class="content middle">
         <div class="slides">
         <input type="radio" name="r" id="r1">
         <input type="radio" name="r" id="r2">
         <input type="radio" name="r" id="r3">
-
+        <input type="radio" name="r" id="r4">
+        <input type="radio" name="r" id="r5">
             <div class="slide mark">
                 <img src="{% static 'images/花名.jpg' %}" alt="">
             </div>
@@ -306,13 +364,19 @@
             <div class="slide">
                 <img src="{% static 'images/3.png' %}" alt="">
             </div>
-
+            <div class="slide">
+                <img src="{% static 'images/3.jpg' %}" alt="">
+            </div>
+            <div class="slide">
+                <img src="{% static 'images/4.jpg' %}" alt="">
+            </div>
         </div>
         <div class="navigation">
-            <label for="r1" class="bar"></label>
-            <label for="r2" class="bar"></label>
-            <label for="r3" class="bar"></label>
-
+            <label for="r1" class="bar" value="0"></label>
+            <label for="r2" class="bar" value="1"></label>
+            <label for="r3" class="bar" value="2"></label>
+            <label for="r4" class="bar" value="3"></label>
+            <label for="r5" class="bar" value="4"></label>
         </div>
     </div>
     <div class="sidebar">
@@ -339,7 +403,9 @@
         <i class="toolbtn"></i>
 
     </div>
-    <div class=""></div>
+    <div class="leftorright">
+        <span class="left"></span><span class="right"></span>
+    </div>
     <input type="checkbox" id="active" style = "display:none">
     <div class="wrapper">
         <label for="active" class="menubtn"><i class="ico-menu"></i></label>
@@ -356,12 +422,53 @@
     var audio = document.getElementById('music');
     audio.currentTime = 0;
     var buttonflag = 0;
+    var picflag = 0;
     var ul = document.querySelector(".menu")
     var lis = document.querySelectorAll(".fillbutton")
     var menubtn = document.querySelector(".menubtn")
+    var piclist = document.querySelector(".content").querySelectorAll("input")
+    var leftorright = document.querySelector(".leftorright")
+    var myradios = document.querySelector('.navigation')
 
-    document.querySelector("#navbtn").onclick = function(){
+    leftorright.addEventListener('click',function(event){
+
+        if(event.target.className == "right"){
+            piclist[picflag].removeAttribute("checked")
+            if(picflag == piclist.length-1){
+                picflag = 0;
+                piclist[0].setAttribute('checked','checked')
+            }
+            else{
+                piclist[picflag+1].setAttribute('checked','checked')
+                picflag += 1
+            }
+        }
+        if(event.target.className == "left"){
+            piclist[picflag].removeAttribute("checked")
+            if(picflag == 0){
+                picflag = piclist.length-1;
+                piclist[piclist.length-1].setAttribute('checked','checked')
+            }
+            else{
+                piclist[picflag-1].setAttribute('checked','checked')
+                picflag -= 1
+            }
+        }
+        console.log(picflag)
+    })
+    myradios.addEventListener("click",function (event){
+        if(event.target.getAttribute("value")!=null){
+            if(piclist[picflag].hasAttribute('checked')){
+                piclist[picflag].removeAttribute('checked')
+            }
+            picflag = event.target.getAttribute("value")
+            piclist[picflag].setAttribute('checked','checked')
+        }
+    })
+
+    document.querySelector("#navbtn").onclick = function(event){
         document.querySelector(".sidebar").classList.toggle("active")
+        document.querySelector(".navigation").classList.toggle("active")
     }
     document.querySelector(".searchbtn").addEventListener('click',function(event){
         window.location.href = "http://www.baidu.com"
@@ -380,7 +487,9 @@
             event.target.className = "fillbutton chosenbutton"
         }
     })
-    menubtn.addEventListener("click",function(){
+
+    menubtn.addEventListener("click",function(event){
+
         if(buttonflag == 0){
             document.styleSheets[0].addRule('.ico-menu::before','content: "\\ea0f"');
             buttonflag = 1
@@ -390,9 +499,6 @@
             buttonflag = 0
         }
     })
-    function playandpause(){
-
-    }
     document.querySelector(".toolbtn").addEventListener("click",function(event){
         if (audio !== null) {
             //检测播放是否已暂停.audio.paused 在播放器播放时返回false.
@@ -405,5 +511,6 @@
             }
         }
     })
+
 </script>
 </html>
