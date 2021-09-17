@@ -11,5 +11,15 @@ uwsgi --ini myproject.ini
 nginx -s reload
 #重新载入配置文件
 
+animation顺序
+animation-name
+animation-duration
+animation-timing-function
+animation-delay
+animation-iteration-count
+animation-direction
+animation-fill-mode
+
+
 
 

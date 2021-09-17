@@ -22,7 +22,8 @@ from django.urls import path
 from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test',views.index,name="index")
+    path('test',views.index,name="test"),
+    path('',views.index,name="index")
     # url(r'^static/(?P<path>.*)$', static.serve,
     #   {'document_root': settings.STATIC_ROOT}, name='static'),
 ]
