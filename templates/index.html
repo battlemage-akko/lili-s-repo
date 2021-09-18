@@ -34,6 +34,9 @@
             overflow: hidden;
             display: none;
         }
+        .middle{
+            position: relative;
+        }
         .character{
             display: none;
             right: 0;
@@ -143,9 +146,7 @@
             left: 50%;
             transform: translate(-50%,-50%);
         }
-        .middle{
-            position: relative;
-        }
+
         .navigation{
             position: absolute;
             top:15px;
@@ -877,10 +878,10 @@
                 document.querySelector('.'+item).style.display = 'none'
             })
             document.querySelector('.'+this.id).style.display = 'unset'
+            this.id=="pics"?(document.body.style.minWidth='1500px'):(document.body.style.minWidth='500px');
         })
     }
 
-    console.log(listname)
     leftorright.addEventListener('click',function(event){
         if(event.target.className == "right"){
             piclist[picflag].removeAttribute("checked")
