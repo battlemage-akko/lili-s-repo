@@ -25,18 +25,14 @@
             min-height: 720px;
             overflow-x: hidden;
         }
-        .default{
-            display: unset;
-        }
-        .pics{
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            display: none;
-        }
+
         .middle{
             position: relative;
         }
+        .default{
+            display: unset;
+        }
+
         .character{
             display: none;
             right: 0;
@@ -45,6 +41,12 @@
             align-items: center;
             width: 100%;
             transition: all .5s ease;
+        }
+        .pics{
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: none;
         }
         .character.active{
             width: calc(100% - 190px);
@@ -232,7 +234,7 @@
             width: 100%;
             background-color: rgba(203, 203, 203, 0.5);
             clip-path: circle(25px at calc(100% - 45px) 45px);
-            transition:all .8s ease;
+            transition:all .5s ease;
             z-index: 3;
         }
         .wrapper ul{
@@ -357,6 +359,12 @@
         }
         .homebtn::before{
             content:"\e900";
+            font-family: IcoMoon-Free;
+            font-style: normal;
+            cursor: pointer;
+        }
+        .cloudbtn::before{
+            content:"\e9c1";
             font-family: IcoMoon-Free;
             font-style: normal;
             cursor: pointer;
@@ -635,6 +643,7 @@
             font-size: 1.5em;
             z-index: 1;
             transform: translateY(-50px);
+            background-color:white ;
         }
         .defaultdesc{
             position: relative;
@@ -658,7 +667,6 @@
             <img src="{% static 'images/default/sun.png' %}" id="sun">
         <img src="{% static 'images/default/mountains.png' %}" id="mountains">
 {#        <h2 id="defaulttext">mountain</h2>#}
-        <a href="#defaultdesc" id="defaultbtn">点击立刻被丢</a>
         </section>
      <div class="defaultdesc" id="defaultdesc">
         <h2>丢臭你（占位）</h2>
@@ -825,12 +833,17 @@
     <div class="wrapper">
         <label for="active" class="menubtn"><i class="ico-menu"></i></label>
         <ul class="menu">
-            <li><a href="#" class="fillbutton chosenbutton">Home</a></li>
+            <li><a href="#" class="fillbutton">Home</a></li>
             <li><a href="javascript:alert('あの日见た花の名前を仆达はまだ知らない')" class="fillbutton">About</a></li>
             <li><a href="javascript:alert('打开QQ输入狗力')" class="fillbutton">Contact Me</a></li>
         </ul>
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
     </div>
-    <footer><a href="https://beian.miit.gov.cn/#/Integrated/index">备案号:粤ICP备XXXXXXXXXX号</a></footer>
+    <footer><a href="https://beian.miit.gov.cn/#/Integrated/index">备案号:粤ICP备2021133316号</a></footer>
 </body>
 <script>
     var defaultbtn = document.querySelector("#defaultbtn")
@@ -838,7 +851,7 @@
     var defaultmountain = document.querySelector("#mountain")
     var defaultsun = document.querySelector("#sun")
     var defaultdesc = document.querySelector(".defaultdesc")
-
+    console.log(defaultsun.offsetTop)
     window.addEventListener('scroll',function(){
         var value = window.scrollY;
         defaultmountain.style.top = value*0.5 +"px"
@@ -864,7 +877,7 @@
 
     for(var l = 0;l<cardlist.length;l++){
         cardlist[l].addEventListener("mouseover",function(){
-            this.querySelector(".cardbox").style.background = 'url("{% static 'images/'%}'+this.querySelector('h2').innerText+'.jpg") rgba(255,255,255,0.5)'
+            this.querySelector(".cardbox").style.background = 'url("{% static 'images/'%}'+this.querySelector('h2').innerText+'.jpg")'
         })
         cardlist[l].addEventListener("mouseout",function(){
             this.querySelector(".cardbox").style.background = 'white'
@@ -881,7 +894,7 @@
             this.id=="pics"?(document.body.style.minWidth='1500px'):(document.body.style.minWidth='500px');
         })
     }
-
+    console.log(listname)
     leftorright.addEventListener('click',function(event){
         if(event.target.className == "right"){
             piclist[picflag].removeAttribute("checked")
