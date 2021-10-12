@@ -22,8 +22,10 @@ from django.urls import path
 from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test',views.index,name="test"),
-    path('',views.index,name="index")
+    path('test/', views.test, name="test"),
+    path('login/', views.login, name="login"),
+    path('',views.index,name="index"),
+    # path(r'^api/', include(api_test.urls)),
     # url(r'^static/(?P<path>.*)$', static.serve,
     #   {'document_root': settings.STATIC_ROOT}, name='static'),
 ]

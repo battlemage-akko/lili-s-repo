@@ -1,0 +1,100 @@
+        .mycontainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 500px;
+            flex-wrap: wrap;
+            padding: 0 20px;
+            background-color: white;
+            margin: 30px;
+        }
+
+        .mycontainer .card {
+            top: 50px;
+            position: relative;
+            width: 320px;
+            height: 360px;
+            box-shadow: inset 5px 5px 5px rgba(0, 0, 0, 0.05),
+            inset -5px -5px 5px rgba(255, 255, 255, 0.5),
+            -5px -5px 5px rgba(0, 0, 0, 0.05),
+            -5px -5px 5px rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            margin: 30px;
+        }
+
+        .mycontainer .card .cardbox {
+            opacity: 0.8;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            background: white;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all .5s ease;
+        }
+
+        .mycontainer .card:hover .cardbox {
+            transform: translateY(-50px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .mycontainer .card .cardbox .cardcontent {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .mycontainer .card .cardbox .cardcontent h3,
+        .mycontainer .card .cardbox .cardcontent h2 {
+            margin-bottom: 5px;
+
+        }
+
+        .mycontainer .card .cardbox .cardcontent h3 {
+            font-size: 1.1em;
+            color: #777;
+            z-index: 1;
+            transition: all .5s ease;
+        }
+
+        .mycontainer .card .cardbox .cardcontent p {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 9;
+            overflow: hidden;
+            font-size: 1em;
+            font-weight: 300;
+            color: #777;
+            z-index: 1;
+            transition: all .5s ease;
+            color: #0c63e4;
+        }
+
+        .mycontainer .card:hover .cardbox .cardcontent p,
+        .mycontainer .card:hover .cardbox .cardcontent h2,
+        .mycontainer .card:hover .cardbox .cardcontent h3 {
+            color: black;
+        }
+
+        .mycontainer .card .cardbox .cardcontent a {
+            font-family: IcoMoon-Free;
+            position: relative;
+            display: inline-block;
+            padding: 8px 20px;
+            background: #0a58ca;
+            margin-top: 15px;
+            border-radius: 20px;
+            color: #fff3cd;
+            text-decoration: none;
+            font-weight: 400;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: all .5s ease;
+        }
+
+        .mycontainer .card:hover .cardbox .cardcontent a {
+            background: hotpink;
+        }

@@ -21,6 +21,7 @@
             font-weight: normal;
             font-style: normal;
         }
+
         * {
             margin: 0;
             padding: 0;
@@ -30,6 +31,7 @@
         p {
             margin: 0 !important;
         }
+
         ul {
             padding-left: 0;
         }
@@ -45,10 +47,13 @@
         .middle {
             position: relative;
         }
-        .default {
 
+        .default {
+            display: unset;
         }
+
         .character {
+            display: none;
             right: 0;
             position: absolute;
             justify-content: center;
@@ -56,12 +61,16 @@
             width: 100%;
             transition: all .5s ease;
         }
+
         .pics {
             width: 100%;
             height: 100%;
             overflow: hidden;
+            display: none;
         }
+
         .videos {
+            display: none;
             right: 0;
             position: absolute;
             justify-content: center;
@@ -71,6 +80,22 @@
             transition: all .5s ease;
             padding: 0px 120px;
             white-space: nowrap;
+        }
+
+        .videos.active {
+            width: calc(100% - 240px);
+        }
+
+        .character.active {
+            width: calc(100% - 190px);
+        }
+
+        nav {
+            background: -webkit-linear-gradient(top, white, transparent);
+            position: fixed;
+            width: 100%;
+            height: 10%;
+            z-index: 1;
         }
         .sidebar {
             position: fixed;
@@ -82,20 +107,8 @@
             transition: all 0.5s ease;
             z-index: 3;
         }
-        .videos.active {
-            width: calc(100% - 240px);
-        }
-
-        .character.active {
-            width: calc(100% - 190px);
-        }
         .sidebar.active {
             width: 240px;
-        }
-        .logo.active {
-            left: 120px;
-            z-index: 4;
-            position: fixed;
         }
         .sidebar.active .side {
             opacity: 1;
@@ -110,6 +123,12 @@
             transform: translateX(-50%);
             transition: all 0.5s ease;
             cursor: pointer;
+        }
+
+        .logo.active {
+            left: 120px;
+            z-index: 4;
+            position: fixed;
         }
         footer {
             text-align: center;
@@ -132,7 +151,7 @@
 <body>
     <img src="{% static 'images/logo.png' %}" alt="" class="logo">
     <div id="app">
-        <div v-show="flags.default" class="default">
+        <div class="default">
         <section>
             <img src="{% static 'images/default/mountain.png' %}" id="mountain">
             <img src="{% static 'images/default/sun.png' %}" id="sun">
@@ -151,7 +170,7 @@
             </p>
         </div>
     </div>
-        <div v-show="flags.pics" class="pics middle">
+        <div class="pics middle">
             <div class="slides">
                 <input type="radio" name="r" id="r1">
                 <input type="radio" name="r" id="r2">
@@ -185,7 +204,7 @@
                 <span class="left"></span><span class="right"></span>
             </div>
         </div>
-        <div v-show="flags.character" class="character">
+        <div class="character">
             <div class="mycontainer">
                 <div class="card">
                     <div class="cardbox">
@@ -265,7 +284,7 @@
                 </div>
             </div>
         </div>
-        <div v-show="flags.videos" class="videos">
+        <div class="videos">
             <div style="width: 100%;height: 100px;background-color: #ffffff;"></div>
             <div class="videocontent">
                 <div class="videotitle">
@@ -629,13 +648,73 @@
         defaultmountain.style.top = value * 0.5 + "px"
         defaultmountains.style.top = value * 0 + 'px'
     })
+
     var audio = document.getElementById('music');
     audio.currentTime = 0;
     var buttonflag = 0;
+    var picflag = 0;
     var ul = document.querySelector(".menu")
     var lis = document.querySelectorAll(".fillbutton")
     var menubtn = document.querySelector(".menubtn")
+    var piclist = document.querySelector(".pics").querySelectorAll("input")
+    var leftorright = document.querySelector(".leftorright")
+    var myradios = document.querySelector('.navigation')
+    var navlist = document.querySelector('.nav_list').querySelectorAll('li')
+    var cardlist = document.querySelectorAll('.card')
+    var listname = []
 
+    for (var l = 0; l < cardlist.length; l++) {
+        cardlist[l].addEventListener("mouseover", function () {
+            this.querySelector(".cardbox").style.background = 'url("{% static 'images/'%}' + this.querySelector('h2').innerText + '.jpg")'
+        })
+        cardlist[l].addEventListener("mouseout", function () {
+            this.querySelector(".cardbox").style.background = 'white'
+        })
+    }
+
+    for (var k = 0; k < navlist.length; k++) {
+        listname.push(navlist[k].id)
+        navlist[k].addEventListener('click', function (event) {
+            listname.map(function (item) {
+                document.querySelector('.' + item).style.display = 'none'
+            })
+            document.querySelector('.' + this.id).style.display = 'unset'
+            this.id == "pics" ? (document.body.style.minWidth = '1500px') : (document.body.style.minWidth = '500px');
+        })
+    }
+    console.log(listname)
+    leftorright.addEventListener('click', function (event) {
+        if (event.target.className == "right") {
+            piclist[picflag].removeAttribute("checked")
+            if (picflag == piclist.length - 1) {
+                picflag = 0;
+                piclist[0].setAttribute('checked', 'checked')
+            } else {
+                piclist[picflag + 1].setAttribute('checked', 'checked')
+                picflag += 1
+            }
+        }
+        if (event.target.className == "left") {
+            piclist[picflag].removeAttribute("checked")
+            if (picflag == 0) {
+                picflag = piclist.length - 1;
+                piclist[piclist.length - 1].setAttribute('checked', 'checked')
+            } else {
+                piclist[picflag - 1].setAttribute('checked', 'checked')
+                picflag -= 1
+            }
+        }
+        console.log(picflag)
+    })
+    myradios.addEventListener("click", function (event) {
+        if (event.target.getAttribute("value") != null) {
+            if (piclist[picflag].hasAttribute('checked')) {
+                piclist[picflag].removeAttribute('checked')
+            }
+            picflag = event.target.getAttribute("value")
+            piclist[picflag].setAttribute('checked', 'checked')
+        }
+    })
 
     document.querySelector("#navbtn").onclick = function (event) {
         document.querySelector(".sidebar").classList.toggle("active")
@@ -692,83 +771,6 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <script>
-    const vm2 = new Vue({
-        el:".nav_list",
-        delimiters:['{[', ']}'],
-    })
-    const vm = new Vue({
-        el:"#app",
-        delimiters:['{[', ']}'],
-        data:{
-            name:"lili",
-            flags:{
-                default:false,
-                character:true,
-                pics:false,
-                videos:false,
-            }
-        },
-    })
 
-    let cardlist = document.querySelectorAll('.card')
-    let navlist = document.querySelector('.nav_list').querySelectorAll('li')
-    let listname = []
-
-    for (var l = 0; l < cardlist.length; l++) {
-        cardlist[l].addEventListener("mouseover", function () {
-            this.querySelector(".cardbox").style.background = 'url("{% static 'images/'%}' + this.querySelector('h2').innerText + '.jpg")'
-        })
-        cardlist[l].addEventListener("mouseout", function () {
-            this.querySelector(".cardbox").style.background = 'white'
-        })
-    }
-    for (var k = 0; k < navlist.length; k++) {
-        listname.push(navlist[k].id)
-        navlist[k].addEventListener('click', function (event) {
-            for(let key of Object.keys(vm.flags)){
-                vm.flags[key] = false
-            }
-            vm.flags[this.id] = true
-            this.id == "pics" ? (document.body.style.minWidth = '1500px') : (document.body.style.minWidth = '500px');
-        })
-    }
-
-    let leftorright = document.querySelector(".leftorright")
-    let myradios = document.querySelector('.navigation')
-    let piclist = document.querySelector(".pics").querySelectorAll("input")
-    let picflag = 0;
-    leftorright.addEventListener('click', function (event) {
-        console.log("here")
-        if (event.target.className == "right") {
-            piclist[picflag].removeAttribute("checked")
-            if (picflag == piclist.length - 1) {
-                picflag = 0;
-                piclist[0].setAttribute('checked', 'checked')
-            } else {
-                piclist[picflag + 1].setAttribute('checked', 'checked')
-                picflag += 1
-            }
-        }
-        if (event.target.className == "left") {
-            piclist[picflag].removeAttribute("checked")
-            if (picflag == 0) {
-                picflag = piclist.length - 1;
-                piclist[piclist.length - 1].setAttribute('checked', 'checked')
-            } else {
-                piclist[picflag - 1].setAttribute('checked', 'checked')
-                picflag -= 1
-            }
-        }
-        console.log(picflag)
-    })
-    myradios.addEventListener("click", function (event) {
-        if (event.target.getAttribute("value") != null) {
-            if (piclist[picflag].hasAttribute('checked')) {
-                piclist[picflag].removeAttribute('checked')
-            }
-            picflag = event.target.getAttribute("value")
-            piclist[picflag].setAttribute('checked', 'checked')
-        }
-    })
 </script>
 </html>

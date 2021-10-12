@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'myproject1'
+    'myproject1',
 ]
 
 MIDDLEWARE = [
@@ -86,6 +86,7 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '5daaiMIANMA',
         'HOST': 'localhost',
+        'NAME':'secretbase',
     }
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
