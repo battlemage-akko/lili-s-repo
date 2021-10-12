@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <title>测试用页面</title>
     <link rel="shortcut icon" href="{% static 'images/favicon.png' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/video.js/7.0.0-alpha.1/alt/video-js-cdn.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/video.js/7.0.0-alpha.1/video.min.js"></script>
     <style>
         @font-face {
             font-family: 'IcoMoon-Free';
@@ -12,13 +15,15 @@
             font-weight: normal;
             font-style: normal;
         }
-        *{
+
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             scroll-behavior: smooth;
         }
-        body{
+
+        body {
             width: 100vw;
             height: 100vh;
             min-width: 500px;
@@ -26,14 +31,15 @@
             overflow-x: hidden;
         }
 
-        .middle{
+        .middle {
             position: relative;
         }
-        .default{
+
+        .default {
             display: unset;
         }
 
-        .character{
+        .character {
             display: none;
             right: 0;
             position: absolute;
@@ -42,16 +48,19 @@
             width: 100%;
             transition: all .5s ease;
         }
-        .pics{
+
+        .pics {
             width: 100%;
             height: 100%;
             overflow: hidden;
             display: none;
         }
-        .character.active{
+
+        .character.active {
             width: calc(100% - 190px);
         }
-        .container{
+
+        .mycontainer {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -62,19 +71,20 @@
             margin: 30px;
         }
 
-        .container .card{
+        .mycontainer .card {
             top: 50px;
             position: relative;
             width: 320px;
             height: 360px;
-            box-shadow: inset 5px 5px 5px rgba(0,0,0,0.05),
-                        inset -5px -5px 5px rgba(255,255,255,0.5),
-                        -5px -5px 5px rgba(0,0,0,0.05),
-                        -5px -5px 5px rgba(255,255,255,0.5);
+            box-shadow: inset 5px 5px 5px rgba(0, 0, 0, 0.05),
+            inset -5px -5px 5px rgba(255, 255, 255, 0.5),
+            -5px -5px 5px rgba(0, 0, 0, 0.05),
+            -5px -5px 5px rgba(255, 255, 255, 0.5);
             border-radius: 15px;
             margin: 30px;
         }
-        .container .card .cardbox{
+
+        .mycontainer .card .cardbox {
             opacity: 0.8;
             position: absolute;
             top: 20px;
@@ -82,33 +92,38 @@
             right: 20px;
             bottom: 20px;
             background: white;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             border-radius: 15px;
             display: flex;
             justify-content: center;
             align-items: center;
             transition: all .5s ease;
         }
-        .container .card:hover .cardbox{
+
+        .mycontainer .card:hover .cardbox {
             transform: translateY(-50px);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
         }
-        .container .card .cardbox .cardcontent{
+
+        .mycontainer .card .cardbox .cardcontent {
             padding: 20px;
-            text-align:center;
+            text-align: center;
         }
-        .container .card .cardbox .cardcontent h3,
-        .container .card .cardbox .cardcontent h2{
+
+        .mycontainer .card .cardbox .cardcontent h3,
+        .mycontainer .card .cardbox .cardcontent h2 {
             margin-bottom: 5px;
 
         }
-        .container .card .cardbox .cardcontent h3{
+
+        .mycontainer .card .cardbox .cardcontent h3 {
             font-size: 1.1em;
             color: #777;
             z-index: 1;
             transition: all .5s ease;
         }
-        .container .card .cardbox .cardcontent p{
+
+        .mycontainer .card .cardbox .cardcontent p {
             display: -webkit-box;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 9;
@@ -120,12 +135,14 @@
             transition: all .5s ease;
             color: #0c63e4;
         }
-        .container .card:hover .cardbox .cardcontent p,
-        .container .card:hover .cardbox .cardcontent h2,
-        .container .card:hover .cardbox .cardcontent h3{
+
+        .mycontainer .card:hover .cardbox .cardcontent p,
+        .mycontainer .card:hover .cardbox .cardcontent h2,
+        .mycontainer .card:hover .cardbox .cardcontent h3 {
             color: black;
         }
-        .container .card .cardbox .cardcontent a{
+
+        .mycontainer .card .cardbox .cardcontent a {
             font-family: IcoMoon-Free;
             position: relative;
             display: inline-block;
@@ -136,121 +153,142 @@
             color: #fff3cd;
             text-decoration: none;
             font-weight: 400;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
             transition: all .5s ease;
         }
-        .container .card:hover .cardbox .cardcontent a{
+
+        .mycontainer .card:hover .cardbox .cardcontent a {
             background: hotpink;
         }
-        .oldmiddle{
+
+        .oldmiddle {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%,-50%);
+            transform: translate(-50%, -50%);
         }
 
-        .navigation{
+        .navigation {
             position: absolute;
-            top:15px;
+            top: 15px;
             left: 230px;
             transform: translateX(-50%);
             display: flex;
             transition: all 0.5s ease;
             z-index: 0;
         }
-        .navigation.active{
+
+        .navigation.active {
             left: 10%;
         }
-        .bar{
+
+        .bar {
             width: 50px;
             height: 10px;
             border: 2px solid black;
             margin: 6px;
             cursor: pointer;
-            transition:all 0.4s;
+            transition: all 0.4s;
         }
-        .bar:hover{
+
+        .bar:hover {
             background-color: black;
         }
-        input[name="r"]{
+
+        input[name="r"] {
             position: absolute;
             visibility: hidden;
         }
-        .slides{
+
+        .slides {
             width: 500%;
             height: 100%;
             display: flex;
         }
-        .slide{
+
+        .slide {
             width: 20%;
-            transition:all 0.6s;
+            transition: all 0.6s;
         }
-        .slide img{
+
+        .slide img {
             width: 100%;
             height: 100%;
         }
-        #r1:checked ~ .mark{
+
+        #r1:checked ~ .mark {
             margin-left: 0;
         }
-        #r2:checked ~ .mark{
+
+        #r2:checked ~ .mark {
             margin-left: -20%;
         }
-        #r3:checked ~ .mark{
+
+        #r3:checked ~ .mark {
             margin-left: -40%;
         }
-        #r4:checked ~ .mark{
+
+        #r4:checked ~ .mark {
             margin-left: -60%;
         }
-        #r5:checked ~ .mark{
+
+        #r5:checked ~ .mark {
             margin-left: -80%;
         }
-        footer{
+
+        footer {
             text-align: center;
-            background-color: rgba(255,255,255,0.7);
+            background-color: rgb(255, 255, 255);
             line-height: 30px;
             width: 100%;
             height: 30px;
             position: fixed;
             font-size: 12px;
-            bottom:0px;
+            bottom: 0px;
             z-index: 2;
         }
-        footer a{
+
+        footer a {
             color: gray;
             text-decoration: none;
         }
-        nav{
-            background:-webkit-linear-gradient(top,white,transparent);
+
+        nav {
+            background: -webkit-linear-gradient(top, white, transparent);
             position: fixed;
             width: 100%;
             height: 10%;
             z-index: 1;
         }
-        .wrapper{
-            position:fixed;
+
+        .wrapper {
+            position: fixed;
             top: 0;
             left: 0;
             height: 100%;
             width: 100%;
-            background-color: rgba(203, 203, 203, 0.5);
+            background-color: rgba(203, 203, 203, 0.8);
             clip-path: circle(25px at calc(100% - 45px) 45px);
-            transition:all .5s ease;
+            transition: all .6s ease;
             z-index: 3;
         }
-        .wrapper ul{
-            position:absolute;
+
+        .wrapper ul {
+            position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%,-50%);
+            transform: translate(-50%, -50%);
             list-style: none;
             text-align: center;
 
         }
-        .wrapper ul li{
+
+        .wrapper ul li {
             margin: 60px 0;
             font-size: 30px;
         }
-        .wrapper ul li a{
+
+        .wrapper ul li a {
             position: relative;
             display: block;
             text-decoration: none;
@@ -260,29 +298,34 @@
             color: black;
             overflow: hidden;
         }
-        .wrapper ul li a::before{
+
+        .wrapper ul li a::before {
             background: black;
-            content:"";
+            content: "";
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%,-50%);
+            transform: translate(-50%, -50%);
             transition: all 0.6s ease;
             z-index: -1;
-            transform: translate(-50%,-50%) rotate(45deg);
+            transform: translate(-50%, -50%) rotate(45deg);
         }
-        .fillbutton::before{
+
+        .fillbutton::before {
             width: 100%;
             height: 0;
         }
-        .fillbutton:hover:before{
+
+        .fillbutton:hover:before {
             height: 500%;
         }
-        .chosenbutton{
+
+        .chosenbutton {
             background: black;
             color: white !important;
         }
-        .menubtn{
+
+        .menubtn {
             position: absolute;
             right: 20px;
             top: 20px;
@@ -297,38 +340,46 @@
             overflow: hidden;
             transition: all 1s ease;
         }
-        .menubtn i{
+
+        .menubtn i {
             font-family: IcoMoon-Free;
         }
-        #active:checked ~ .wrapper{
-            clip-path:circle(75%);
+
+        #active:checked ~ .wrapper {
+            clip-path: circle(75%);
         }
-        .ico-menu::before{
+
+        .ico-menu::before {
             font-family: 'IcoMoon-Free';
-            content:"\e9bd";
+            content: "\e9bd";
             font-style: normal;
         }
-        embed{
+
+        embed {
             display: inline-block;
         }
-        .sidebar{
+
+        .sidebar {
             position: fixed;
-            top:0;
-            left:0;
+            top: 0;
+            left: 0;
             height: 100%;
             width: 50px;
             background: #fcfcfc;
             transition: all 0.5s ease;
             z-index: 3;
         }
-        .sidebar.active{
+
+        .sidebar.active {
             width: 240px;
         }
-        .sidebar.active .side{
+
+        .sidebar.active .side {
             opacity: 1;
             pointer-events: auto;
         }
-        #navbtn{
+
+        #navbtn {
             position: absolute;
             right: 0;
             top: 0px;
@@ -340,69 +391,88 @@
             background-color: white;
             cursor: pointer;
         }
-        #navbtn:hover{
+
+        #navbtn:hover {
             background-color: #c5c5c5;
         }
-        #navbtn::after{
-            content:"\e9ba";
+
+        #navbtn::after {
+            content: "\e9ba";
             font-family: IcoMoon-Free;
             font-style: normal;
         }
-        .searchbtn::before{
+
+        .searchbtn::before {
             position: absolute;
-            content:"\e986";
+            content: "\e986";
             font-family: IcoMoon-Free;
             font-style: normal;
             cursor: pointer;
-            top: 12px;
-            left:12px;
+            top: 8px;
+            left: 12px;
         }
-        .homebtn::before{
-            content:"\e900";
-            font-family: IcoMoon-Free;
-            font-style: normal;
-            cursor: pointer;
-        }
-        .cloudbtn::before{
-            content:"\e9c1";
+
+        .homebtn::before {
+            content: "\e900";
             font-family: IcoMoon-Free;
             font-style: normal;
             cursor: pointer;
         }
-        .characterbtn::before{
-            content:"\e971";
+
+        .cloudbtn::before {
+            content: "\e9c1";
             font-family: IcoMoon-Free;
             font-style: normal;
             cursor: pointer;
         }
-        .imgbtn::before{
-            content:"\e90e";
+
+        .characterbtn::before {
+            content: "\e971";
             font-family: IcoMoon-Free;
             font-style: normal;
             cursor: pointer;
         }
-        .login{
+
+        .imgbtn::before {
+            content: "\e90e";
+            font-family: IcoMoon-Free;
+            font-style: normal;
+            cursor: pointer;
+        }
+
+        .videosbtn::before {
+            content: "\ea1c";
+            font-family: IcoMoon-Free;
+            font-style: normal;
+            cursor: pointer;
+        }
+
+        .login {
             position: absolute;
             bottom: 50px;
             height: 50px;
             width: 100%;
             left: 0;
         }
-        .login img{
+
+        .login img {
             z-index: 2;
             width: 50px;
             height: 50px;
             cursor: pointer;
         }
-        .login img:hover{
+
+        .login img:hover {
             box-shadow: 0px 0px 5px #000000;
         }
-        .toolbtn::before{
-            content:"\e991 ";
+
+        .toolbtn::before {
+            content: "\e991 ";
             font-family: IcoMoon-Free;
             font-style: normal;
         }
-        .loginbtn{
+
+        .loginbtn {
             float: left;
             position: relative;
             width: calc(100% - 50px);
@@ -418,7 +488,8 @@
             overflow: hidden;
             transition: all 0.5s ease;
         }
-        .loginbtn::before{
+
+        .loginbtn::before {
             position: absolute;
             content: "";
             left: 0;
@@ -426,9 +497,10 @@
             height: 10px;
             width: 10px;
             border-top: 2px solid black;
-            border-left:2px solid black ;
+            border-left: 2px solid black;
         }
-        .loginbtn::after{
+
+        .loginbtn::after {
             position: absolute;
             content: "";
             bottom: 0;
@@ -436,16 +508,19 @@
             height: 10px;
             width: 10px;
             border-bottom: 2px solid black;
-            border-right:2px solid black ;
+            border-right: 2px solid black;
         }
-        .loginbtn::before:hover{
+
+        .loginbtn::before:hover {
             transform: translateX(330px) skewX(-45deg);
         }
-        .loginbtn:hover{
+
+        .loginbtn:hover {
             background-color: black;
             color: white;
         }
-        .toolbtn{
+
+        .toolbtn {
             position: absolute;
             width: 100%;
             height: 50px;
@@ -458,34 +533,41 @@
             font-size: 20px;
             transition: all 0.5s ease;
         }
-        .toolbtn.active{
+
+        .toolbtn.active {
             background-color: #e3e3e3;
         }
 
-        .toolbtn:hover{
+        .toolbtn:hover {
             background-color: #c9c9c9;
         }
-        .searchbtn:hover::before{
+
+        .searchbtn:hover::before {
             bckground-color: #c5c5c5;
         }
-        .logo_name{
+
+        .logo_name {
             font-family: IcoMoon-Free;
             font-size: 40px;
         }
-        .nav_list{
-            left: 0;
+
+        .nav_list {
+            left: 100px;
             transition: all 0.5s ease;
             background: white;
         }
-        .nav_list.active p{
+
+        .nav_list.active p {
             color: black;
         }
-        .nav_list li{
+
+        .nav_list li {
             position: relative;
             transition: all 0.3s ease-out;
             background: white;
         }
-        .nav_list li i{
+
+        .nav_list li i {
             position: absolute;
             width: 50px;
             height: 50px;
@@ -493,7 +575,8 @@
             line-height: 50px;
             cursor: pointer;
         }
-        .nav_list li p{
+
+        .nav_list li p {
             color: transparent;
             float: left;
             width: 100%;
@@ -505,27 +588,32 @@
             font-family: IcoMoon-Free;
         }
 
-        .nav_list li:hover{
+        .nav_list li:hover {
             background-color: #c9c9c9;
         }
-        .searchnav{
+
+        .searchnav {
             margin: 5px;
             margin-top: 65px;
             transition: all 0.5s ease;
         }
-        .searchnav.active{
+
+        .searchnav.active {
             margin-top: 120px;
         }
-        .sidbar ul.active{
+
+        .sidbar ul.active {
             margin-top: 100px;
         }
-        .sidebar ul li{
+
+        .sidebar ul li {
             position: relative;
             list-style: none;
             height: 50px;
             width: 100%;
         }
-        .sidebar ul li input{
+
+        .sidebar ul li input {
             position: absolute;
             height: 80%;
             width: 100%;
@@ -538,14 +626,16 @@
             padding-left: 40px;
             font-size: 18px;
         }
-        .leftorright{
+
+        .leftorright {
             position: fixed;
             width: 100px;
             height: 50px;
             right: 0;
-            bottom: 30px;
+            bottom: 50px;
         }
-        .leftorright span{
+
+        .leftorright span {
             display: block;
             float: left;
             margin: 0;
@@ -553,43 +643,49 @@
             width: 50px;
             text-align: center;
             transition: all 0.2s ease;
-            background-color: rgba(255,255,255,0.7);
+            background-color: rgba(255, 255, 255, 0.7);
         }
-        .left::before{
+
+        .left::before {
             position: relative;
-            content:"\ea38";
+            content: "\ea38";
             font-family: IcoMoon-Free;
             font-size: 25px;
             line-height: 50px;
         }
-        .right::before{
+
+        .right::before {
             position: relative;
-            content:"\ea34";
+            content: "\ea34";
             font-family: IcoMoon-Free;
             font-size: 25px;
             line-height: 50px;
         }
-        .leftorright span:hover{
-            background-color: rgba(0,0,0,0.1);
+
+        .leftorright span:hover {
+            background-color: rgba(0, 0, 0, 0.1);
             color: white;
             cursor: pointer;
         }
-        .logo{
+
+        .logo {
             position: fixed;
             width: 180px;
-            top: 25px ;
+            top: 20px;
             left: 50%;
             z-index: 4;
             transform: translateX(-50%);
             transition: all 0.5s ease;
             cursor: pointer;
         }
-        .logo.active{
+
+        .logo.active {
             left: 120px;
             z-index: 4;
             position: fixed;
         }
-        section{
+
+        section {
             width: 100%;
             height: 100vh;
             padding: 100px;
@@ -598,15 +694,17 @@
             justify-content: center;
             align-items: center;
         }
-        section::before{
+
+        section::before {
             content: '';
             position: absolute;
             bottom: 0;
             width: 100%;
             height: 100px;
-            background: linear-gradient(to top,#3e3e40,transparent);
+            background: linear-gradient(to top, #3e3e40, transparent);
         }
-        section img{
+
+        section img {
             position: absolute;
             top: 0;
             left: 0;
@@ -615,13 +713,16 @@
             object-fit: cover;
             pointer-events: none;
         }
-        #mountain{
+
+        #mountain {
             z-index: 1;
         }
-        #mountains{
+
+        #mountains {
             z-index: 2;
         }
-        #sun{
+
+        #sun {
             width: 300px;
             height: 300px;
             left: 50%;
@@ -630,10 +731,12 @@
             transition: all .5s ease;
             z-index: 0;
         }
-        #sun.active{
+
+        #sun.active {
             top: 50px;
         }
-        #defaultbtn{
+
+        #defaultbtn {
             text-decoration: none;
             padding: 10px 30px;
             display: inline-block;
@@ -643,9 +746,10 @@
             font-size: 1.5em;
             z-index: 1;
             transform: translateY(-50px);
-            background-color:white ;
+            background-color: white;
         }
-        .defaultdesc{
+
+        .defaultdesc {
             position: relative;
             background: #3e3e40;
             overflow: hidden;
@@ -654,68 +758,480 @@
             z-index: 2;
             transition: all 0.5s ease;
         }
-        .defaultdesc.active{
+
+        .defaultdesc.active {
             padding-left: 300px;
+        }
+
+        .videos {
+            display: none;
+            right: 0;
+            position: absolute;
+            justify-content: center;
+            align-items: center;
+            width: calc(100% - 50px);
+            height: calc(100% - 50px);
+            transition: all .5s ease;
+            padding: 0px 120px;
+            white-space: nowrap;
+        }
+
+        .videos.active {
+            width: calc(100% - 240px);
+        }
+
+        .thisvideo {
+            display: inline-block;
+            width: 60vw;
+            height: 65vh;
+            min-width: 800px;
+            min-height: 600px;
+        }
+
+        .videocontent {
+            position: relative;
+            display: inline-block;
+            background-color: #ffffff;
+            vertical-align: top
+        }
+
+        .danmucontent {
+            position: relative;
+            width: 100%;
+            height: 50px;
+            background-color: black;
+            border-radius: 0px 0px 10px 10px;
+        }
+
+        .videotitle {
+            font-family: 'IcoMoon-Free';
+            height: 100px;
+            padding: 10px 0px;
+        }
+
+        .videotitle h1 {
+            font-size: 20px;
+            align-items: center;
+        }
+
+        .videotitle p {
+            font-size: 15px;
+            color: #8f8f8f;
+        }
+
+        p {
+            margin: 0 !important;
+        }
+
+        ul {
+            padding-left: 0;
+        }
+
+        .videologo::before {
+            width: 30px;
+            height: 30px;
+            background-color: black;
+            content: "\ea15";
+            position: relative;
+            display: inline-block;
+            font-family: IcoMoon-Free;
+            font-style: normal;
+            line-height: 30px;
+            text-align: center;
+            border-radius: 5px;
+            color: white;
+        }
+
+        .danmu {
+            position: relative;
+            display: inline-block;
+            width: 300px;
+            margin-left: 50px;
+        }
+
+        .danmutitle {
+            position: relative;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 10px;
+            background-color: #f6f6f6;
+        }
+
+        .danmutitle i {
+            right: 15px;
+            display: inline-block;
+            transition: all 0.5s ease;
+            position: absolute;
+        }
+
+        .danmutitle i::after {
+            content: "\ea43";
+            font-family: IcoMoon-Free;
+            cursor: pointer;
+            font-style: normal;
+        }
+
+        .danmutitle i.active {
+            transform: rotate(180deg);
+        }
+
+        .danmuholder {
+            height: 50px;
+            transition: all .5s ease;
+        }
+
+        .danmuholder.active {
+            height: 500px;
+        }
+
+        .danmutitle div span {
+            display: inline-block;
+        }
+
+        .danmutitlecontent {
+            background-color: #f1f1f1;
+            padding-left: 20px;
+            height: 50px;
+            margin: auto;
+            line-height: 50px;
+        }
+        .ad {
+            height: 100px;
+            width: 100%;
+            padding: 10px;
+        }
+        .adcontent{
+            height: 100%;;
+            width: 100%;
+            vertical-align: middle;
+            line-height: 70px;
+            border:5px dashed black;
+            font-size: 35px;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+
+        }
+        .adcontent:hover i{
+            transform: rotate(-15deg);
+            color: hotpink;
+        }
+        .adcontent i{
+            display: inline-block;
+            margin-left: 10px;
+            transition: all .5s ease;
+            transform-origin: center bottom;
+        }
+        .adcontent i::after{
+            content: '\e9da';
+            font-family: IcoMoon-Free;
+            font-style: normal;
+        }
+        .nextvideo {
+            margin-top: 10px;
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px dashed black;
+        }
+        .danmulist {
+            overflow: scroll;
+            overflow-x:hidden;
+            height: 0px;
+        }
+        .danmulist li span{
+            vertical-align: top;
+            border: 1px solid black;
+            font-size: 10px;
+            display:inline-block;
+            text-align: center;
+        }
+        .danmulist li span:nth-child(1){
+            border: 1px solid black;
+            width: 50px;
+        }
+        .danmulist li span:nth-child(2){
+            border: 1px solid black;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            width: 100px;
+        }
+        .danmulist li span:nth-child(3){
+            border: 1px solid black;
+            width: 122px;
+        }
+        .nextvideo img {
+            display: inline-block;
+            height: 80px;
+            width: 130px;
+        }
+        .nextvideo div a{
+            display: block;
+            width: 150px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            text-decoration: none;
+            font-size: 15px;
+            color: black;
+        }
+        .nextvideo div{
+            display: inline-block;
+            height: 100%;
+            width: 150px;
+            vertical-align: top;
+            margin-left: 10px;
+        }
+        .nextvideo div a:nth-child(1){
+            height: 45px;
+        }
+        .nextvideo div a:nth-child(2){
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-size: 10px;
+        }
+        .nextvideo div a:hover{
+            color: #5c636a;
+        }
+        .videoslist{
+            list-style: none;
+        }
+        .videoslist li{
+            height: 100px;
+            margin-top: 10px;
+            padding: 10px;
+        }
+        .videoslist li img{
+            display: inline-block;
+            height: 80px;
+            width: 130px;
+        }
+        .videoslist li div{
+            display: inline-block;
+            height: 100%;
+            width: 150px;
+            vertical-align: top;
+            margin-left: 10px;
+        }
+        .videoslist li div a{
+            display: block;
+            width: 150px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            text-decoration: none;
+            font-size: 15px;
+            color: black;
+        }
+        .videoslist li div a:nth-child(1){
+            height: 45px;
+        }
+        .videoslist li div a:nth-child(2){
+            opacity: .5;
+            font-size: 10px;
+        }
+        .videoslist li div a:nth-child(3){
+            opacity: .5;
+            font-size: 10px;
+        }
+        .videoslist li div a:hover{
+            color: #5c636a;
+        }
+        .profile{
+            width: 100%;
+            height: 100px;
+            border:3px dashed black;
+            margin:10px 0px ;
+            border-radius: 5px;
+            position:absolute;
+        }
+        .videodetail{
+            width: 100%;
+            height: 40px;
+            margin:5px 0px ;
+            border:0px dashed black;
+            line-height: 35px;
+        }
+        .videodetail span{
+            font-weight: 700;
+            font-size: 20px;
+            margin-left: 20px;
+            color: #5c636a;
+            cursor: pointer;
+            opacity: 0.5;
+        }
+        .videodetail span:hover{
+            opacity: 1;
+        }
+        .videobtns{
+            display: inline-block;
+            position: absolute;
+            right: 10px;
+        }
+        .videobtns span{
+            padding: 0px 10px;
+            display: inline-block;
+            border-radius: 25px;
+            width: 35px;
+            height: 35px;
+            font-size: 16px;
+            opacity: 1;
+            color: black;
+            transition: all .2s ease;
+        }
+        .videobtns span:hover{
+            background: linear-gradient(90deg,#363062,#FFFFFF,#1DB9C3,#363062);
+            background-size: 400%;
+            animation: animate 8s linear infinite;
+            color: white;
+        }
+        @keyframes animate{
+            0%{
+                background-position: 0%;
+            }
+            0%{
+                background-position: 400%;
+            }
+        }
+        .videoshare::before{
+            content: "\ea82";
+            font-family: IcoMoon-Free;
+        }
+        .videopay::before{
+            content: "\e93e";
+            font-family: IcoMoon-Free;
+        }
+        .goodvideo::before{
+            content: "\e9da";
+            font-family: IcoMoon-Free;
+        }
+        .videocollect::before{
+            content: "\e9d7";
+            font-family: IcoMoon-Free;
+        }
+        .profilepic{
+            display: inline-block;
+            margin-left:20px;
+            line-height: 90px;
+        }
+        .profilepic img{
+            width: 70px;
+            height: 70px;
+            border-radius: 70px;
+        }
+        .profiledetail a{
+            margin-left: 10px;
+            color: black;
+            text-decoration: none;
+            font-style: normal;
+            opacity: 0.7;
+        }
+        .profiledetail a:hover{
+            opacity: 1;
+        }
+        .follow{
+            width: 120px;
+            height: 40px;
+            display: inline-block;
+            position: absolute;
+            right: 20px;
+            vertical-align: middle;
+            top: 50%;
+            transform: translateY(-50%);
+            text-align: center;
+            line-height: 40px;
+
+        }
+        .follow::before {
+            position: absolute;
+            content: "";
+            left: 0;
+            top: 0;
+            height: 10px;
+            width: 10px;
+            border-top: 2px solid black;
+            border-left: 2px solid black;
+        }
+        .follow::after {
+            position: absolute;
+            content: "";
+            bottom: 0;
+            right: 0;
+            height: 10px;
+            width: 10px;
+            border-bottom: 2px solid black;
+            border-right: 2px solid black;
+        }
+        .follow i::before{
+            content: '\ea0a';
+            font-family: IcoMoon-Free;
+            font-style: normal;
+        }
+        .follow a{
+            text-decoration: none;
+            color:black;
         }
     </style>
 </head>
 <body>
-    <img src="{% static 'images/logo.png' %}" alt="" class="logo">
-    <div class="default">
-        <section>
+<img src="{% static 'images/logo.png' %}" alt="" class="logo">
+<div class="default">
+    <section>
         <img src="{% static 'images/default/mountain.png' %}" id="mountain">
-            <img src="{% static 'images/default/sun.png' %}" id="sun">
+        <img src="{% static 'images/default/sun.png' %}" id="sun">
         <img src="{% static 'images/default/mountains.png' %}" id="mountains">
-{#        <h2 id="defaulttext">mountain</h2>#}
-        </section>
-     <div class="defaultdesc" id="defaultdesc">
+        {#        <h2 id="defaulttext">mountain</h2>#}
+    </section>
+    <div class="defaultdesc" id="defaultdesc">
         <h2>丢臭你（占位）</h2>
         <p>丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
-        丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
-        丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
-        丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
-        丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
-        丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
-        丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
+            丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
+            丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
+            丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
+            丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
+            丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
+            丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
         </p>
     </div>
-    </div>
-    <div class="pics middle">
-        <div class="slides">
+</div>
+<div class="pics middle">
+    <div class="slides">
         <input type="radio" name="r" id="r1">
         <input type="radio" name="r" id="r2">
         <input type="radio" name="r" id="r3">
         <input type="radio" name="r" id="r4">
         <input type="radio" name="r" id="r5">
-            <div class="slide mark">
-                <img src="{% static 'images/花名.jpg' %}" alt="">
-            </div>
-            <div class="slide">
-                <img src="{% static 'images/2.png' %}" alt="">
-            </div>
-            <div class="slide">
-                <img src="{% static 'images/3.png' %}" alt="">
-            </div>
-            <div class="slide">
-                <img src="{% static 'images/3.jpg' %}" alt="">
-            </div>
-            <div class="slide">
-                <img src="{% static 'images/4.jpg' %}" alt="">
-            </div>
+        <div class="slide mark">
+            <img src="{% static 'images/花名.jpg' %}" alt="">
         </div>
-        <div class="navigation">
-            <label for="r1" class="bar" value="0"></label>
-            <label for="r2" class="bar" value="1"></label>
-            <label for="r3" class="bar" value="2"></label>
-            <label for="r4" class="bar" value="3"></label>
-            <label for="r5" class="bar" value="4"></label>
+        <div class="slide">
+            <img src="{% static 'images/2.png' %}" alt="">
         </div>
-        <div class="leftorright">
+        <div class="slide">
+            <img src="{% static 'images/3.png' %}" alt="">
+        </div>
+        <div class="slide">
+            <img src="{% static 'images/3.jpg' %}" alt="">
+        </div>
+        <div class="slide">
+            <img src="{% static 'images/4.jpg' %}" alt="">
+        </div>
+    </div>
+    <div class="navigation">
+        <label for="r1" class="bar" value="0"></label>
+        <label for="r2" class="bar" value="1"></label>
+        <label for="r3" class="bar" value="2"></label>
+        <label for="r4" class="bar" value="3"></label>
+        <label for="r5" class="bar" value="4"></label>
+    </div>
+    <div class="leftorright">
         <span class="left"></span><span class="right"></span>
     </div>
-    </div>
-    <div class="character">
-        <div class="container">
+</div>
+<div class="character">
+    <div class="mycontainer">
         <div class="card">
             <div class="cardbox">
                 <dov class="cardcontent">
@@ -792,59 +1308,359 @@
                 </dov>
             </div>
         </div>
-        </div>
     </div>
-    <input type="checkbox" id="active" style = "display:none">
-    <div class="sidebar">
-        <div class="logo_content">
-            <div class="logo">
-                <i></i>
-                <div class="logo_name"></div>
+</div>
+<div class="videos">
+    <div style="width: 100%;height: 100px;background-color: #ffffff;"></div>
+    <div class="videocontent">
+        <div class="videotitle">
+            <h1><i class="videologo"> </i>我是标题，我是标题，我是标题，我是标题，我是标题</h1>
+            <p>发布日期：xxxxxxxxx</p>
+        </div>
+        <video src="{% static 'videos/video.mp4' %}" class="thisvideo video-js vjs-default-skin" controls preload="none"
+               poster="{% static 'images/3.jpg' %}"></video>
+        <div class="danmucontent">
+            <div style="display: inline-block;position: absolute;top: 10px;left: 20px">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                    <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                </div>
             </div>
-            <i id="navbtn"></i>
+            <div style="display: inline-block;position: absolute;right: 5px;top:5px;border-radius: 100px">
+                <div class="input-group mb-3">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon1">发送弹幕</button>
+                    <input type="text" class="form-control" placeholder="发个弹幕试试吧"
+                           aria-label="Example text with button addon" aria-describedby="button-addon1"
+                           style="width: 400px">
+                </div>
+            </div>
         </div>
-        <ul class="searchnav">
-            <li>
-                <input type="search" placeholder="请输入">
-                <i class="searchbtn"></i>
-            </li>
-        </ul>
-        <ul class="nav_list">
-            <li id="default">
-                <i class="homebtn"></i>
-                <p>Home</p>
-            </li>
-            <li id="character">
-                <i class="characterbtn"></i>
-                <p>角色</p>
-            </li>
-            <li id="pics">
-                <i class="imgbtn"></i>
-                <p>图片</p>
-            </li>
-        </ul>
-        <audio src="{% static 'audio/secretbase.mp3' %}" controls="controls" preload id="music" hidden></audio>
-        <div class="login">
-            <img src="{% static 'images/头像.png' %}" alt=""><p class="loginbtn">Login in</p>
+        <div class="videodetail">
+            <span>0 播放</span>
+            <span>0 弹幕</span>
+            <span>0 评论</span>
+            <div class="videobtns">
+                <span class="videopay"></span>
+                <span class="videoshare"></span>
+                <span class="goodvideo"></span>
+                <span class="videocollect"></span>
+            </div>
         </div>
-        <i class="toolbtn"></i>
+        <div class="profile">
+            <span class="profilepic">
+                <img src="{% static 'images/头像.png' %}" alt="">
+            </span>
+            <span class="profiledetail">
+                <a href="javascript:">本间芽衣子</a>
+            </span>
+            <span class="follow">
+                <i></i> <a href="javascript:">关注</a>
+            </span>
+        </div>
+    </div>
+    <div class="danmu">
+        <div class="ad">
+            <div class="adcontent">
+                广告位<i></i>
+            </div>
+        </div>
+        <div class="danmuholder">
+            <div class="danmutitle">
+                <div class="danmutitlecontent">
+                    弹幕列表<i class="danmubtn"></i>
+                </div>
+                <div style="position: relative;height: 25px;font-size: 10px;line-height: 25px;padding-left: 10px">
+                    <span style="width: 50px">时间</span>
+                    <span style="width: 100px">内容</span>
+                    <span style="width: 70px">发布时间</span>
+                </div>
+                <ul class="danmulist">
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                    <li>
+                        <span>00:00</span>
+                        <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                        <span>2021-10-12 00:00:00</span>
+                    </li>
+                </ul>
 
+            </div>
+            <div>
+                <div style="margin-top: 10px;font-size: 16px;display: inline-block;">
+                    接下来播放
+                    <div style="display: inline-block;position:relative;margin-left: 10px">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
+                                   checked>
+                            <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="nextvideo">
+                    <img src="{% static 'images/1.jpeg' %}" alt="">
+                    <div>
+                            <a href="javascript:">这是一个视频,这是一个视频,这是一个视频</a>
+                            <a href="javascript:">作者：管理员</a>
+                            <a href="javascript:">0 播放 0 弹幕</a>
+                        </div>
+                </div>
+                <ul class="videoslist">
+                    <li>
+                        <img src="{% static 'images/2.jpeg' %}" alt="">
+                        <div>
+                            <a href="javascript:">这又是一个视频,这又是一个视频,这又是一个视频</a>
+                            <a href="javascript:">作者：管理员</a>
+                            <a href="javascript:">0 播放 0 弹幕</a>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="{% static 'images/3.jpeg' %}" alt="">
+                        <div>
+                            <a href="javascript:">这他妈也是一个视频,这他妈又是一个视频,这他妈又是一个视频</a>
+                            <a href="javascript:">作者：管理员</a>
+                            <a href="javascript:">0 播放 0 弹幕</a>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="{% static 'images/4.jpeg' %}" alt="">
+                        <div>
+                            <a href="javascript:">哦草这他妈还是个视频,哦草这他妈还是个视频</a>
+                            <a href="javascript:">作者：管理员</a>
+                            <a href="javascript:">0 播放 0 弹幕</a>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="{% static 'images/2.jpeg' %}" alt="">
+                        <div>
+                            <a href="javascript:">这又是一个视频,这又是一个视频,这又是一个视频</a>
+                            <a href="javascript:">作者：管理员</a>
+                            <a href="javascript:">0 播放 0 弹幕</a>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="{% static 'images/3.jpeg' %}" alt="">
+                        <div>
+                            <a href="javascript:">这他妈也是一个视频,这他妈又是一个视频,这他妈又是一个视频</a>
+                            <a href="javascript:">作者：管理员</a>
+                            <a href="javascript:">0 播放 0 弹幕</a>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="{% static 'images/4.jpeg' %}" alt="">
+                        <div>
+                            <a href="javascript:">哦草这他妈还是个视频,哦草这他妈还是个视频</a>
+                            <a href="javascript:">作者：管理员</a>
+                            <a href="javascript:">0 播放 0 弹幕</a>
+                        </div>
+                    </li>
+                </ul>
+                <div style="width: 100%;height: 30px;"></div>
+            </div>
+
+        </div>
     </div>
-    <div class="wrapper">
-        <label for="active" class="menubtn"><i class="ico-menu"></i></label>
-        <ul class="menu">
-            <li><a href="#" class="fillbutton">Home</a></li>
-            <li><a href="javascript:alert('あの日见た花の名前を仆达はまだ知らない')" class="fillbutton">About</a></li>
-            <li><a href="javascript:alert('打开QQ输入狗力')" class="fillbutton">Contact Me</a></li>
-        </ul>
-        <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-        </ul>
+    <div style="width: 100%;height: 30px"></div>
+</div>
+<input type="checkbox" id="active" style="display:none">
+<div class="sidebar">
+    <div class="logo_content">
+        <div class="logo">
+            <i></i>
+            <div class="logo_name"></div>
+        </div>
+        <i id="navbtn"></i>
     </div>
-    <footer><a href="https://beian.miit.gov.cn/#/Integrated/index">备案号:粤ICP备2021133316号</a></footer>
+    <ul class="searchnav" style="padding: 0px!important">
+        <li>
+            <input type="search" placeholder="请输入">
+            <i class="searchbtn"></i>
+        </li>
+    </ul>
+    <ul class="nav_list" style="padding: 0px!important">
+        <li id="default">
+            <i class="homebtn"></i>
+            <p>Home</p>
+        </li>
+        <li id="character">
+            <i class="characterbtn"></i>
+            <p>角色</p>
+        </li>
+        <li id="pics">
+            <i class="imgbtn"></i>
+            <p>图片</p>
+        </li>
+        <li id="videos">
+            <i class="videosbtn"></i>
+            <p>视频</p>
+        </li>
+    </ul>
+    <audio src="{% static 'audio/secretbase.mp3' %}" controls="controls" preload id="music" hidden></audio>
+    <div class="login">
+        <img src="{% static 'images/头像.png' %}" alt="">
+        <p class="loginbtn">Login in</p>
+    </div>
+    <i class="toolbtn"></i>
+
+</div>
+<div class="wrapper">
+    <label for="active" class="menubtn"><i class="ico-menu"></i></label>
+    <ul class="menu">
+        <li><a href="#" class="fillbutton">Home</a></li>
+        <li><a href="javascript:alert('あの日见た花の名前を仆达はまだ知らない')" class="fillbutton">About</a></li>
+        <li><a href="javascript:alert('打开QQ输入狗力')" class="fillbutton">Contact Me</a></li>
+    </ul>
+    <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
+<footer><a href="https://beian.miit.gov.cn/#/Integrated/index">备案号:粤ICP备2021133316号</a></footer>
 </body>
+<script src="{% static 'js/myvideo.js' %}"></script>
 <script>
     var defaultbtn = document.querySelector("#defaultbtn")
     var defaultmountains = document.querySelector("#mountains")
@@ -852,12 +1668,10 @@
     var defaultsun = document.querySelector("#sun")
     var defaultdesc = document.querySelector(".defaultdesc")
     console.log(defaultsun.offsetTop)
-    window.addEventListener('scroll',function(){
+    window.addEventListener('scroll', function () {
         var value = window.scrollY;
-        defaultmountain.style.top = value*0.5 +"px"
-        defaultmountains.style.top = value*0 + 'px'
-        defaultbtn.style.marginTop = value *1.5 + 'px'
-        defaultbtn.style.marginTop = value *1.5 + 'px'
+        defaultmountain.style.top = value * 0.5 + "px"
+        defaultmountains.style.top = value * 0 + 'px'
     })
 
     var audio = document.getElementById('music');
@@ -873,64 +1687,63 @@
     var navlist = document.querySelector('.nav_list').querySelectorAll('li')
     var cardlist = document.querySelectorAll('.card')
     var listname = []
+
     {#console.log(cardlist[0].querySelector('h2').innerText)#}
 
-    for(var l = 0;l<cardlist.length;l++){
-        cardlist[l].addEventListener("mouseover",function(){
-            this.querySelector(".cardbox").style.background = 'url("{% static 'images/'%}'+this.querySelector('h2').innerText+'.jpg")'
+    for (var l = 0; l < cardlist.length; l++) {
+        cardlist[l].addEventListener("mouseover", function () {
+            this.querySelector(".cardbox").style.background = 'url("{% static 'images/'%}' + this.querySelector('h2').innerText + '.jpg")'
         })
-        cardlist[l].addEventListener("mouseout",function(){
+        cardlist[l].addEventListener("mouseout", function () {
             this.querySelector(".cardbox").style.background = 'white'
         })
     }
 
-    for(var k=0;k<navlist.length;k++){
+    for (var k = 0; k < navlist.length; k++) {
         listname.push(navlist[k].id)
-        navlist[k].addEventListener('click',function(event){
-            listname.map(function(item){
-                document.querySelector('.'+item).style.display = 'none'
+        navlist[k].addEventListener('click', function (event) {
+            listname.map(function (item) {
+                document.querySelector('.' + item).style.display = 'none'
             })
-            document.querySelector('.'+this.id).style.display = 'unset'
-            this.id=="pics"?(document.body.style.minWidth='1500px'):(document.body.style.minWidth='500px');
+            document.querySelector('.' + this.id).style.display = 'unset'
+            this.id == "pics" ? (document.body.style.minWidth = '1500px') : (document.body.style.minWidth = '500px');
         })
     }
     console.log(listname)
-    leftorright.addEventListener('click',function(event){
-        if(event.target.className == "right"){
+    leftorright.addEventListener('click', function (event) {
+        if (event.target.className == "right") {
             piclist[picflag].removeAttribute("checked")
-            if(picflag == piclist.length-1){
+            if (picflag == piclist.length - 1) {
                 picflag = 0;
-                piclist[0].setAttribute('checked','checked')
-            }
-            else{
-                piclist[picflag+1].setAttribute('checked','checked')
+                piclist[0].setAttribute('checked', 'checked')
+            } else {
+                piclist[picflag + 1].setAttribute('checked', 'checked')
                 picflag += 1
             }
         }
-        if(event.target.className == "left"){
+        if (event.target.className == "left") {
             piclist[picflag].removeAttribute("checked")
-            if(picflag == 0){
-                picflag = piclist.length-1;
-                piclist[piclist.length-1].setAttribute('checked','checked')
-            }
-            else{
-                piclist[picflag-1].setAttribute('checked','checked')
+            if (picflag == 0) {
+                picflag = piclist.length - 1;
+                piclist[piclist.length - 1].setAttribute('checked', 'checked')
+            } else {
+                piclist[picflag - 1].setAttribute('checked', 'checked')
                 picflag -= 1
             }
         }
         console.log(picflag)
     })
-    myradios.addEventListener("click",function (event){
-        if(event.target.getAttribute("value")!=null){
-            if(piclist[picflag].hasAttribute('checked')){
+    myradios.addEventListener("click", function (event) {
+        if (event.target.getAttribute("value") != null) {
+            if (piclist[picflag].hasAttribute('checked')) {
                 piclist[picflag].removeAttribute('checked')
             }
             picflag = event.target.getAttribute("value")
-            piclist[picflag].setAttribute('checked','checked')
+            piclist[picflag].setAttribute('checked', 'checked')
         }
     })
 
-    document.querySelector("#navbtn").onclick = function(event){
+    document.querySelector("#navbtn").onclick = function (event) {
         document.querySelector(".sidebar").classList.toggle("active")
         document.querySelector(".navigation").classList.toggle("active")
         document.querySelector(".logo").classList.toggle("active")
@@ -940,37 +1753,37 @@
         document.querySelector(".defaultdesc").classList.toggle("active")
         document.querySelector("#sun").classList.toggle("active")
         document.querySelector(".character").classList.toggle("active")
+        document.querySelector(".videos").classList.toggle("active")
     }
-    document.querySelector(".searchbtn").addEventListener('click',function(event){
+    document.querySelector(".searchbtn").addEventListener('click', function (event) {
         window.location.href = "http://www.baidu.com"
     })
-    ul.addEventListener("mouseover",function(event){
+    ul.addEventListener("mouseover", function (event) {
         event.target.style.color = "white"
     })
-    ul.addEventListener("mouseout",function(event){
+    ul.addEventListener("mouseout", function (event) {
         event.target.style.color = "black"
     })
-    ul.addEventListener("click",function(event){
-        if(event.target.nodeName == 'A'){
-            for (var i in lis){
+    ul.addEventListener("click", function (event) {
+        if (event.target.nodeName == 'A') {
+            for (var i in lis) {
                 lis[i].className = "fillbutton"
             }
             event.target.className = "fillbutton chosenbutton"
         }
     })
 
-    menubtn.addEventListener("click",function(event){
+    menubtn.addEventListener("click", function (event) {
 
-        if(buttonflag == 0){
-            document.styleSheets[0].addRule('.ico-menu::before','content: "\\ea0f"');
+        if (buttonflag == 0) {
+            document.styleSheets[0].addRule('.ico-menu::before', 'content: "\\ea0f"');
             buttonflag = 1
-        }
-        else{
-            document.styleSheets[0].addRule('.ico-menu::before','content: "\\e9bd"');
+        } else {
+            document.styleSheets[0].addRule('.ico-menu::before', 'content: "\\e9bd"');
             buttonflag = 0
         }
     })
-    document.querySelector(".toolbtn").addEventListener("click",function(event){
+    document.querySelector(".toolbtn").addEventListener("click", function (event) {
         if (audio !== null) {
             //检测播放是否已暂停.audio.paused 在播放器播放时返回false.
             if (audio.paused) {
