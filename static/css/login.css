@@ -166,7 +166,6 @@ form.sign-in-form {
     cursor: pointer;
     transition: 0.5s;
 }
-
 .sp {
     background-color: #fd5959;
 }
@@ -176,8 +175,6 @@ form.sign-in-form {
 .sp:hover{
     background-color: rgb(255, 200, 200);
 }
-
-
 .panels-container {
     position: absolute;
     height: 100%;
@@ -187,7 +184,6 @@ form.sign-in-form {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
 }
-
 .container:before {
     content: "";
     position: absolute;
@@ -201,18 +197,15 @@ form.sign-in-form {
     border-radius: 50%;
     z-index: 6;
 }
-
 .active:before {
     background-color: #fd5959;
 }
-
 .image {
     width: 50%;
     transition: transform 1.1s ease-in-out;
     transition-delay: 0.4s;
 
 }
-
 .panel {
     display: flex;
     flex-direction: column;
@@ -221,12 +214,10 @@ form.sign-in-form {
     text-align: center;
     z-index: 6;
 }
-
 .left-panel {
     pointer-events: all;
     padding: 3rem 17% 2rem 12%;
 }
-
 .right-panel {
     pointer-events: none;
     padding: 3rem 12% 2rem 17%;
