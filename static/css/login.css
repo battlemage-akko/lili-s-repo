@@ -86,7 +86,18 @@ form.sign-in-form {
     position: relative;
 }
 
-
+.input-field.message{
+        height: 30px;
+        color: #4481eb;
+        font-family: "微软雅黑 Light";
+        font-weight: 700;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
+        text-align: center;
+        display: flex;
+    }
 
 .input-field i {
     text-align: center;
@@ -162,6 +173,10 @@ form.sign-in-form {
 .btn:hover {
     background-color: #4d84e2;
 }
+.sp:hover{
+    background-color: rgb(255, 200, 200);
+}
+
 
 .panels-container {
     position: absolute;
@@ -417,3 +432,4 @@ form.sign-in-form {
         left: 50%;
     }
 }
+

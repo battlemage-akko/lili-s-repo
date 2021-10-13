@@ -8,7 +8,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <link rel="stylesheet" href="{% static 'css/login.css' %}"/>
-    <title>Login</title>
+    <title>login</title>
 </head>
 <body>
     {% include 'wrapper.html' %}
@@ -29,22 +29,26 @@
                         <i class="fas fa-lock"></i>
                         <input type="password" name="sign_in_Password" placeholder="Password" v-model="sign_in_Password" />
                     </div>
+                    <div class="input-field message">
+                        <span>{{ msg }}</span>
+                    </div>
                     <input type="submit" value="Login" class="btn solid" @click.prevent="logincheck()"/>
                 </form>
-                <form action="#" class="sign-up-form">
+                <form action="#" class="sign-up-form" method="post" >
+                    {% csrf_token %}
                     <div class="input-field">
                         <i class="fas fa-user"></i>
-                        <input type="text" placeholder="Username" v-model="sign_up_Username"/>
+                        <input type="text" placeholder="Username" v-model="sign_up_Username" name="sign_up_Username"/>
                     </div>
                     <div class="input-field">
                         <i class="fas fa-envelope"></i>
-                        <input type="email" placeholder="Email" v-model="sign_up_Password"/>
+                        <input type="email" placeholder="Email" v-model="sign_up_Email" name="sign_up_Password"/>
                     </div>
                     <div class="input-field">
                         <i class="fas fa-lock"></i>
-                        <input type="password" placeholder="Password" v-model="sign_up_Email"/>
+                        <input type="password" placeholder="Password" v-model="sign_up_Password" name="sign_up_Password"/>
                     </div>
-                    <input type="submit" class="btn sp" value="Sign up"/>
+                    <input type="submit" class="btn sp" value="Sign up" @click.prevent="registercheck()"/>
                 </form>
             </div>
         </div>
@@ -102,13 +106,17 @@
             logincheck:function(){
                 this.login()
             },
+            registercheck:function (){
+                this.register()
+            },
             login:function (){
                 document.querySelector(".sign-in-form").action = "{% url 'login_check' %}"
                 document.querySelector(".sign-in-form").submit()
             }
             ,
             register:async function(){
-
+                document.querySelector(".sign-up-form").action = "{% url 'register' %}"
+                document.querySelector(".sign-up-form").submit()
             }
         }
     })
