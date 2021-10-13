@@ -1,0 +1,46 @@
+{% load static %}
+<link href="{% static 'css/wrapper.css' %}" rel="stylesheet">
+<input type="checkbox" id="active" style="display:none">
+<div class="wrapper">
+        <label for="active" class="menubtn"><i class="ico-menu"></i></label>
+        <ul class="menu">
+            <li><a href="#" class="fillbutton">Home</a></li>
+            <li><a href="javascript:alert('あの日见た花の名前を仆达はまだ知らない')" class="fillbutton">About</a></li>
+            <li><a href="javascript:alert('打开QQ输入狗力')" class="fillbutton">Contact Me</a></li>
+        </ul>
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+</div>
+<script>
+    let buttonflag = 0;
+    let menubtn = document.querySelector(".menubtn")
+    let ul = document.querySelector(".menu")
+    let lis = document.querySelectorAll(".fillbutton")
+    menubtn.addEventListener("click", function (event) {
+        if (buttonflag == 0) {
+            document.styleSheets[0].addRule('.ico-menu::before', 'content: "\\ea0f"');
+            buttonflag = 1
+        } else {
+            document.styleSheets[0].addRule('.ico-menu::before', 'content: "\\e9bd"');
+            buttonflag = 0
+        }
+    })
+    ul.addEventListener("mouseover", function (event) {
+        event.target.style.color = "white"
+    })
+    ul.addEventListener("mouseout", function (event) {
+        event.target.style.color = "black"
+    })
+
+    ul.addEventListener("click", function (event) {
+        if (event.target.nodeName == 'A') {
+            for (var i in lis) {
+                lis[i].className = "fillbutton"
+            }
+            event.target.className = "fillbutton chosenbutton"
+        }
+    })
+</script>

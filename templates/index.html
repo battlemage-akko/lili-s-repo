@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>测试用页面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="shortcut icon" href="{% static 'images/favicon.png' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="//cdn.bootcss.com/video.js/7.0.0-alpha.1/alt/video-js-cdn.css" rel="stylesheet">
@@ -34,8 +35,6 @@
             padding-left: 0;
         }
         body {
-            min-width: 500px;
-            min-height: 720px;
             overflow-x: hidden;
         }
         #app{
@@ -46,11 +45,16 @@
             position: relative;
         }
         .default {
-
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         .character {
             right: 0;
             position: absolute;
+            display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             width: 100%;
@@ -131,13 +135,15 @@
 </head>
 <body>
     <img src="{% static 'images/logo.png' %}" alt="" class="logo">
+
     <div id="app">
         <div v-show="flags.default" class="default">
         <section>
             <img src="{% static 'images/default/mountain.png' %}" id="mountain">
             <img src="{% static 'images/default/sun.png' %}" id="sun">
             <img src="{% static 'images/default/mountains.png' %}" id="mountains">
-            {#        <h2 id="defaulttext">mountain</h2>#}
+            <h2 id="defaulttitle">Welcome</h2>
+            <span id="defaultlogin" @click="login">Sign in</span>
         </section>
         <div class="defaultdesc" id="defaultdesc">
             <h2>丢臭你（占位）</h2>
@@ -560,7 +566,6 @@
             <div style="width: 100%;height: 30px"></div>
         </div>
     </div>
-    <input type="checkbox" id="active" style="display:none">
     <div class="sidebar">
         <div class="logo_content">
             <div class="logo">
@@ -594,48 +599,20 @@
             </li>
         </ul>
         <audio src="{% static 'audio/secretbase.mp3' %}" controls="controls" preload id="music" hidden></audio>
-        <div class="login">
+        <div class="login" @click="login()">
             <img src="{% static 'images/头像.png' %}" alt="">
             <p class="loginbtn">Login in</p>
         </div>
         <i class="toolbtn"></i>
 
     </div>
-    <div class="wrapper">
-        <label for="active" class="menubtn"><i class="ico-menu"></i></label>
-        <ul class="menu">
-            <li><a href="#" class="fillbutton">Home</a></li>
-            <li><a href="javascript:alert('あの日见た花の名前を仆达はまだ知らない')" class="fillbutton">About</a></li>
-            <li><a href="javascript:alert('打开QQ输入狗力')" class="fillbutton">Contact Me</a></li>
-        </ul>
-        <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-        </ul>
-    </div>
+    {% include 'wrapper.html' %}
     <footer><a href="https://beian.miit.gov.cn/#/Integrated/index">备案号:粤ICP备2021133316号</a></footer>
 </body>
 <script src="{% static 'js/myvideo.js' %}"></script>
 <script>
-    var defaultbtn = document.querySelector("#defaultbtn")
-    var defaultmountains = document.querySelector("#mountains")
-    var defaultmountain = document.querySelector("#mountain")
-    var defaultsun = document.querySelector("#sun")
     var defaultdesc = document.querySelector(".defaultdesc")
-    console.log(defaultsun.offsetTop)
-    window.addEventListener('scroll', function () {
-        var value = window.scrollY;
-        defaultmountain.style.top = value * 0.5 + "px"
-        defaultmountains.style.top = value * 0 + 'px'
-    })
     var audio = document.getElementById('music');
-    audio.currentTime = 0;
-    var buttonflag = 0;
-    var ul = document.querySelector(".menu")
-    var lis = document.querySelectorAll(".fillbutton")
-    var menubtn = document.querySelector(".menubtn")
-
 
     document.querySelector("#navbtn").onclick = function (event) {
         document.querySelector(".sidebar").classList.toggle("active")
@@ -652,37 +629,9 @@
     document.querySelector(".searchbtn").addEventListener('click', function (event) {
         window.location.href = "http://www.baidu.com"
     })
-    ul.addEventListener("mouseover", function (event) {
-        event.target.style.color = "white"
-    })
-    ul.addEventListener("mouseout", function (event) {
-        event.target.style.color = "black"
-    })
-    ul.addEventListener("click", function (event) {
-        if (event.target.nodeName == 'A') {
-            for (var i in lis) {
-                lis[i].className = "fillbutton"
-            }
-            event.target.className = "fillbutton chosenbutton"
-        }
-    })
-
-    menubtn.addEventListener("click", function (event) {
-
-        if (buttonflag == 0) {
-            document.styleSheets[0].addRule('.ico-menu::before', 'content: "\\ea0f"');
-            buttonflag = 1
-        } else {
-            document.styleSheets[0].addRule('.ico-menu::before', 'content: "\\e9bd"');
-            buttonflag = 0
-        }
-    })
     document.querySelector(".toolbtn").addEventListener("click", function (event) {
         if (audio !== null) {
-            //检测播放是否已暂停.audio.paused 在播放器播放时返回false.
             if (audio.paused) {
-                alert("社死警告！播放音乐，关闭外放！插耳机！")
-                alert("社死警告最后一次！播放音乐，关闭外放！再点击是暂停，再再次点击是接着播放！")
                 audio.play();
             } else {
                 audio.pause();
@@ -690,11 +639,24 @@
         }
     })
 </script>
+
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <script>
     const vm2 = new Vue({
         el:".nav_list",
         delimiters:['{[', ']}'],
+        methods:{
+
+        }
+    })
+    const vuelogin = new Vue({
+        el:".login",
+        delimiters:['{[', ']}'],
+        methods:{
+            login(){
+                window.open("{% url 'login' %}","_blank");
+            }
+        }
     })
     const vm = new Vue({
         el:"#app",
@@ -702,12 +664,17 @@
         data:{
             name:"lili",
             flags:{
-                default:false,
-                character:true,
+                default:true,
+                character:false,
                 pics:false,
                 videos:false,
             }
         },
+        methods:{
+            login(){
+                window.location.href = "{% url 'login' %}"
+            }
+        }
     })
 
     let cardlist = document.querySelectorAll('.card')
@@ -769,6 +736,18 @@
             picflag = event.target.getAttribute("value")
             piclist[picflag].setAttribute('checked', 'checked')
         }
+    })
+    let defaultmountains = document.querySelector("#mountains")
+    let defaultmountain = document.querySelector("#mountain")
+    let defaultlogin = document.querySelector("#defaultlogin")
+    let defaultsun = document.querySelector("#sun")
+    let defaulttitle = document.querySelector("#defaulttitle")
+    window.addEventListener('scroll', function () {
+        var value = window.scrollY;
+        defaultmountain.style.top = value * 0.5 + "px"
+        defaultmountains.style.top = value * 0 + 'px'
+        defaultlogin.style.marginTop = value * 1.2 + 'px'
+        defaulttitle.style.marginLeft = value * 20 + 'px'
     })
 </script>
 </html>

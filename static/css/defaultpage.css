@@ -1,6 +1,6 @@
         .defaultdesc {
             position: relative;
-            background: #3e3e40;
+            background: #3e3e3e;
             overflow: hidden;
             padding: 100px;
             font-size: 50px;
@@ -60,4 +60,28 @@
 
         #sun.active {
             top: 50px;
+        }
+        #defaulttitle{
+            font-family: IcoMoon-Free;
+            position: absolute;
+            z-index: 1;
+            font-size: 3.5rem;
+            top: 35%;
+        }
+        #defaultlogin{
+            position: absolute;
+            padding: 5px 20px;
+            border: 3px solid black;
+            border-radius: 40px;
+            font-size: 25px;
+            z-index: 1;
+            background-color: white;
+            cursor: pointer;
+            font-weight: 500;
+            font-family: "Poiret One";
+            transition: .2s ease;
+        }
+        #defaultlogin:hover{
+            background-color: black;
+            color: white;
         }

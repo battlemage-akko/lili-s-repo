@@ -8,6 +8,10 @@ body,
 input {
     font-family: "微软雅黑 Light";
 }
+body{
+    width: 100vw;
+    height: 100vh;
+}
 p{
     margin: 10px 0px;
 }

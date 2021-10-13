@@ -12,66 +12,68 @@
     <title>Login</title>
 </head>
 <body>
-<div class="container">
-    <div class="forms-container">
-        <div class="signin-signup">
-            <form action="#" class="sign-in-form">
-                <h2>
-                    <img src="{% static "images/logo.png" %}" alt="" class="sign-in-logo">
-                </h2>
-                <div class="input-field">
-                    <i class="fas fa-user"></i>
-                    <input type="text" placeholder="Username"/>
-                </div>
-                <div class="input-field">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="Password"/>
-                </div>
-                <input type="submit" value="Login" class="btn solid"/>
-            </form>
-            <form action="#" class="sign-up-form">
-                <div class="input-field">
-                    <i class="fas fa-user"></i>
-                    <input type="text" placeholder="Username"/>
-                </div>
-                <div class="input-field">
-                    <i class="fas fa-envelope"></i>
-                    <input type="email" placeholder="Email"/>
-                </div>
-                <div class="input-field">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="Password"/>
-                </div>
-                <input type="submit" class="btn sp" value="Sign up"/>
-            </form>
-        </div>
-    </div>
+    {% include 'wrapper.html' %}
+    <div class="container">
 
-    <div class="panels-container">
-        <div class="panel left-panel">
-            <div class="content">
-                <p>
-                    暂不提供注册功能，目前仅供观赏，有需要请联系管理员。
-                </p>
-                <button class="btn transparent sp" id="sign-up-btn">
-                    Sign up
-                </button>
+        <div class="forms-container">
+            <div class="signin-signup">
+                <form action="#" class="sign-in-form">
+                    <h2>
+                        <img src="{% static "images/logo.png" %}" alt="" class="sign-in-logo">
+                    </h2>
+                    <div class="input-field">
+                        <i class="fas fa-user"></i>
+                        <input type="text" placeholder="Username"/>
+                    </div>
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" placeholder="Password"/>
+                    </div>
+                    <input type="submit" value="Login" class="btn solid"/>
+                </form>
+                <form action="#" class="sign-up-form">
+                    <div class="input-field">
+                        <i class="fas fa-user"></i>
+                        <input type="text" placeholder="Username"/>
+                    </div>
+                    <div class="input-field">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" placeholder="Email"/>
+                    </div>
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" placeholder="Password"/>
+                    </div>
+                    <input type="submit" class="btn sp" value="Sign up"/>
+                </form>
             </div>
-            <img src="{% static "images/sn.png" %}" class="image" alt=""/>
         </div>
-        <div class="panel right-panel">
-            <div class="content">
-                <p>
-                    暂不提供注册功能，目前仅供观赏，有需要请联系管理员。
-                </p>
-                <button class="btn transparent sibtn" id="sign-in-btn">
-                    Sign in
-                </button>
+
+        <div class="panels-container">
+            <div class="panel left-panel">
+                <div class="content">
+                    <p>
+                        暂不提供注册功能，目前仅供观赏，有需要请联系管理员。
+                    </p>
+                    <button class="btn transparent sp" id="sign-up-btn">
+                        Sign up
+                    </button>
+                </div>
+                <img src="{% static "images/sn.png" %}" class="image" alt=""/>
             </div>
-            <img src="{% static "images/su.png" %}" class="image" alt=""/>
+            <div class="panel right-panel">
+                <div class="content">
+                    <p>
+                        暂不提供注册功能，目前仅供观赏，有需要请联系管理员。
+                    </p>
+                    <button class="btn transparent sibtn" id="sign-in-btn">
+                        Sign in
+                    </button>
+                </div>
+                <img src="{% static "images/su.png" %}" class="image" alt=""/>
+            </div>
         </div>
     </div>
-</div>
 </body>
 </html>
 <script>
