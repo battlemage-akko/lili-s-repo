@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <style>
         @keyframes move1 {
             0%{
@@ -125,53 +126,28 @@
         <img src="{% static 'images/4.jpeg' %}" alt="">
     </div>
     <div id="app">
-            {[name]}
+        {[name]}
+        <form action="">
+            {% csrf_token %}
+        </form>
+        <button @click="login">login</button>
+        <span></span>
     </div>
+
 </body>
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <script>
-    for(var i in document.getElementsByTagName("img")){
-        document.getElementsByTagName("img")[i].onclick = function(){
-            alert("丢臭你")
-        }
-    }
-    const vm = new Vue({
+    let vm = new Vue({
         el:"#app",
-        delimiters:['{[', ']}'],
-        data:{
-            name:"lili"
-        },
-    })
-    switch(this.id){
-                case "default":
-                    document.querySelector("#navbtn").addEventListener('click',function (e) {
-                        if (!navbtnflag) {
-                            document.querySelector(".defaultdesc").classList.toggle("active")
-                            document.querySelector("#sun").classList.toggle("active")
-                        }
-                    })
-                    break
-                case "videos":
-                    document.querySelector("#navbtn").addEventListener('click',function (e){
-                        if (!navbtnflag) {
-                            document.querySelector(".videos").classList.toggle("active")
-                        }
-                    })
-                    break
-                case "character":
-                    document.querySelector("#navbtn").addEventListener('click',function (e){
-                        if (!navbtnflag) {
-                            document.querySelector(".character").classList.toggle("active")
-                        }
-                    })
-                    break
-                case "pics":
-                    document.querySelector("#navbtn").addEventListener('click',function (e){
-                        if (!navbtnflag) {
-                            document.querySelector(".navigation").classList.toggle("active")
-                        }
-                    })
-                    break
+        methods:{
+            login:async function(){
+                result = await axios({
+                    method: 'GET',
+                    url: '{% url 'login_check' %}',
+                })
+                console.log(result.data)
             }
+        }
+    })
 </script>
 </html>

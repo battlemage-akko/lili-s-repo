@@ -609,7 +609,6 @@
     {% include 'wrapper.html' %}
     <footer><a href="https://beian.miit.gov.cn/#/Integrated/index">备案号:粤ICP备2021133316号</a></footer>
 </body>
-<script src="{% static 'js/myvideo.js' %}"></script>
 <script>
     var defaultdesc = document.querySelector(".defaultdesc")
     var audio = document.getElementById('music');
@@ -749,5 +748,22 @@
         defaultlogin.style.marginTop = value * 1.2 + 'px'
         defaulttitle.style.marginLeft = value * 20 + 'px'
     })
+
+    let danmulistbtn = document.querySelector('.danmubtn')
+    let danmu = document.querySelector(".danmuholder")
+    let video = document.querySelector('.thisvideo')
+    let danmulist = document.querySelector('.danmulist')
+    let danmuflag = 0
+    danmulistbtn.addEventListener("click", (e) => {
+    danmulistbtn.classList.toggle("active")
+    if (!danmuflag) {
+        danmu.style.height = video.clientHeight + 50 + 'px'
+        danmuflag = 1
+        danmulist.style.height = video.clientHeight + 50 + 'px'
+    } else {
+        danmuflag = 0
+        danmu.style.height = 50 + 'px'
+    }
+})
 </script>
 </html>

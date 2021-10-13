@@ -4,51 +4,50 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <script
-            src="https://kit.fontawesome.com/64d58efce2.js"
-            crossorigin="anonymous"
-    ></script>
+    <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <link rel="stylesheet" href="{% static 'css/login.css' %}"/>
     <title>Login</title>
 </head>
 <body>
     {% include 'wrapper.html' %}
     <div class="container">
-
         <div class="forms-container">
             <div class="signin-signup">
-                <form action="#" class="sign-in-form">
+                <form action="#" class="sign-in-form" method="post">
+                    {% csrf_token %}
                     <h2>
                         <img src="{% static "images/logo.png" %}" alt="" class="sign-in-logo">
                     </h2>
-                    <div class="input-field">
+                    <div class="input-field" id="sign_in_Username">
                         <i class="fas fa-user"></i>
-                        <input type="text" placeholder="Username"/>
+                        <input type="text" name="sign_in_Username" placeholder="Username" v-model="sign_in_Username" />
+                        "
                     </div>
-                    <div class="input-field">
+                    <div class="input-field" id="sign_in_Password">
                         <i class="fas fa-lock"></i>
-                        <input type="password" placeholder="Password"/>
+                        <input type="password" name="sign_in_Password" placeholder="Password" v-model="sign_in_Password" />
                     </div>
-                    <input type="submit" value="Login" class="btn solid"/>
+                    <input type="submit" value="Login" class="btn solid" @click.prevent="logincheck()"/>
                 </form>
                 <form action="#" class="sign-up-form">
                     <div class="input-field">
                         <i class="fas fa-user"></i>
-                        <input type="text" placeholder="Username"/>
+                        <input type="text" placeholder="Username" v-model="sign_up_Username"/>
                     </div>
                     <div class="input-field">
                         <i class="fas fa-envelope"></i>
-                        <input type="email" placeholder="Email"/>
+                        <input type="email" placeholder="Email" v-model="sign_up_Password"/>
                     </div>
                     <div class="input-field">
                         <i class="fas fa-lock"></i>
-                        <input type="password" placeholder="Password"/>
+                        <input type="password" placeholder="Password" v-model="sign_up_Email"/>
                     </div>
                     <input type="submit" class="btn sp" value="Sign up"/>
                 </form>
             </div>
         </div>
-
         <div class="panels-container">
             <div class="panel left-panel">
                 <div class="content">
@@ -80,14 +79,38 @@
     const sign_in_btn = document.querySelector("#sign-in-btn")
     const sign_up_btn = document.querySelector("#sign-up-btn")
     const container = document.querySelector(".container")
-
     sign_up_btn.addEventListener("click", () => {
         container.classList.add("sign-up-mode")
         container.classList.add("active")
     });
-
     sign_in_btn.addEventListener("click", () => {
         container.classList.remove("sign-up-mode")
         container.classList.remove("active")
     });
+    const form_event = new Vue({
+        el:".signin-signup",
+        delimiters:['{[', ']}'],
+        data:{
+            sign_in_Username:null,
+            sign_in_Password:null,
+
+            sign_up_Username:null,
+            sign_up_Password:null,
+            sign_up_Email:null,
+        },
+        methods:{
+            logincheck:function(){
+                this.login()
+            },
+            login:function (){
+                document.querySelector(".sign-in-form").action = "{% url 'login_check' %}"
+                document.querySelector(".sign-in-form").submit()
+            }
+            ,
+            register:async function(){
+
+            }
+        }
+    })
+
 </script>
