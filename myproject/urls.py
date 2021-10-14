@@ -21,7 +21,7 @@ from app import urls as app_api
 urlpatterns = [
     #path('admin/', admin.site.urls),
     path('test/', views.test, name="test"),
-    path('login/', views.login, name="login"),
+    path('login/', views.index_login, name="login"),
     path('',views.index,name="index"),
     re_path('^app_api/', include(app_api))
     # url(r'^static/(?P<path>.*)$', static.serve,

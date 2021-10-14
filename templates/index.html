@@ -142,8 +142,17 @@
             <img src="{% static 'images/default/mountain.png' %}" id="mountain">
             <img src="{% static 'images/default/sun.png' %}" id="sun">
             <img src="{% static 'images/default/mountains.png' %}" id="mountains">
-            <h2 id="defaulttitle">Welcome</h2>
-            <span id="defaultlogin" @click="login">Sign in</span>
+            <h2 id="defaulttitle">
+                Welcome
+                {% if request.user.is_authenticated %}
+                    {{ request.user.username }}
+                {% endif %}
+            </h2>
+            {% if request.user.is_authenticated %}
+
+            {% else %}
+                <span id="defaultlogin" @click="login">Sign in</span>
+            {% endif %}
         </section>
         <div class="defaultdesc" id="defaultdesc">
             <h2>丢臭你（占位）</h2>
@@ -307,11 +316,11 @@
                         <span class="videocollect"></span>
                     </div>
                 </div>
-                <div class="profile">
-                    <span class="profilepic">
+                <div class="videoprofile">
+                    <span class="videoprofilepic">
                         <img src="{% static 'images/头像.png' %}" alt="">
                     </span>
-                    <span class="profiledetail">
+                    <span class="videoprofiledetail">
                         <a href="javascript:">本间芽衣子</a>
                     </span>
                     <span class="follow">
@@ -565,6 +574,7 @@
             </div>
             <div style="width: 100%;height: 30px"></div>
         </div>
+        <div v-if="flags.profile" class="profile"></div>
     </div>
     <div class="sidebar">
         <div class="logo_content">
@@ -597,13 +607,26 @@
                 <i class="videosbtn"></i>
                 <p>视频</p>
             </li>
+            {% if request.user.is_authenticated %}
+            <li id="profile">
+                <i class="profilebtn"></i>
+                <p>个人资料</p>
+            </li>
+            {% endif %}
         </ul>
         <audio src="{% static 'audio/secretbase.mp3' %}" controls="controls" preload id="music" hidden></audio>
         <div class="login" @click="login()">
             <img src="{% static 'images/头像.png' %}" alt="">
+            {% if request.user.is_authenticated %}
+                <span class="logout" @click="logout" ><i></i></span>
+                <p class="loginbtn active">
+                    {{ request.user.username }}
+                </p>
+            {% else %}
             <p class="loginbtn">
                 Login
             </p>
+            {% endif %}
         </div>
         <i class="toolbtn"></i>
 
@@ -626,6 +649,9 @@
         document.querySelector("#sun").classList.toggle("active")
         document.querySelector(".character").classList.toggle("active")
         document.querySelector(".videos").classList.toggle("active")
+        if(document.querySelector(".logout")){
+            document.querySelector(".logout").classList.toggle("active")
+        }
     }
     document.querySelector(".searchbtn").addEventListener('click', function (event) {
         window.location.href = "http://www.baidu.com"
@@ -640,7 +666,6 @@
         }
     })
 </script>
-
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <script>
     const vm2 = new Vue({
@@ -654,8 +679,11 @@
         el:".login",
         delimiters:['{[', ']}'],
         methods:{
-            login(){
+            login:function(){
                 window.open("{% url 'login' %}","_blank");
+            },
+            logout:function(){
+                window.location.href = "{% url 'logout' %}","_blank";
             }
         }
     })
@@ -669,6 +697,7 @@
                 character:false,
                 pics:false,
                 videos:false,
+                profile:false,
             }
         },
         methods:{

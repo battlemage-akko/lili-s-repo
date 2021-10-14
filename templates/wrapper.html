@@ -35,12 +35,4 @@
         event.target.style.color = "black"
     })
 
-    ul.addEventListener("click", function (event) {
-        if (event.target.nodeName == 'A') {
-            for (var i in lis) {
-                lis[i].className = "fillbutton"
-            }
-            event.target.className = "fillbutton chosenbutton"
-        }
-    })
 </script>

@@ -44,11 +44,6 @@
             height: 500%;
         }
 
-        .chosenbutton {
-            background: black;
-            color: white !important;
-        }
-
         .menubtn {
             position: absolute;
             right: 20px;

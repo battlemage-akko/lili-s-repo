@@ -115,6 +115,32 @@
             overflow: hidden;
             transition: all 0.5s ease;
         }
+        .loginbtn.active{
+            width: calc(100% - 100px);
+        }
+        .logout{
+            text-align: center;
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            font-size: 20px;
+            background-color: white;
+            cursor: pointer;
+            transition: all .3s ease;
+            opacity: 0;
+        }
+        .logout:hover{
+            background-color: #e3e3e3;
+        }
+        .logout.active{
+            opacity: 1;
+        }
+        .logout i:before{
+            content: "\ea14";
+            font-family: IcoMoon-Free;
+            font-style: normal;
+        }
 
         .loginbtn::before {
             position: absolute;
@@ -236,10 +262,20 @@
             font-style: normal;
             cursor: pointer;
         }
-
+        .profilebtn::before {
+            content: "\e923";
+            font-family: IcoMoon-Free;
+            font-style: normal;
+            cursor: pointer;
+        }
         .videosbtn::before {
             content: "\ea1c";
             font-family: IcoMoon-Free;
             font-style: normal;
             cursor: pointer;
         }
+        #logoutform{
+            position: absolute;
+
+        }
+

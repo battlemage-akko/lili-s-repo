@@ -11,6 +11,11 @@ uwsgi --ini myproject.ini
 nginx -s reload
 #重新载入配置文件
 
+createsuperuser
+makemigrations
+migrate
+
+
 animation顺序
 animation-name
 animation-duration
@@ -19,6 +24,9 @@ animation-delay
 animation-iteration-count
 animation-direction
 animation-fill-mode
+
+
+
 
 
 
