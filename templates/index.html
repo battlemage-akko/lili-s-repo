@@ -15,6 +15,7 @@
     <link href="{% static 'css/pics.css' %}" rel="stylesheet">
     <link href="{% static 'css/videos.css' %}" rel="stylesheet">
     <link href="{% static 'css/character.css' %}" rel="stylesheet">
+    <link href="{% static 'css/profile.css' %}" rel="stylesheet">
     <style>
         @font-face {
             font-family: 'IcoMoon-Free';
@@ -35,11 +36,18 @@
             padding-left: 0;
         }
         body {
+            background-color: #eeeef3;
             overflow-x: hidden;
+            transition: all .5s ease;
         }
         #app{
             width: 100vw;
             height: 100vh;
+            padding-left: 50px;
+            transition: padding-left .5s ease;
+        }
+        #app.active{
+            padding-left: 240px;
         }
         .middle {
             position: relative;
@@ -52,7 +60,6 @@
         }
         .character {
             right: 0;
-            position: absolute;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -67,7 +74,6 @@
         }
         .videos {
             right: 0;
-            position: absolute;
             justify-content: center;
             align-items: center;
             width: calc(100% - 50px);
@@ -82,22 +88,23 @@
             left: 0;
             height: 100%;
             width: 50px;
-            background: #fcfcfc;
+            background: #ffffff;
             transition: all 0.5s ease;
             z-index: 3;
         }
-        .videos.active {
-            width: calc(100% - 240px);
+        .profile{
+            display: flex;
+            justify-content: center;
+            align-content: center;
         }
-
-        .character.active {
-            width: calc(100% - 190px);
+        .profile-background{
+            background: url("{% static "images/background.jpg" %}") round;
         }
         .sidebar.active {
             width: 240px;
         }
         .logo.active {
-            left: 120px;
+            left: 100px;
             z-index: 4;
             position: fixed;
         }
@@ -111,9 +118,13 @@
             top: 20px;
             left: 50%;
             z-index: 4;
-            transform: translateX(-50%);
+            transform: translateX(calc(-50% + 25px));
             transition: all 0.5s ease;
             cursor: pointer;
+            opacity: 0.3;
+        }
+        .logo:hover{
+            opacity: 1;
         }
         footer {
             text-align: center;
@@ -126,10 +137,15 @@
             bottom: 0px;
             z-index: 2;
         }
-
         footer a {
             color: gray;
             text-decoration: none;
+        }
+        @media (max-width: 1070px) {
+            .profile{
+                overflow: hidden;
+            }
+
         }
     </style>
 </head>
@@ -166,7 +182,155 @@
             </p>
         </div>
     </div>
-        <div v-show="flags.pics" class="pics middle">
+        <div v-show="flags.videos" class="videos">
+            <div style="width: 100%;height: 100px;"></div>
+            <div class="videocontent">
+                <div class="videotitle">
+                    <h1><i class="videologo"> </i>我是标题，我是标题，我是标题，我是标题，我是标题</h1>
+                    <p>发布日期：xxxxxxxxx</p>
+                </div>
+                <video src="{% static 'videos/video.mp4' %}" class="thisvideo video-js vjs-default-skin" controls preload="none"
+                       poster="{% static 'images/3.jpg' %}"></video>
+                <div class="danmucontent">
+                    <div style="display: inline-block;position: absolute;top: 10px;left: 20px">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                            <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                        </div>
+                    </div>
+                    <div style="display: inline-block;position: absolute;right: 5px;top:5px;border-radius: 100px">
+                        <div class="input-group mb-3">
+                            <button class="btn btn-outline-secondary" type="button" id="button-addon1">发送弹幕</button>
+                            <input type="text" class="form-control" placeholder="发个弹幕试试吧"
+                                   aria-label="Example text with button addon" aria-describedby="button-addon1"
+                                   style="width: 400px">
+                        </div>
+                    </div>
+                </div>
+                <div class="videodetail">
+                    <span>0 播放</span>
+                    <span>0 弹幕</span>
+                    <span>0 评论</span>
+                    <div class="videobtns">
+                        <span class="videopay"></span>
+                        <span class="videoshare"></span>
+                        <span class="goodvideo"></span>
+                        <span class="videocollect"></span>
+                    </div>
+                </div>
+                <div class="videoprofile">
+                    <span class="videoprofilepic">
+                        <img src="{% static 'images/头像.png' %}" alt="">
+                    </span>
+                    <span class="videoprofiledetail">
+                        <a href="javascript:">本间芽衣子</a>
+                    </span>
+                    <span class="follow">
+                        <i></i> <a href="javascript:">关注</a>
+                    </span>
+                </div>
+            </div>
+            <div class="danmu">
+                <div class="ad">
+                    <div class="adcontent">
+                        广告位<i></i>
+                    </div>
+                </div>
+                <div class="danmuholder">
+                    <div class="danmutitle">
+                        <div class="danmutitlecontent">
+                            弹幕列表<i class="danmubtn"></i>
+                        </div>
+                        <div style="position: relative;height: 25px;font-size: 10px;line-height: 25px;padding-left: 10px">
+                            <span style="width: 50px">时间</span>
+                            <span style="width: 100px">内容</span>
+                            <span style="width: 70px">发布时间</span>
+                        </div>
+                        <ul class="danmulist">
+                            <li>
+                                <span>00:00</span>
+                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                                <span>2021-10-12 00:00:00</span>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="videolistcontent">
+                        <div style="margin: 17.5px 0px;font-size: 16px;display: inline-block;height: 20px">
+                            接下来播放
+                            <div style="display: inline-block;position:relative;margin-left: 10px">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
+                                           checked>
+                                    <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nextvideo">
+                            <img src="{% static 'images/1.jpeg' %}" alt="">
+                            <div>
+                                    <a href="javascript:">这是一个视频,这是一个视频,这是一个视频</a>
+                                    <a href="javascript:">作者：管理员</a>
+                                    <a href="javascript:">0 播放 0 弹幕</a>
+                                </div>
+                        </div>
+                        <ul class="videoslist">
+                            <li>
+                                <img src="{% static 'images/2.jpeg' %}" alt="">
+                                <div>
+                                    <a href="javascript:">这又是一个视频,这又是一个视频,这又是一个视频</a>
+                                    <a href="javascript:">作者：管理员</a>
+                                    <a href="javascript:">0 播放 0 弹幕</a>
+                                </div>
+                            </li>
+                            <li>
+                                <img src="{% static 'images/3.jpeg' %}" alt="">
+                                <div>
+                                    <a href="javascript:">这他妈也是一个视频,这他妈又是一个视频,这他妈又是一个视频</a>
+                                    <a href="javascript:">作者：管理员</a>
+                                    <a href="javascript:">0 播放 0 弹幕</a>
+                                </div>
+                            </li>
+                            <li>
+                                <img src="{% static 'images/4.jpeg' %}" alt="">
+                                <div>
+                                    <a href="javascript:">哦草这他妈还是个视频,哦草这他妈还是个视频</a>
+                                    <a href="javascript:">作者：管理员</a>
+                                    <a href="javascript:">0 播放 0 弹幕</a>
+                                </div>
+                            </li>
+                            <li>
+                                <img src="{% static 'images/2.jpeg' %}" alt="">
+                                <div>
+                                    <a href="javascript:">这又是一个视频,这又是一个视频,这又是一个视频</a>
+                                    <a href="javascript:">作者：管理员</a>
+                                    <a href="javascript:">0 播放 0 弹幕</a>
+                                </div>
+                            </li>
+                            <li>
+                                <img src="{% static 'images/3.jpeg' %}" alt="">
+                                <div>
+                                    <a href="javascript:">这他妈也是一个视频,这他妈又是一个视频,这他妈又是一个视频</a>
+                                    <a href="javascript:">作者：管理员</a>
+                                    <a href="javascript:">0 播放 0 弹幕</a>
+                                </div>
+                            </li>
+                            <li>
+                                <img src="{% static 'images/4.jpeg' %}" alt="">
+                                <div>
+                                    <a href="javascript:">哦草这他妈还是个视频,哦草这他妈还是个视频</a>
+                                    <a href="javascript:">作者：管理员</a>
+                                    <a href="javascript:">0 播放 0 弹幕</a>
+                                </div>
+                            </li>
+                        </ul>
+                        <div style="width: 100%;height: 30px;"></div>
+                    </div>
+            </div>
+            <div style="width: 100%;height: 30px"></div>
+        </div>
+        <div v-if="is_login" v-show="flags.pics"  class="pics middle">
             <div class="slides">
                 <input type="radio" name="r" id="r1">
                 <input type="radio" name="r" id="r2">
@@ -200,7 +364,7 @@
                 <span class="left"></span><span class="right"></span>
             </div>
         </div>
-        <div v-show="flags.character" class="character">
+        <div v-if="is_login" v-show="flags.character" class="character">
             <div class="mycontainer">
                 <div class="card">
                     <div class="cardbox">
@@ -280,301 +444,52 @@
                 </div>
             </div>
         </div>
-        <div v-show="flags.videos" class="videos">
-            <div style="width: 100%;height: 100px;background-color: #ffffff;"></div>
-            <div class="videocontent">
-                <div class="videotitle">
-                    <h1><i class="videologo"> </i>我是标题，我是标题，我是标题，我是标题，我是标题</h1>
-                    <p>发布日期：xxxxxxxxx</p>
-                </div>
-                <video src="{% static 'videos/video.mp4' %}" class="thisvideo video-js vjs-default-skin" controls preload="none"
-                       poster="{% static 'images/3.jpg' %}"></video>
-                <div class="danmucontent">
-                    <div style="display: inline-block;position: absolute;top: 10px;left: 20px">
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
-                            <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+        <div v-if="is_login" v-show="flags.profile" class="profile">
+                <div class="profilecontent" >
+                    <div class="profile-detail">
+                        <div class="profile-background">
                         </div>
-                    </div>
-                    <div style="display: inline-block;position: absolute;right: 5px;top:5px;border-radius: 100px">
-                        <div class="input-group mb-3">
-                            <button class="btn btn-outline-secondary" type="button" id="button-addon1">发送弹幕</button>
-                            <input type="text" class="form-control" placeholder="发个弹幕试试吧"
-                                   aria-label="Example text with button addon" aria-describedby="button-addon1"
-                                   style="width: 400px">
+                        <div style="display: flex;justify-content: center">
+                            <img src="{% static "images/头像.png" %}" alt="" class="profile-img">
                         </div>
-                    </div>
-                </div>
-                <div class="videodetail">
-                    <span>0 播放</span>
-                    <span>0 弹幕</span>
-                    <span>0 评论</span>
-                    <div class="videobtns">
-                        <span class="videopay"></span>
-                        <span class="videoshare"></span>
-                        <span class="goodvideo"></span>
-                        <span class="videocollect"></span>
-                    </div>
-                </div>
-                <div class="videoprofile">
-                    <span class="videoprofilepic">
-                        <img src="{% static 'images/头像.png' %}" alt="">
-                    </span>
-                    <span class="videoprofiledetail">
-                        <a href="javascript:">本间芽衣子</a>
-                    </span>
-                    <span class="follow">
-                        <i></i> <a href="javascript:">关注</a>
-                    </span>
-                </div>
-            </div>
-            <div class="danmu">
-                <div class="ad">
-                    <div class="adcontent">
-                        广告位<i></i>
-                    </div>
-                </div>
-                <div class="danmuholder">
-                    <div class="danmutitle">
-                        <div class="danmutitlecontent">
-                            弹幕列表<i class="danmubtn"></i>
-                        </div>
-                        <div style="position: relative;height: 25px;font-size: 10px;line-height: 25px;padding-left: 10px">
-                            <span style="width: 50px">时间</span>
-                            <span style="width: 100px">内容</span>
-                            <span style="width: 70px">发布时间</span>
-                        </div>
-                        <ul class="danmulist">
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                        </ul>
-
-                    </div>
-                    <div>
-                        <div style="margin-top: 10px;font-size: 16px;display: inline-block;">
-                            接下来播放
-                            <div style="display: inline-block;position:relative;margin-left: 10px">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
-                                           checked>
-                                    <label class="form-check-label" for="flexSwitchCheckChecked"></label>
-                                </div>
+                        <ul style="list-style: none" class="profile-info">
+                                <li>
+                                    <div>{{ request.user.username }}</div>
+                                </li>
+                                <li style="display: flex">
+                                    <div>
+                                粉丝:1
                             </div>
-                        </div>
-                        <div class="nextvideo">
-                            <img src="{% static 'images/1.jpeg' %}" alt="">
-                            <div>
-                                    <a href="javascript:">这是一个视频,这是一个视频,这是一个视频</a>
-                                    <a href="javascript:">作者：管理员</a>
-                                    <a href="javascript:">0 播放 0 弹幕</a>
-                                </div>
-                        </div>
-                        <ul class="videoslist">
-                            <li>
-                                <img src="{% static 'images/2.jpeg' %}" alt="">
-                                <div>
-                                    <a href="javascript:">这又是一个视频,这又是一个视频,这又是一个视频</a>
-                                    <a href="javascript:">作者：管理员</a>
-                                    <a href="javascript:">0 播放 0 弹幕</a>
-                                </div>
-                            </li>
-                            <li>
-                                <img src="{% static 'images/3.jpeg' %}" alt="">
-                                <div>
-                                    <a href="javascript:">这他妈也是一个视频,这他妈又是一个视频,这他妈又是一个视频</a>
-                                    <a href="javascript:">作者：管理员</a>
-                                    <a href="javascript:">0 播放 0 弹幕</a>
-                                </div>
-                            </li>
-                            <li>
-                                <img src="{% static 'images/4.jpeg' %}" alt="">
-                                <div>
-                                    <a href="javascript:">哦草这他妈还是个视频,哦草这他妈还是个视频</a>
-                                    <a href="javascript:">作者：管理员</a>
-                                    <a href="javascript:">0 播放 0 弹幕</a>
-                                </div>
-                            </li>
-                            <li>
-                                <img src="{% static 'images/2.jpeg' %}" alt="">
-                                <div>
-                                    <a href="javascript:">这又是一个视频,这又是一个视频,这又是一个视频</a>
-                                    <a href="javascript:">作者：管理员</a>
-                                    <a href="javascript:">0 播放 0 弹幕</a>
-                                </div>
-                            </li>
-                            <li>
-                                <img src="{% static 'images/3.jpeg' %}" alt="">
-                                <div>
-                                    <a href="javascript:">这他妈也是一个视频,这他妈又是一个视频,这他妈又是一个视频</a>
-                                    <a href="javascript:">作者：管理员</a>
-                                    <a href="javascript:">0 播放 0 弹幕</a>
-                                </div>
-                            </li>
-                            <li>
-                                <img src="{% static 'images/4.jpeg' %}" alt="">
-                                <div>
-                                    <a href="javascript:">哦草这他妈还是个视频,哦草这他妈还是个视频</a>
-                                    <a href="javascript:">作者：管理员</a>
-                                    <a href="javascript:">0 播放 0 弹幕</a>
-                                </div>
-                            </li>
-                        </ul>
-                        <div style="width: 100%;height: 30px;"></div>
+                                    <div>
+                                        关注:0
+                                    </div>
+                                    <div>
+                                        获赞:0
+                                    </div>
+                                </li>
+                            </ul>
+                        <div class="profile-content"></div>
                     </div>
-
+                    <div class="profile-other">
+                        <div class="profile-id">
+                            个人信息
+                            <hr />
+                            <span style="font-weight: 600;letter-spacing: 2px"></span><span>id : {{ request.user.id }}</span><span>  加入 : {{ request.user.date_joined }} </span>
+                        </div>
+                        <div class="profile-message">
+                            消息
+                            <hr />
+                        </div>
+                        <ul class="profile-tools">
+                            <li title="消息" class="profile-chat"><i></i></li>
+                            <li title="上传视频" class="profile-upload"><i></i></li>
+                            <li title="云盘" class="profile-cloud" @click="tocloud"><i></i></li>
+                            <li title="更改个人信息" class="profile-set"><i></i></li>
+                            <li title="注销" class="profile-logout" @click="logout"><i></i></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div style="width: 100%;height: 30px"></div>
         </div>
-        <div v-if="flags.profile" class="profile"></div>
     </div>
     <div class="sidebar">
         <div class="logo_content">
@@ -595,6 +510,11 @@
                 <i class="homebtn"></i>
                 <p>Home</p>
             </li>
+            <li id="videos">
+                <i class="videosbtn"></i>
+                <p>视频</p>
+            </li>
+            {% if request.user.is_authenticated %}
             <li id="character">
                 <i class="characterbtn"></i>
                 <p>角色</p>
@@ -603,11 +523,6 @@
                 <i class="imgbtn"></i>
                 <p>图片</p>
             </li>
-            <li id="videos">
-                <i class="videosbtn"></i>
-                <p>视频</p>
-            </li>
-            {% if request.user.is_authenticated %}
             <li id="profile">
                 <i class="profilebtn"></i>
                 <p>个人资料</p>
@@ -618,7 +533,7 @@
         <div class="login" @click="login()">
             <img src="{% static 'images/头像.png' %}" alt="">
             {% if request.user.is_authenticated %}
-                <span class="logout" @click="logout" ><i></i></span>
+                <span class="logout" @click="logout"><i></i></span>
                 <p class="loginbtn active">
                     {{ request.user.username }}
                 </p>
@@ -639,16 +554,13 @@
     var audio = document.getElementById('music');
 
     document.querySelector("#navbtn").onclick = function (event) {
+        document.querySelector("#app").classList.toggle("active")
         document.querySelector(".sidebar").classList.toggle("active")
-        document.querySelector(".navigation").classList.toggle("active")
         document.querySelector(".logo").classList.toggle("active")
         document.querySelector(".nav_list").classList.toggle("active")
         document.querySelector(".toolbtn").classList.toggle("active")
         document.querySelector(".searchnav").classList.toggle("active")
-        document.querySelector(".defaultdesc").classList.toggle("active")
         document.querySelector("#sun").classList.toggle("active")
-        document.querySelector(".character").classList.toggle("active")
-        document.querySelector(".videos").classList.toggle("active")
         if(document.querySelector(".logout")){
             document.querySelector(".logout").classList.toggle("active")
         }
@@ -668,6 +580,7 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <script>
+    console.log()
     const vm2 = new Vue({
         el:".nav_list",
         delimiters:['{[', ']}'],
@@ -685,13 +598,15 @@
             logout:function(){
                 window.location.href = "{% url 'logout' %}","_blank";
             }
-        }
+        },
+
     })
     const vm = new Vue({
         el:"#app",
         delimiters:['{[', ']}'],
         data:{
             name:"lili",
+            is_login:false,
             flags:{
                 default:true,
                 character:false,
@@ -701,9 +616,26 @@
             }
         },
         methods:{
+            logout:function(){
+                window.location.href = "{% url 'logout' %}","_blank";
+            },
+            tocloud:function(){
+                window.open("https://cloud.lili-secretbase.com/");
+            },
             login(){
                 window.location.href = "{% url 'login' %}"
+            },
+            is_login_check(){
+                if("{{ request.user.is_authenticated }}" == "True"){
+                    this.is_login = true
+                }
+                else{
+                    this.is_login = false
+                }
             }
+        },
+        mounted:function (){
+            this.is_login_check()
         }
     })
 
@@ -730,53 +662,19 @@
         })
     }
 
-    let leftorright = document.querySelector(".leftorright")
-    let myradios = document.querySelector('.navigation')
-    let piclist = document.querySelector(".pics").querySelectorAll("input")
-    let picflag = 0;
-    leftorright.addEventListener('click', function (event) {
-        console.log("here")
-        if (event.target.className == "right") {
-            piclist[picflag].removeAttribute("checked")
-            if (picflag == piclist.length - 1) {
-                picflag = 0;
-                piclist[0].setAttribute('checked', 'checked')
-            } else {
-                piclist[picflag + 1].setAttribute('checked', 'checked')
-                picflag += 1
-            }
-        }
-        if (event.target.className == "left") {
-            piclist[picflag].removeAttribute("checked")
-            if (picflag == 0) {
-                picflag = piclist.length - 1;
-                piclist[piclist.length - 1].setAttribute('checked', 'checked')
-            } else {
-                piclist[picflag - 1].setAttribute('checked', 'checked')
-                picflag -= 1
-            }
-        }
-        console.log(picflag)
-    })
-    myradios.addEventListener("click", function (event) {
-        if (event.target.getAttribute("value") != null) {
-            if (piclist[picflag].hasAttribute('checked')) {
-                piclist[picflag].removeAttribute('checked')
-            }
-            picflag = event.target.getAttribute("value")
-            piclist[picflag].setAttribute('checked', 'checked')
-        }
-    })
     let defaultmountains = document.querySelector("#mountains")
     let defaultmountain = document.querySelector("#mountain")
     let defaultlogin = document.querySelector("#defaultlogin")
     let defaultsun = document.querySelector("#sun")
     let defaulttitle = document.querySelector("#defaulttitle")
+
     window.addEventListener('scroll', function () {
         var value = window.scrollY;
         defaultmountain.style.top = value * 0.5 + "px"
         defaultmountains.style.top = value * 0 + 'px'
-        defaultlogin.style.marginTop = value * 1.2 + 'px'
+        if(defaultlogin){
+            defaultlogin.style.marginTop = value * 1.2 + 'px'
+        }
         defaulttitle.style.marginLeft = value * 20 + 'px'
     })
 
@@ -796,5 +694,44 @@
         danmu.style.height = 50 + 'px'
     }
 })
+    if(document.querySelector('.pics')){
+        let leftorright = document.querySelector(".leftorright")
+        let myradios = document.querySelector('.navigation')
+        let piclist = document.querySelector(".pics").querySelectorAll("input")
+        let picflag = 0;
+        leftorright.addEventListener('click', function (event) {
+            console.log("here")
+            if (event.target.className == "right") {
+                piclist[picflag].removeAttribute("checked")
+                if (picflag == piclist.length - 1) {
+                    picflag = 0;
+                    piclist[0].setAttribute('checked', 'checked')
+                } else {
+                    piclist[picflag + 1].setAttribute('checked', 'checked')
+                    picflag += 1
+                }
+            }
+            if (event.target.className == "left") {
+                piclist[picflag].removeAttribute("checked")
+                if (picflag == 0) {
+                    picflag = piclist.length - 1;
+                    piclist[piclist.length - 1].setAttribute('checked', 'checked')
+                } else {
+                    piclist[picflag - 1].setAttribute('checked', 'checked')
+                    picflag -= 1
+                }
+            }
+            console.log(picflag)
+        })
+        myradios.addEventListener("click", function (event) {
+            if (event.target.getAttribute("value") != null) {
+                if (piclist[picflag].hasAttribute('checked')) {
+                    piclist[picflag].removeAttribute('checked')
+                }
+                picflag = event.target.getAttribute("value")
+                piclist[picflag].setAttribute('checked', 'checked')
+            }
+        })
+    }
 </script>
 </html>
