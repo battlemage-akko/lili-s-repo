@@ -124,3 +124,18 @@
     font-family: IcoMoon-Free;
     font-style: normal;
 }
+.admin-user-modify-kill:before{
+    content: '\e9ef';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+    cursor: pointer;
+}
+.admin-user-modify-kill:hover{
+    color: indianred;
+    cursor: pointer;
+}
+.admin-user-modify-submit:before{
+    content: '\ea10';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}

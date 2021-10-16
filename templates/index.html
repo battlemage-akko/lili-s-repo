@@ -580,8 +580,8 @@
                                               <th scope="col">最后登录</th>
                                             <th scope="col">封禁</th>
                                             <th scope="col">管理员</th>
-                                            <th scope="col">封禁</th>
-                                            <th scope="col">管理员</th>
+                                            <th scope="col">提交修改</th>
+                                            <th scope="col">删除用户</th>
                                         </tr>
                                       </thead>
                                       <tbody>
@@ -592,6 +592,8 @@
                                                 <td><p>{[ item.last_login ]}</p></td>
                                                 <td><p>{[ !item.is_active ]}</p></td>
                                                 <td><p>{[ item.is_superuser ]}</p></td>
+                                                <td><p class="admin-user-modify-submit"></p></td>
+                                                <td><p class="admin-user-modify-kill"></p></td>
                                             </tr>
                                       </tbody>
                                 </table>
