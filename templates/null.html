@@ -26,9 +26,9 @@
     $('#execute_script').click(function () {
         // 新建websocket连接
         const chatSocket = new WebSocket(
-            'ws://'
+            'wss://'
             + window.location.host
-            + '/ws/result/'
+            + '/wss/result/'
         );
 
         // 连接建立成功事件
