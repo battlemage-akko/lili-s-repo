@@ -17,9 +17,11 @@
 
 .admin-info{
     flex-basis: 1300px;
-    background-color: red;
 }
 .admin-terminal{
+    padding:10px;
+}
+.admin-user-mmodify{
     padding:10px;
 }
 .admin-server-res{
@@ -80,8 +82,45 @@
 .admin-server-res-fresh:hover{
     transform: rotate(180deg);
 }
+.admin-user-fresh{
+    cursor: pointer;
+}
+.admin-user-fresh::before{
+    content: "\e984";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
 .admin-server-res-fresh::before{
     content: "\e984";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+.shutdownorreboot{
+    display: flex;
+    list-style: none;
+    margin: 0px;
+}
+.shutdownorreboot li{
+    text-align: center;
+    height: 80px;
+    width: 100px;
+    line-height: 80px;
+    flex: 1;
+    transition: all 0.5s ease;
+    cursor: pointer;
+}
+.shutdownorreboot li:hover{
+    background-color: #e3e3e3;
+}
+.shutdown i:before{
+    font-size: 30px;
+    content: '\e9b6';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+.reboot i:before{
+    font-size: 30px;
+    content: '\ea2e';
     font-family: IcoMoon-Free;
     font-style: normal;
 }

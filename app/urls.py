@@ -6,5 +6,6 @@ urlpatterns = [
     re_path('^register/',views.register,name="register"),
     re_path('^logout/',views.logoutthisuser,name="logout"),
     re_path('^serverDetail/',views.serverDetail,name="serverDetail"),
-    re_path('^userDetail/',views.userDetail,name="userDetail")
+    re_path('^userDetail/',views.userDetail,name="userDetail"),
+    re_path('^getAllUsers/',views.getAllUsers,name="getAllUsers"),
 ]

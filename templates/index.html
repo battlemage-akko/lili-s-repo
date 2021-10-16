@@ -104,6 +104,7 @@
             display: flex;
             justify-content: center;
             align-content: center;
+            margin-bottom: 35px;
         }
         .profile-background{
             background: url("{% static "images/background.jpg" %}") round;
@@ -522,6 +523,8 @@
                                     <li>CPU : <span> {[ serverDetaillist.CPU ]}</span></li>
                                     <li>内存占用 : <span> {[ serverDetaillist.MEM ]}</span></li>
                                     <li>硬盘使用 : <span> {[ serverDetaillist.DISK ]}</span></li>
+                                    <li>流量 : <span> {[ serverDetaillist.NET ]}</span></li>
+                                    <li>IP : <span> {[ serverDetaillist.IP ]}</span></li>
                                     <li>服务器已运行时间 : <span> {[ serverDetaillist.TIME ]}</span></li>
                                 </ul>
                             </div>
@@ -539,21 +542,59 @@
                                 </ul>
                             </div>
                         </div>
+                        <div style="margin-top: 20px">
+                            <div class="card">
+                                <ul class="shutdownorreboot">
+                                    <li class="reboot" title="重启"><i></i></li>
+                                    <li class="shutdown" title="关机"><i></i></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="admin-info">
                     <div class="admin-terminal">
                         <div>
-
                             <div class="card">
                                 <ul class="admin-terminal-list">
                                     <li>
                                         <i class="admin-terminal-list-terminal"></i>
                                     </li>
                                 </ul>
-                                <div>
-                                    <div id="terminal" style="width: 500px;height:300px;">123</div>
-                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="admin-user-mmodify">
+                        <div>
+                            <div class="card">
+                                <p style="font-weight: 700" @click="getAllUsers">修改用户信息 :
+                                    <i class="admin-user-fresh"></i>
+                                </p>
+                                <hr />
+                                <table class="table table-striped table-hover">
+                                      <thead>
+                                        <tr>
+                                              <th scope="col">id</th>
+                                              <th scope="col">名字</th>
+                                              <th scope="col">邮箱</th>
+                                              <th scope="col">最后登录</th>
+                                            <th scope="col">封禁</th>
+                                            <th scope="col">管理员</th>
+                                            <th scope="col">封禁</th>
+                                            <th scope="col">管理员</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                            <tr v-for="(item,index) in AllUsers">
+                                                <td><p>{[ item.id ]}</p></td>
+                                                <td><p>{[ item.username ]}</p></td>
+                                                <td><p>{[ item.email ]}</p></td>
+                                                <td><p>{[ item.last_login ]}</p></td>
+                                                <td><p>{[ !item.is_active ]}</p></td>
+                                                <td><p>{[ item.is_superuser ]}</p></td>
+                                            </tr>
+                                      </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -680,7 +721,8 @@
         el:"#app",
         delimiters:['{[', ']}'],
         data:{
-            name:"lili",
+            name:"{{ request.user.username }}",
+            this_user_admin:"{{ request.user.is_superuser }}",
             is_login:false,
             flags:{
                 default:true,
@@ -695,12 +737,15 @@
                 MEM:"none",
                 DISK:"none",
                 TIME:"none",
+                NET:"none",
+                IP:"none"
             },
             userDetaillist:{
                 USER:"none",
                 ADMIN:"none",
                 ONLINE:"none"
             },
+            AllUsers: null,
             serverupdate:false,
             Interval:""
         },
@@ -732,6 +777,8 @@
                     this.serverDetaillist.MEM = result.data.MEM
                     this.serverDetaillist.DISK = result.data.DISK
                     this.serverDetaillist.TIME = result.data.TIME
+                    this.serverDetaillist.NET = result.data.NET
+                    this.serverDetaillist.IP = result.data.IP
                 }
             },
             userDetail:async function(){
@@ -743,11 +790,21 @@
                 this.userDetaillist.ONLINE = result.data.ONLINE
                 this.userDetaillist.ADMIN = result.data.ADMIN
             },
+            getAllUsers:async function(){
+                result = await axios({
+                      method: 'GET',
+                      url: '{% url 'getAllUsers' %}',
+                    });
+                this.AllUsers = result.data
+            },
         },
         mounted:function (){
             this.is_login_check()
-            this.serverDetail()
-            this.userDetail()
+            if(this.this_user_admin == "True"){
+                this.userDetail()
+                this.getAllUsers()
+                this.serverDetail()
+            }
         },
         watch:{
             serverupdate:function(){
@@ -757,6 +814,9 @@
                 if(this.serverupdate==true){
                     this.Interval = setInterval(this.serverDetail, 2000);
                 }
+            },
+            AllUsers:function(){
+                console.log(this.AllUsers.data)
             }
         }
     })

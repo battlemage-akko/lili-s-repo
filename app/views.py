@@ -1,4 +1,4 @@
-import json,psutil,re,datetime
+import json,psutil,re,datetime,socket,requests
 from django.contrib.auth import authenticate ,login, logout
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render,redirect
@@ -20,6 +20,8 @@ class CustomBackend(ModelBackend):
             return user
         except Exception as e:
             return None
+
+users = Userdatabase.objects.all()
 
 @login_required
 def test(request):
@@ -100,17 +102,33 @@ def serverDetail(request):
             psutil.virtual_memory().percent) + "%",
         "DISK": "硬盘总量:" + str(round(psutil.disk_usage('/').total / 1024 / 1024 / 1024, 1)) + "G" + "/    已用:" + str(
             round(psutil.disk_usage('/').used / 1024 / 1024 / 1024, 1)) + "G",
-        "TIME": str(int((datetime.datetime.now().timestamp()-psutil.boot_time())/3600)) + "小时" + str(int(((datetime.datetime.now().timestamp()-psutil.boot_time())/60)%60)) + "分钟"
+        "TIME": str(int((datetime.datetime.now().timestamp()-psutil.boot_time())/3600)) + "小时" + str(int(((datetime.datetime.now().timestamp()-psutil.boot_time())/60)%60)) + "分钟",
+        "NET": "下行:" + str(round(psutil.net_io_counters().bytes_recv/1024/1024,2))+"MB" + "/上行:" +str(round(psutil.net_io_counters().bytes_sent/1024/1024,2))+"MB",
+        "IP" : "公网IP : "+requests.get(url="http://members.3322.org/dyndns/getip").text+" /内网IP : "+socket.gethostbyname(socket.gethostname()),
      }
     return JsonResponse(result)
 
 @csrf_exempt
 def userDetail(request):
-    user = Userdatabase.objects.all()
-    admin = user.filter(is_superuser=1)
+    admin = users.filter(is_superuser=1)
     result = {
-        "USER": len(user),
-        "ONLINE": "None",
+        "USER": len(users),
+        "ONLINE": "none",
         "ADMIN": len(admin),
      }
     return JsonResponse(result)
+
+def getAllUsers(requests):
+    usersdata = {}
+
+    for i in Userdatabase.objects.all():
+        usersdata[i.id] = {
+            "id":i.id,
+            "username":i.username,
+            "email":i.email,
+            "last_login":str(i.last_login),
+            "is_active":i.is_active,
+            "is_superuser": i.is_superuser,
+        }
+    print(usersdata)
+    return JsonResponse(usersdata)
