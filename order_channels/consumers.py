@@ -8,7 +8,7 @@ from asgiref.sync import async_to_sync
 # 同步方式，仅作示例，不使用
 class SyncConsumer(WebsocketConsumer):
     def connect(self):
-        self.username = "xiao"  # 临时固定用户名
+        self.username = "admin"  # 临时固定用户名
         print('WebSocket建立连接：', self.username)
         # 直接从用户指定的通道名称构造通道组名称
         self.channel_group_name = 'msg_%s' % self.username
@@ -75,6 +75,7 @@ class SyncConsumer(WebsocketConsumer):
                 password = '5daaiMIANMA'
 
                 ssh = paramiko.SSHClient()
+                print(ssh)
                 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 ssh.connect(hostname=hostname, username=username, password=password)
                 # 务必要加上get_pty=True,否则执行命令会没有权限
