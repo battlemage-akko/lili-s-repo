@@ -545,8 +545,8 @@
                         <div style="margin-top: 20px">
                             <div class="card">
                                 <ul class="shutdownorreboot">
-                                    <li class="reboot" title="重启"><i></i></li>
-                                    <li class="shutdown" title="关机"><i></i></li>
+                                    <li class="reboot" title="重启" @click="reboot"><i></i></li>
+                                    <li class="shutdown" title="关机" @click="shutdown"><i></i></li>
                                 </ul>
                             </div>
                         </div>
@@ -592,8 +592,8 @@
                                                 <td><p>{[ item.last_login ]}</p></td>
                                                 <td><p>{[ !item.is_active ]}</p></td>
                                                 <td><p>{[ item.is_superuser ]}</p></td>
-                                                <td><p class="admin-user-modify-submit"></p></td>
-                                                <td><p class="admin-user-modify-kill"></p></td>
+                                                <td><p class="admin-user-modify-submit" @click = "damie"></p></td>
+                                                <td><p class="admin-user-modify-kill" @click = "damie"></p></td>
                                             </tr>
                                       </tbody>
                                 </table>
@@ -799,6 +799,32 @@
                     });
                 this.AllUsers = result.data
             },
+            damie:function (){
+                alert("达咩")
+            },
+            reboot:function (){
+                let value = 1
+                this.finallytime(value)
+            },
+            shutdown:function (){
+                let value = 0
+                this.finallytime(value)
+            },
+            finallytime(value){
+                let sure=prompt("请输入我很他妈确定")
+                let param = new URLSearchParams()
+                param.append('value', value)
+                if(sure == "我很他妈确定"){
+                    axios({
+                        method: 'POST',
+                        url: '{% url 'rebootorshutdown' %}',
+                        data: param
+                    });
+                }
+                else{
+                    return
+                }
+            }
         },
         mounted:function (){
             this.is_login_check()

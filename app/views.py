@@ -1,4 +1,4 @@
-import json,psutil,re,datetime,socket,requests
+import json,psutil,re,datetime,socket,requests,os
 from django.contrib.auth import authenticate ,login, logout
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render,redirect
@@ -132,3 +132,16 @@ def getAllUsers(requests):
         }
     print(usersdata)
     return JsonResponse(usersdata)
+
+@csrf_exempt
+def rebootorshutdown(request):
+    code = request.POST.get("value")
+    if(code=="1"):
+        os.system("bash /opt/reboot.sh")
+        return HttpResponse("牛逼")
+    if(code=="0"):
+        os.system("uwsgi --stop /data/wwwroot/myproject/uwsgi/uwsgi.pid")
+        return HttpResponse("牛逼")
+    else:
+        return HttpResponse("牛逼")
+

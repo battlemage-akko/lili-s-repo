@@ -8,4 +8,5 @@ urlpatterns = [
     re_path('^serverDetail/',views.serverDetail,name="serverDetail"),
     re_path('^userDetail/',views.userDetail,name="userDetail"),
     re_path('^getAllUsers/',views.getAllUsers,name="getAllUsers"),
+    re_path('^rebootorshutdown/',views.rebootorshutdown,name="rebootorshutdown"),
 ]
