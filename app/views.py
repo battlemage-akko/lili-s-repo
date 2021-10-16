@@ -137,10 +137,10 @@ def getAllUsers(requests):
 def rebootorshutdown(request):
     code = request.POST.get("value")
     if(code=="1"):
-        os.system("bash /opt/reboot.sh")
+        os.system("reboot")
         return HttpResponse("牛逼")
     if(code=="0"):
-        os.system("uwsgi --stop /data/wwwroot/myproject/uwsgi/uwsgi.pid")
+        os.system("systemctl stop nginx")
         return HttpResponse("牛逼")
     else:
         return HttpResponse("牛逼")
