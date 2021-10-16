@@ -29,7 +29,7 @@
                         <input type="password" name="sign_in_Password" placeholder="Password" v-model="sign_in_Password" />
                     </div>
                     <div class="input-field message">
-                        <span>{{ msg }}</span>
+                        <span>{[ lg_msg ]}</span>
                     </div>
                     <input type="submit" value="Login" class="btn solid" @click.prevent="logincheck()"/>
                 </form>
@@ -47,6 +47,9 @@
                         <i class="fas fa-lock"></i>
                         <input type="password" placeholder="Password" v-model="sign_up_Password" name="sign_up_Password"/>
                     </div>
+                    <div class="input-field message">
+                        <span>{[ rg_msg ]}</span>
+                    </div>
                     <input type="submit" class="btn sp" value="Sign up" @click.prevent="registercheck()"/>
                 </form>
             </div>
@@ -57,7 +60,7 @@
                     <p>
                         测试用用户:test,邮箱test@qq.com,密码:123456。
                     </p>
-                    <button class="btn transparent sp" id="sign-up-btn">
+                    <button class="btn transparent sp" id="sign-up-btn" @click="clearmsg">
                         Sign up
                     </button>
                 </div>
@@ -66,9 +69,9 @@
             <div class="panel right-panel">
                 <div class="content">
                     <p>
-                        暂不提供注册功能，目前仅供观赏，有需要请联系管理员。
+                        原则上不提供注册，有需要请联系管理员
                     </p>
-                    <button class="btn transparent sibtn" id="sign-in-btn">
+                    <button class="btn transparent sibtn" id="sign-in-btn" @click="clearmsg">
                         Sign in
                     </button>
                 </div>
@@ -79,6 +82,88 @@
 </body>
 </html>
 <script>
+
+    const form_event = new Vue({
+        el:".container",
+        delimiters:['{[', ']}'],
+        data:{
+            sign_in_Username: "",
+            sign_in_Password: "",
+
+            sign_up_Username: "",
+            sign_up_Password: "",
+            sign_up_Email: "",
+
+            lg_msg:null,
+            rg_msg:null,
+        },
+        methods:{
+            clearmsg:function(){
+                this.lg_msg=null
+                this.rg_msg=null
+            },
+            logincheck:function(){
+                if(this.sign_in_Password == "" && this.sign_in_Username == ""){
+                    this.lg_msg = "都空的,过分了啊!"
+                }
+                else if(this.sign_in_Password == ""){
+                    this.lg_msg = "密码不能为空！"
+                }
+                else if(this.sign_in_Username == ""){
+                    this.lg_msg = "用户名不能为空！"
+                }
+                else{
+                    this.login()
+                }
+            },
+            registercheck:function (){
+                if(this.sign_up_Username == "" && this.sign_up_Password == "" && this.sign_up_Email ==""){
+                    this.rg_msg = "都空的啊!!!???"
+                }
+                else if(this.sign_up_Username == ""){
+                    this.rg_msg = "密码不能为空！"
+                }
+                else if(this.sign_up_Email == ""){
+                    this.rg_msg = "邮箱不能为空！"
+                }
+                else if(this.sign_up_Password == ""){
+                    this.rg_msg = "密码不能为空！"
+                }
+                else{
+                    this.register()
+                }
+            },
+            login:async function (){
+                let param = new URLSearchParams()
+                param.append('username', this.sign_in_Username)
+                param.append('password', this.sign_in_Password)
+                result = await axios({
+                        method: 'POST',
+                        url: '{% url 'login_check' %}',
+                        data: param
+                    });
+                this.lg_msg = result.data.msg
+                if(result.data.code == "1"){
+                    window.location.href = "{% url "index" %}"
+                }
+            },
+            register:async function(){
+                let param = new URLSearchParams()
+                param.append('username', this.sign_up_Username)
+                param.append('email', this.sign_up_Email)
+                param.append('password', this.sign_up_Password)
+                result = await axios({
+                        method: 'POST',
+                        url: '{% url 'register' %}',
+                        data: param
+                    });
+                this.rg_msg = result.data.msg
+                if(result.data.code == "1"){
+                    window.location.href = "{% url "login" %}"
+                }
+            }
+        }
+    })
     const sign_in_btn = document.querySelector("#sign-in-btn")
     const sign_up_btn = document.querySelector("#sign-up-btn")
     const container = document.querySelector(".container")
@@ -90,34 +175,4 @@
         container.classList.remove("sign-up-mode")
         container.classList.remove("active")
     });
-    const form_event = new Vue({
-        el:".signin-signup",
-        delimiters:['{[', ']}'],
-        data:{
-            sign_in_Username:null,
-            sign_in_Password:null,
-
-            sign_up_Username:null,
-            sign_up_Password:null,
-            sign_up_Email:null,
-        },
-        methods:{
-            logincheck:function(){
-                this.login()
-            },
-            registercheck:function (){
-                this.register()
-            },
-            login:function (){
-                document.querySelector(".sign-in-form").action = "{% url 'login_check' %}"
-                document.querySelector(".sign-in-form").submit()
-            }
-            ,
-            register:async function(){
-                document.querySelector(".sign-up-form").action = "{% url 'register' %}"
-                document.querySelector(".sign-up-form").submit()
-            }
-        }
-    })
-
 </script>

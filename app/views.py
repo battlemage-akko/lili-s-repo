@@ -16,13 +16,13 @@ class CustomBackend(ModelBackend):
             # 不希望用户存在两个，get只能有一个。两个是get失败的一种原因 Q为使用并集查询
             user = Userdatabase.objects.get(
                 Q(username=username) | Q(email=username) )
-            # if user.check_password(password):
-            return user
+            if user.check_password(password):
+                return user
         except Exception as e:
             return None
 
 users = Userdatabase.objects.all()
-
+realIP = requests.get(url="http://members.3322.org/dyndns/getip").text
 @login_required
 def test(request):
     return render(request,'test.html')
@@ -40,26 +40,35 @@ def login_check(request):
     if (request.method == 'GET'):
         pass
     if(request.method == 'POST' and request.POST):
-        context = {
-            'message': ''
-        }
-        username = request.POST.get("sign_in_Username")
-        password = request.POST.get("sign_in_Password")
-        thisuser = authenticate(request,username=username,password=password)
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        thisuser = authenticate(username=username,password=password)
+        print(thisuser,username,password)
         try:
-            if thisuser:
+            if thisuser is not None:
                 loginthisuser(request,thisuser)
-                return redirect("index")
+                message = {
+                    "code": 1,
+                    "url": "index",
+                    "msg": "登录成功"
+                }
+                return JsonResponse(message)
             else:
-                thisuser = authenticate(request,username=username, password=username)
-                if thisuser:
-                    loginthisuser(request, thisuser)
-                    return redirect("index")
+                thisuser = Userdatabase.objects.filter(username=username);
+                if thisuser.exists():
+                    message = {
+                        "code": 0,
+                        "msg": "密码错误"
+                    }
+                    return JsonResponse(message)
                 else:
-                    return HttpResponse("不存在用户")
+                    message = {
+                        "code": 0,
+                        "msg": "用户不存在！"
+                    }
+                    return JsonResponse(message)
         except AttributeError:
             return HttpResponse("出错了")
-
         return redirect("login")
 def loginthisuser(request,user):
     login(request,user)
@@ -72,25 +81,25 @@ def register(request):
     if (request.method == 'GET'):
         pass
     if request.method == 'POST' and request.POST:
-        username = request.POST.get("sign_up_Username")
-        email = request.POST.get("sign_up_Email")
-        password = request.POST.get("sign_up_Password")
-        registercheck = Userdatabase.objects.filter(username=username)
-        print(username,email,password)
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
 
+        registercheck = Userdatabase.objects.filter(username=username).exists() | Userdatabase.objects.filter(email=email).exists()
         if registercheck:
             message = {
-                "msg": "用户存在！"
+                "code": 0,
+                "msg": "用户已注册！"
             }
-            return render(request, "login.html", context=message)
+            return JsonResponse(message)
         else:
             user = Userdatabase.objects.create_user(username=username, password=password, email=email)
             user.save()
             message = {
+                "code": 1,
                 "msg": "账号创建成功,快来登录试试吧"
             }
-            return render(request, "login.html", context=message)
-        return redirect("login")
+            return JsonResponse(message)
 
 @csrf_exempt
 def serverDetail(request):
@@ -104,7 +113,7 @@ def serverDetail(request):
             round(psutil.disk_usage('/').used / 1024 / 1024 / 1024, 1)) + "G",
         "TIME": str(int((datetime.datetime.now().timestamp()-psutil.boot_time())/3600)) + "小时" + str(int(((datetime.datetime.now().timestamp()-psutil.boot_time())/60)%60)) + "分钟",
         "NET": "下行:" + str(round(psutil.net_io_counters().bytes_recv/1024/1024,2))+"MB" + "/上行:" +str(round(psutil.net_io_counters().bytes_sent/1024/1024,2))+"MB",
-        "IP" : "公网IP : "+requests.get(url="http://members.3322.org/dyndns/getip").text+" /内网IP : "+socket.gethostbyname(socket.gethostname()),
+        "IP" : "公网IP : "+realIP+" /内网IP : "+socket.gethostbyname(socket.gethostname()),
      }
     return JsonResponse(result)
 
