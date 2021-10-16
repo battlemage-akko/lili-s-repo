@@ -1,14 +1,13 @@
-import json
+import json,psutil,re,datetime
 from django.contrib.auth import authenticate ,login, logout
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render,redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from app.models import AppUser as Userdatabase
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
-from myproject import urls
 
 class CustomBackend(ModelBackend):
     # 重写authenticate,实现email与username或者更多参数
@@ -90,4 +89,28 @@ def register(request):
             }
             return render(request, "login.html", context=message)
         return redirect("login")
-# Create your views here.
+
+@csrf_exempt
+def serverDetail(request):
+    result = {
+        "CPU": "物理:" + str(psutil.cpu_count(logical=False)) + "/逻辑:" + str(psutil.cpu_count()) + "/ 利用率:" + str(
+            psutil.cpu_percent(interval=1)) + "%",
+        "MEM": "内存总量:" + str(round(psutil.virtual_memory().total / 1024 / 1024 / 1024, 1)) + "G" + "/    已用:" + str(
+            round(psutil.virtual_memory().used / 1024 / 1024 / 1024, 1)) + "G" + "/ 占用率:" + str(
+            psutil.virtual_memory().percent) + "%",
+        "DISK": "硬盘总量:" + str(round(psutil.disk_usage('/').total / 1024 / 1024 / 1024, 1)) + "G" + "/    已用:" + str(
+            round(psutil.disk_usage('/').used / 1024 / 1024 / 1024, 1)) + "G",
+        "TIME": str(int((datetime.datetime.now().timestamp()-psutil.boot_time())/3600)) + "小时" + str(int(((datetime.datetime.now().timestamp()-psutil.boot_time())/60)%60)) + "分钟"
+     }
+    return JsonResponse(result)
+
+@csrf_exempt
+def userDetail(request):
+    user = Userdatabase.objects.all()
+    admin = user.filter(is_superuser=1)
+    result = {
+        "USER": len(user),
+        "ONLINE": "None",
+        "ADMIN": len(admin),
+     }
+    return JsonResponse(result)

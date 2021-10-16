@@ -17,10 +17,14 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from app import views
 from app import urls as app_api
+from django.views.generic import TemplateView
+from order_channels import views as channelsviews
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
     path('test/', views.test, name="test"),
+    path('null/', channelsviews.channelsviews, name="null"),
+    path('testvue/', TemplateView.as_view(template_name="index.html")),
     path('login/', views.index_login, name="login"),
     path('',views.index,name="index"),
     re_path('^app_api/', include(app_api))

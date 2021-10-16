@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
+    'order_channels'
 ]
 
 MIDDLEWARE = [
@@ -69,8 +70,12 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
-
-
+ASGI_APPLICATION = 'django3_websocket.routing.application'
+CHANNEL_LAYERS = {
+     "default": {
+         "BACKEND": "channels.layers.InMemoryChannelLayer",
+     }
+}
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 

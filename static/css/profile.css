@@ -4,6 +4,7 @@ hr{
 .profilecontent{
     display: flex;
     width: 80%;
+    max-width: 1400px;
     margin: 100px 0px 0px 0px;
     justify-content: space-evenly;
     flex-wrap: wrap;

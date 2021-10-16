@@ -1,0 +1,87 @@
+.admin-content{
+    margin-top: 120px;
+    display: flex;
+    width: 100%;
+    max-width: 1800px;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+.admin-server{
+    flex-grow: 1;
+    max-width: 1300px;
+    flex-basis: 400px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.admin-info{
+    flex-basis: 1300px;
+    background-color: red;
+}
+.admin-terminal{
+    padding:10px;
+}
+.admin-server-res{
+    min-width: 200px;
+    padding:10px;
+    flex-grow: 2;
+}
+.admin-server-user{
+    min-width: 200px;
+    padding:10px;
+    flex-grow: 2;
+}
+.admin-terminal-list{
+    margin: 0px;
+}
+.admin-terminal-list li{
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    line-height: 50px;
+    text-align: center;
+    cursor: pointer;
+}
+.admin-terminal-list li:hover{
+    background-color: #bacbe6;
+}
+.admin-terminal-list-terminal:before{
+    content: "\ea81";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+.admin-terminal-list{
+    list-style: none;
+    display: flex;
+}
+.card{
+    padding: 20px;
+    background-color: white;
+    box-shadow:
+            0 4px 4px 0 rgba(54,58,80,0.32);
+}
+.admin-server-res-detail-li{
+    list-style: none;
+}
+.admin-server-res-detail-li li{
+    color: #9a9a9a;
+    margin-top: 20px;
+}
+.admin-user-detail-li{
+    list-style: none;
+}
+.admin-user-detail-li li{
+    margin-top: 20px;
+}
+.admin-server-res-fresh{
+    cursor: pointer;
+}
+.admin-server-res-fresh:hover{
+    transform: rotate(180deg);
+}
+.admin-server-res-fresh::before{
+    content: "\e984";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}

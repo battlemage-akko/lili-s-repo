@@ -255,7 +255,12 @@
             font-style: normal;
             cursor: pointer;
         }
-
+        .adminbtn::before {
+            content: "\ea81";
+            font-family: IcoMoon-Free;
+            font-style: normal;
+            cursor: pointer;
+        }
         .imgbtn::before {
             content: "\e90e";
             font-family: IcoMoon-Free;
