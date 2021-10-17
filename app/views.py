@@ -21,7 +21,7 @@ class CustomBackend(ModelBackend):
         except Exception as e:
             return None
 
-users = Userdatabase.objects.all()
+AllUsers = [Userdatabase.objects.all()]
 realIP = requests.get(url="http://members.3322.org/dyndns/getip").text
 @login_required
 def test(request):
@@ -99,6 +99,7 @@ def register(request):
                 "code": 1,
                 "msg": "账号创建成功,快来登录试试吧"
             }
+            AllUsers[0] = Userdatabase.objects.all()
             return JsonResponse(message)
 
 @csrf_exempt
@@ -119,9 +120,9 @@ def serverDetail(request):
 
 @csrf_exempt
 def userDetail(request):
-    admin = users.filter(is_superuser=1)
+    admin = AllUsers[0].filter(is_superuser=1)
     result = {
-        "USER": len(users),
+        "USER": len(AllUsers[0]),
         "ONLINE": "none",
         "ADMIN": len(admin),
      }
@@ -145,22 +146,33 @@ def getAllUsers(requests):
 @csrf_exempt
 def Del_user(request):
     id = request.POST.get("id")
-    result = Userdatabase.objects.filter(id=id).delete()
     message = {
-        "msg":""
+        "msg": ""
     }
-    if result:
-        message = {
-            "msg": "删除成功",
-            "code": "1"
-        }
-        return JsonResponse(message)
+    result = Userdatabase.objects.filter(id=id)
+    if not result[0].is_superuser:
+        print("这不是管理员")
+        result = result.delete()
+        if result:
+            message = {
+                "msg": "删除成功",
+                "code": "1"
+            }
+            AllUsers[0] = Userdatabase.objects.all()
+            return JsonResponse(message)
+        else:
+            message = {
+                "msg": "删除失败,请联系管理员",
+                "code": "0"
+            }
+            return JsonResponse(message)
     else:
         message = {
-            "msg": "删除失败,请联系管理员",
+            "msg": "管理员何必为难管理员",
             "code": "0"
         }
         return JsonResponse(message)
+
 
 @csrf_exempt
 def rebootorshutdown(request):

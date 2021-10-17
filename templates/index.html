@@ -860,7 +860,10 @@
                         data: param
                     });
                     if (result.data.code== "1"){
+                        this.getAllUsers()
+                        this.userDetail()
                         this.Del_msg = result.data.msg
+                        alert("删除成功")
                     }
                     else if (result.data.code== "0"){
                         this.Del_msg = result.data.msg
