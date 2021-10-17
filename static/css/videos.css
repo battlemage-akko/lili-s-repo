@@ -1,5 +1,18 @@
 
+        .videos-holder{
+            display: flex;
+            margin-top: var(--Head-top);
+            max-width: 1400px;
+            min-width: 1px;
+        }
+        .video-card{
+            box-shadow: var(--shadow);
+            background-color: rgba(0,0,0,0);
+            display: flex;
+            flex-direction: column;
+        }
         .videologo::before {
+            color: white;
             width: 30px;
             height: 30px;
             background-color: black;
@@ -12,26 +25,33 @@
             text-align: center;
             border-radius: 5px;
         }
-
         .danmu {
-            position: relative;
-            display: inline-block;
+            display: flex;
+            flex-direction: column;
             width: 300px;
             margin-left: 50px;
+            background-color: var(--Test-color);
         }
-
+        .videocontent {
+            display: flex;
+            flex-direction: column;
+            vertical-align: top;
+            background-color: var(--Test-color);
+            max-width: 1000px;
+            align-content: normal;
+        }
         .danmutitle {
             position: relative;
             height: 100%;
             overflow: hidden;
             border-radius: 10px;
+            background-color: white;
         }
 
         .danmutitle i {
             right: 15px;
             display: inline-block;
             transition: all 0.5s ease;
-            position: absolute;
         }
 
         .danmutitle i::after {
@@ -45,7 +65,7 @@
             transform: rotate(180deg);
         }
 
-        .danmuholder {
+        .danmuholder{
             height: 50px;
             transition: all .5s ease;
         }
@@ -57,17 +77,21 @@
         .danmutitle div span {
             display: inline-block;
         }
-
+        .danmu-input-group{
+            width: 0;
+        }
         .danmutitlecontent {
-            background-color: #f1f1f1;
-            padding-left: 20px;
+            background-color: #ffffff;
             height: 50px;
             margin: auto;
             line-height: 50px;
+            display: flex;
+            justify-content: space-between;
+            padding: 0px 10px;
         }
         .ad {
             height: 100px;
-            width: 100%;
+            flex-basis: 100%;
             padding: 10px;
         }
         .adcontent{
@@ -210,22 +234,25 @@
         .videoslist li div a:hover{
             color: #5c636a;
         }
-        .videoprofile{
-            width: 100%;
+        .video-profile{
+            display: flex;
+            justify-content: space-between;
             height: 100px;
             border:3px dashed black;
-            margin:10px 0px ;
             border-radius: 5px;
-            position:relative;
+            padding: 20px;
         }
         .videodetail{
+            display: flex;
             width: 100%;
             height: 40px;
-            margin:5px 0px ;
+            margin:15px 0px ;
             border:0px dashed black;
-            line-height: 35px;
+            justify-content: space-between;
+            flex-direction: row;
+            align-items: center;
         }
-        .videodetail span{
+        .video-detail-play span{
             font-weight: 700;
             font-size: 20px;
             margin-left: 20px;
@@ -236,14 +263,9 @@
         .videodetail span:hover{
             opacity: 1;
         }
-        .videobtns{
-            display: inline-block;
-            position: absolute;
-            right: 10px;
-        }
         .videobtns span{
-            padding: 0px 10px;
-            display: inline-block;
+            display: inline;
+            padding: 8px 10px;
             border-radius: 25px;
             width: 35px;
             height: 35px;
@@ -251,6 +273,7 @@
             opacity: 1;
             color: black;
             transition: all .2s ease;
+            cursor: pointer;
         }
         .videobtns span:hover{
             background: linear-gradient(90deg,#363062,#FFFFFF,#1DB9C3,#363062);
@@ -283,40 +306,35 @@
             font-family: IcoMoon-Free;
         }
         .videoprofilepic{
-            display: inline-block;
             margin-left:20px;
             line-height: 90px;
         }
-        .videoprofilepic img{
-            width: 70px;
-            height: 70px;
+        .video-profilepic img{
+            height: 100%;
             border-radius: 70px;
         }
-        .videoprofiledetail a{
+        .video-profile-name a{
             margin-left: 10px;
             color: black;
             text-decoration: none;
             font-style: normal;
             opacity: 0.7;
         }
-        .videoprofiledetail a:hover{
+        .video-profile-name a:hover{
             opacity: 1;
         }
+        .follow-holder{
+            display: flex;
+            align-items: center;
+        }
         .follow{
-            width: 120px;
-            height: 40px;
-            display: inline-block;
-            position: absolute;
-            right: 20px;
-            vertical-align: middle;
-            top: 50%;
-            transform: translateY(-50%);
-            text-align: center;
-            line-height: 40px;
-
+            max-height: 35px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
         }
         .follow::before {
-            position: absolute;
             content: "";
             left: 0;
             top: 0;
@@ -324,9 +342,9 @@
             width: 10px;
             border-top: 2px solid black;
             border-left: 2px solid black;
+            align-self: start;
         }
         .follow::after {
-            position: absolute;
             content: "";
             bottom: 0;
             right: 0;
@@ -334,6 +352,7 @@
             width: 10px;
             border-bottom: 2px solid black;
             border-right: 2px solid black;
+            align-self: end;
         }
         .follow i::before{
             content: '\ea0a';
@@ -346,29 +365,55 @@
         }
 
         .thisvideo {
-            display: inline-block;
-            min-width: 800px;
-            min-height: 600px;
+            min-width: 600px;
+            max-width: 1000px;
+            width: 50vw;
         }
-
-        .videocontent {
-            position: relative;
-            display: inline-block;
-            vertical-align: top
-        }
-
         .danmucontent {
+            padding: 10px 30px;
             position: relative;
+            display: flex;
+            justify-content: space-between;
             width: 100%;
-            height: 50px;
-            background-color: black;
-            border-radius: 0px 0px 10px 10px;
+            height: 60px;
+            background-color: white;
         }
+        .video-danmucontent-switch{
+            display: flex;
+            align-items: center;
+        }
+        .video-danmucontent-tools{
+            font-family: IcoMoon-Free;
+            display: flex;
+            align-items: center;
+            margin: 0;
+            color: #bacbe6;
+            list-style: none;
+            font-size: 20px;
+            cursor: pointer;
 
+        }
+        .video-danmucontent-tools li{
+            margin-left: 20px;
+            transition: all .5s ease;
+        }
+        .video-danmucontent-tools li:hover{
+            color: black;
+        }
+        .fullscreen-window:before{
+            content: "\ea7f";
+            font-style: normal;
+        }
+        .fullscreen-sets:before{
+            content: "\e994";
+            font-style: normal;
+        }
         .videotitle {
             font-family: 'IcoMoon-Free';
-            height: 100px;
-            padding: 10px 0px;
+            min-height: 100px;
+            padding: 20px 0px;
+            display: flex;
+            flex-direction: column;
         }
 
         .videotitle h1 {
@@ -379,4 +424,9 @@
         .videotitle p {
             font-size: 15px;
             color: #8f8f8f;
+        }
+
+        .video-holder{
+            width: 100%;
+            height: 100%;
         }
