@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link href="//cdn.bootcss.com/video.js/7.0.0-alpha.1/alt/video-js-cdn.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/video.js/7.0.0-alpha.1/video.min.js"></script>
     <style>
         @keyframes move1 {
             0%{
@@ -119,6 +121,9 @@
     </style>
 </head>
 <body>
+    <video controls data-setup='{ }' class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid" poster="{% static 'images/3.jpg' %}" id="video_ready">
+        <source src="{% static "videos/video.mp4" %}"></source>
+    </video>
     <div class="box">
         <img src="{% static 'images/1.jpeg' %}" alt="">
         <img src="{% static 'images/2.jpeg' %}" alt="">

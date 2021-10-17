@@ -378,27 +378,48 @@
             height: 60px;
             background-color: white;
         }
+        .play-tools{
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            height: 30px;
+            background-color: #21272e;
+
+        }
+        .play-tools-main{
+            display: flex;
+            list-style: none;
+            font-family: IcoMoon-Free;
+            font-size: 15px;
+            height: 30px;
+            margin: 0px;
+            color: white;
+        }
+        .play-tools-main li{
+            margin: 0px 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+        }
+        .play-tools-refresh:before{
+            content: "\ea2e";
+            font-style: normal;
+            font-weight: 800;
+        }
+        .play-tools-stop:before{
+            content: "\ea1e";
+            font-style: normal;
+        }
         .video-danmucontent-switch{
             display: flex;
             align-items: center;
         }
-        .video-danmucontent-tools{
-            font-family: IcoMoon-Free;
-            display: flex;
-            align-items: center;
-            margin: 0;
-            color: #bacbe6;
-            list-style: none;
-            font-size: 20px;
-            cursor: pointer;
-
-        }
-        .video-danmucontent-tools li{
-            margin-left: 20px;
-            transition: all .5s ease;
-        }
         .video-danmucontent-tools li:hover{
-            color: black;
+            color: white;
         }
         .fullscreen-window:before{
             content: "\ea7f";
@@ -430,3 +451,25 @@
             width: 100%;
             height: 100%;
         }
+        .choose-dropdown{
+            display: none;
+            position: absolute;
+            color: white;
+            list-style: none;
+            margin: 0px;
+            bottom: 30px;
+            background-color: black;
+            opacity: 0.7;
+        }
+        .choose-dropdown div:hover{
+            background-color: #3e3e3e;
+            opacity: 0.7;
+        }
+        .choose-dropdown div{
+            text-align: center;
+            padding: 10px;
+        }
+        .play-tools-choose:hover .choose-dropdown{
+            display: block;
+        }
+

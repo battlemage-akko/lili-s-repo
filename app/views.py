@@ -143,6 +143,26 @@ def getAllUsers(requests):
     return JsonResponse(usersdata)
 
 @csrf_exempt
+def Del_user(request):
+    id = request.POST.get("id")
+    result = Userdatabase.objects.filter(id=id).delete()
+    message = {
+        "msg":""
+    }
+    if result:
+        message = {
+            "msg": "删除成功",
+            "code": "1"
+        }
+        return JsonResponse(message)
+    else:
+        message = {
+            "msg": "删除失败,请联系管理员",
+            "code": "0"
+        }
+        return JsonResponse(message)
+
+@csrf_exempt
 def rebootorshutdown(request):
     code = request.POST.get("value")
     if(code=="1"):
@@ -153,4 +173,5 @@ def rebootorshutdown(request):
         return HttpResponse("牛逼")
     else:
         return HttpResponse("牛逼")
+
 

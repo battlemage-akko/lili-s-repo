@@ -130,6 +130,12 @@
     font-style: normal;
     cursor: pointer;
 }
+.admin-user-modify-ban:before{
+    content: '\ea0e';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+    cursor: pointer;
+}
 .admin-user-modify-kill:hover{
     color: indianred;
     cursor: pointer;
