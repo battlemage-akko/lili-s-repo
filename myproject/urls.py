@@ -27,6 +27,7 @@ urlpatterns = [
     path('testvue/', TemplateView.as_view(template_name="index.html")),
     path('login/', views.index_login, name="login"),
     path('',views.index,name="index"),
+    path('video/',views.video,name="video"),
     re_path('^app_api/', include(app_api))
     # url(r'^static/(?P<path>.*)$', static.serve,
     #   {'document_root': settings.STATIC_ROOT}, name='static'),

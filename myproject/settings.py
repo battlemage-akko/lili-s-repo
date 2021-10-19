@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
-    'order_channels'
+    'order_channels',
+    'barrage'
 ]
 
 MIDDLEWARE = [
@@ -90,10 +91,24 @@ DATABASES = {
         'PASSWORD': '5daaiMIANMA',
         'HOST': 'localhost',
         'NAME':'secretbase',
+    },
+    'danmu': {
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'root',
+        'PASSWORD': '5daaiMIANMA',
+        'HOST': 'localhost',
+        'NAME':'danmu',
     }
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 }
+# DATABASE_ROUTERS = ['myproject.database_router.DatabaseAppsRouter']
+# DATABASE_APPS_MAPPING = {
+#     # example:
+#     # 'app_name':'database_name',
+#     'app': 'default',
+#     'barrage':  'danmu',
+# }
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',

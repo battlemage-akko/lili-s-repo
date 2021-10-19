@@ -22,7 +22,7 @@
 .admin-terminal{
     padding:10px;
 }
-.admin-user-mmodify{
+.admin-user-modify{
     padding:10px;
 }
 .admin-server-res{
@@ -144,4 +144,25 @@
     content: '\ea10';
     font-family: IcoMoon-Free;
     font-style: normal;
+}
+.admin-user-show{
+    color: black;
+    opacity: 0.3;
+    cursor: pointer;
+}
+.admin-user-modify-card{
+    transition: all .5s ease;
+}
+.admin-user-modify-card.active{
+    overflow: hidden;
+    height: 60px;
+}
+.admin-user-show.active{
+    opacity: 1;
+}
+.admin-user-show:before{
+    content: '\e9ba';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+
 }

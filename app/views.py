@@ -34,6 +34,8 @@ def index_login(request):
     return render(request,'login.html')
 def wrapper(request):
     return render(request,'wrapper.html')
+def video(request):
+    return render(request,'video.html')
 
 @csrf_exempt
 def login_check(request):

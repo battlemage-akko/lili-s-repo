@@ -1,0 +1,606 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="{% static 'css/videos.css' %}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/video.js/7.0.0-alpha.1/alt/video-js-cdn.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/video.js/7.0.0-alpha.1/video.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link href="{% static 'css/wrapper.css' %}" rel="stylesheet">
+    <link href="{% static 'css/sidebar.css' %}" rel="stylesheet">
+    <title>Video</title>
+    <style>
+        :root {
+            --Head-top: 100px;
+            --Test-color: null;
+            --Background-color: #eeeef3;
+            --shadow: 0 3px 3px 0 rgba(54, 58, 80, 0.32);
+        }
+
+        @font-face {
+            font-family: 'IcoMoon-Free';
+            src: url('{% static 'css/IcoMoon-Free.ttf'%}') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        p {
+            margin: 0 !important;
+        }
+
+        ul {
+            padding-left: 0;
+        }
+
+        body {
+            background-color: var(--Background-color);
+            overflow-x: hidden;
+            transition: all .5s ease;
+        }
+
+        #app {
+            width: 100vw;
+            height: 100vh;
+            padding-left: 50px;
+            transition: padding-left .5s ease;
+        }
+        #app.active {
+            padding-left: 240px;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 50px;
+            background: #ffffff;
+            transition: all 0.5s ease;
+            z-index: 3;
+        }
+        .sidebar.active {
+            width: 240px;
+        }
+        .videos {
+            right: 0;
+            justify-content: center;
+            width: calc(100% - 50px);
+            height: calc(100% - 50px);
+            transition: all .5s ease;
+            padding-left: 50px;
+            white-space: nowrap;
+            display: flex;
+        }
+        .logo {
+            position: fixed;
+            width: 120px;
+            top: 35px;
+            left: 50%;
+            z-index: 4;
+            transform: translateX(calc(-50% + 25px));
+            transition: all 0.5s ease;
+            cursor: pointer;
+            opacity: 0.2;
+        }
+        .logo.active {
+            left: 100px;
+            z-index: 4;
+            position: fixed;
+        }
+        .logo:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <img src="{% static 'images/logo.png' %}" alt="" class="logo">
+    <div id="app">
+        <div class="videos">
+            <div class="videos-holder">
+            <div class="videocontent">
+                <div class="videotitle">
+                    <h1><i class="videologo"> </i> 我是标题，我是标题，我是标题，我是标题，我是标题</h1>
+                    <p> 发布日期：xxxxxxxxx</p>
+                </div>
+                <div class="video-card">
+                    <div class="thisvideo">
+                        <div id="barrage"></div>
+                        <video controls data-setup='{ }'
+                               class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid" preload="none"
+                               id="video_ready">
+                        </video>
+                    </div>
+                    <div class="play-tools">
+                        <ul class="play-tools-main">
+                            <li class="play-tools-refresh" title="重载" @click = "test"></li>
+                            <li class="play-tools-stop" title="销毁"></li>
+                        </ul>
+                        <ul class="play-tools-main">
+                            <li class="play-tools-choose">
+                                {[ screen_choose ]}
+                                <div class="choose-dropdown">
+                                    <div>1080p</div>
+                                    <div>720p</div>
+                                    <div>480p</div>
+                                    <div>auto</div>
+                                </div>
+                            </li>
+                            <li class="fullscreen-sets"></li>
+                            <li class="fullscreen-window"></li>
+                        </ul>
+                    </div>
+                    <div class="danmucontent">
+                        <div class="video-danmucontent-switch">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch"
+                                       id="flexSwitchCheckChecked"
+                                       checked>
+                                <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                            </div>
+                        </div>
+                        <div class="video-danmucontent-switch">
+                            <div class="input-group">
+                                <button class="btn btn-outline-secondary" type="button"
+                                        id="send_danmu" @click="send_msg_check">发送弹幕
+                                </button>
+                                <input type="text" class="form-control" placeholder="发个弹幕试试吧" aria-label="Example text with button addon" aria-describedby="button-addon1" style="width: 20vw;min-width: 200px" id="danmu_content" v-model="input">
+                            </div>
+                        </div>
+                        <div class="video-danmucontent-switch">
+                            <div class="videobtns">
+                                <span class="videopay"></span>
+                                <span class="videoshare"></span>
+                                <span class="goodvideo"></span>
+                                <span class="videocollect"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="videodetail">
+                    <div class="video-detail-play">
+                        <span>0 播放</span>
+                        <span>0 弹幕</span>
+                        <span>0 评论</span>
+                    </div>
+                </div>
+                <div class="video-profile">
+                    <div>
+                                    <span class="video-profilepic">
+                                        <img src="{% static 'images/头像.png' %}" alt="">
+                                    </span>
+                        <span class="video-profile-name">
+                                        <a href="javascript:">本间芽衣子</a>
+                                    </span>
+                    </div>
+                    <div class="follow-holder">
+                        <div class="follow">
+                            <div style="margin:0px 10px">
+                                <i></i> <a href="javascript:">关注</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="danmu">
+                <div class="ad">
+                    <div class="adcontent">
+                        广告位<i></i>
+                    </div>
+                </div>
+                <div class="danmuholder">
+                    <div class="danmutitle">
+                        <div class="danmutitlecontent">
+                            弹幕列表<i class="danmubtn"></i>
+                        </div>
+                        <div style="position: relative;height: 25px;font-size: 10px;line-height: 25px;padding-left: 10px">
+                            <span style="width: 50px">时间</span>
+                            <span style="width: 100px">内容</span>
+                            <span style="width: 70px">发布时间</span>
+                        </div>
+                        <ul class="danmulist">
+                            <li>
+                                <span>00:00</span>
+                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
+                                <span>2021-10-12 00:00:00</span>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="videolistcontent">
+                    <div style="margin: 20px 0px;font-size: 16px;display: inline-block;height: 20px">
+                        接下来播放
+                        <div style="display: inline-block;position:relative;margin-left: 10px">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch"
+                                       id="flexSwitchCheckChecked"
+                                       checked>
+                                <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nextvideo">
+                        <img src="{% static 'images/1.jpeg' %}" alt="">
+                        <div>
+                            <a href="javascript:">这是一个视频,这是一个视频,这是一个视频</a>
+                            <a href="javascript:">作者：管理员</a>
+                            <a href="javascript:">0 播放 0 弹幕</a>
+                        </div>
+                    </div>
+                    <ul class="videoslist">
+                        <li>
+                            <img src="{% static 'images/2.jpeg' %}" alt="">
+                            <div>
+                                <a href="javascript:">这又是一个视频,这又是一个视频,这又是一个视频</a>
+                                <a href="javascript:">作者：管理员</a>
+                                <a href="javascript:">0 播放 0 弹幕</a>
+                            </div>
+                        </li>
+                        <li>
+                            <img src="{% static 'images/3.jpeg' %}" alt="">
+                            <div>
+                                <a href="javascript:">这他妈也是一个视频,这他妈又是一个视频,这他妈又是一个视频</a>
+                                <a href="javascript:">作者：管理员</a>
+                                <a href="javascript:">0 播放 0 弹幕</a>
+                            </div>
+                        </li>
+                        <li>
+                            <img src="{% static 'images/4.jpeg' %}" alt="">
+                            <div>
+                                <a href="javascript:">哦草这他妈还是个视频,哦草这他妈还是个视频</a>
+                                <a href="javascript:">作者：管理员</a>
+                                <a href="javascript:">0 播放 0 弹幕</a>
+                            </div>
+                        </li>
+                        <li>
+                            <img src="{% static 'images/2.jpeg' %}" alt="">
+                            <div>
+                                <a href="javascript:">这又是一个视频,这又是一个视频,这又是一个视频</a>
+                                <a href="javascript:">作者：管理员</a>
+                                <a href="javascript:">0 播放 0 弹幕</a>
+                            </div>
+                        </li>
+                        <li>
+                            <img src="{% static 'images/3.jpeg' %}" alt="">
+                            <div>
+                                <a href="javascript:">这他妈也是一个视频,这他妈又是一个视频,这他妈又是一个视频</a>
+                                <a href="javascript:">作者：管理员</a>
+                                <a href="javascript:">0 播放 0 弹幕</a>
+                            </div>
+                        </li>
+                        <li>
+                            <img src="{% static 'images/4.jpeg' %}" alt="">
+                            <div>
+                                <a href="javascript:">哦草这他妈还是个视频,哦草这他妈还是个视频</a>
+                                <a href="javascript:">作者：管理员</a>
+                                <a href="javascript:">0 播放 0 弹幕</a>
+                            </div>
+                        </li>
+                    </ul>
+                    <div style="width: 100%;height: 30px;"></div>
+                </div>
+            </div>
+        </div></div>
+        </div>
+    <div class="sidebar">
+    <div class="logo_content">
+        <div class="logo">
+            <i></i>
+            <div class="logo_name"></div>
+        </div>
+        <i id="navbtn"></i>
+    </div>
+    <ul class="searchnav" style="padding: 0px!important">
+        <li>
+            <input type="search" placeholder="请输入">
+            <i class="searchbtn"></i>
+        </li>
+    </ul>
+    <ul class="nav_list" style="padding: 0px!important">
+        <li id="videos">
+            <i class="videosbtn"></i>
+            <p>视频</p>
+        </li>
+        <li id="tmp">
+            <i class="videosbtn"></i>
+            <p>临时</p>
+        </li>
+    </ul>
+    <audio src="{% static 'audio/secretbase.mp3' %}" controls="controls" preload id="music" hidden></audio>
+    <div class="login" @click="login()">
+        <img src="{% static 'images/头像.png' %}" alt="">
+        {% if request.user.is_authenticated %}
+            <span class="logout" @click="logout"><i></i></span>
+            <p class="loginbtn active">
+                {{ request.user.username }}
+            </p>
+        {% else %}
+            <p class="loginbtn">
+                Login
+            </p>
+        {% endif %}
+    </div>
+    <i class="toolbtn"></i>
+    <a href="#" target=""></a>
+</div>
+{% include 'wrapper.html' %}
+</body>
+<script>
+    var defaultdesc = document.querySelector(".defaultdesc")
+    var audio = document.getElementById('music');
+
+    document.querySelector("#navbtn").onclick = function (event) {
+        document.querySelector("#app").classList.toggle("active")
+        document.querySelector(".sidebar").classList.toggle("active")
+        document.querySelector(".logo").classList.toggle("active")
+        document.querySelector(".nav_list").classList.toggle("active")
+        document.querySelector(".toolbtn").classList.toggle("active")
+        document.querySelector(".searchnav").classList.toggle("active")
+        if (document.querySelector(".logout")) {
+            document.querySelector(".logout").classList.toggle("active")
+        }
+    }
+    document.querySelector(".searchbtn").addEventListener('click', function (event) {
+        window.location.href = "http://www.baidu.com"
+    })
+    document.querySelector(".toolbtn").addEventListener("click", function (event) {
+        if (audio !== null) {
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+        }
+    })
+
+</script>
+<script>
+    const vuelogin = new Vue({
+        is_login: false,
+        el: ".login",
+        delimiters: ['{[', ']}'],
+        methods: {
+            login: function () {
+                window.open("{% url 'login' %}", "_blank")
+            },
+            logout: function () {
+                window.location.href = "{% url 'logout' %}", "_blank"
+            }
+        },
+
+    })
+    const vm = new Vue({
+        el: "#app",
+        delimiters: ['{[', ']}'],
+        data:{
+            barrageWidth: document.querySelector('.thisvideo').clientWidth,
+            barrageTipWidth: 50,
+            nextbarrageTop: 0,
+            screen_choose: "auto",
+            video_option:{
+                playbackRates: [0.5, 1, 1.5, 2] ,
+                attributes: true,
+                childList: true,
+                characterData: true,
+                poster:'{% static 'images/3.jpg' %}',
+                sources:[                                                                           // 视频源
+                          {
+                              src: '{% static "videos/video.mp4" %}',
+                              type: 'video/mp4',
+                          }
+                      ]
+                },
+            video_ready:"",
+            video_nowtime: 0,
+            barrageArray:[
+                {
+                    text: '卧槽',
+                    time: 1,
+                    user:"lili",
+                },
+                {
+                    text: '秋天爱美丽',
+                    time: 3,
+                    user:"lili",
+                },
+                {
+                    text: '秋天爱美丽',
+                    time: 5,
+                    user:"lili",
+                },
+                {
+                    text: '秋天爱美丽',
+                    time: 7,
+                    user:"lili",
+                },
+            ],
+            barrage_divNode:"",
+            input:"",
+            fromhere:0
+        },
+        methods:{
+            is_login_check() {
+                if ("{{ request.user.is_authenticated }}" == "True") {
+                    this.is_login = true
+                } else {
+                    this.is_login = false
+                }
+            },
+            send_msg_check: function () {
+                if (this.is_login) {
+                    this.sendMsg()
+                } else {
+                    let choose = window.confirm("登录后才可以发弹幕哦，是否需要登录")
+                    if (choose == true) {
+                        window.open("{% url 'login' %}", "_blank");
+                    } else {
+                        return
+                    }
+                }
+            },
+            createBarrage:function(msg, isSendMsg){
+                let divNode = document.createElement('div');
+                let spanNode = document.createElement('span');
+
+                divNode.innerHTML = msg;
+                divNode.classList.add('barrage-item');
+                barrageBox.appendChild(divNode);
+                spanNode.innerHTML = '举报';
+                spanNode.classList.add('barrage-tip');
+                divNode.appendChild(spanNode);
+                if(this.fromhere==1){
+                    divNode.classList.add('barrage-item-active');
+                    this.fromhere = 0
+                }
+                barrageOffsetLeft = barrageWidth
+                barrageOffsetTop = this.nextbarrageTop
+                this.nextbarrageTop += 30
+                //执行初始化滚动
+
+                this.barrage_divNode = divNode
+                this.initBarrage.call(divNode, {
+                    left: barrageOffsetLeft,
+                    top: barrageOffsetTop,
+                });
+            },
+            sendMsg:function() {
+                let inputValue = this.input
+                this.fromhere = 1
+                inputValue.replace(/\ +/g, "");
+                if (inputValue.length <= 0) {
+                    alert('空的，尼玛')
+                    return false;
+                }
+                this.createBarrage(inputValue, true)
+                this.input = ''
+            },
+            move:function(obj) {
+                if(-obj.width==obj.distance&&obj.chance==1){
+                    obj.distance -= 1
+                    this.nextbarrageTop -= 30
+                }
+                obj.distance--;
+                obj.style.transform = 'translate3D(' + obj.distance + 'px,0px,0px)';
+            },
+            barrageAnimate:function(obj) {
+                this.move(obj);
+                if (Math.abs(obj.distance) < obj.width + obj.offsetLeft) {
+                    obj.timer = requestAnimationFrame(function() {
+                        vm.barrageAnimate(obj);
+                    });
+                } else {
+                    cancelAnimationFrame(obj.timer);
+                    //删除节点
+                    obj.parentNode.removeChild(obj);
+                }
+            },
+            initBarrage:function (obj) {
+                this.barrage_divNode.distance = 0;
+                this.barrage_divNode.chance = 1;
+                this.barrage_divNode.offsetLeft = obj.left;
+                this.barrage_divNode.style.top = obj.top + 'px';
+                this.barrage_divNode.width = ~~window.getComputedStyle(this.barrage_divNode).width.replace('px', '');
+                this.barrage_divNode.timer = null;
+                //弹幕子节点
+                var barrageChileNode = this.barrage_divNode.children[0];
+                barrageChileNode.style.left = (this.barrage_divNode.width - this.barrageTipWidth) / 2 + 'px';
+
+                //运动
+                this.barrageAnimate(this.barrage_divNode);
+
+                //停止
+                this.barrage_divNode.onmouseenter = function() {
+                    barrageChileNode.style.display = 'block';
+                    cancelAnimationFrame(this.timer);
+                };
+
+                this.barrage_divNode.onmouseleave = function() {
+                    barrageChileNode.style.display = 'none';
+                    vm.barrageAnimate(this);
+                };
+
+                //举报
+                barrageChileNode.onclick = function() {
+                    alert('举报成功');
+                }
+            },
+            test:function(){
+                    this.barrageArray.forEach(function(item, index) {
+                        console.log(item.text)
+                    vm.createBarrage(item.text, false)
+                });
+            }
+
+        },
+        mounted: function (){
+            this.is_login_check()
+            this.video_ready = videojs("video_ready",this.video_option,function(){
+                    this.on('loadstart',function () {
+                          console.log('loadstart')
+                        });
+                    this.off('timeupdate',function () {
+                          console.log('off')
+                        });
+                    this.on('timeupdate',function () {
+                         vm.video_nowtime = Math.round(vm.video_ready.currentTime(),1)
+                        });
+            })
+        },
+        watch: {
+            video_nowtime:function (){
+                if( vm.barrageArray.length!=0)
+                    while(vm.barrageArray.length!=0 && vm.barrageArray[0].time===vm.video_nowtime){
+                        let tmp = vm.barrageArray.shift()
+                        this.createBarrage(tmp.text,false)
+                    }
+            }
+        }
+
+    })
+    var inputBox = document.querySelector("#danmu_content")
+    var sendBtn = document.querySelector("#send_danmu")
+    let video = document.querySelector('.thisvideo')
+    let barrage_height=video.clientHeight
+    let barrage_width=video.clientWidth
+    let send_btn = document.querySelector("#send_danmu")
+    let danmu_content = document.querySelector("#danmu_content")
+    var barrageBox = document.querySelector("#barrage")
+    var barrageWidth = barrage_width
+    var barrageHeight = barrage_height
+
+    let danmulistbtn = document.querySelector('.danmubtn')
+    let danmu = document.querySelector(".danmuholder")
+    let danmulist = document.querySelector('.danmulist')
+    let danmuflag = 0
+    danmulistbtn.addEventListener("click", (e) => {
+        danmulistbtn.classList.toggle("active")
+        if (!danmuflag) {
+            danmu.style.height = video.clientHeight + 90 + 'px'
+            danmuflag = 1
+            danmulist.style.height = video.clientHeight + 90 + 'px'
+        } else {
+            danmuflag = 0
+            danmu.style.height = 50 + 'px'
+        }
+    })
+
+    window.onresize=function(){
+        console.log(video.clientWidth)
+    }
+
+    let nextbarrageTop = 0
+
+</script>
+</html>
