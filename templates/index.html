@@ -9,6 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.5.1/layer.js"></script>
     <link href="{% static 'css/wrapper.css' %}" rel="stylesheet">
     <link href="{% static 'css/sidebar.css' %}" rel="stylesheet">
     <link href="{% static 'css/defaultpage.css' %}" rel="stylesheet">
@@ -440,7 +442,7 @@
                         <div class="card">
                             <ul class="admin-terminal-list">
                                 <li>
-                                    <i class="admin-terminal-list-terminal"></i>
+                                    <i class="admin-terminal-list-terminal" @click="terminal"></i>
                                 </li>
                             </ul>
                         </div>
@@ -742,6 +744,35 @@
             shutdown: function () {
                 let value = 0
                 this.finallytime(value)
+            },
+            terminal:function(){
+                layer.open({
+                    type: 2,
+                    title: '建立webssh连接',
+                    closeBtn: 1,
+                    area: ['700px', '550px'],
+                    shadeClose: false,
+                    shade: false,
+                    content: 'http://159.75.34.200:8888',
+                    end:function(){
+                            var handle_status = $("#handle_status").val();
+                            if ( handle_status == '1' ) {
+                                layer.msg('连接成功！',{
+                                    icon: 1,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                },function(){
+                                    history.go(0);
+                                });
+                            } else if ( handle_status == '2' ) {
+                                layer.msg('连接失败！',{
+                                    icon: 2,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                },function(){
+                                    history.go(0);
+                                });
+                            }
+                        }
+                  });
             },
             finallytime: function (value) {
                 let sure = prompt("请输入我很他妈确定")
