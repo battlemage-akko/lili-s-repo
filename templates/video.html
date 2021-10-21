@@ -485,6 +485,7 @@
                 param.append('b_auther', this.username)
                 param.append('b_content', tmp.b_content)
                 param.append('b_time', tmp.b_time)
+                param.append('v_id', {{ v_id }})
                 result = await axios({
                     method:"POST",
                     data: param,

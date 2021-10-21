@@ -47,8 +47,9 @@ def save_barrage(request):
         b_content = request.POST.get("b_content")
         b_time = request.POST.get("b_time")
         b_auther = request.POST.get("b_auther")
-        print(b_content,b_time,b_auther)
-        result = barrageDatabase(b_content=b_content,b_time=b_time,b_auther=b_auther)
+        v_id = request.POST.get("v_id")
+        print(b_content,b_time,b_auther,v_id)
+        result = barrageDatabase(b_content=b_content,b_time=b_time,b_auther=b_auther,v_id=v_id)
         result.save()
         return HttpResponse("上传弹幕成功")
     else:
