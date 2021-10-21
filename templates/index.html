@@ -768,33 +768,6 @@
             },
             terminal:function(){
                 console.log("terminal ready")
-                layer.open({
-                    type: 2,
-                    title: '建立webssh连接',
-                    closeBtn: 1,
-                    area: ['700px', '550px'],
-                    shadeClose: false,
-                    shade: false,
-                    content: this.terminal_cmd==""?'http://159.75.34.200:8888/?hostname=127.0.0.1&username='+ this.terminal_user+'&password='+ this.terminal_password+'':'http://159.75.34.200:8888/?hostname=127.0.0.1&username='+ this.terminal_user+'&password='+ this.terminal_password+'&command='+this.terminal_cmd+'',
-                    end:function(){
-                            var handle_status = $("#handle_status").val();
-                            if ( handle_status == '1' ) {
-                                layer.msg('连接成功！',{
-                                    icon: 1,
-                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                                },function(){
-                                    history.go(0);
-                                });
-                            } else if ( handle_status == '2' ) {
-                                layer.msg('连接失败！',{
-                                    icon: 2,
-                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                                },function(){
-                                    history.go(0);
-                                });
-                            }
-                        }
-                  });
             },
             getVideo:function (v_id){
                 window.open(this.video_url+v_id)
