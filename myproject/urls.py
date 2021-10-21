@@ -30,7 +30,7 @@ urlpatterns = [
     path('testvue/', TemplateView.as_view(template_name="index.html")),
     path('login/', views.index_login, name="login"),
     path('',views.index,name="index"),
-    path('video/',barrageView.video,name="video"),
+    path('video/<int:vid>',barrageView.video,name="video"),
     re_path('^app_api/', include(app_api)),
     re_path('^video_api/', include(video_api))
 ]

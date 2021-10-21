@@ -118,7 +118,7 @@
         <div class="videos-holder">
             <div class="videocontent">
                 <div class="videotitle">
-                    <h1><i class="videologo"> </i> 我是标题，我是标题，我是标题，我是标题，我是标题</h1>
+                    <h1><i class="videologo"> </i>  {{ v_title }}</h1>
                     <p> 发布日期：xxxxxxxxx</p>
                 </div>
                 <div class="video-card">
@@ -179,7 +179,7 @@
                 </div>
                 <div class="videodetail">
                     <div class="video-detail-play">
-                        <span>0 播放</span>
+                        <span>{{ v_play }} 播放</span>
                         <span>{[ barrageArray.length ]} 弹幕</span>
                         <span>0 评论</span>
                     </div>
@@ -190,7 +190,7 @@
                                         <img src="{% static 'images/头像.png' %}" alt="">
                                     </span>
                         <span class="video-profile-name">
-                                        <a href="javascript:">本间芽衣子</a>
+                                        <a href="javascript:">{{ v_auther }}</a>
                                     </span>
                     </div>
                     <div class="follow-holder">
@@ -403,7 +403,7 @@
                 poster: '{% static 'images/3.jpg' %}',
                 sources: [                                                                           // 视频源
                     {
-                        src: '{% static "videos/video.mp4" %}',
+                        src: '{% static "videos/" %}{{ v_ad }}',
                         type: 'video/mp4',
                     }
                 ]
@@ -413,12 +413,15 @@
             barrageArray: [],
             barrage_divNode: "",
             input: "",
-            fromhere: 0
+            fromhere: 0,
+            is_login: false,
+            username: ""
         },
         methods: {
             is_login_check() {
                 if ("{{ request.user.is_authenticated }}" == "True") {
                     this.is_login = true
+                    this.username = "{{ request.user.username }}"
                 } else {
                     this.is_login = false
                 }
@@ -468,8 +471,25 @@
                     alert('空的，尼玛')
                     return false;
                 }
-                this.createBarrage(inputValue, true)
+                console.log(vm.video_ready.currentTime(),Math.ceil(vm.video_ready.currentTime()))
+                tmp = {
+                    b_content: inputValue,
+                    b_time: Math.ceil(vm.video_ready.currentTime()),
+                }
+                this.send_Msg_to_server(tmp)
+                this.barrageArray.unshift(tmp)
                 this.input = ''
+            },
+            send_Msg_to_server: async function (tmp) {
+                let param = new URLSearchParams()
+                param.append('b_auther', this.username)
+                param.append('b_content', tmp.b_content)
+                param.append('b_time', tmp.b_time)
+                result = await axios({
+                    method:"POST",
+                    data: param,
+                    url: "{% url 'save_barrage' %}"
+                })
             },
             move: function (obj) {
                 if (-obj.width == obj.distance && obj.chance == 1) {
@@ -522,9 +542,12 @@
                 }
             },
             getBarrage: async function(){
+                let param = new URLSearchParams()
+                param.append('v_id', {{ v_id }})
                 result = await  axios({
                     method :"POST",
-                    url:"{% url "loadbarrage" %}"
+                    url:"{% url "loadbarrage" %}",
+                    data: param,
                 })
                 this.barrageArray = result.data
             },
@@ -546,16 +569,16 @@
                     console.log('off')
                 });
                 this.on('timeupdate', function () {
-                    vm.video_nowtime = Math.round(vm.video_ready.currentTime(), 1)
+                    vm.video_nowtime = Math.floor(vm.video_ready.currentTime())
                 });
                 this.on('pause', function () {
-                    console.log("暂停了")
+                    console.log("暂停")
                     for(let i of document.querySelector("#barrage").querySelectorAll("div")){
                         cancelAnimationFrame(i.timer);
                     }
                 });
                 this.on('play', function () {
-                    console.log("播放了")
+                    console.log("播放")
                     for(let i of document.querySelector("#barrage").querySelectorAll("div")){
                         vm.barrageAnimate(i);
                     }
@@ -565,8 +588,9 @@
         },
         watch: {
             video_nowtime: function () {
+                console.log(this.barrageArray)
                 if (vm.barrageArray.length != 0)
-                    while (vm.barrageArray.length != 0 && vm.barrageArray[0].b_time === vm.video_nowtime) {
+                    while (vm.barrageArray.length != 0 && vm.barrageArray[0].b_time <= vm.video_nowtime) {
                         let tmp = vm.barrageArray.shift()
                         this.createBarrage(tmp.b_content, false)
                     }

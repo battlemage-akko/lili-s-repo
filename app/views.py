@@ -8,6 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
+from barrage.views import getVideosList
+from barrage.models import video as videosTable
 
 class CustomBackend(ModelBackend):
     # 重写authenticate,实现email与username或者更多参数
@@ -22,12 +24,18 @@ class CustomBackend(ModelBackend):
             return None
 
 AllUsers = [Userdatabase.objects.all()]
-realIP = requests.get(url="http://members.3322.org/dyndns/getip").text
+realIP = "123"
 @login_required
 def test(request):
     return render(request,'test.html')
 def index(request):
-    return render(request,'index.html')
+    videos = []
+    result = videosTable.objects.all().values()
+    for i in result:
+        videos.append(i)
+    return render(request,'index.html',{
+        "videoslist": videos
+    })
 def index_login(request):
     if(request.user.is_authenticated):
         return render(request, 'index.html')
@@ -44,7 +52,7 @@ def login_check(request):
         username = request.POST.get("username")
         password = request.POST.get("password")
         thisuser = authenticate(username=username,password=password)
-        print(thisuser,username,password)
+        #print(thisuser,username,password)
         try:
             if thisuser is not None:
                 loginthisuser(request,thisuser)
@@ -140,7 +148,7 @@ def getAllUsers(requests):
             "is_active":i.is_active,
             "is_superuser": i.is_superuser,
         }
-    print(usersdata)
+    #print(usersdata)
     return JsonResponse(usersdata)
 
 @csrf_exempt
@@ -185,5 +193,6 @@ def rebootorshutdown(request):
         return HttpResponse("牛逼")
     else:
         return HttpResponse("牛逼")
+
 
 

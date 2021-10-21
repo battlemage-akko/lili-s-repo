@@ -18,6 +18,7 @@
     <link href="{% static 'css/character.css' %}" rel="stylesheet">
     <link href="{% static 'css/profile.css' %}" rel="stylesheet">
     <link href="{% static 'css/admin.css' %}" rel="stylesheet">
+    <link href="{% static 'css/videoslist.css' %}" rel="stylesheet">
     <style>
         :root {
             --Head-top: 100px;
@@ -93,7 +94,7 @@
         }
         .videos {
             right: 0;
-            justify-content: center;
+            justify-content: space-between;
             width: calc(100% - 50px);
             height: calc(100% - 50px);
             transition: all .5s ease;
@@ -218,7 +219,16 @@
         </div>
     </div>
     <div v-show="flags.videos" class="videos">
-        <div class="videos-holder"></div>
+        <div class="videos-holder">
+            <ul class="vidoes-list">
+                {% for i in videoslist %}
+                <li @click="getVideo({{ i.v_id }})">
+                    <img src="{% static 'videos/videopic/' %}{{ i.v_pic }}" alt="">
+                    <span>{{ i.v_title }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
     <div v-if="is_login" v-show="flags.pics" class="pics middle">
         <div class="slides">
@@ -627,6 +637,7 @@
         el: "#app",
         delimiters: ['{[', ']}'],
         data: {
+            videosList:[],
             screen_choose: "auto",
             name: "{{ request.user.username }}",
             id: "{{ request.user.id }}",
@@ -659,7 +670,8 @@
             Del_msg:null,
             terminal_user: "administrator",
             terminal_password: window.btoa("123456"),
-            terminal_cmd:""
+            terminal_cmd:"",
+            video_url:"{% url "index" %}"+"video/",
         },
         methods: {
             hidden_user_modify(){
@@ -783,6 +795,9 @@
                             }
                         }
                   });
+            },
+            getVideo:function (v_id){
+                window.open(this.video_url+v_id)
             },
             finallytime: function (value) {
                 let sure = prompt("请输入我很他妈确定")
