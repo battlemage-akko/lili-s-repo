@@ -57,9 +57,11 @@
             padding-left: 50px;
             transition: padding-left .5s ease;
         }
+
         #app.active {
             padding-left: 240px;
         }
+
         .sidebar {
             position: fixed;
             top: 0;
@@ -70,9 +72,11 @@
             transition: all 0.5s ease;
             z-index: 3;
         }
+
         .sidebar.active {
             width: 240px;
         }
+
         .videos {
             right: 0;
             justify-content: center;
@@ -83,6 +87,7 @@
             white-space: nowrap;
             display: flex;
         }
+
         .logo {
             position: fixed;
             width: 120px;
@@ -94,21 +99,23 @@
             cursor: pointer;
             opacity: 0.2;
         }
+
         .logo.active {
             left: 100px;
             z-index: 4;
             position: fixed;
         }
+
         .logo:hover {
             opacity: 1;
         }
     </style>
 </head>
 <body>
-    <img src="{% static 'images/logo.png' %}" alt="" class="logo">
-    <div id="app">
-        <div class="videos">
-            <div class="videos-holder">
+<img src="{% static 'images/logo.png' %}" alt="" class="logo">
+<div id="app">
+    <div class="videos">
+        <div class="videos-holder">
             <div class="videocontent">
                 <div class="videotitle">
                     <h1><i class="videologo"> </i> 我是标题，我是标题，我是标题，我是标题，我是标题</h1>
@@ -124,7 +131,7 @@
                     </div>
                     <div class="play-tools">
                         <ul class="play-tools-main">
-                            <li class="play-tools-refresh" title="重载" @click = "test"></li>
+                            <li class="play-tools-refresh" title="重载" @click="test"></li>
                             <li class="play-tools-stop" title="销毁"></li>
                         </ul>
                         <ul class="play-tools-main">
@@ -155,7 +162,9 @@
                                 <button class="btn btn-outline-secondary" type="button"
                                         id="send_danmu" @click="send_msg_check">发送弹幕
                                 </button>
-                                <input type="text" class="form-control" placeholder="发个弹幕试试吧" aria-label="Example text with button addon" aria-describedby="button-addon1" style="width: 20vw;min-width: 200px" id="danmu_content" v-model="input">
+                                <input type="text" class="form-control" placeholder="发个弹幕试试吧"
+                                       aria-label="Example text with button addon" aria-describedby="button-addon1"
+                                       style="width: 20vw;min-width: 200px" id="danmu_content" v-model="input">
                             </div>
                         </div>
                         <div class="video-danmucontent-switch">
@@ -171,7 +180,7 @@
                 <div class="videodetail">
                     <div class="video-detail-play">
                         <span>0 播放</span>
-                        <span>0 弹幕</span>
+                        <span>{[ barrageArray.length ]} 弹幕</span>
                         <span>0 评论</span>
                     </div>
                 </div>
@@ -210,10 +219,10 @@
                             <span style="width: 70px">发布时间</span>
                         </div>
                         <ul class="danmulist">
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
+                            <li v-for="(item,i) in barrageArray">
+                                <span> {[ Math.floor(item.b_time/60)<10?"0"+Math.floor(item.b_time/60):Math.floor(item.b_time/60) ]}:{[item.b_time%60<10?"0"+item.b_time:item.b_time]}</span>
+                                <span>{[ item.b_content ]}</span>
+                                <span>null</span>
                             </li>
                         </ul>
 
@@ -292,9 +301,10 @@
                     <div style="width: 100%;height: 30px;"></div>
                 </div>
             </div>
-        </div></div>
         </div>
-    <div class="sidebar">
+    </div>
+</div>
+<div class="sidebar">
     <div class="logo_content">
         <div class="logo">
             <i></i>
@@ -312,10 +322,6 @@
         <li id="videos">
             <i class="videosbtn"></i>
             <p>视频</p>
-        </li>
-        <li id="tmp">
-            <i class="videosbtn"></i>
-            <p>临时</p>
         </li>
     </ul>
     <audio src="{% static 'audio/secretbase.mp3' %}" controls="controls" preload id="music" hidden></audio>
@@ -384,53 +390,32 @@
     const vm = new Vue({
         el: "#app",
         delimiters: ['{[', ']}'],
-        data:{
+        data: {
             barrageWidth: document.querySelector('.thisvideo').clientWidth,
             barrageTipWidth: 50,
             nextbarrageTop: 0,
             screen_choose: "auto",
-            video_option:{
-                playbackRates: [0.5, 1, 1.5, 2] ,
+            video_option: {
+                playbackRates: [0.5, 1, 1.5, 2],
                 attributes: true,
                 childList: true,
                 characterData: true,
-                poster:'{% static 'images/3.jpg' %}',
-                sources:[                                                                           // 视频源
-                          {
-                              src: '{% static "videos/video.mp4" %}',
-                              type: 'video/mp4',
-                          }
-                      ]
-                },
-            video_ready:"",
+                poster: '{% static 'images/3.jpg' %}',
+                sources: [                                                                           // 视频源
+                    {
+                        src: '{% static "videos/video.mp4" %}',
+                        type: 'video/mp4',
+                    }
+                ]
+            },
+            video_ready: "",
             video_nowtime: 0,
-            barrageArray:[
-                {
-                    text: '卧槽',
-                    time: 1,
-                    user:"lili",
-                },
-                {
-                    text: '秋天爱美丽',
-                    time: 3,
-                    user:"lili",
-                },
-                {
-                    text: '秋天爱美丽',
-                    time: 5,
-                    user:"lili",
-                },
-                {
-                    text: '秋天爱美丽',
-                    time: 7,
-                    user:"lili",
-                },
-            ],
-            barrage_divNode:"",
-            input:"",
-            fromhere:0
+            barrageArray: [],
+            barrage_divNode: "",
+            input: "",
+            fromhere: 0
         },
-        methods:{
+        methods: {
             is_login_check() {
                 if ("{{ request.user.is_authenticated }}" == "True") {
                     this.is_login = true
@@ -450,7 +435,7 @@
                     }
                 }
             },
-            createBarrage:function(msg, isSendMsg){
+            createBarrage: function (msg, isSendMsg) {
                 let divNode = document.createElement('div');
                 let spanNode = document.createElement('span');
 
@@ -460,7 +445,7 @@
                 spanNode.innerHTML = '举报';
                 spanNode.classList.add('barrage-tip');
                 divNode.appendChild(spanNode);
-                if(this.fromhere==1){
+                if (this.fromhere == 1) {
                     divNode.classList.add('barrage-item-active');
                     this.fromhere = 0
                 }
@@ -475,7 +460,7 @@
                     top: barrageOffsetTop,
                 });
             },
-            sendMsg:function() {
+            sendMsg: function () {
                 let inputValue = this.input
                 this.fromhere = 1
                 inputValue.replace(/\ +/g, "");
@@ -486,18 +471,18 @@
                 this.createBarrage(inputValue, true)
                 this.input = ''
             },
-            move:function(obj) {
-                if(-obj.width==obj.distance&&obj.chance==1){
+            move: function (obj) {
+                if (-obj.width == obj.distance && obj.chance == 1) {
                     obj.distance -= 1
                     this.nextbarrageTop -= 30
                 }
                 obj.distance--;
                 obj.style.transform = 'translate3D(' + obj.distance + 'px,0px,0px)';
             },
-            barrageAnimate:function(obj) {
+            barrageAnimate: function (obj) {
                 this.move(obj);
                 if (Math.abs(obj.distance) < obj.width + obj.offsetLeft) {
-                    obj.timer = requestAnimationFrame(function() {
+                    obj.timer = requestAnimationFrame(function () {
                         vm.barrageAnimate(obj);
                     });
                 } else {
@@ -506,7 +491,7 @@
                     obj.parentNode.removeChild(obj);
                 }
             },
-            initBarrage:function (obj) {
+            initBarrage: function (obj) {
                 this.barrage_divNode.distance = 0;
                 this.barrage_divNode.chance = 1;
                 this.barrage_divNode.offsetLeft = obj.left;
@@ -521,49 +506,69 @@
                 this.barrageAnimate(this.barrage_divNode);
 
                 //停止
-                this.barrage_divNode.onmouseenter = function() {
+                this.barrage_divNode.onmouseenter = function () {
                     barrageChileNode.style.display = 'block';
                     cancelAnimationFrame(this.timer);
                 };
 
-                this.barrage_divNode.onmouseleave = function() {
+                this.barrage_divNode.onmouseleave = function () {
                     barrageChileNode.style.display = 'none';
                     vm.barrageAnimate(this);
                 };
 
                 //举报
-                barrageChileNode.onclick = function() {
+                barrageChileNode.onclick = function () {
                     alert('举报成功');
                 }
             },
-            test:function(){
-                    this.barrageArray.forEach(function(item, index) {
-                        console.log(item.text)
+            getBarrage: async function(){
+                result = await  axios({
+                    method :"POST",
+                    url:"{% url "loadbarrage" %}"
+                })
+                this.barrageArray = result.data
+            },
+            test: function () {
+                this.barrageArray.forEach(function (item, index) {
+                    console.log(item.text)
                     vm.createBarrage(item.text, false)
                 });
             }
 
         },
-        mounted: function (){
+        mounted: function () {
             this.is_login_check()
-            this.video_ready = videojs("video_ready",this.video_option,function(){
-                    this.on('loadstart',function () {
-                          console.log('loadstart')
-                        });
-                    this.off('timeupdate',function () {
-                          console.log('off')
-                        });
-                    this.on('timeupdate',function () {
-                         vm.video_nowtime = Math.round(vm.video_ready.currentTime(),1)
-                        });
+            this.video_ready = videojs("video_ready", this.video_option, function () {
+                this.on('loadstart', function () {
+                    console.log('loadstart')
+                });
+                this.off('timeupdate', function () {
+                    console.log('off')
+                });
+                this.on('timeupdate', function () {
+                    vm.video_nowtime = Math.round(vm.video_ready.currentTime(), 1)
+                });
+                this.on('pause', function () {
+                    console.log("暂停了")
+                    for(let i of document.querySelector("#barrage").querySelectorAll("div")){
+                        cancelAnimationFrame(i.timer);
+                    }
+                });
+                this.on('play', function () {
+                    console.log("播放了")
+                    for(let i of document.querySelector("#barrage").querySelectorAll("div")){
+                        vm.barrageAnimate(i);
+                    }
+                });
             })
+            this.getBarrage()
         },
         watch: {
-            video_nowtime:function (){
-                if( vm.barrageArray.length!=0)
-                    while(vm.barrageArray.length!=0 && vm.barrageArray[0].time===vm.video_nowtime){
+            video_nowtime: function () {
+                if (vm.barrageArray.length != 0)
+                    while (vm.barrageArray.length != 0 && vm.barrageArray[0].b_time === vm.video_nowtime) {
                         let tmp = vm.barrageArray.shift()
-                        this.createBarrage(tmp.text,false)
+                        this.createBarrage(tmp.b_content, false)
                     }
             }
         }
@@ -572,8 +577,8 @@
     var inputBox = document.querySelector("#danmu_content")
     var sendBtn = document.querySelector("#send_danmu")
     let video = document.querySelector('.thisvideo')
-    let barrage_height=video.clientHeight
-    let barrage_width=video.clientWidth
+    let barrage_height = video.clientHeight
+    let barrage_width = video.clientWidth
     let send_btn = document.querySelector("#send_danmu")
     let danmu_content = document.querySelector("#danmu_content")
     var barrageBox = document.querySelector("#barrage")
@@ -596,7 +601,7 @@
         }
     })
 
-    window.onresize=function(){
+    window.onresize = function () {
         console.log(video.clientWidth)
     }
 

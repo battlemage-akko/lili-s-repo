@@ -5,7 +5,7 @@ uwsgi --stop uwsgi/uwsgi.pid
 #查看uwsgi各进程工作状况
 uwsgitop uwsgi/uwsgi.status
 #追踪uwsgi日志及动态刷新当前访问记录
-tail -f uwsgi/uwsgi.log
+tail -f /data/wwwroot/myproject/uwsgi/uwsgi.log
 #启动uwsgi
 uwsgi --ini myproject.ini
 nginx -s reload
@@ -15,6 +15,7 @@ createsuperuser
 makemigrations
 migrate
 
+wssh --fbidhttp=False --xheaders=False --xsrf=False
 
 animation顺序
 animation-name

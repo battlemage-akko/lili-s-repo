@@ -34,8 +34,7 @@ def index_login(request):
     return render(request,'login.html')
 def wrapper(request):
     return render(request,'wrapper.html')
-def video(request):
-    return render(request,'video.html')
+
 
 @csrf_exempt
 def login_check(request):
@@ -119,7 +118,6 @@ def serverDetail(request):
         "IP" : "公网IP : "+realIP+" /内网IP : "+socket.gethostbyname(socket.gethostname()),
      }
     return JsonResponse(result)
-
 @csrf_exempt
 def userDetail(request):
     admin = AllUsers[0].filter(is_superuser=1)

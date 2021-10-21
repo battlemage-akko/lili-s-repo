@@ -92,23 +92,23 @@ DATABASES = {
         'HOST': 'localhost',
         'NAME':'secretbase',
     },
-    'danmu': {
+    'barrage': {
         'ENGINE': 'django.db.backends.mysql',
         'USER': 'root',
         'PASSWORD': '5daaiMIANMA',
         'HOST': 'localhost',
-        'NAME':'danmu',
+        'NAME':'barrage',
     }
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 }
-# DATABASE_ROUTERS = ['myproject.database_router.DatabaseAppsRouter']
-# DATABASE_APPS_MAPPING = {
-#     # example:
-#     # 'app_name':'database_name',
-#     'app': 'default',
-#     'barrage':  'danmu',
-# }
+DATABASE_ROUTERS = ['myproject.database_router.DatabaseAppsRouter']
+DATABASE_APPS_MAPPING = {
+    # example:danmu
+    # 'app_name':'database_name',
+    'app': 'default',
+    'barrage':  'barrage',
+}
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',

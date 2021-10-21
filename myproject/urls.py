@@ -17,18 +17,20 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from app import views
 from app import urls as app_api
+from barrage import urls as video_api
 from django.views.generic import TemplateView
 from order_channels import views as channelsviews
-
+from barrage import views as barrageView
 urlpatterns = [
     #path('admin/', admin.site.urls),
+    # url(r'^static/(?P<path>.*)$', static.serve,
+    #   {'document_root': settings.STATIC_ROOT}, name='static'),
     path('test/', views.test, name="test"),
     path('null/', channelsviews.channelsviews, name="null"),
     path('testvue/', TemplateView.as_view(template_name="index.html")),
     path('login/', views.index_login, name="login"),
     path('',views.index,name="index"),
-    path('video/',views.video,name="video"),
-    re_path('^app_api/', include(app_api))
-    # url(r'^static/(?P<path>.*)$', static.serve,
-    #   {'document_root': settings.STATIC_ROOT}, name='static'),
+    path('video/',barrageView.video,name="video"),
+    re_path('^app_api/', include(app_api)),
+    re_path('^video_api/', include(video_api))
 ]

@@ -35,19 +35,9 @@
     padding:10px;
     flex-grow: 2;
 }
-.admin-terminal-list{
-    margin: 0px;
-}
-.admin-terminal-list li{
-    width: 50px;
-    height: 50px;
-    font-size: 20px;
-    line-height: 50px;
-    text-align: center;
-    cursor: pointer;
-}
-.admin-terminal-list li:hover{
-    background-color: #bacbe6;
+.admin-terminal-list-terminal{
+    width: 30px;
+    height: 30px;
 }
 .admin-terminal-list-terminal:before{
     content: "\ea81";
@@ -164,5 +154,28 @@
     content: '\e9ba';
     font-family: IcoMoon-Free;
     font-style: normal;
-
+}
+.admin-terminal-list{
+    display: flex;
+    justify-content: space-between;
+    margin: 0px;
+}
+.admin-terminal-input{
+    display: flex;
+}
+.admin-terminal-input input{
+    margin: 5px 20px;
+}
+.admin-terminal-user{
+    display: none;
+    width: 260px;
+}
+.admin-terminal-password{
+    display: none;
+}
+.admin-terminal-cmd{
+    width: 300px;
+}
+.layui-layer-title{
+    background-color: rgba(245, 240, 240, 0.5);
 }
