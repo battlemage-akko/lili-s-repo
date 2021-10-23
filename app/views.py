@@ -7,8 +7,8 @@ from app.models import AppUser as Userdatabase
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.backends import ModelBackend
+from django.views.decorators.clickjacking import xframe_options_exempt,xframe_options_sameorigin
 from django.db.models import Q
-from barrage.views import getVideosList
 from barrage.models import video as videosTable
 
 class CustomBackend(ModelBackend):
@@ -41,9 +41,13 @@ def index_login(request):
     if(request.user.is_authenticated):
         return render(request, 'index.html')
     return render(request,'login.html')
+
 def wrapper(request):
     return render(request,'wrapper.html')
 
+@xframe_options_sameorigin
+def upload_page(request):
+    return render(request,'upload.html')
 
 @csrf_exempt
 def login_check(request):

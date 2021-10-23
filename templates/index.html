@@ -239,7 +239,7 @@
                         </h2>
                     </div>
                 </div>
-                <span class="videoslist-upload" title="上传"></span>
+                <span class="videoslist-upload" title="上传" @click="upload_video"></span>
             </div>
             <div style="padding: 0px 20px">
                 <ul class="videoslist-choose">
@@ -815,6 +815,39 @@
             shutdown: function () {
                 let value = 0
                 this.finallytime(value)
+            },
+            upload_video:function (){
+                if(!this.is_login){
+                    alert("登录")
+                    return
+                }
+                layer.open({
+                    type: 2,
+                    title: '上传视频',
+                    closeBtn: 1,
+                    area: ['700px', '400px'],
+                    shadeClose: true,
+                    shade: false,
+                    content: "{% url 'upload_page' %}",
+                    end:function(){
+                            var handle_status = $("#handle_status").val();
+                            if ( handle_status == '1' ) {
+                                layer.msg('连接成功！',{
+                                    icon: 1,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                },function(){
+                                    history.go(0);
+                                });
+                            } else if ( handle_status == '2' ) {
+                                layer.msg('连接失败！',{
+                                    icon: 2,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                },function(){
+                                    history.go(0);
+                                });
+                            }
+                        }
+                  });
             },
             terminal:function(){
                 console.log("terminal ready")

@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-
 from barrage.models import test as barrageDatabase
 from barrage.models import video as videosTable
 from django.http import HttpResponse, JsonResponse
@@ -24,7 +23,6 @@ def video(request,vid):
 @csrf_exempt
 def loadbarrage(request):
     v_id = request.POST.get("v_id")
-
     barrage = []
     result = barrageDatabase.objects.filter(v_id=v_id).order_by('b_time').values()
     for i in result:
@@ -54,3 +52,30 @@ def save_barrage(request):
         return HttpResponse("上传弹幕成功")
     else:
         return HttpResponse("上传弹幕失败")
+
+@csrf_exempt
+def save_video(request):
+    if(request.method == "POST"):
+        video_title = request.POST.get("video_title")
+        video_pic = request.FILES.get("video_pic")
+        video_file = request.FILES.get("video_file")
+        username = request.POST.get("username")
+        print(video_file.name)
+        finish_save(video_title, video_pic, video_file,username)
+    return HttpResponse("上传完成")
+
+def finish_save(video_title,video_pic,video_file,username):
+    video_pic_save_path = 'static/videos/videopic/' + video_title + '.jpg'
+    with open(video_pic_save_path, 'wb+') as f:
+        f.write(video_pic.read())
+    print(video_pic.name, "done")
+
+    video_file_save_path = 'static/videos/' + video_title + '.mp4'
+    with open(video_file_save_path, 'wb+') as f:
+        f.write(video_file.read())
+    print(video_file.name, "done")
+
+    result = videosTable(v_ad=video_file.name,v_pic=video_pic.name,v_auther=username,v_title=video_title,v_like=0,v_play=0,v_collect=0)
+    result.save()
+
+    return HttpResponse("保存完毕")
