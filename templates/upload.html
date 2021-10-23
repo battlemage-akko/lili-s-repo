@@ -56,12 +56,13 @@
             </div>
             <div class="input-group">
               <span class="input-group-text">确认信息</span>
-              <input type="text" aria-label="First name" class="form-control" placeholder="输入标题" name="video_title" v-model="video_title">
+              <input type="text" aria-label="First name" class="form-control video_title" placeholder="输入标题" name="video_title" v-model="video_title">
               <input type="text" aria-label="Last name" class="form-control" placeholder="输入'1'确认信息无误" v-model="sure">
             </div>
             <div>
-                <button type="button" class="btn btn-primary" @click="upload_form_check">上传</button>
-                <button type="button" class="btn btn-danger">取消</button>
+                <button type="button" class="btn btn-primary btn-sure" @click="upload_form_check">上传</button>
+                <button type="button" class="btn btn-danger" @click="clear_input">取消</button>
+                <button type="button" class="btn btn-danger">{[ pre ]}</button>
             </div>
         </form>
     </div>
@@ -75,8 +76,16 @@ const vm = new Vue({
         video_pic:"",
         video_file:"",
         video_title:"",
+        pre:"0%",
     },
     methods:{
+        clear_input:function (){
+            document.querySelector('.upload-form').querySelectorAll('input').forEach((item)=>{
+                item.value = null
+            })
+            this.sure = 0
+            this.video_title = ""
+        },
         upload_form_check:function(){
           if(this.video_file==""){
               alert("请选择要上传的视频")
@@ -102,14 +111,30 @@ const vm = new Vue({
             param.append('video_file',this.video_file)
             param.append('video_title',this.video_title)
             param.append('username', "{{ request.user.username }}")
+            document.querySelector('.upload-form').querySelectorAll('input').forEach((item)=>{
+                item.disabled = "disabled"
+            })
+            document.querySelector('.btn-sure').disabled = "disabled"
             result = await axios({
                 method: "POST",
                 url:"{% url 'save_video' %}",
                 onUploadProgress (progress) {
-                    console.log(Math.round(progress.loaded / progress.total * 100) + '%');
-                  },
+                    vm.pre = Math.round(progress.loaded / progress.total * 100) + '%';
+                    if(vm.pre=="100%"){
+                        vm.pre="0%"
+                        document.querySelector('.upload-form').querySelectorAll('input').forEach((item)=>{
+                            item.removeAttribute("disabled")
+                        })
+                        document.querySelector('.btn-sure').removeAttribute("disabled")
+
+                        document.querySelector('.upload-form').querySelectorAll('input').forEach((item)=>{
+                            item.value = null
+                        })
+                    }
+                },
                 data: param,
             })
+
         },
         get_file:function (e){
             let file = e.target.files[0]
