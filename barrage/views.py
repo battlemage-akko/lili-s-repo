@@ -57,7 +57,7 @@ def save_barrage(request):
 def getmorehotvideo(request):
     fromtag = int(request.POST.get("count"))
     totag = fromtag + 10
-    result = videosTable.objects.all().values()
+    result = videosTable.objects.all().order_by('-v_id').values()
     hotvideos = []
     if (totag > len(result)):
         totag = len(result)

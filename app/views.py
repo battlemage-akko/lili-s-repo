@@ -31,12 +31,12 @@ def test(request):
 def index(request):
     videos = []
     Hotvideos = []
-    result = videosTable.objects.all().values()
+    result = videosTable.objects.all().order_by('-v_id').values()
     for i in result:
         videos.append(i)
+    print(videos)
     for i in range(10):
         Hotvideos.append(videos[i])
-    print(Hotvideos)
     return render(request,'index.html',{
         "videoslist": videos,
         "hotvideolist": Hotvideos
