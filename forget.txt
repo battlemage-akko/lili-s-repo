@@ -27,7 +27,13 @@ animation-iteration-count
 animation-direction
 animation-fill-mode
 
+git stash
+git pull origin master
+git stash pop
 
+
+git reset --hard
+git pull origin master
 
 
 
