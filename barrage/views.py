@@ -54,6 +54,19 @@ def save_barrage(request):
         return HttpResponse("上传弹幕失败")
 
 @csrf_exempt
+def getmorehotvideo(request):
+    fromtag = int(request.POST.get("count"))
+    totag = fromtag + 10
+    result = videosTable.objects.all().values()
+    hotvideos = []
+    if (totag > len(result)):
+        totag = len(result)
+    for i in result[fromtag:totag]:
+        hotvideos.append(i)
+    print(hotvideos)
+    return JsonResponse(hotvideos, safe=False)
+
+@csrf_exempt
 def save_video(request):
     if(request.method == "POST"):
         video_title = request.POST.get("video_title")

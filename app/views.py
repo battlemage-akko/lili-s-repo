@@ -10,6 +10,8 @@ from django.contrib.auth.backends import ModelBackend
 from django.views.decorators.clickjacking import xframe_options_exempt,xframe_options_sameorigin
 from django.db.models import Q
 from barrage.models import video as videosTable
+AllUsers = [Userdatabase.objects.all()]
+realIP = requests.get(url="http://members.3322.org/dyndns/getip").text
 
 class CustomBackend(ModelBackend):
     # 重写authenticate,实现email与username或者更多参数
@@ -23,20 +25,24 @@ class CustomBackend(ModelBackend):
         except Exception as e:
             return None
 
-AllUsers = [Userdatabase.objects.all()]
-realIP = requests.get(url="http://members.3322.org/dyndns/getip").text
-
 @login_required
 def test(request):
     return render(request,'test.html')
 def index(request):
     videos = []
+    Hotvideos = []
     result = videosTable.objects.all().values()
     for i in result:
         videos.append(i)
+    for i in range(10):
+        Hotvideos.append(videos[i])
+    print(Hotvideos)
     return render(request,'index.html',{
-        "videoslist": videos
+        "videoslist": videos,
+        "hotvideolist": Hotvideos
     })
+def getHotVideos(request):
+    pass
 def index_login(request):
     if(request.user.is_authenticated):
         return render(request, 'index.html')

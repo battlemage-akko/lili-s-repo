@@ -99,6 +99,7 @@
             white-space: nowrap;
             display: flex;
             justify-content: center;
+            padding-bottom: 30px;
         }
         .sidebar {
             position: fixed;
@@ -247,31 +248,30 @@
                     <li @click="changeVideosListTag('follow')"><a href="javascript:">关注</a></li>
                 </ul>
             </div>
-            <ul class="vidoes-list vidoes-list-hot" v-show="videosList_tags.hot">
-                {% for i in videoslist %}
-                <li @click="getVideo({{ i.v_id }})" class="videos-each">
-                    <div style="background: url('{% static 'videos/videopic/' %}{{ i.v_pic }}') center center no-repeat;background-size:contain;background-color: black"></div>
+            <ul class="videos-list videos-list-hot" v-show="videosList_tags.hot">
+                <li v-for="(item,i) in videosList_hot" @click="getVideo(item.v_id)" class="videos-each">
+                    <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'contain'}" class="videos-each-background"></div>
                     <span class="videos-each-tips">
                         <i class="videos-each-play"></i>
                     </span>
                     <span class="videos-each-title">
-                        <h1>{{ i.v_title }}</h1>
-                        <p>作者 : {{ i.v_auther }}</p>
-                        <p style="right: 10px">播放 : {{ i.v_play }}</p>
+                        <h1>{[ item.v_title ]}</h1>
+                        <p>作者 : {[ item.v_auther ]}</p>
+                        <p style="right: 10px">播放 : {[ item.v_play ]}</p>
                     </span>
                 </li>
-                {% endfor %}
             </ul>
-            <ul class="vidoes-list vidoes-list-popular" v-show="videosList_tags.popular">
+            <ul class="videos-list videos-list-popular" v-show="videosList_tags.popular">
                 <li style="padding: 10px">
                     <img src="{% static "images/猫猫叹气.png" %}" alt="">
                 </li>
             </ul>
-            <ul class="vidoes-list vidoes-list-follow" v-show="videosList_tags.follow">
+            <ul class="videos-list videos-list-follow" v-show="videosList_tags.follow">
                 <li style="padding: 10px">
                     <img src="{% static "images/猫猫叹气.png" %}" alt="">
                 </li>
             </ul>
+            <div class="showmore-div"><button class="btn btn-primary"><i class="showmore-div-btn" @click="getmorehotvideo">MORE</i></button></div>
         </div>
     </div>
     <div v-if="is_login" v-show="flags.pics" class="pics middle">
@@ -681,6 +681,7 @@
         delimiters: ['{[', ']}'],
         data: {
             videosList:[],
+            videosList_hot:{{ hotvideolist|safe }},
             videosList_tags:{
                 "hot":true,
                 "popular": false,
@@ -899,6 +900,18 @@
                     this.videosList_tags[key] = false
                 }
                 this.videosList_tags[tag]=true
+            },
+            getmorehotvideo: async function (){
+                let param = new URLSearchParams()
+                param.append("count",this.videosList_hot.length)
+                result = await axios({
+                    method:"POST",
+                    url:"{% url 'getmorehotvideo' %}",
+                    data: param
+                })
+                for(let item of result.data){
+                    this.videosList_hot.push(item)
+                }
             }
         },
         mounted: function () {

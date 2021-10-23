@@ -7,18 +7,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="shortcut icon" href="{% static 'images/favicon.png' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="//cdn.bootcss.com/video.js/7.0.0-alpha.1/alt/video-js-cdn.css" rel="stylesheet">
-    <script src="//cdn.bootcss.com/video.js/7.0.0-alpha.1/video.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.5.1/layer.js"></script>
     <link href="{% static 'css/wrapper.css' %}" rel="stylesheet">
     <link href="{% static 'css/sidebar.css' %}" rel="stylesheet">
     <link href="{% static 'css/defaultpage.css' %}" rel="stylesheet">
     <link href="{% static 'css/pics.css' %}" rel="stylesheet">
-    <link href="{% static 'css/videos.css' %}" rel="stylesheet">
     <link href="{% static 'css/character.css' %}" rel="stylesheet">
     <link href="{% static 'css/profile.css' %}" rel="stylesheet">
     <link href="{% static 'css/admin.css' %}" rel="stylesheet">
+    <link href="{% static 'css/videoslist.css' %}" rel="stylesheet">
     <style>
         :root {
             --Head-top: 100px;
@@ -94,13 +94,11 @@
         }
         .videos {
             right: 0;
-            justify-content: center;
-            width: calc(100% - 50px);
-            height: calc(100% - 50px);
+            width: 100%;
             transition: all .5s ease;
-            padding-left: 50px;
             white-space: nowrap;
             display: flex;
+            justify-content: center;
         }
         .sidebar {
             position: fixed;
@@ -151,7 +149,7 @@
             top: 35px;
             left: 50%;
             z-index: 4;
-            transform: translateX(calc(-50% + 25px));
+            transform: translateX(calc(-50% + 6px));
             transition: all 0.5s ease;
             cursor: pointer;
             opacity: 0.2;
@@ -182,7 +180,15 @@
             .profile {
                 overflow: hidden;
             }
-
+        }
+        .videoslist-title{
+            position: relative;
+            height: 300px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            background: url("{% static 'images/videoBackground.jpg' %}") right bottom no-repeat;
+            background-size: cover;
         }
     </style>
 </head>
@@ -220,192 +226,52 @@
     </div>
     <div v-show="flags.videos" class="videos">
         <div class="videos-holder">
-            <div class="videocontent">
-                <div class="videotitle">
-                    <h1><i class="videologo"> </i> 我是标题，我是标题，我是标题，我是标题，我是标题</h1>
-                    <p> 发布日期：xxxxxxxxx</p>
-                </div>
-                <div class="video-card">
-                    <div class="thisvideo">
-                        <div id="barrage"></div>
-                        <video controls data-setup='{ }'
-                               class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid" preload="none"
-                               poster="{% static 'images/3.jpg' %}" id="video_ready">
-                            <source src="{% static "videos/video.mp4" %}"></source>
-                        </video>
-                    </div>
-                    <div class="play-tools">
-                        <ul class="play-tools-main">
-                            <li class="play-tools-refresh" title="重载"></li>
-                            <li class="play-tools-stop" title="销毁"></li>
-                        </ul>
-                        <ul class="play-tools-main">
-                            <li class="play-tools-choose">
-                                {[ screen_choose ]}
-                                <div class="choose-dropdown" @click="changeScreen($event)">
-                                    <div>1080p</div>
-                                    <div>720p</div>
-                                    <div>480p</div>
-                                    <div>auto</div>
-                                </div>
-                            </li>
-                            <li class="fullscreen-sets"></li>
-                            <li class="fullscreen-window"></li>
-                        </ul>
-                    </div>
-                    <div class="danmucontent">
-                        <div class="video-danmucontent-switch">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch"
-                                       id="flexSwitchCheckChecked"
-                                       checked>
-                                <label class="form-check-label" for="flexSwitchCheckChecked"></label>
-                            </div>
-                        </div>
-                        <div class="video-danmucontent-switch">
-                            <div class="input-group">
-                                <button class="btn btn-outline-secondary" type="button" @click="send_danmu"
-                                        id="button-addon1">发送弹幕
-                                </button>
-                                <input type="text" class="form-control" placeholder="发个弹幕试试吧"
-                                       aria-label="Example text with button addon" aria-describedby="button-addon1"
-                                       style="width: 20vw;min-width: 200px">
-                            </div>
-                        </div>
-                        <div class="video-danmucontent-switch">
-                            <div class="videobtns">
-                                <span class="videopay"></span>
-                                <span class="videoshare"></span>
-                                <span class="goodvideo"></span>
-                                <span class="videocollect"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="videodetail">
-                    <div class="video-detail-play">
-                        <span>0 播放</span>
-                        <span>0 弹幕</span>
-                        <span>0 评论</span>
-                    </div>
-                </div>
-                <div class="video-profile">
+            <div class="videoslist-title">
+                <div style="position: absolute" class="videoslist-search">
                     <div>
-                                    <span class="video-profilepic">
-                                        <img src="{% static 'images/头像.png' %}" alt="">
-                                    </span>
-                        <span class="video-profile-name">
-                                        <a href="javascript:">本间芽衣子</a>
-                                    </span>
-                    </div>
-                    <div class="follow-holder">
-                        <div class="follow">
-                            <div style="margin:0px 10px">
-                                <i></i> <a href="javascript:">关注</a>
-                            </div>
+                        <div class="input-group mb-2">
+                      <input type="text" class="form-control videoslist-search-input" placeholder="请输入" aria-label="Recipient's username" aria-describedby="button-addon2">
+                      <button class="btn btn-outline-secondary videoslist-search-btn" type="button" id="button-addon2"><i class="videoslist-input-btn"></i></button>
                         </div>
+                        <h2 style="font-size: 12px;padding: 0px 30px">
+                            推荐: <a href="javascript:"></a>
+                        </h2>
                     </div>
                 </div>
+                <span class="videoslist-upload" title="上传" @click="upload_video"></span>
             </div>
-            <div class="danmu">
-                <div class="ad">
-                    <div class="adcontent">
-                        广告位<i></i>
-                    </div>
-                </div>
-                <div class="danmuholder">
-                    <div class="danmutitle">
-                        <div class="danmutitlecontent">
-                            弹幕列表<i class="danmubtn"></i>
-                        </div>
-                        <div style="position: relative;height: 25px;font-size: 10px;line-height: 25px;padding-left: 10px">
-                            <span style="width: 50px">时间</span>
-                            <span style="width: 100px">内容</span>
-                            <span style="width: 70px">发布时间</span>
-                        </div>
-                        <ul class="danmulist">
-                            <li>
-                                <span>00:00</span>
-                                <span>我是内容，我是内容,我是内容，我是内容,我是内容，我是内容</span>
-                                <span>2021-10-12 00:00:00</span>
-                            </li>
-                        </ul>
-
-                    </div>
-                </div>
-                <div class="videolistcontent">
-                    <div style="margin: 20px 0px;font-size: 16px;display: inline-block;height: 20px">
-                        接下来播放
-                        <div style="display: inline-block;position:relative;margin-left: 10px">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch"
-                                       id="flexSwitchCheckChecked"
-                                       checked>
-                                <label class="form-check-label" for="flexSwitchCheckChecked"></label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="nextvideo">
-                        <img src="{% static 'images/1.jpeg' %}" alt="">
-                        <div>
-                            <a href="javascript:">这是一个视频,这是一个视频,这是一个视频</a>
-                            <a href="javascript:">作者：管理员</a>
-                            <a href="javascript:">0 播放 0 弹幕</a>
-                        </div>
-                    </div>
-                    <ul class="videoslist">
-                        <li>
-                            <img src="{% static 'images/2.jpeg' %}" alt="">
-                            <div>
-                                <a href="javascript:">这又是一个视频,这又是一个视频,这又是一个视频</a>
-                                <a href="javascript:">作者：管理员</a>
-                                <a href="javascript:">0 播放 0 弹幕</a>
-                            </div>
-                        </li>
-                        <li>
-                            <img src="{% static 'images/3.jpeg' %}" alt="">
-                            <div>
-                                <a href="javascript:">这他妈也是一个视频,这他妈又是一个视频,这他妈又是一个视频</a>
-                                <a href="javascript:">作者：管理员</a>
-                                <a href="javascript:">0 播放 0 弹幕</a>
-                            </div>
-                        </li>
-                        <li>
-                            <img src="{% static 'images/4.jpeg' %}" alt="">
-                            <div>
-                                <a href="javascript:">哦草这他妈还是个视频,哦草这他妈还是个视频</a>
-                                <a href="javascript:">作者：管理员</a>
-                                <a href="javascript:">0 播放 0 弹幕</a>
-                            </div>
-                        </li>
-                        <li>
-                            <img src="{% static 'images/2.jpeg' %}" alt="">
-                            <div>
-                                <a href="javascript:">这又是一个视频,这又是一个视频,这又是一个视频</a>
-                                <a href="javascript:">作者：管理员</a>
-                                <a href="javascript:">0 播放 0 弹幕</a>
-                            </div>
-                        </li>
-                        <li>
-                            <img src="{% static 'images/3.jpeg' %}" alt="">
-                            <div>
-                                <a href="javascript:">这他妈也是一个视频,这他妈又是一个视频,这他妈又是一个视频</a>
-                                <a href="javascript:">作者：管理员</a>
-                                <a href="javascript:">0 播放 0 弹幕</a>
-                            </div>
-                        </li>
-                        <li>
-                            <img src="{% static 'images/4.jpeg' %}" alt="">
-                            <div>
-                                <a href="javascript:">哦草这他妈还是个视频,哦草这他妈还是个视频</a>
-                                <a href="javascript:">作者：管理员</a>
-                                <a href="javascript:">0 播放 0 弹幕</a>
-                            </div>
-                        </li>
-                    </ul>
-                    <div style="width: 100%;height: 30px;"></div>
-                </div>
+            <div style="padding: 0px 20px">
+                <ul class="videoslist-choose">
+                    <li @click="changeVideosListTag('hot')"><a href="javascript:">热门</a></li>
+                    <li @click="changeVideosListTag('popular')"><a href="javascript:">最新</a></li>
+                    <li @click="changeVideosListTag('follow')"><a href="javascript:">关注</a></li>
+                </ul>
             </div>
+            <ul class="vidoes-list vidoes-list-hot" v-show="videosList_tags.hot">
+                {% for i in videoslist %}
+                <li @click="getVideo({{ i.v_id }})" class="videos-each">
+                    <div style="background: url('{% static 'videos/videopic/' %}{{ i.v_pic }}') center center no-repeat;background-size:contain;background-color: black"></div>
+                    <span class="videos-each-tips">
+                        <i class="videos-each-play"></i>
+                    </span>
+                    <span class="videos-each-title">
+                        <h1>{{ i.v_title }}</h1>
+                        <p>作者 : {{ i.v_auther }}</p>
+                        <p style="right: 10px">播放 : {{ i.v_play }}</p>
+                    </span>
+                </li>
+                {% endfor %}
+            </ul>
+            <ul class="vidoes-list vidoes-list-popular" v-show="videosList_tags.popular">
+                <li style="padding: 10px">
+                    <img src="{% static "images/猫猫叹气.png" %}" alt="">
+                </li>
+            </ul>
+            <ul class="vidoes-list vidoes-list-follow" v-show="videosList_tags.follow">
+                <li style="padding: 10px">
+                    <img src="{% static "images/猫猫叹气.png" %}" alt="">
+                </li>
+            </ul>
         </div>
     </div>
     <div v-if="is_login" v-show="flags.pics" class="pics middle">
@@ -588,7 +454,6 @@
                                     <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                                 </div>
                             </div>
-
                             <hr/>
                             <ul class="admin-server-res-detail-li">
                                 <li>CPU : <span> {[ serverDetaillist.CPU ]}</span></li>
@@ -628,22 +493,30 @@
                 <div class="admin-terminal">
                     <div>
                         <div class="card">
-                            <ul class="admin-terminal-list">
-                                <li>
-                                    <i class="admin-terminal-list-terminal"></i>
-                                </li>
-                            </ul>
+                                <ul class = "admin-terminal-list">
+                                    <li class = "admin-terminal-input">
+                                        <div><input type="text" placeholder="输入用户名，若空则使用默认" class="admin-terminal-user"></div>
+                                        <div><input type="password" class="admin-terminal-password"></div>
+                                        <div>命令:<input type="text" placeholder="带命令打开终端，若空则不带命令" class="admin-terminal-cmd" v-model="terminal_cmd">#tail -f /data/wwwroot/myproject/uwsgi/uwsgi.log</div>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="btn btn-outline-primary" @click="terminal"><i class="admin-terminal-list-terminal"></i> 连接终端</button>
+
+                                    </li>
+                                </ul>
                         </div>
                     </div>
                 </div>
-                <div class="admin-user-mmodify">
+                <div class="admin-user-modify">
                     <div>
-                        <div class="card">
+                        <div class="card admin-user-modify-card">
                             <div style="display: flex;justify-content: space-between">
                                 <p style="font-weight: 700" >修改用户信息 :
-                                    <i class="admin-user-fresh" @click="getAllUsers"></i>
+                                    <i  @click="getAllUsers"></i>
                                 </p>
-                                <p style="color: red;font-family: '微软雅黑 Light'">{[ Del_msg ]}</p>
+                                <p style="color: red;font-family: '微软雅黑 Light'">{[ Del_msg ]}
+                                    <i class="admin-user-show" @click="hidden_user_modify"> </i>
+                                </p>
                             </div>
                             <hr/>
                             <table class="table table-striped table-hover">
@@ -674,6 +547,19 @@
                                 </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="admin-user-modify">
+                    <div>
+                        <div class="card">
+                            <div style="display: flex;justify-content: space-between">
+                                <p style="font-weight: 700" >举报 :
+                                    <i class="admin-user-fresh" @click="getAllUsers"></i>
+                                </p>
+                                <p style="color: red;font-family: '微软雅黑 Light'">{[ Del_msg ]}</p>
+                            </div>
+                            <hr/>
                         </div>
                     </div>
                 </div>
@@ -727,7 +613,7 @@
     </ul>
     <audio src="{% static 'audio/secretbase.mp3' %}" controls="controls" preload id="music" hidden></audio>
     <div class="login" @click="login()">
-        <img src="{% static 'images/头像.png' %}" alt="">
+        <img src="{% static 'images/' %}{{ request.user.picture }}" alt="">
         {% if request.user.is_authenticated %}
             <span class="logout" @click="logout"><i></i></span>
             <p class="loginbtn active">
@@ -748,6 +634,7 @@
 <script>
     var defaultdesc = document.querySelector(".defaultdesc")
     var audio = document.getElementById('music');
+
 
     document.querySelector("#navbtn").onclick = function (event) {
         document.querySelector("#app").classList.toggle("active")
@@ -776,11 +663,6 @@
 
 </script>
 <script>
-    const vm2 = new Vue({
-        el: ".nav_list",
-        delimiters: ['{[', ']}'],
-        methods: {}
-    })
     const vuelogin = new Vue({
         el: ".login",
         delimiters: ['{[', ']}'],
@@ -798,6 +680,12 @@
         el: "#app",
         delimiters: ['{[', ']}'],
         data: {
+            videosList:[],
+            videosList_tags:{
+                "hot":true,
+                "popular": false,
+                "follow": false,
+            },
             screen_choose: "auto",
             name: "{{ request.user.username }}",
             id: "{{ request.user.id }}",
@@ -828,8 +716,16 @@
             serverupdate: false,
             Interval: "",
             Del_msg:null,
+            terminal_user: "administrator",
+            terminal_password: window.btoa("123456"),
+            terminal_cmd:"",
+            video_url:"{% url "index" %}"+"video/",
         },
         methods: {
+            hidden_user_modify(){
+                document.querySelector(".admin-user-show").classList.toggle("active")
+                document.querySelector(".admin-user-modify-card").classList.toggle("active")
+            },
             logout: function () {
                 window.location.href = "{% url 'logout' %}", "_blank";
             },
@@ -918,6 +814,72 @@
                 let value = 0
                 this.finallytime(value)
             },
+            upload_video:function (){
+                if(!this.is_login){
+                    alert("登录")
+                    return
+                }
+                layer.open({
+                    type: 2,
+                    title: '上传视频',
+                    closeBtn: 1,
+                    area: ['700px', '400px'],
+                    shadeClose: true,
+                    shade: false,
+                    content: "{% url 'upload_page' %}",
+                    end:function(){
+                            var handle_status = $("#handle_status").val();
+                            if ( handle_status == '1' ) {
+                                layer.msg('连接成功！',{
+                                    icon: 1,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                },function(){
+                                    history.go(0);
+                                });
+                            } else if ( handle_status == '2' ) {
+                                layer.msg('连接失败！',{
+                                    icon: 2,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                },function(){
+                                    history.go(0);
+                                });
+                            }
+                        }
+                  });
+            },
+            terminal:function(){
+                console.log("terminal ready")
+                layer.open({
+                    type: 2,
+                    title: '建立webssh连接',
+                    closeBtn: 1,
+                    area: ['700px', '550px'],
+                    shadeClose: false,
+                    shade: false,
+                    content: this.terminal_cmd==""?'http://159.75.34.200:8888/?hostname=127.0.0.1&username='+ this.terminal_user+'&password='+ this.terminal_password+'':'http://159.75.34.200:8888/?hostname=127.0.0.1&username='+ this.terminal_user+'&password='+ this.terminal_password+'&command='+this.terminal_cmd+'',
+                    end:function(){
+                            var handle_status = $("#handle_status").val();
+                            if ( handle_status == '1' ) {
+                                layer.msg('连接成功！',{
+                                    icon: 1,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                },function(){
+                                    history.go(0);
+                                });
+                            } else if ( handle_status == '2' ) {
+                                layer.msg('连接失败！',{
+                                    icon: 2,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                },function(){
+                                    history.go(0);
+                                });
+                            }
+                        }
+                  });
+            },
+            getVideo:function (v_id){
+                window.open(this.video_url+v_id)
+            },
             finallytime: function (value) {
                 let sure = prompt("请输入我很他妈确定")
                 let param = new URLSearchParams()
@@ -932,17 +894,11 @@
                     return
                 }
             },
-            send_danmu: function () {
-                if (this.is_login) {
-                    return
-                } else {
-                    let choose = window.confirm("登录后才可以发弹幕哦，是否需要登录")
-                    if (choose == true) {
-                        window.open("{% url 'login' %}", "_blank");
-                    } else {
-                        return
-                    }
+            changeVideosListTag: function (tag){
+                for(let key in this.videosList_tags){
+                    this.videosList_tags[key] = false
                 }
+                this.videosList_tags[tag]=true
             }
         },
         mounted: function () {
@@ -966,13 +922,6 @@
                 console.log(this.AllUsers.data)
             }
         }
-    })
-
-    document.querySelector(".play-tools-refresh").addEventListener("click",function (){
-        video_ready.load()
-    })
-    document.querySelector(".play-tools-stop").addEventListener("click",function (){
-        video_ready.dispose()
     })
 
     let cardlist = document.querySelectorAll('.card')
@@ -1014,22 +963,6 @@
         defaulttitle.style.marginLeft = value * 20 + 'px'
     })
 
-    let danmulistbtn = document.querySelector('.danmubtn')
-    let danmu = document.querySelector(".danmuholder")
-    let video = document.querySelector('.thisvideo')
-    let danmulist = document.querySelector('.danmulist')
-    let danmuflag = 0
-    danmulistbtn.addEventListener("click", (e) => {
-        danmulistbtn.classList.toggle("active")
-        if (!danmuflag) {
-            danmu.style.height = video.clientHeight + 90 + 'px'
-            danmuflag = 1
-            danmulist.style.height = video.clientHeight + 90 + 'px'
-        } else {
-            danmuflag = 0
-            danmu.style.height = 50 + 'px'
-        }
-    })
     if (document.querySelector('.pics')) {
         let leftorright = document.querySelector(".leftorright")
         let myradios = document.querySelector('.navigation')
@@ -1069,102 +1002,5 @@
             }
         })
     }
-
-    //-------------------------------------------------------------------------
-    var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver
-    let observer = new MutationObserver(function(mutations) {
-            console.log(mutations)
-    })
-    const options = {
-        attributes: true,
-         childList: true,
-         characterData: true
-    };
-    observer.observe(video, options)
-
-    window.onresize=function(){
-        console.log(video.clientWidth)
-    }
-
-    const video_ready = videojs("video_ready",function(){
-        this.on('loadstart',function () {
-              console.log('loadstart')
-            });
-        this.off('timeupdate',function () {
-              console.log('off')
-            })
-    })
-    let barrage = document.querySelector("#barrage")
-
-    const damuData = [
-        {
-            content:"123",
-            speed:2,
-            runTime:0,
-            color: 'red'
-        },
-        {
-            content:"123",
-            speed:2,
-            runTime:0,
-            color: 'red'
-        },
-        {
-            content:"123",
-            speed:2,
-            runTime:0,
-            color: 'red'
-        },
-        {
-            content:"123",
-            speed:2,
-            runTime:0,
-            color: 'red'
-        },
-        {
-            content:"123",
-            speed:2,
-            runTime:0,
-            color: 'red'
-        },
-    ]
-
-    function sendMsg(){
-    let inputValue = inputBox.value
-
-    inputValue.replace(/\ +/g, "")
-    if (inputValue.length <= 0) {
-        alert('请输入')
-        return false
-    }
-        createBarrage(inputValue,true)
-        inputBox.value = ''
-    }
-
-    function createBarrage(msg, isSendMsg){
-    var divNode = document.createElement('div');
-    var spanNode = document.createElement('span');
-
-    divNode.innerHTML = msg;
-    divNode.classList.add('barrage-item');
-    barrageBox.appendChild(divNode);
-
-    spanNode.innerHTML = '举报';
-    spanNode.classList.add('barrage-tip');
-    divNode.appendChild(spanNode);
-
-    barrageOffsetLeft = getRandom(barrageWidth, barrageWidth*2);
-    barrageOffsetLeft = isSendMsg ? barrageWidth : barrageOffsetLeft
-    barrageOffsetTop = getRandom(10, barrageHeight-10);
-    barrageColor = barrageColorArray[Math.floor(Math.random()*(barrageColorArray.length))];
-
-    //执行初始化滚动
-    initBarrage.call(divNode,{
-      left : barrageOffsetLeft,
-      top : barrageOffsetTop,
-      color : barrageColor
-    });
-  }
-
 </script>
 </html>
