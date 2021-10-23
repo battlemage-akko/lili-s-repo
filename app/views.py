@@ -24,7 +24,8 @@ class CustomBackend(ModelBackend):
             return None
 
 AllUsers = [Userdatabase.objects.all()]
-realIP = "123"
+realIP = requests.get(url="http://members.3322.org/dyndns/getip").text
+
 @login_required
 def test(request):
     return render(request,'test.html')
@@ -193,6 +194,7 @@ def rebootorshutdown(request):
         return HttpResponse("牛逼")
     else:
         return HttpResponse("牛逼")
+
 
 
 

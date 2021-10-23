@@ -94,13 +94,12 @@
         }
         .videos {
             right: 0;
-            justify-content: space-between;
-            width: calc(100% - 50px);
-            height: calc(100% - 50px);
+            width: 100%;
+            height: 100%;
             transition: all .5s ease;
-            padding-left: 50px;
             white-space: nowrap;
             display: flex;
+            justify-content: center;
         }
         .sidebar {
             position: fixed;
@@ -151,7 +150,7 @@
             top: 35px;
             left: 50%;
             z-index: 4;
-            transform: translateX(calc(-50% + 25px));
+            transform: translateX(calc(-50% + 6px));
             transition: all 0.5s ease;
             cursor: pointer;
             opacity: 0.2;
@@ -182,7 +181,15 @@
             .profile {
                 overflow: hidden;
             }
-
+        }
+        .videoslist-title{
+            position: relative;
+            height: 400px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            background: url("{% static 'images/videoBackground.jpg' %}") right bottom no-repeat;
+            background-size: cover;
         }
     </style>
 </head>
@@ -220,13 +227,51 @@
     </div>
     <div v-show="flags.videos" class="videos">
         <div class="videos-holder">
-            <ul class="vidoes-list">
+            <div class="videoslist-title">
+                <div style="position: absolute" class="videoslist-search">
+                    <div>
+                        <div class="input-group mb-2">
+                      <input type="text" class="form-control videoslist-search-input" placeholder="请输入" aria-label="Recipient's username" aria-describedby="button-addon2">
+                      <button class="btn btn-outline-secondary videoslist-search-btn" type="button" id="button-addon2"><i class="videoslist-input-btn"></i></button>
+                        </div>
+                        <h2 style="font-size: 12px;padding: 0px 30px">
+                            推荐: <a href="javascript:"></a>
+                        </h2>
+                    </div>
+                </div>
+                <span class="videoslist-upload" title="上传"></span>
+            </div>
+            <div style="padding: 0px 20px">
+                <ul class="videoslist-choose">
+                    <li @click="changeVideosListTag('hot')"><a href="javascript:">热门</a></li>
+                    <li @click="changeVideosListTag('popular')"><a href="javascript:">最新</a></li>
+                    <li @click="changeVideosListTag('follow')"><a href="javascript:">关注</a></li>
+                </ul>
+            </div>
+            <ul class="vidoes-list vidoes-list-hot" v-show="videosList_tags.hot">
                 {% for i in videoslist %}
-                <li @click="getVideo({{ i.v_id }})">
-                    <img src="{% static 'videos/videopic/' %}{{ i.v_pic }}" alt="">
-                    <span>{{ i.v_title }}</span>
+                <li @click="getVideo({{ i.v_id }})" class="videos-each">
+                    <div style="background: url('{% static 'videos/videopic/' %}{{ i.v_pic }}') center center no-repeat;background-size:contain;background-color: black"></div>
+                    <span class="videos-each-tips">
+                        <i class="videos-each-play"></i>
+                    </span>
+                    <span class="videos-each-title">
+                        <h1>{{ i.v_title }}</h1>
+                        <p>作者 : {{ i.v_auther }}</p>
+                        <p style="right: 10px">播放 : {{ i.v_play }}</p>
+                    </span>
                 </li>
                 {% endfor %}
+            </ul>
+            <ul class="vidoes-list vidoes-list-popular" v-show="videosList_tags.popular">
+                <li style="padding: 10px">
+                    <img src="{% static "images/猫猫叹气.png" %}" alt="">
+                </li>
+            </ul>
+            <ul class="vidoes-list vidoes-list-follow" v-show="videosList_tags.follow">
+                <li style="padding: 10px">
+                    <img src="{% static "images/猫猫叹气.png" %}" alt="">
+                </li>
             </ul>
         </div>
     </div>
@@ -570,7 +615,7 @@
     </ul>
     <audio src="{% static 'audio/secretbase.mp3' %}" controls="controls" preload id="music" hidden></audio>
     <div class="login" @click="login()">
-        <img src="{% static 'images/头像.png' %}" alt="">
+        <img src="{% static 'images/' %}{{ request.user.picture }}" alt="">
         {% if request.user.is_authenticated %}
             <span class="logout" @click="logout"><i></i></span>
             <p class="loginbtn active">
@@ -638,6 +683,11 @@
         delimiters: ['{[', ']}'],
         data: {
             videosList:[],
+            videosList_tags:{
+                "hot":true,
+                "popular": false,
+                "follow": false,
+            },
             screen_choose: "auto",
             name: "{{ request.user.username }}",
             id: "{{ request.user.id }}",
@@ -813,7 +863,12 @@
                     return
                 }
             },
-
+            changeVideosListTag: function (tag){
+                for(let key in this.videosList_tags){
+                    this.videosList_tags[key] = false
+                }
+                this.videosList_tags[tag]=true
+            }
         },
         mounted: function () {
             this.is_login_check()

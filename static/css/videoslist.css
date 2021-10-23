@@ -1,34 +1,150 @@
 .videos-holder{
-            display: flex;
-            margin-top: var(--Head-top);
-            max-width: 1400px;
-            min-width: 1px;
-        }
+    display: flex;
+    flex-basis: 1870px;
+    min-width: 390px;
+    background-color: #f9faff;
+    flex-direction: column;
+    box-shadow: var(--shadow);
+}
 .vidoes-list{
     list-style: none;
     display: flex;
+    margin: 0px;
+    padding: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+.vidoes-list li div{
+    height: 100%;
 }
 .vidoes-list li{
+    flex-basis: 314px;
+    height: 200px;
+    min-width: 200px;
+}
+.vidoes-list-follow{
+    justify-content: center;
+}
+.vidoes-list-popular{
+    justify-content: center;
+}
+.videos-each-tips{
+    top: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    line-height: 200px;
+    display: none;
+}
+.videos-each-play:before{
+    content: "\ea15";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+    color: rgba(62, 62, 62, 0.59);
+    font-size: 50px;
+}
+.videos-each{
     margin: 10px;
-    padding: 10px;
-    border: 1px dashed black;
     display: flex;
     flex-direction: column;
     cursor: pointer;
-    height: 280px;
+    position: relative;
+    box-shadow: var(--shadow);
+    overflow: hidden;
 }
-.vidoes-list li img{
-    width: 200px;
-    height:200px;
-}
-.vidoes-list li span{
+.videos-each-title{
+    position: absolute;
+    bottom: 0;
+    height: 70px;
+    color: rgba(255, 255, 255, 0.68);
     width: 100%;
+    padding: 10px;
+    transition: all .2s ease;
+    bottom: -22px;
+    background-image: linear-gradient(to bottom, transparent, #000000);
+}
+.videos-each:hover .videos-each-tips{
+    display: block;
+}
+.videos-each:hover .videos-each-title{
+    color: #e3e3e3;
+    bottom: 0px;
+}
+
+.videos-each-title h1{
+    position: absolute;
+    bottom: 15px;
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+.videos-each-title p{
+    position: absolute;
+    bottom: 5px;
+    font-size: 8px;
+}
+.videoslist-choose{
+    display: flex;
+    list-style: none;
+    width: 100%;
+    background-color: #f9faff;
+    margin: 0px;
+    border-bottom:1px solid #d4e1e6cc ;
+    position: relative;
+    justify-content: center;
+    height: 40px;
+}
+.videoslist-choose li{
+    text-align: center;
+    width: 100px;
+    line-height: 40px;
+    border-bottom:1px solid black ;
+}
+.videoslist-choose a{
+    display: inline-block;
+    font-style: normal;
+    text-decoration: none;
+    color: black;
+    font-size: 15px;
+    font-family: "微软雅黑 Light";
+}
+.videoslist-search{
+    display: flex;
+    justify-content: center;
+    bottom: 50px;
+}
+.videoslist-search .input-group{
+    flex-basis: 500px;
+}
+.videoslist-input-btn:before{
+    content: "\e986";
+    font-style: normal;
+    font-family: IcoMoon-Free;
+}
+.videoslist-search-input{
+    border-radius: 100px;
+}
+.videoslist-search-btn{
+    border-radius: 100px;
+}
+.videoslist-upload{
+    width: 50px;
     height: 50px;
+    background-color: rgba(0, 0, 0, 0.1);
+    position: absolute;
+    right: 0;
+    bottom: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
     transition: all .5s ease;
 }
-.vidoes-list li span:hover{
-    background-color: white;
+.videoslist-upload:hover{
+    background-color: rgba(0, 0, 0, 0.3);
+}
+.videoslist-upload:before{
+    content: "\ea32";
+    font-family: IcoMoon-Free;
+    font-size: 20px;
 }

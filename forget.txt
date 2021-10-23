@@ -12,6 +12,7 @@ nginx -s reload
 #重新载入配置文件
 
 createsuperuser
+
 makemigrations
 migrate
 

@@ -1,4 +1,42 @@
-
+        .warning-myself{
+            position: fixed;
+            width: 100%;
+            height: 60px;
+            background-color: white;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            padding: 0px 30px;
+        }
+        .video-user-info{
+            display: flex;
+            list-style: none;
+            margin: 0px;
+        }
+        .video-user-info li{
+            height: 100%;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            margin: 0px 20px;
+        }
+        .video-user-msg:before{
+            content: "\e945";
+            font-family: IcoMoon-Free;
+            font-style: normal;
+        }
+        .video-user-menus:before{
+            content: "\ea7a";
+            font-family: IcoMoon-Free;
+            font-style: normal;
+        }
+        .video-user-pic{
+            height: 40px;
+            width: 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            border: 3px solid rgba(0,0,0,0.1);
+        }
         .videos-holder{
             display: flex;
             margin-top: var(--Head-top);
@@ -530,4 +568,5 @@
         .barrage-item .barrage-tip:hover{
             background-color: white;
         }
+
 
