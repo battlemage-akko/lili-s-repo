@@ -75,7 +75,7 @@ def finish_save(video_title,video_pic,video_file,username):
         f.write(video_file.read())
     print(video_file.name, "done")
 
-    result = videosTable(v_ad=video_file.name,v_pic=video_pic.name,v_auther=username,v_title=video_title,v_like=0,v_play=0,v_collect=0)
+    result = videosTable(v_ad=video_title + '.mp4',v_pic=video_pic.name,v_auther=username,v_title=video_title,v_like=0,v_play=0,v_collect=0)
     result.save()
 
     return HttpResponse("保存完毕")
