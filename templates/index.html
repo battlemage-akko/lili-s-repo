@@ -268,7 +268,7 @@
 
             </ul>
             <div class="showmore-div">
-                <button class="btn btn-primary" v-show="show_more_btn"><i class="showmore-div-btn" @click="getmorehotvideo"></i></button>
+                <button class="btn btn-primary show_more_btn" v-show="show_more_btn" @click="getmorehotvideo"><i class="showmore-div-btn" ></i></button>
                 <div class="no-more" v-show="show_more_cat">
                     <img src="{% static 'images/猫猫叹气.png' %}" alt="">
                 </div>
@@ -905,6 +905,7 @@
                 this.videosList_tags[tag]=true
             },
             getmorehotvideo: async function (){
+                document.querySelector(".show_more_btn").disabled = "disabled"
                 let param = new URLSearchParams()
                 param.append("count",this.videosList_hot.length)
                 result = await axios({
@@ -916,10 +917,14 @@
                     this.show_more_btn = false
                     this.show_more_cat = true
                     console.log("到头了")
+                    document.querySelector(".show_more_btn").removeAttribute("disabled")
                     return
                 }
-                for(let item of result.data){
-                    this.videosList_hot.push(item)
+                else{
+                    for(let item of result.data){
+                        this.videosList_hot.push(item)
+                    }
+                    document.querySelector(".show_more_btn").removeAttribute("disabled")
                 }
             }
         },
