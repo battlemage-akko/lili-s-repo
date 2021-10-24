@@ -55,9 +55,9 @@ def save_barrage(request):
 
 @csrf_exempt
 def getmorehotvideo(request):
+    result = videosTable.objects.all().order_by('-v_id').values()
     fromtag = int(request.POST.get("count"))
     totag = fromtag + 10
-    result = videosTable.objects.all().order_by('-v_id').values()
     hotvideos = []
     if (totag > len(result)):
         totag = len(result)

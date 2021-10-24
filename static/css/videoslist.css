@@ -147,7 +147,7 @@
     background-color: rgba(0, 0, 0, 0.3);
 }
 .videoslist-upload:before{
-    content: "\ea32";
+    content: "\e9c8";
     font-family: IcoMoon-Free;
     font-size: 20px;
 }
@@ -167,4 +167,9 @@
     content: "\ea0a";
     font-family: IcoMoon-Free;
     font-style: normal;
+}
+.no-more{
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }

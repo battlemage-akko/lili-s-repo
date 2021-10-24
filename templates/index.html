@@ -262,16 +262,17 @@
                 </li>
             </ul>
             <ul class="videos-list videos-list-popular" v-show="videosList_tags.popular">
-                <li style="padding: 10px">
-                    <img src="{% static "images/猫猫叹气.png" %}" alt="">
-                </li>
+
             </ul>
             <ul class="videos-list videos-list-follow" v-show="videosList_tags.follow">
-                <li style="padding: 10px">
-                    <img src="{% static "images/猫猫叹气.png" %}" alt="">
-                </li>
+
             </ul>
-            <div class="showmore-div"><button class="btn btn-primary"><i class="showmore-div-btn" @click="getmorehotvideo">MORE</i></button></div>
+            <div class="showmore-div">
+                <button class="btn btn-primary" v-show="show_more_btn"><i class="showmore-div-btn" @click="getmorehotvideo"></i></button>
+                <div class="no-more" v-show="show_more_cat">
+                    <img src="{% static 'images/猫猫叹气.png' %}" alt="">
+                </div>
+            </div>
         </div>
     </div>
     <div v-if="is_login" v-show="flags.pics" class="pics middle">
@@ -680,6 +681,8 @@
         el: "#app",
         delimiters: ['{[', ']}'],
         data: {
+            show_more_cat:false,
+            show_more_btn:true,
             videosList:[],
             videosList_hot:{{ hotvideolist|safe }},
             videosList_tags:{
@@ -909,6 +912,12 @@
                     url:"{% url 'getmorehotvideo' %}",
                     data: param
                 })
+                if(result.data.length == 0){
+                    this.show_more_btn = false
+                    this.show_more_cat = true
+                    console.log("到头了")
+                    return
+                }
                 for(let item of result.data){
                     this.videosList_hot.push(item)
                 }
