@@ -475,6 +475,15 @@
             })
             this.getBarrage()
         },
+        watch: {
+            video_nowtime: function () {
+                if (vm.barrageArray.length != 0)
+                    while (vm.barrageArray.length != 0 && vm.barrageArray[0].b_time <= vm.video_nowtime) {
+                        let tmp = vm.barrageArray.shift()
+                        this.createBarrage(tmp.b_content, false)
+                    }
+            }
+        }
     })
     var inputBox = document.querySelector("#danmu_content")
     var sendBtn = document.querySelector("#send_danmu")
