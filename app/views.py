@@ -33,6 +33,7 @@ def index(request):
     Hotvideos = []
     result = videosTable.objects.all().order_by('-v_id').values()
     for i in result:
+        i["v_time"] = i["v_time"].strftime('%Y-%m-%d %H:%M:%S')
         videos.append(i)
     print(videos)
     for i in range(10):
@@ -41,8 +42,7 @@ def index(request):
         "videoslist": videos,
         "hotvideolist": Hotvideos
     })
-def getHotVideos(request):
-    pass
+
 def index_login(request):
     if(request.user.is_authenticated):
         return render(request, 'index.html')

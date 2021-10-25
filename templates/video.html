@@ -3,8 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="{% static 'css/videos.css' %}" rel="stylesheet">
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
@@ -66,12 +65,15 @@
     </style>
 </head>
 <body>
-
 <div id="app">
     <div class="warning-myself">
         <div>
             <img src="{% static "images/logo.png" %}" alt="" style="height: 40px;margin: 10px;cursor: pointer" onclick="window.location.href='{% url 'index' %}'">
         </div>
+            <div class="input-group videos-top-search">
+              <button class="btn btn-outline-secondary" type="button" id="button-addon1"><i class="videos-top-search-btn"></i></button>
+              <input type="text" class="form-control" placeholder="搜索" aria-label="Example text with button addon" aria-describedby="button-addon1">
+            </div>
         <ul class="video-user-info">
             <li>
                 <i class="video-user-menus"></i>
@@ -87,9 +89,8 @@
     <div class="videos">
         <div class="videos-holder">
             <div class="videocontent">
-                <div class="videotitle">
-                    <h1><i class="videologo"> </i>  {{ v_title }}</h1>
-                    <p> 发布日期：xxxxxxxxx</p>
+                <div class="videotitle-holder">
+
                 </div>
                 <div class="video-card">
                     <div class="thisvideo">
@@ -135,31 +136,26 @@
                                        style="width: 20vw;min-width: 200px" id="danmu_content" v-model="input">
                             </div>
                         </div>
-                        <div class="video-danmucontent-switch">
-                            <div class="videobtns">
-                                <span class="videopay"></span>
-                                <span class="videoshare"></span>
-                                <span class="goodvideo"></span>
-                                <span class="videocollect"></span>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="videodetail">
-                    <div class="video-detail-play">
-                        <span>{{ v_play }} 播放</span>
-                        <span>{[ barrageArray.length ]} 弹幕</span>
-                        <span>0 评论</span>
-                    </div>
+                    <ul class="video-title-span">
+                        <li><i class="video-title-date"></i>&nbsp;{{ v_time.v_time_year }}年{{ v_time.v_time_month }}月{{ v_time.v_time_day }}日 {{ v_time.v_time_hour }}:{{ v_time.v_time_minute }}:{{ v_time.v_time_second }}</li>
+                        <li><i class="video-title-play"></i>&nbsp;{{ v_play }}</li>
+                        <li><i class="video-title-like"></i>&nbsp;{{ v_like }}</li>
+                        <li><i class="video-title-collect"> </i>&nbsp;{{ v_collect }}</li>
+                    </ul>
+                    <h1 class="video-title">{{ v_title }}</h1>
                 </div>
                 <div class="video-profile">
-                    <div>
-                                    <span class="video-profilepic">
+                    <div style="display: flex">
+                        <span class="video-profilepic">
                                         <img src="{% static 'images/头像.png' %}" alt="">
                                     </span>
                         <span class="video-profile-name">
-                                        <a href="javascript:">{{ v_auther }}</a>
-                                    </span>
+                           <div><a href="javascript:">{{ v_auther }}</a></div>
+                            <a href="javascript:" style="font-size: 10px">0 位订阅者</a>
+                        </span>
                     </div>
                     <div class="follow-holder">
                         <div class="follow">
@@ -172,25 +168,36 @@
             </div>
             <div class="danmu">
                 <div class="ad">
-                    <div class="adcontent">
-                        广告位<i></i>
-                    </div>
+
                 </div>
                 <div class="danmuholder">
                     <div class="danmutitle">
                         <div class="danmutitlecontent">
-                            弹幕列表<i class="danmubtn"></i>
+                            <ul class="danmutitle-btn-list">
+                                <li>
+                                    <div class="video-danmucontent-switch">
+                                        <ul class="videobtns">
+                                            <li><span class="videopay"></span></li>
+                                            <li><span class="videoshare"></span></li>
+                                            <li><span class="goodvideo"></span></li>
+                                            <li><span class="videocollect"></span></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li style="margin-right: 10px">弹幕列表 <i class="danmubtn"></i></li>
+                            </ul>
                         </div>
-                        <div style="position: relative;height: 25px;font-size: 10px;line-height: 25px;padding-left: 10px">
-                            <span style="width: 50px">时间</span>
-                            <span style="width: 100px">内容</span>
-                            <span style="width: 70px">发布时间</span>
+                        <div style="position: relative;height: 25px;font-size: 10px;line-height: 25px;background-color: rgba(0,0,0,0.05)">
+                            <span style="width: 50px;border-left: 1px solid rgba(0,0,0,0.1);padding-left: 5px">时间</span>
+                            <span style="width: 100px;border-left: 1px solid rgba(0,0,0,0.1);padding-left: 5px">内容</span>
+                            <span style="width: 70px;border-left: 1px solid rgba(0,0,0,0.1);padding-left: 5px">发布时间</span>
                         </div>
                         <ul class="danmulist">
                             <li v-for="(item,i) in barrageArray">
-                                <span> {[ Math.floor(item.b_time/60)<10?"0"+Math.floor(item.b_time/60):Math.floor(item.b_time/60) ]}:{[item.b_time%60<10?"0"+item.b_time:item.b_time]}</span>
+                                <span>{[ Math.floor(item.b_time/60)<10?"0"+Math.floor(item.b_time/60):Math.floor(item.b_time/60) ]}:{[item.b_time%60<10?"0"+(item.b_time%60):item.b_time]}</span>
                                 <span>{[ item.b_content ]}</span>
                                 <span>null</span>
+                                <span><a href="javascript:" style="text-decoration: none">举报</a></span>
                             </li>
                         </ul>
 
@@ -246,9 +253,8 @@
             },
             logout: function () {
                 window.location.href = "{% url 'logout' %}", "_blank"
-            }
+            },
         },
-
     })
     const vm = new Vue({
         el: "#app",
@@ -258,6 +264,7 @@
             barrageTipWidth: 50,
             nextbarrageTop: 0,
             screen_choose: "auto",
+            oncechance:{{ oncechance }},
             video_option: {
                 autoplay:true,
                 preload: "none" ,
@@ -266,7 +273,7 @@
                 childList: true,
                 characterData: true,
                 poster: '{% static 'images/3.jpg' %}',
-                sources: [                                                                           // 视频源
+                sources: [
                     {
                         src: '{% static "videos/" %}{{ v_ad }}',
                         type: 'video/mp4',
@@ -284,6 +291,16 @@
             video_url:"{% url "index" %}"+"video/",
         },
         methods: {
+            played: async function (id){
+                let param = new URLSearchParams()
+                param.append('v_id', id)
+                this.oncechance -= 1
+                result = axios({
+                    method:"POST",
+                    url:"{% url "hasbeenplayed" %}",
+                    data:param
+                })
+            },
             is_login_check() {
                 if ("{{ request.user.is_authenticated }}" == "True") {
                     this.is_login = true
@@ -448,6 +465,9 @@
                 });
                 this.on('play', function () {
                     console.log("播放")
+                    if(vm.oncechance == 1){
+                        vm.played({{ v_id }})
+                    }
                     for(let i of document.querySelector("#barrage").querySelectorAll("div")){
                         vm.barrageAnimate(i);
                     }
@@ -455,17 +475,6 @@
             })
             this.getBarrage()
         },
-        watch: {
-            video_nowtime: function () {
-                console.log(this.barrageArray)
-                if (vm.barrageArray.length != 0)
-                    while (vm.barrageArray.length != 0 && vm.barrageArray[0].b_time <= vm.video_nowtime) {
-                        let tmp = vm.barrageArray.shift()
-                        this.createBarrage(tmp.b_content, false)
-                    }
-            }
-        }
-
     })
     var inputBox = document.querySelector("#danmu_content")
     var sendBtn = document.querySelector("#send_danmu")

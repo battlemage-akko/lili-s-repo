@@ -39,7 +39,7 @@
         }
         .videos-holder{
             display: flex;
-            margin-top: var(--Head-top);
+            margin-top: 60px;
             max-width: 1400px;
             min-width: 1px;
         }
@@ -66,7 +66,7 @@
         .danmu {
             display: flex;
             flex-direction: column;
-            width: 300px;
+            width: 350px;
             margin-left: 50px;
             background-color: var(--Test-color);
         }
@@ -82,8 +82,8 @@
             position: relative;
             height: 100%;
             overflow: hidden;
-            border-radius: 10px;
             background-color: white;
+            box-shadow: var(--shadow);
         }
 
         .danmutitle i {
@@ -102,7 +102,12 @@
         .danmutitle i.active {
             transform: rotate(180deg);
         }
-
+        .danmutitle-btn-list{
+            display: flex;
+            justify-content: space-between;
+            list-style: none;
+            height: 50px;
+        }
         .danmuholder{
             height: 50px;
             transition: all .5s ease;
@@ -121,41 +126,12 @@
         .danmutitlecontent {
             background-color: #ffffff;
             height: 50px;
-            margin: auto;
             line-height: 50px;
-            display: flex;
-            justify-content: space-between;
-            padding: 0px 10px;
+            margin: 0;
         }
         .ad {
-            height: 100px;
+            height: 30px;
             padding: 10px;
-        }
-        .adcontent{
-            height: 100%;;
-            width: 100%;
-            vertical-align: middle;
-            line-height: 70px;
-            border:5px dashed black;
-            font-size: 35px;
-            font-weight: 700;
-            text-align: center;
-            cursor: pointer;
-        }
-        .adcontent:hover i{
-            transform: rotate(-15deg);
-            color: hotpink;
-        }
-        .adcontent i{
-            display: inline-block;
-            margin-left: 10px;
-            transition: all .5s ease;
-            transform-origin: center bottom;
-        }
-        .adcontent i::after{
-            content: '\e9da';
-            font-family: IcoMoon-Free;
-            font-style: normal;
         }
         .videolistcontent{
             position: relative;
@@ -166,6 +142,22 @@
             padding: 10px;
             border: 1px dashed black;
         }
+        .danmulist::-webkit-scrollbar{
+            width: 5px;
+            height: 5px;
+            scrollbar-arrow-color: red;
+        }
+        .danmulist::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+            border-radius: 5px;
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.4);
+            scrollbar-arrow-color:red;
+        }
+        .danmulist::-webkit-scrollbar-track {/*滚动条里面轨道*/
+            -webkit-box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
+            border-radius: 0;
+            background: rgba(255, 255, 255, 0.1);
+        }
         .danmulist {
             overflow: scroll;
             overflow-x:hidden;
@@ -173,24 +165,21 @@
         }
         .danmulist li span{
             vertical-align: top;
-            border: 1px solid black;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
             font-size: 10px;
             display:inline-block;
             text-align: center;
         }
         .danmulist li span:nth-child(1){
-            border: 1px solid black;
             width: 50px;
         }
         .danmulist li span:nth-child(2){
-            border: 1px solid black;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
             width: 100px;
         }
         .danmulist li span:nth-child(3){
-            border: 1px solid black;
             width: 122px;
         }
         .nextvideo img {
@@ -281,7 +270,8 @@
             display: flex;
             justify-content: space-between;
             height: 100px;
-            border:3px dashed black;
+            border-top: 1px solid rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.2);
             border-radius: 5px;
             padding: 20px;
         }
@@ -289,7 +279,7 @@
             display: flex;
             width: 100%;
             height: 40px;
-            margin:15px 0px ;
+            margin:10px 0px ;
             border:0px dashed black;
             justify-content: space-between;
             flex-direction: row;
@@ -306,23 +296,23 @@
         .videodetail span:hover{
             opacity: 1;
         }
+        .videobtns{
+            height: 100%;
+            display: flex;
+            list-style: none;
+        }
         .videobtns span{
-            display: inline;
-            padding: 8px 10px;
-            border-radius: 25px;
-            width: 35px;
-            height: 35px;
+            text-align: center;
+            height: 50px;
+            width: 50px;
             font-size: 16px;
             opacity: 1;
-            color: black;
+            color: rgba(42, 42, 42, 0.3);
             transition: all .2s ease;
             cursor: pointer;
         }
         .videobtns span:hover{
-            background: linear-gradient(90deg,#363062,#FFFFFF,#1DB9C3,#363062);
-            background-size: 400%;
-            animation: animate 8s linear infinite;
-            color: white;
+            background: #d2d2d2;
         }
         @keyframes animate{
             0%{
@@ -355,6 +345,11 @@
         .video-profilepic img{
             height: 100%;
             border-radius: 70px;
+        }
+        .video-profile-name{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         .video-profile-name a{
             margin-left: 10px;
@@ -485,24 +480,56 @@
         .fullscreen-sets:hover{
             transform: rotate(180deg);
         }
-        .videotitle {
-            font-family: 'IcoMoon-Free';
-            min-height: 100px;
-            padding: 20px 0px;
+        .videotitle-holder {
+            min-height: 30px;
+        }
+        .video-auther{
+            display: flex;
+            width: 240px;
+        }
+        .video-title{
+            font-weight: 700;
+            font-size: 20px;
+            margin: 0px;
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            color: rgba(0, 0, 0, 0.5);
         }
 
-        .videotitle h1 {
-            font-size: 20px;
+        .video-title-span{
+            display: flex;
+            list-style: none;
+            margin: 0;
+            height: 100%;
+        }
+        .video-title-span li{
+            height: 100%;
+            padding: 0px 10px;
+            display: flex;
+            justify-content: center;
             align-items: center;
         }
-
-        .videotitle p {
-            font-size: 15px;
-            color: #8f8f8f;
+        .video-title-date:before{
+            content: "\e953 ";
+            font-family: IcoMoon-Free;
+            font-style: normal;
         }
-
+        .video-title-like:before{
+            content: "\e9da";
+            font-family: IcoMoon-Free;
+            font-style: normal;
+        }
+        .video-title-play:before{
+            content: "\ea15";
+            font-family: IcoMoon-Free;
+            font-style: normal;
+        }
+        .video-title-collect:before{
+            content: "\e9d9";
+            font-family: IcoMoon-Free;
+            font-style: normal;
+        }
         .video-holder{
             width: 100%;
             height: 100%;
@@ -574,6 +601,28 @@
         .barrage-item .barrage-tip:hover{
             background-color: white;
         }
-
+        .videos-top-search{
+            padding: 10px 100px;
+            max-width: 800px;
+        }
+        .videos-top-search-btn:before{
+            content: "\e986" ;
+            font-family: IcoMoon-Free;
+            font-style: normal;
+        }
+        .form-control:focus{
+            border: 1px;
+        }
+        @media (max-width: 750px){
+            .videos-top-search{
+                opacity: 0;
+            }
+        }
+        .videos-auther-name{
+            font-size: 20px;
+            font-weight: 700;
+            font-style: normal;
+            text-decoration:none
+        }
 
 

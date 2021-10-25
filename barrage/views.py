@@ -5,7 +5,6 @@ from barrage.models import video as videosTable
 from django.http import HttpResponse, JsonResponse
 import random
 
-# Create your views here.
 def video(request,vid):
     result = videosTable.objects.filter(v_id=vid).values()
     if(len(result) == 0):
@@ -34,8 +33,19 @@ def video(request,vid):
         "v_auther": result["v_auther"],
         "v_play": result["v_play"],
         "v_title": result["v_title"],
+        "v_collect": result["v_collect"],
+        "v_like": result["v_like"],
+        "v_time": {
+            "v_time_year": result["v_time"].year,
+            "v_time_month": result["v_time"].month,
+            "v_time_day": result["v_time"].day,
+            "v_time_hour": result["v_time"].hour,
+            "v_time_minute": result["v_time"].minute,
+            "v_time_second": result["v_time"].second
+        },
         "nextvideo": nextvideo,
         "nextvideolist": nextvideolist,
+        "oncechance" : 1
     }
     return render(request,'video.html',data)
 
@@ -57,6 +67,13 @@ def getVideosList(request):
         videos.append(i)
     print(videos)
     return JsonResponse(videos, safe=False)
+
+@csrf_exempt
+def hasbeenplayed(request):
+    if(request.method == "POST"):
+        v_id = request.POST.get("v_id")
+        videosTable.objects.filter(v_id=v_id).update(v_play=videosTable.objects.filter(v_id=v_id).values()[0]['v_play']+1)
+    return HttpResponse()
 
 @csrf_exempt
 def save_barrage(request):
@@ -81,6 +98,7 @@ def getmorehotvideo(request):
     if (totag > len(result)):
         totag = len(result)
     for i in result[fromtag:totag]:
+        i["v_time"] = i["v_time"].strftime('%Y-%m-%d %H:%M:%S')
         hotvideos.append(i)
     print(hotvideos)
     return JsonResponse(hotvideos, safe=False)

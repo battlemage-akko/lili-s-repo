@@ -845,7 +845,7 @@
                     alert("登录")
                     return
                 }
-                if(this.this_user_admin){
+                if(!this.this_user_admin){
                     alert("仅限管理员可上传视频")
                     return
                 }
@@ -952,7 +952,8 @@
                     }
                     document.querySelector(".show_more_btn").removeAttribute("disabled")
                 }
-            }
+            },
+
         },
         mounted: function () {
             this.is_login_check()
