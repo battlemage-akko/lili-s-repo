@@ -68,7 +68,6 @@
 <body>
 
 <div id="app">
-
     <div class="warning-myself">
         <div>
             <img src="{% static "images/logo.png" %}" alt="" style="height: 40px;margin: 10px;cursor: pointer" onclick="window.location.href='{% url 'index' %}'">
@@ -95,9 +94,7 @@
                 <div class="video-card">
                     <div class="thisvideo">
                         <div id="barrage"></div>
-                        <video controls data-setup='{ }'
-                               class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid" preload="none"
-                               id="video_ready">
+                        <video controls data-setup='{ }' class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid" id="video_ready">
                         </video>
                     </div>
                     <div class="play-tools">
@@ -212,62 +209,24 @@
                         </div>
                     </div>
                     <div class="nextvideo">
-                        <img src="{% static 'images/1.jpeg' %}" alt="">
+                        <div style="background: url('{% static 'videos/videopic/' %}{{ nextvideo.v_pic }}') center center no-repeat;background-size: contain;background-color: black;cursor: pointer" @click="getVideo({{ nextvideo.v_id }})"></div>
                         <div>
-                            <a href="javascript:">这是一个视频,这是一个视频,这是一个视频</a>
-                            <a href="javascript:">作者：管理员</a>
-                            <a href="javascript:">0 播放 0 弹幕</a>
+                            <a href="javascript:" @click="getVideo({{ nextvideo.v_id }})">{{ nextvideo.v_title }}</a>
+                            <a href="javascript:">作者：{{ nextvideo.v_auther }}</a>
+                            <a href="javascript:" @click="getVideo({{ nextvideo.v_id }})">{{ nextvideo.v_play }} 播放 0 弹幕</a>
                         </div>
                     </div>
                     <ul class="videoslist">
-                        <li>
-                            <img src="{% static 'images/2.jpeg' %}" alt="">
-                            <div>
-                                <a href="javascript:">这又是一个视频,这又是一个视频,这又是一个视频</a>
-                                <a href="javascript:">作者：管理员</a>
-                                <a href="javascript:">0 播放 0 弹幕</a>
-                            </div>
-                        </li>
-                        <li>
-                            <img src="{% static 'images/3.jpeg' %}" alt="">
-                            <div>
-                                <a href="javascript:">这他妈也是一个视频,这他妈又是一个视频,这他妈又是一个视频</a>
-                                <a href="javascript:">作者：管理员</a>
-                                <a href="javascript:">0 播放 0 弹幕</a>
-                            </div>
-                        </li>
-                        <li>
-                            <img src="{% static 'images/4.jpeg' %}" alt="">
-                            <div>
-                                <a href="javascript:">哦草这他妈还是个视频,哦草这他妈还是个视频</a>
-                                <a href="javascript:">作者：管理员</a>
-                                <a href="javascript:">0 播放 0 弹幕</a>
-                            </div>
-                        </li>
-                        <li>
-                            <img src="{% static 'images/2.jpeg' %}" alt="">
-                            <div>
-                                <a href="javascript:">这又是一个视频,这又是一个视频,这又是一个视频</a>
-                                <a href="javascript:">作者：管理员</a>
-                                <a href="javascript:">0 播放 0 弹幕</a>
-                            </div>
-                        </li>
-                        <li>
-                            <img src="{% static 'images/3.jpeg' %}" alt="">
-                            <div>
-                                <a href="javascript:">这他妈也是一个视频,这他妈又是一个视频,这他妈又是一个视频</a>
-                                <a href="javascript:">作者：管理员</a>
-                                <a href="javascript:">0 播放 0 弹幕</a>
-                            </div>
-                        </li>
-                        <li>
-                            <img src="{% static 'images/4.jpeg' %}" alt="">
-                            <div>
-                                <a href="javascript:">哦草这他妈还是个视频,哦草这他妈还是个视频</a>
-                                <a href="javascript:">作者：管理员</a>
-                                <a href="javascript:">0 播放 0 弹幕</a>
-                            </div>
-                        </li>
+                        {% for item in nextvideolist %}
+                            <li>
+                                <div style="background: url('{% static 'videos/videopic/' %}{{ item.v_pic }}') center center no-repeat;background-size: contain;background-color: black;cursor: pointer" @click="getVideo({{ item.v_id }})"></div>
+                                <div>
+                                    <a href="javascript:" @click="getVideo({{ item.v_id }})">{{ item.v_title }}</a>
+                                    <a href="javascript:">作者：{{ item.v_auther }}</a>
+                                    <a href="javascript:" @click="getVideo({{ item.v_id }})">{{ item.v_play }} 播放 0 弹幕</a>
+                                </div>
+                            </li>
+                        {% endfor %}
                     </ul>
                     <div style="width: 100%;height: 30px;"></div>
                 </div>
@@ -300,6 +259,8 @@
             nextbarrageTop: 0,
             screen_choose: "auto",
             video_option: {
+                autoplay:true,
+                preload: "none" ,
                 playbackRates: [0.5, 1, 1.5, 2],
                 attributes: true,
                 childList: true,
@@ -319,7 +280,8 @@
             input: "",
             fromhere: 0,
             is_login: false,
-            username: ""
+            username: "",
+            video_url:"{% url "index" %}"+"video/",
         },
         methods: {
             is_login_check() {
@@ -461,8 +423,10 @@
                     console.log(item.text)
                     vm.createBarrage(item.text, false)
                 });
-            }
-
+            },
+            getVideo:function (v_id){
+                window.open(this.video_url+v_id)
+            },
         },
         mounted: function () {
             this.is_login_check()

@@ -54,7 +54,22 @@
             overflow-x: hidden;
             transition: all .5s ease;
         }
-
+        body::-webkit-scrollbar{
+            width: 5px;
+            height: 5px;
+            scrollbar-arrow-color: red;
+        }
+        body::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+            border-radius: 5px;
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.4);
+            scrollbar-arrow-color:red;
+        }
+        body::-webkit-scrollbar-track {/*滚动条里面轨道*/
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            border-radius: 0;
+            background: rgba(0,0,0,0.1);
+        }
         #app {
             width: 100vw;
             height: 100vh;
@@ -95,11 +110,11 @@
         .videos {
             right: 0;
             width: 100%;
+            min-height: 100vh;
             transition: all .5s ease;
             white-space: nowrap;
             display: flex;
             justify-content: center;
-            padding-bottom: 30px;
         }
         .sidebar {
             position: fixed;
@@ -273,6 +288,10 @@
                     <img src="{% static 'images/猫猫叹气.png' %}" alt="">
                 </div>
             </div>
+            <div class="videos-notice">
+                <div>本站为个人兴趣，非商业用途，所有内容均收集于互联网公开资源，本站只提供WEB页面服务，不提供影片资源储存也不参与录制与上传，若本站收录内容无意侵犯了贵公司版权，请给网页底部邮箱地址来信，我会及时处理，谢谢合作。邮箱:421609385@qq.com</div>
+            </div>
+            <div style="height: 30px"></div>
         </div>
     </div>
     <div v-if="is_login" v-show="flags.pics" class="pics middle">
@@ -821,6 +840,10 @@
             upload_video:function (){
                 if(!this.is_login){
                     alert("登录")
+                    return
+                }
+                if(this.this_user_admin!="True"){
+                    alert("仅限管理员可上传视频")
                     return
                 }
                 layer.open({

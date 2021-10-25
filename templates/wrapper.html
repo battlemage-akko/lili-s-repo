@@ -19,15 +19,6 @@
     let menubtn = document.querySelector(".menubtn")
     let ul = document.querySelector(".menu")
     let lis = document.querySelectorAll(".fillbutton")
-    menubtn.addEventListener("click", function (event) {
-        if (buttonflag == 0) {
-            document.styleSheets[0].addRule('.ico-menu::before', 'content: "\\ea0f"');
-            buttonflag = 1
-        } else {
-            document.styleSheets[0].addRule('.ico-menu::before', 'content: "\\e9bd"');
-            buttonflag = 0
-        }
-    })
     ul.addEventListener("mouseover", function (event) {
         event.target.style.color = "white"
     })

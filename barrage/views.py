@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from barrage.models import test as barrageDatabase
 from barrage.models import video as videosTable
 from django.http import HttpResponse, JsonResponse
+import random
 
 # Create your views here.
 def video(request,vid):
@@ -10,6 +11,22 @@ def video(request,vid):
     if(len(result) == 0):
         return HttpResponse("没有这个视频")
     result = result[0]
+    tmp = []
+    Allvideoslist = videosTable.objects.all().order_by("v_id").values()
+    for i in Allvideoslist:
+        tmp.append(i)
+    if((tmp.index(result))+1 == len(tmp)):
+        nextvideo = Allvideoslist[0]
+    else:
+        nextvideo = Allvideoslist[(tmp.index(result))+1]
+
+    tmp.remove(result)
+    tmp.remove(nextvideo)
+
+    nextvideolist = []
+    randomlist = random.sample(range(0, len(tmp)-2), 7)
+    for i in randomlist:
+        nextvideolist.append(tmp[i])
     data = {
         "v_id": result["v_id"],
         "v_ad": result["v_ad"],
@@ -17,6 +34,8 @@ def video(request,vid):
         "v_auther": result["v_auther"],
         "v_play": result["v_play"],
         "v_title": result["v_title"],
+        "nextvideo": nextvideo,
+        "nextvideolist": nextvideolist,
     }
     return render(request,'video.html',data)
 

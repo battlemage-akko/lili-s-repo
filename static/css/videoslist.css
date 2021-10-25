@@ -158,7 +158,7 @@
     background-position: center ;
 }
 .showmore-div{
-    padding: 10px;
+    padding: 40px 10px;
     width: 100%;
     text-align: center;
     border-top:1px solid #d4e1e6cc ;
@@ -175,4 +175,12 @@
 }
 .show_more_btn.active{
     content: "\e97a";
+}
+.videos-notice{
+    width: 100%;
+    font-size: 12px;
+    color: gray;
+    display: flex;
+    justify-content: space-evenly;
+    white-space:normal;
 }

@@ -224,6 +224,12 @@
             text-overflow: ellipsis;
             font-size: 10px;
         }
+        .nextvideo div a:nth-child(3){
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-size: 10px;
+        }
         .nextvideo div a:hover{
             color: #5c636a;
         }
@@ -568,5 +574,6 @@
         .barrage-item .barrage-tip:hover{
             background-color: white;
         }
+
 
 
