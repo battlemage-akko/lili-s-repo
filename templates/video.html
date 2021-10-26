@@ -523,6 +523,9 @@
                 document.querySelector('.follow-text').innerHTML = "求关注"
             }
             this.getBarrage()
+            if(this.video_detail.user_id == {{ request.user.id }}){
+                document.querySelector(".follow").style.display = "none"
+            }
         },
         watch: {
             followornot: function (){

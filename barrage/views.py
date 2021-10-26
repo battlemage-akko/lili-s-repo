@@ -5,6 +5,7 @@ from barrage.models import video as videosTable
 from django.http import HttpResponse, JsonResponse
 from app.models import followUser as followtable
 from app.models import AppUser as Userdatabase
+from moviepy.editor import VideoFileClip
 import random
 
 def video(request,vid):
@@ -130,8 +131,9 @@ def finish_save(video_title,video_pic,video_file,username,user_id):
     with open(video_file_save_path, 'wb+') as f:
         f.write(video_file.read())
     print(video_file.name, "done")
+    time = round(VideoFileClip(video_file_save_path).duration)
 
-    result = videosTable(v_ad=video_title + '.mp4',v_pic=video_title + '.jpg',v_auther=username,user_id=user_id,v_title=video_title,v_like=0,v_play=0,v_collect=0)
+    result = videosTable(v_ad=video_title + '.mp4',v_pic=video_title + '.jpg',v_auther=username,user_id=user_id,v_title=video_title,v_like=0,v_play=0,v_collect=0,v_duaring=time)
     result.save()
 
     return HttpResponse("保存完毕")

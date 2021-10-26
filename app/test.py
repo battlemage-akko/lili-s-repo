@@ -1,4 +1,6 @@
 import psutil,datetime,requests
+from moviepy.editor import VideoFileClip
+import os
 print(psutil.cpu_count())
 print(psutil.cpu_count(logical=False))
 print(psutil.swap_memory().total/1024/1024/1024)
@@ -15,4 +17,5 @@ print(result)
 print(psutil.boot_time())
 print(datetime.datetime.now().timestamp())
 print(int(((datetime.datetime.now().timestamp()-psutil.boot_time())/60)%60))
-print(requests.get(url="http://members.3322.org/dyndns/getip").text)
+time = VideoFileClip("../static/videos/video.mp4").duration
+print(time)

@@ -23,6 +23,7 @@ class video(models.Model):
     v_like=models.IntegerField(default=0)
     v_collect=models.IntegerField(default=0)
     v_time = models.DateTimeField(auto_now_add=True)
+    v_duaring = models.IntegerField(default=0)
     class Meta:
         app_label = "barrage"
 
