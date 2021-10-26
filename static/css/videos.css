@@ -392,11 +392,6 @@
             border-right: 2px solid black;
             align-self: end;
         }
-        .follow i::before{
-            content: '\ea0a';
-            font-family: IcoMoon-Free;
-            font-style: normal;
-        }
         .follow a{
             text-decoration: none;
             color:black;
@@ -498,6 +493,7 @@
         }
 
         .video-title-span{
+            color: rgba(0, 0, 0, 0.3);
             display: flex;
             list-style: none;
             margin: 0;
@@ -623,6 +619,15 @@
             font-weight: 700;
             font-style: normal;
             text-decoration:none
+        }
+        .follow-content{
+            width: 16px;
+            overflow: hidden;
+            transition: all .5s ease;
+            font-family: IcoMoon-Free;
+        }
+        .follow-holder:hover .follow-content{
+            width: 70px;
         }
 
 

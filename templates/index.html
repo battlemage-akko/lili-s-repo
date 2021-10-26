@@ -258,13 +258,13 @@
             </div>
             <div style="padding: 0px 20px">
                 <ul class="videoslist-choose">
-                    <li @click="changeVideosListTag('hot')"><a href="javascript:">热门</a></li>
-                    <li @click="changeVideosListTag('popular')"><a href="javascript:">最新</a></li>
+                    <li @click="changeVideosListTag('new')"><a href="javascript:">最新</a></li>
+                    <li @click="changeVideosListTag('popular')"><a href="javascript:">热门</a></li>
                     <li @click="changeVideosListTag('follow')"><a href="javascript:">关注</a></li>
                 </ul>
             </div>
-            <ul class="videos-list videos-list-hot" v-show="videosList_tags.hot">
-                <li v-for="(item,i) in videosList_hot" @click="getVideo(item.v_id)" class="videos-each">
+            <ul class="videos-list videos-list-new" v-show="videosList_tags.new">
+                <li v-for="(item,i) in videosList_new" @click="getVideo(item.v_id)" class="videos-each">
                     <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'contain'}" class="videos-each-background"></div>
                     <span class="videos-each-tips">
                         <i class="videos-each-play"></i>
@@ -277,10 +277,8 @@
                 </li>
             </ul>
             <ul class="videos-list videos-list-popular" v-show="videosList_tags.popular">
-
             </ul>
             <ul class="videos-list videos-list-follow" v-show="videosList_tags.follow">
-
             </ul>
             <div class="showmore-div">
                 <button class="btn btn-primary show_more_btn" v-show="show_more_btn" @click="getmorehotvideo"><i class="showmore-div-btn" ></i></button>
@@ -703,9 +701,9 @@
             show_more_cat:false,
             show_more_btn:true,
             videosList:[],
-            videosList_hot:{{ hotvideolist|safe }},
+            videosList_new:{{ newvideolist|safe }},
             videosList_tags:{
-                "hot":true,
+                "new":true,
                 "popular": false,
                 "follow": false,
             },
@@ -933,7 +931,7 @@
             getmorehotvideo: async function (){
                 document.querySelector(".show_more_btn").disabled = "disabled"
                 let param = new URLSearchParams()
-                param.append("count",this.videosList_hot.length)
+                param.append("count",this.videosList_new.length)
                 result = await axios({
                     method:"POST",
                     url:"{% url 'getmorehotvideo' %}",
@@ -948,7 +946,7 @@
                 }
                 else{
                     for(let item of result.data){
-                        this.videosList_hot.push(item)
+                        this.videosList_new.push(item)
                     }
                     document.querySelector(".show_more_btn").removeAttribute("disabled")
                 }

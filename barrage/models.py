@@ -18,9 +18,11 @@ class video(models.Model):
     v_ad = models.CharField(max_length=50,null=False)
     v_pic = models.CharField(max_length=50)
     v_auther = models.CharField(max_length=20,null=False)
+    user_id = models.IntegerField(null=False)
     v_play = models.IntegerField(default=0)
     v_like=models.IntegerField(default=0)
     v_collect=models.IntegerField(default=0)
     v_time = models.DateTimeField(auto_now_add=True)
     class Meta:
         app_label = "barrage"
+

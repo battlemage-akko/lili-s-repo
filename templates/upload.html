@@ -111,6 +111,7 @@ const vm = new Vue({
             param.append('video_file',this.video_file)
             param.append('video_title',this.video_title)
             param.append('username', "{{ request.user.username }}")
+            param.append('user_id', "{{ request.user.id }}")
             document.querySelector('.upload-form').querySelectorAll('input').forEach((item)=>{
                 item.disabled = "disabled"
             })

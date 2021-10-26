@@ -3,6 +3,8 @@ from django.views.decorators.csrf import csrf_exempt
 from barrage.models import test as barrageDatabase
 from barrage.models import video as videosTable
 from django.http import HttpResponse, JsonResponse
+from app.models import followUser as followtable
+from app.models import AppUser as Userdatabase
 import random
 
 def video(request,vid):
@@ -35,6 +37,8 @@ def video(request,vid):
         "v_title": result["v_title"],
         "v_collect": result["v_collect"],
         "v_like": result["v_like"],
+        "user_id": result["user_id"],
+        "fans": Userdatabase.getfans(result["user_id"]),
         "v_time": {
             "v_time_year": result["v_time"].year,
             "v_time_month": result["v_time"].month,
@@ -45,7 +49,8 @@ def video(request,vid):
         },
         "nextvideo": nextvideo,
         "nextvideolist": nextvideolist,
-        "oncechance" : 1
+        "oncechance" : 1,
+        "followornot" : followtable.follow_check(request.user.id,result["user_id"])
     }
     return render(request,'video.html',data)
 
@@ -110,11 +115,12 @@ def save_video(request):
         video_pic = request.FILES.get("video_pic")
         video_file = request.FILES.get("video_file")
         username = request.POST.get("username")
+        user_id = request.POST.get("user_id")
         print(video_file.name)
-        finish_save(video_title, video_pic, video_file,username)
+        finish_save(video_title, video_pic, video_file,username,user_id)
     return HttpResponse("上传完成")
 
-def finish_save(video_title,video_pic,video_file,username):
+def finish_save(video_title,video_pic,video_file,username,user_id):
     video_pic_save_path = 'static/videos/videopic/' + video_title + '.jpg'
     with open(video_pic_save_path, 'wb+') as f:
         f.write(video_pic.read())
@@ -125,7 +131,7 @@ def finish_save(video_title,video_pic,video_file,username):
         f.write(video_file.read())
     print(video_file.name, "done")
 
-    result = videosTable(v_ad=video_title + '.mp4',v_pic=video_title + '.jpg',v_auther=username,v_title=video_title,v_like=0,v_play=0,v_collect=0)
+    result = videosTable(v_ad=video_title + '.mp4',v_pic=video_title + '.jpg',v_auther=username,user_id=user_id,v_title=video_title,v_like=0,v_play=0,v_collect=0)
     result.save()
 
     return HttpResponse("保存完毕")

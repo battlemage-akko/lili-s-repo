@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="{% static 'css/videos.css' %}" rel="stylesheet">
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'images/video.PNG' %}">
     <link href="//cdn.bootcss.com/video.js/7.0.0-alpha.1/alt/video-js-cdn.css" rel="stylesheet">
     <script src="//cdn.bootcss.com/video.js/7.0.0-alpha.1/video.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
@@ -95,12 +96,12 @@
                 <div class="video-card">
                     <div class="thisvideo">
                         <div id="barrage"></div>
-                        <video controls data-setup='{ }' class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid" id="video_ready">
+                        <video class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid" id="video_ready">
                         </video>
                     </div>
                     <div class="play-tools">
                         <ul class="play-tools-main">
-                            <li class="play-tools-refresh" title="重载" @click="test"></li>
+                            <li class="play-tools-refresh" title="重载" @click="reloadvideo"></li>
                             <li class="play-tools-stop" title="销毁"></li>
                         </ul>
                         <ul class="play-tools-main">
@@ -136,6 +137,14 @@
                                        style="width: 20vw;min-width: 200px" id="danmu_content" v-model="input">
                             </div>
                         </div>
+                        <div class="video-danmucontent-switch">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch"
+                                       id="flexSwitchCheckChecked"
+                                       checked>
+                                <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="videodetail">
@@ -148,19 +157,19 @@
                     <h1 class="video-title">{{ v_title }}</h1>
                 </div>
                 <div class="video-profile">
-                    <div style="display: flex">
+                    <div style="display: flex;width:200px;">
                         <span class="video-profilepic">
                                         <img src="{% static 'images/头像.png' %}" alt="">
                                     </span>
                         <span class="video-profile-name">
                            <div><a href="javascript:">{{ v_auther }}</a></div>
-                            <a href="javascript:" style="font-size: 10px">0 位订阅者</a>
+                            <a href="javascript:" style="font-size: 10px">{{ fans }} 位订阅者</a>
                         </span>
                     </div>
-                    <div class="follow-holder">
+                    <div class="follow-holder" @click="follow">
                         <div class="follow">
-                            <div style="margin:0px 10px">
-                                <i></i> <a href="javascript:">关注</a>
+                            <div style="margin:0px 10px" class="follow-content">
+                                <span class="follow-btn">add</span> <span class="follow-text"> 求关注</span>
                             </div>
                         </div>
                     </div>
@@ -194,7 +203,7 @@
                         </div>
                         <ul class="danmulist">
                             <li v-for="(item,i) in barrageArray">
-                                <span>{[ Math.floor(item.b_time/60)<10?"0"+Math.floor(item.b_time/60):Math.floor(item.b_time/60) ]}:{[item.b_time%60<10?"0"+(item.b_time%60):item.b_time]}</span>
+                                <span>{[ Math.floor(item.b_time/60)<10?"0"+Math.floor(item.b_time/60):Math.floor(item.b_time/60) ]}:{[item.b_time%60<10?"0"+(item.b_time%60):item.b_time%60]}</span>
                                 <span>{[ item.b_content ]}</span>
                                 <span>null</span>
                                 <span><a href="javascript:" style="text-decoration: none">举报</a></span>
@@ -243,19 +252,6 @@
 </div>
 </body>
 <script>
-    const vuelogin = new Vue({
-        is_login: false,
-        el: ".login",
-        delimiters: ['{[', ']}'],
-        methods: {
-            login: function () {
-                window.open("{% url 'login' %}", "_blank")
-            },
-            logout: function () {
-                window.location.href = "{% url 'logout' %}", "_blank"
-            },
-        },
-    })
     const vm = new Vue({
         el: "#app",
         delimiters: ['{[', ']}'],
@@ -265,7 +261,21 @@
             nextbarrageTop: 0,
             screen_choose: "auto",
             oncechance:{{ oncechance }},
+            followornot: {{ followornot }},
+            video_detail: {
+                "v_id": {{ v_id }},
+                "v_ad": "{{ v_ad }}",
+                "v_pic": "{{ v_pic }}",
+                "v_auther": "{{ v_auther }}",
+                "v_play": {{ v_play }},
+                "v_title": "{{ v_title }}",
+                "v_collect": {{ v_collect }},
+                "v_like": {{ v_like }},
+                "user_id": {{ user_id }},
+                "followornot" : {{ followornot }}
+            },
             video_option: {
+                controls:true,
                 autoplay:true,
                 preload: "none" ,
                 playbackRates: [0.5, 1, 1.5, 2],
@@ -403,7 +413,7 @@
                 this.barrage_divNode.width = ~~window.getComputedStyle(this.barrage_divNode).width.replace('px', '');
                 this.barrage_divNode.timer = null;
                 //弹幕子节点
-                var barrageChileNode = this.barrage_divNode.children[0];
+                let barrageChileNode = this.barrage_divNode.children[0];
                 barrageChileNode.style.left = (this.barrage_divNode.width - this.barrageTipWidth) / 2 + 'px';
 
                 //运动
@@ -444,6 +454,21 @@
             getVideo:function (v_id){
                 window.open(this.video_url+v_id)
             },
+            reloadvideo:function (){
+                this.video_ready.load()
+                console.log("重载")
+            },
+            follow:async function (){
+                let param = new URLSearchParams()
+                param.append('follow_id', {{ request.user.id }})
+                param.append('followed_id', {{ user_id }})
+                result = await axios({
+                    method :"POST",
+                    url:"{% url "follow" %}",
+                    data: param,
+                })
+                this.followornot = result.data.code
+            }
         },
         mounted: function () {
             this.is_login_check()
@@ -472,10 +497,46 @@
                         vm.barrageAnimate(i);
                     }
                 });
+                this.on("error", function(){
+                    console.log("加载错误")
+                });
+                this.on("stalled",function(){
+                    console.log("网速异常");
+                })
             })
+            if(this.video_ready.readyState()==0){
+                console.log("123")
+                this.video_ready.options_.sources = [
+                    {
+                        src: '{% static "videos/" %}{{ v_ad }}',
+                        type: 'video/mp4',
+                    }
+                ]
+                this.reloadvideo()
+            }
+            if(this.followornot==1){
+                document.querySelector('.follow-btn').innerHTML = "tick"
+                document.querySelector('.follow-text').innerHTML = "已关注"
+            }
+            else if(this.followornot==2){
+                document.querySelector('.follow-btn').innerHTML = "add"
+                document.querySelector('.follow-text').innerHTML = "求关注"
+            }
             this.getBarrage()
         },
         watch: {
+            followornot: function (){
+                if(this.followornot==1){
+                    document.querySelector('.follow-btn').innerHTML = "tick"
+                    document.querySelector('.follow-text').innerHTML = "已关注"
+                    alert("关注成功")
+                }
+                else if(this.followornot==2){
+                    document.querySelector('.follow-btn').innerHTML = "add"
+                    document.querySelector('.follow-text').innerHTML = "求关注"
+                    alert("取关成功")
+                }
+            },
             video_nowtime: function () {
                 if (vm.barrageArray.length != 0)
                     while (vm.barrageArray.length != 0 && vm.barrageArray[0].b_time <= vm.video_nowtime) {
@@ -485,17 +546,16 @@
             }
         }
     })
-    var inputBox = document.querySelector("#danmu_content")
-    var sendBtn = document.querySelector("#send_danmu")
+    let inputBox = document.querySelector("#danmu_content")
+    let sendBtn = document.querySelector("#send_danmu")
     let video = document.querySelector('.thisvideo')
     let barrage_height = video.clientHeight
     let barrage_width = video.clientWidth
     let send_btn = document.querySelector("#send_danmu")
     let danmu_content = document.querySelector("#danmu_content")
-    var barrageBox = document.querySelector("#barrage")
-    var barrageWidth = barrage_width
-    var barrageHeight = barrage_height
-
+    let barrageBox = document.querySelector("#barrage")
+    let barrageWidth = barrage_width
+    let barrageHeight = barrage_height
     let danmulistbtn = document.querySelector('.danmubtn')
     let danmu = document.querySelector(".danmuholder")
     let danmulist = document.querySelector('.danmulist')
@@ -511,11 +571,9 @@
             danmu.style.height = 50 + 'px'
         }
     })
-
     window.onresize = function () {
         console.log(video.clientWidth)
     }
-
     let nextbarrageTop = 0
 
 </script>
