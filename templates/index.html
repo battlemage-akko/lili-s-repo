@@ -269,6 +269,9 @@
                     <span class="videos-each-tips">
                         <i class="videos-each-play"></i>
                     </span>
+                    <span class="videos-each-time">
+                        <span>{[ Math.floor(item.v_duaring/60)<10?"0"+Math.floor(item.v_duaring/60):Math.floor(item.v_duaring/60) ]}:{[ item.v_duaring%60<10?"0"+item.v_duaring%60:item.v_duaring%60 ]}</span>
+                    </span>
                     <span class="videos-each-title">
                         <h1>{[ item.v_title ]}</h1>
                         <p>作者 : {[ item.v_auther ]}</p>
