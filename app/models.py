@@ -1,7 +1,5 @@
 
 from django.db import models
-from django.db import models
-from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 
 class AppUser(AbstractUser):
@@ -18,8 +16,8 @@ class AppUser(AbstractUser):
         return AppUser.objects.filter(id=id).values()[0]["fans"]
 
 class followUser(models.Model):
-    follow = models.ForeignKey(AppUser, related_name="fan_id" ,on_delete=models.CASCADE)
-    followed = models.ForeignKey(AppUser, related_name="user_id", on_delete=models.CASCADE)
+    follow = models.ForeignKey(AppUser, related_name="follow_fan_id" ,on_delete=models.CASCADE)
+    followed = models.ForeignKey(AppUser, related_name="follow_user_id", on_delete=models.CASCADE)
 
     def follow_check(from_user, to_user):
         getAllFollow = followUser.objects.filter(id=from_user,followed_id=to_user).all()
