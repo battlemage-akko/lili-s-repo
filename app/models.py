@@ -15,6 +15,37 @@ class AppUser(AbstractUser):
     def getfans(id):
         return AppUser.objects.filter(id=id).values()[0]["fans"]
 
+class likeVideo(models.Model):
+    id = models.AutoField(primary_key=True)
+    user_id = models.IntegerField(default=0)
+    video_id = models.IntegerField(default=0)
+
+    def love_check(user_id, video_id):
+        getAllLike = likeVideo.objects.filter(user_id=user_id,video_id=video_id).all()
+        if(getAllLike):
+            return 1
+        else:
+            return 0
+
+    def love(user_id, video_id):
+        likeVideo(user_id = user_id,video_id=video_id).save()
+
+    def dislove(user_id, video_id):
+        f = likeVideo.objects.filter(user_id = user_id,video_id=video_id).all()
+        if f:
+            f.delete()
+            return 1
+        else:
+            return 0
+
+    def user_liked(user_id): #获取本人喜欢的所有视频
+        getAllLike = followUser.objects.filter(user_id=user_id).all()
+        user_like = []
+        for video in getAllLike:
+            user_like.append(video.video_id)
+        return user_like
+
+
 class followUser(models.Model):
     id = models.AutoField(primary_key=True)
     follow_id = models.IntegerField(default=0)

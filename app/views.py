@@ -5,6 +5,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse, JsonResponse
 from app.models import AppUser as Userdatabase
 from app.models import followUser as followtable
+from app.models import likeVideo as lovetable
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.backends import ModelBackend
@@ -248,7 +249,46 @@ def follow(request):
                 "code": 9
             }
             return JsonResponse(msg)
-
+@csrf_exempt
+def love(request):
+    if(request.method=="POST"):
+        user_id = request.POST.get("user_id")
+        video_id = request.POST.get("video_id")
+        status = int(request.POST.get("status"))
+        print(status,user_id,video_id)
+        msg = {
+            "msg":"",
+            "code": None
+        }
+        if(status == 0):
+            lovetable.love(user_id=user_id,video_id=video_id)
+            videosTable.objects.filter(v_id=video_id).update(
+                v_like=videosTable.objects.filter(v_id=video_id).values()[0]['v_like'] + 1)
+            msg = {
+                "msg": "喜欢",
+                "code": 1
+            }
+            return JsonResponse(msg)
+        elif (status == 1):
+            result = lovetable.dislove(user_id=user_id,video_id=video_id)
+            if(result):
+                videosTable.objects.filter(v_id=video_id).update(
+                    v_like=videosTable.objects.filter(v_id=video_id).values()[0]['v_like'] - 1)
+                msg = {
+                    "msg": "取消喜欢",
+                    "code": 0
+                }
+                return JsonResponse(msg)
+            else:
+                msg = {
+                    "msg": "取消失败",
+                }
+                return JsonResponse(msg)
+        else:
+            msg = {
+                "msg": "什么玩意",
+            }
+            return JsonResponse(msg)
 
 
 

@@ -188,7 +188,7 @@
                                         <ul class="videobtns">
                                             <li><span class="videopay"></span></li>
                                             <li><span class="videoshare"></span></li>
-                                            <li><span class="goodvideo"></span></li>
+                                            <li><span class="goodvideo" @click="love"></span></li>
                                             <li><span class="videocollect"></span></li>
                                         </ul>
                                     </div>
@@ -262,6 +262,7 @@
             screen_choose: "auto",
             oncechance:{{ oncechance }},
             followornot: {{ followornot }},
+            loveornot:{{ loveornot }},
             video_detail: {
                 "v_id": {{ v_id }},
                 "v_ad": "{{ v_ad }}",
@@ -461,13 +462,26 @@
             follow:async function (){
                 let param = new URLSearchParams()
                 param.append('follow_id', {{ request.user.id }})
-                param.append('followed_id', {{ user_id }})
+                param.append('followed_id',)
                 result = await axios({
                     method :"POST",
                     url:"{% url "follow" %}",
                     data: param,
                 })
                 this.followornot = result.data.code
+            },
+            love:async function (){
+                let param = new URLSearchParams()
+                param.append('user_id', {{ request.user.id }})
+                param.append('video_id', this.video_detail.v_id)
+                param.append('status', this.loveornot)
+                result = await axios({
+                    method :"POST",
+                    url:"{% url "love" %}",
+                    data: param,
+                })
+                console.log(result.data.msg)
+                this.loveornot = result.data.code
             }
         },
         mounted: function () {
@@ -522,6 +536,9 @@
                 document.querySelector('.follow-btn').innerHTML = "add"
                 document.querySelector('.follow-text').innerHTML = "求关注"
             }
+            if(this.loveornot==1){
+                document.querySelector(".goodvideo").classList.toggle("active")
+            }
             this.getBarrage()
             if(this.video_detail.user_id == {{ request.user.id }}){
                 document.querySelector(".follow").style.display = "none"
@@ -539,6 +556,9 @@
                     document.querySelector('.follow-text').innerHTML = "求关注"
                     alert("取关成功")
                 }
+            },
+            loveornot: function (){
+                document.querySelector(".goodvideo").classList.toggle("active")
             },
             video_nowtime: function () {
                 if (vm.barrageArray.length != 0)

@@ -334,6 +334,9 @@
             content: "\e9da";
             font-family: IcoMoon-Free;
         }
+        .goodvideo.active{
+            color: #ff8a8a;
+        }
         .videocollect::before{
             content: "\e9d7";
             font-family: IcoMoon-Free;
