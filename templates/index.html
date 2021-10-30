@@ -26,14 +26,12 @@
             --Background-color: #eeeef3;
             --shadow: 0 3px 3px 0 rgba(54, 58, 80, 0.32);
         }
-
         @font-face {
             font-family: 'IcoMoon-Free';
             src: url('{% static 'css/IcoMoon-Free.ttf'%}') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
-
         * {
             margin: 0;
             padding: 0;
@@ -210,442 +208,442 @@
 </head>
 <body>
 <img src="{% static 'images/logo.png' %}" alt="" class="logo">
-<div id="app" ref="app">
-    <div v-show="flags.default" class="default">
-        <section>
-            <img src="{% static 'images/default/mountain.png' %}" id="mountain">
-            <img src="{% static 'images/default/sun.png' %}" id="sun">
-            <img src="{% static 'images/default/mountains.png' %}" id="mountains">
-            <h2 id="defaulttitle">
-                Welcome
+    <div id="app" ref="app">
+        <div v-show="flags.default" class="default">
+            <section>
+                <img src="{% static 'images/default/mountain.png' %}" id="mountain">
+                <img src="{% static 'images/default/sun.png' %}" id="sun">
+                <img src="{% static 'images/default/mountains.png' %}" id="mountains">
+                <h2 id="defaulttitle">
+                    Welcome
+                    {% if request.user.is_authenticated %}
+                        {{ request.user.username }}
+                    {% endif %}
+                </h2>
                 {% if request.user.is_authenticated %}
-                    {{ request.user.username }}
+
+                {% else %}
+                    <span id="defaultlogin" @click="login">Sign in</span>
                 {% endif %}
-            </h2>
-            {% if request.user.is_authenticated %}
-
-            {% else %}
-                <span id="defaultlogin" @click="login">Sign in</span>
-            {% endif %}
-        </section>
-        <div class="defaultdesc" id="defaultdesc">
-            <h2>丢臭你（占位）</h2>
-            <p>丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
-                丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
-                丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
-                丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
-                丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
-                丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
-                丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
-            </p>
-        </div>
-    </div>
-    <div v-show="flags.videos" class="videos">
-        <div class="videos-holder">
-            <div class="videoslist-title">
-                <div style="position: absolute" class="videoslist-search">
-                    <div>
-                        <div class="input-group mb-2">
-                      <input type="text" class="form-control videoslist-search-input" placeholder="请输入" aria-label="Recipient's username" aria-describedby="button-addon2">
-                      <button class="btn btn-outline-secondary videoslist-search-btn" type="button" id="button-addon2"><i class="videoslist-input-btn"></i></button>
-                        </div>
-                        <h2 style="font-size: 12px;padding: 0px 30px">
-                            推荐: <a href="javascript:"></a>
-                        </h2>
-                    </div>
-                </div>
-                <span class="videoslist-upload" title="上传" @click="upload_video"></span>
-            </div>
-            <div style="padding: 0px 20px">
-                <ul class="videoslist-choose">
-                    <li @click="changeVideosListTag('new')"><a href="javascript:">最新</a></li>
-                    <li @click="changeVideosListTag('popular')"><a href="javascript:">热门</a></li>
-                    <li @click="changeVideosListTag('follow')"><a href="javascript:">关注</a></li>
-                </ul>
-            </div>
-            <ul class="videos-list videos-list-new" v-show="videosList_tags.new">
-                <li v-for="(item,i) in videosList_new" @click="getVideo(item.v_id)" class="videos-each">
-                    <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'contain'}" class="videos-each-background"></div>
-                    <span class="videos-each-tips">
-                        <i class="videos-each-play"></i>
-                    </span>
-                    <span class="videos-each-time">
-                        <span>{[ Math.floor(item.v_duaring/60)<10?"0"+Math.floor(item.v_duaring/60):Math.floor(item.v_duaring/60) ]}:{[ item.v_duaring%60<10?"0"+item.v_duaring%60:item.v_duaring%60 ]}</span>
-                    </span>
-                    <span class="videos-each-title">
-                        <h1>{[ item.v_title ]}</h1>
-                        <p>作者 : {[ item.v_auther ]}</p>
-                        <p style="right: 10px">播放 : {[ item.v_play ]}</p>
-                    </span>
-                </li>
-            </ul>
-            <ul class="videos-list videos-list-popular" v-show="videosList_tags.popular">
-            </ul>
-            <ul class="videos-list videos-list-follow" v-show="videosList_tags.follow">
-            </ul>
-            <div class="showmore-div">
-                <button class="btn btn-primary show_more_btn" v-show="show_more_btn" @click="getmorehotvideo"><i class="showmore-div-btn" ></i></button>
-                <div class="no-more" v-show="show_more_cat">
-                    <img src="{% static 'images/猫猫叹气.png' %}" alt="">
-                </div>
-            </div>
-            <div class="videos-notice">
-                <div>本站为个人兴趣，非商业用途，所有内容均收集于互联网公开资源，本站只提供WEB页面服务，不提供影片资源储存也不参与录制与上传，若本站收录内容无意侵犯了贵公司版权，请给网页底部邮箱地址来信，我会及时处理，谢谢合作。邮箱:2878305660@qq.com</div>
-            </div>
-            <div style="height: 30px"></div>
-        </div>
-    </div>
-    <div v-if="is_login" v-show="flags.pics" class="pics middle">
-        <div class="slides">
-            <input type="radio" name="r" id="r1">
-            <input type="radio" name="r" id="r2">
-            <input type="radio" name="r" id="r3">
-            <input type="radio" name="r" id="r4">
-            <input type="radio" name="r" id="r5">
-            <div class="slide mark">
-                <img src="{% static 'images/花名.jpg' %}" alt="">
-            </div>
-            <div class="slide">
-                <img src="{% static 'images/2.png' %}" alt="">
-            </div>
-            <div class="slide">
-                <img src="{% static 'images/3.png' %}" alt="">
-            </div>
-            <div class="slide">
-                <img src="{% static 'images/3.jpg' %}" alt="">
-            </div>
-            <div class="slide">
-                <img src="{% static 'images/4.jpg' %}" alt="">
+            </section>
+            <div class="defaultdesc" id="defaultdesc">
+                <h2>丢臭你（占位）</h2>
+                <p>丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
+                    丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
+                    丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
+                    丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
+                    丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
+                    丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
+                    丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你丢臭你
+                </p>
             </div>
         </div>
-        <div class="navigation">
-            <label for="r1" class="bar" value="0"></label>
-            <label for="r2" class="bar" value="1"></label>
-            <label for="r3" class="bar" value="2"></label>
-            <label for="r4" class="bar" value="3"></label>
-            <label for="r5" class="bar" value="4"></label>
-        </div>
-        <div class="leftorright">
-            <span class="left"></span><span class="right"></span>
-        </div>
-    </div>
-    <div v-if="is_login" v-show="flags.character" class="character">
-        <div class="mycontainer">
-            <div class="card">
-                <div class="cardbox">
-                    <div class="cardcontent">
-                        <h2>本间芽衣子</h2>
-                        <h3>CV:茅野爱衣</h3>
-                        <p>本作的女主角。皮肤白皙，身材娇小的少女。性格天真，超平和Busters中的吉祥物。
-                            有着独特的说话方式。虽然有点少根筋，但有些事情还是明白的。5年前因为意外身亡，
-                            5年后却突然以长大后的姿态出现在幼时玩伴宿海仁太的面前，希望仁太帮忙完成自己的心愿。
-                            知道自己已经死了。</p>
-                        <a href="http://www.baidu.com">Read more</a>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="cardbox">
-                    <div class="cardcontent">
-                        <h2>宿海仁太</h2>
-                        <h3>CV:入野自由/田村睦心</h3>
-                        <p>本作的男主角，在孩童时创立“超平和Busters”，昔日曾经是6人的中心。因为面码和母亲的去世，
-                            没能考上重点高中，变的不愿与人接触并拒绝上学。是一开始唯一能看见面码的人。喜欢面码，
-                            最大的愿望是能向面码道歉。面码给其的道别信上说对仁太的喜欢是想做仁太新娘子的喜欢。</p>
-                        <a href="http://www.baidu.com">Read more</a>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="cardbox">
-                    <div class="cardcontent">
-                        <h2>安城鸣子</h2>
-                        <h3>CV:户松遥</h3>
-                        <p>表面上是时髦的女高中生，有些傲娇。仁太的同班同学，小时候一直模仿面码，非常羡慕面码的直长发，
-                            讨厌自己的卷发和眼镜。看容易害羞。从小的时候就喜欢仁太。最喜欢的人是面码，最讨厌的人也是面码。
-                            面码成佛后与仁太一起复学。面码给其的道别信上说最喜欢踏实可靠的安鸣。</p>
-                        <a href="http://www.baidu.com">Read more</a>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="cardbox">
-                    <div class="cardcontent">
-                        <h2>松雪集</h2>
-                        <h3>CV:樱井孝宏/濑户麻沙美</h3>
-                        <p>长相和成绩都十分好，从年幼的时候就没有操劳过。表面看上去说话恶毒刻薄，其实内心善良。
-                            虽然经常挑衅仁太，但是关键时刻却还是惦记着仁太。以优异成绩进入重点高中，与鹤子是同班同学。
-                            喜欢面码，小时候各方面都差仁太一点，所以将仁太视为对手。面码给其的道别信上说最喜欢努力向上的雪集。</p>
-                        <a href="http://www.baidu.com">Read more</a>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="cardbox">
-                    <div class="cardcontent">
-                        <h2>鹤见知利子</h2>
-                        <h3>CV:早见沙织</h3>
-                        <p>鹤见知利子和松雪集是同班同学，同样是一位优等生。喜欢雪集。喜欢看书，性格沉着冷静，观察敏锐。
-                            是典型的现实主义的知识系分子。具有作为成年人的性格，喜好读书。与松雪集入读同一所高中学校，
-                            学业成绩为年级第四。对人态度有些冷漠，说话也有些刻薄，但没有恶意，其实内心很善良而且冷静，
-                            也有可爱的一面。面码给其的道别信上说最喜欢温柔善良的鹤子。</p>
-                        <a href="http://www.baidu.com">Read more</a>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="cardbox">
-                    <div class="cardcontent">
-                        <h2>久川铁道</h2>
-                        <h3>CV:近藤孝行/丰崎爱生(???)</h3>
-                        <p>6人中年纪最小的一个。昔日个头娇小（较弱小），现在是最强壮的男人。虽然外表变化很大，但内心一点没变。
-                            没有继续高中学业，而选择成为环游世界的自由人。在日本的时候，以“超平和Busters”的秘密基地为临时住所。
-                            在仁太找寻面码中始终支持仁太。当初因为看到面码在自己面前发生意外，而自己却无能为力，一直深深地自责，
-                            也因此而放弃高中学业而环游世界。为了实现面码的愿望，非常积极地帮助仁太。面码成佛后，他终于也拿起手中的课本。
-                            面码给其的道别信上说最喜欢有趣的波波。</p>
-                        <a href="http://www.baidu.com">Read more</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div v-if="is_login" v-show="flags.profile" class="profile">
-        <div class="profilecontent">
-            <div class="profile-detail">
-                <div class="profile-background">
-                </div>
-                <div style="display: flex;justify-content: center">
-                    <img src="{% static "images/头像.png" %}" alt="" class="profile-img">
-                </div>
-                <ul style="list-style: none" class="profile-info">
-                    <li>
-                        <div>{{ request.user.username }}
-                            {% if request.user.is_superuser == True %}
-                                (管理员)
-                            {% endif %}
-                        </div>
-                    </li>
-                    <li style="display: flex">
+        <div v-show="flags.videos" class="videos">
+            <div class="videos-holder">
+                <div class="videoslist-title">
+                    <div style="position: absolute" class="videoslist-search">
                         <div>
-                            订阅:{{ request.user.fans }}
+                            <div class="input-group mb-2">
+                          <input type="text" class="form-control videoslist-search-input" placeholder="请输入" aria-label="Recipient's username" aria-describedby="button-addon2">
+                          <button class="btn btn-outline-secondary videoslist-search-btn" type="button" id="button-addon2"><i class="videoslist-input-btn"></i></button>
+                            </div>
+                            <h2 style="font-size: 12px;padding: 0px 30px">
+                                推荐: <a href="javascript:"></a>
+                            </h2>
                         </div>
-                        <div>
-                            获赞:0
-                        </div>
+                    </div>
+                    <span class="videoslist-upload" title="上传" @click="upload_video"></span>
+                </div>
+                <div style="padding: 0px 20px">
+                    <ul class="videoslist-choose">
+                        <li @click="changeVideosListTag('new')"><a href="javascript:">最新</a></li>
+                        <li @click="changeVideosListTag('popular')"><a href="javascript:">热门</a></li>
+                        <li @click="changeVideosListTag('follow')"><a href="javascript:">关注</a></li>
+                    </ul>
+                </div>
+                <ul class="videos-list videos-list-new" v-show="videosList_tags.new">
+                    <li v-for="(item,i) in videosList_new" @click="getVideo(item.v_id)" class="videos-each">
+                        <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'contain'}" class="videos-each-background"></div>
+                        <span class="videos-each-tips">
+                            <i class="videos-each-play"></i>
+                        </span>
+                        <span class="videos-each-time">
+                            <span>{[ Math.floor(item.v_duaring/60)<10?"0"+Math.floor(item.v_duaring/60):Math.floor(item.v_duaring/60) ]}:{[ item.v_duaring%60<10?"0"+item.v_duaring%60:item.v_duaring%60 ]}</span>
+                        </span>
+                        <span class="videos-each-title">
+                            <h1>{[ item.v_title ]}</h1>
+                            <p>作者 : {[ item.v_auther ]}</p>
+                            <p style="right: 10px">播放 : {[ item.v_play ]}</p>
+                        </span>
                     </li>
                 </ul>
-                <div class="profile-content"></div>
-            </div>
-            <div class="profile-other">
-                <div class="profile-id">
-                    个人信息
-                    <hr/>
-                    <span style="font-weight: 600;letter-spacing: 2px"></span><span>id : {{ request.user.id }}</span><span>  加入 : {{ request.user.date_joined }} </span>
-                </div>
-                <div class="profile-message">
-                    消息
-                    <hr/>
-                </div>
-                <ul class="profile-tools">
-                    <li title="消息" class="profile-chat"><i></i></li>
-                    <li title="上传视频" class="profile-upload"><i></i></li>
-                    <li title="云盘" class="profile-cloud" @click="tocloud"><i></i></li>
-                    <li title="更改个人信息" class="profile-set"><i></i></li>
-                    <li title="注销" class="profile-logout" @click="logout"><i></i></li>
+                <ul class="videos-list videos-list-popular" v-show="videosList_tags.popular">
                 </ul>
+                <ul class="videos-list videos-list-follow" v-show="videosList_tags.follow">
+                </ul>
+                <div class="showmore-div">
+                    <button class="btn btn-primary show_more_btn" v-show="show_more_btn" @click="getmorehotvideo"><i class="showmore-div-btn" ></i></button>
+                    <div class="no-more" v-show="show_more_cat">
+                        <img src="{% static 'images/猫猫叹气.png' %}" alt="">
+                    </div>
+                </div>
+                <div class="videos-notice">
+                    <div>本站为个人兴趣，非商业用途，所有内容均收集于互联网公开资源，本站只提供WEB页面服务，不提供影片资源储存也不参与录制与上传，若本站收录内容无意侵犯了贵公司版权，请给网页底部邮箱地址来信，我会及时处理，谢谢合作。邮箱:2878305660@qq.com</div>
+                </div>
+                <div style="height: 30px"></div>
             </div>
         </div>
-    </div>
-    <div v-if="this_user_admin" v-show="flags.admin" class="admin">
-        <div class="admin-content">
-            <div class="admin-server">
-                <div class="admin-server-res">
-                    <div>
-                        <div class="card">
-                            <div style="display: flex;justify-content: space-between">
-                                <p style="font-weight: 700" @click="serverDetail">服务器使用 : <i
-                                        class="admin-server-res-fresh"></i></p>
-                                <div class="form-check form-switch" title="是否开启自动更新">
-                                    开启自动更新
-                                    <input class="form-check-input" type="checkbox" role="switch"
-                                           id="flexSwitchCheckChecked" v-model="serverupdate">
-                                    <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+        <div v-if="is_login" v-show="flags.pics" class="pics middle">
+            <div class="slides">
+                <input type="radio" name="r" id="r1">
+                <input type="radio" name="r" id="r2">
+                <input type="radio" name="r" id="r3">
+                <input type="radio" name="r" id="r4">
+                <input type="radio" name="r" id="r5">
+                <div class="slide mark">
+                    <img src="{% static 'images/花名.jpg' %}" alt="">
+                </div>
+                <div class="slide">
+                    <img src="{% static 'images/2.png' %}" alt="">
+                </div>
+                <div class="slide">
+                    <img src="{% static 'images/3.png' %}" alt="">
+                </div>
+                <div class="slide">
+                    <img src="{% static 'images/3.jpg' %}" alt="">
+                </div>
+                <div class="slide">
+                    <img src="{% static 'images/4.jpg' %}" alt="">
+                </div>
+            </div>
+            <div class="navigation">
+                <label for="r1" class="bar" value="0"></label>
+                <label for="r2" class="bar" value="1"></label>
+                <label for="r3" class="bar" value="2"></label>
+                <label for="r4" class="bar" value="3"></label>
+                <label for="r5" class="bar" value="4"></label>
+            </div>
+            <div class="leftorright">
+                <span class="left"></span><span class="right"></span>
+            </div>
+        </div>
+        <div v-if="is_login" v-show="flags.character" class="character">
+            <div class="mycontainer">
+                <div class="card">
+                    <div class="cardbox">
+                        <div class="cardcontent">
+                            <h2>本间芽衣子</h2>
+                            <h3>CV:茅野爱衣</h3>
+                            <p>本作的女主角。皮肤白皙，身材娇小的少女。性格天真，超平和Busters中的吉祥物。
+                                有着独特的说话方式。虽然有点少根筋，但有些事情还是明白的。5年前因为意外身亡，
+                                5年后却突然以长大后的姿态出现在幼时玩伴宿海仁太的面前，希望仁太帮忙完成自己的心愿。
+                                知道自己已经死了。</p>
+                            <a href="http://www.baidu.com">Read more</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="cardbox">
+                        <div class="cardcontent">
+                            <h2>宿海仁太</h2>
+                            <h3>CV:入野自由/田村睦心</h3>
+                            <p>本作的男主角，在孩童时创立“超平和Busters”，昔日曾经是6人的中心。因为面码和母亲的去世，
+                                没能考上重点高中，变的不愿与人接触并拒绝上学。是一开始唯一能看见面码的人。喜欢面码，
+                                最大的愿望是能向面码道歉。面码给其的道别信上说对仁太的喜欢是想做仁太新娘子的喜欢。</p>
+                            <a href="http://www.baidu.com">Read more</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="cardbox">
+                        <div class="cardcontent">
+                            <h2>安城鸣子</h2>
+                            <h3>CV:户松遥</h3>
+                            <p>表面上是时髦的女高中生，有些傲娇。仁太的同班同学，小时候一直模仿面码，非常羡慕面码的直长发，
+                                讨厌自己的卷发和眼镜。看容易害羞。从小的时候就喜欢仁太。最喜欢的人是面码，最讨厌的人也是面码。
+                                面码成佛后与仁太一起复学。面码给其的道别信上说最喜欢踏实可靠的安鸣。</p>
+                            <a href="http://www.baidu.com">Read more</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="cardbox">
+                        <div class="cardcontent">
+                            <h2>松雪集</h2>
+                            <h3>CV:樱井孝宏/濑户麻沙美</h3>
+                            <p>长相和成绩都十分好，从年幼的时候就没有操劳过。表面看上去说话恶毒刻薄，其实内心善良。
+                                虽然经常挑衅仁太，但是关键时刻却还是惦记着仁太。以优异成绩进入重点高中，与鹤子是同班同学。
+                                喜欢面码，小时候各方面都差仁太一点，所以将仁太视为对手。面码给其的道别信上说最喜欢努力向上的雪集。</p>
+                            <a href="http://www.baidu.com">Read more</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="cardbox">
+                        <div class="cardcontent">
+                            <h2>鹤见知利子</h2>
+                            <h3>CV:早见沙织</h3>
+                            <p>鹤见知利子和松雪集是同班同学，同样是一位优等生。喜欢雪集。喜欢看书，性格沉着冷静，观察敏锐。
+                                是典型的现实主义的知识系分子。具有作为成年人的性格，喜好读书。与松雪集入读同一所高中学校，
+                                学业成绩为年级第四。对人态度有些冷漠，说话也有些刻薄，但没有恶意，其实内心很善良而且冷静，
+                                也有可爱的一面。面码给其的道别信上说最喜欢温柔善良的鹤子。</p>
+                            <a href="http://www.baidu.com">Read more</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="cardbox">
+                        <div class="cardcontent">
+                            <h2>久川铁道</h2>
+                            <h3>CV:近藤孝行/丰崎爱生(???)</h3>
+                            <p>6人中年纪最小的一个。昔日个头娇小（较弱小），现在是最强壮的男人。虽然外表变化很大，但内心一点没变。
+                                没有继续高中学业，而选择成为环游世界的自由人。在日本的时候，以“超平和Busters”的秘密基地为临时住所。
+                                在仁太找寻面码中始终支持仁太。当初因为看到面码在自己面前发生意外，而自己却无能为力，一直深深地自责，
+                                也因此而放弃高中学业而环游世界。为了实现面码的愿望，非常积极地帮助仁太。面码成佛后，他终于也拿起手中的课本。
+                                面码给其的道别信上说最喜欢有趣的波波。</p>
+                            <a href="http://www.baidu.com">Read more</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="is_login" v-show="flags.profile" class="profile">
+            <div class="profilecontent">
+                <div class="profile-detail">
+                    <div class="profile-background">
+                    </div>
+                    <div style="display: flex;justify-content: center">
+                        <img src="{% static "images/头像.png" %}" alt="" class="profile-img">
+                    </div>
+                    <ul style="list-style: none" class="profile-info">
+                        <li>
+                            <div>{{ request.user.username }}
+                                {% if request.user.is_superuser == True %}
+                                    (管理员)
+                                {% endif %}
+                            </div>
+                        </li>
+                        <li style="display: flex">
+                            <div>
+                                订阅:{{ request.user.fans }}
+                            </div>
+                            <div>
+                                获赞:0
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="profile-content"></div>
+                </div>
+                <div class="profile-other">
+                    <div class="profile-id">
+                        个人信息
+                        <hr/>
+                        <span style="font-weight: 600;letter-spacing: 2px"></span><span>id : {{ request.user.id }}</span><span>  加入 : {{ request.user.date_joined }} </span>
+                    </div>
+                    <div class="profile-message">
+                        消息
+                        <hr/>
+                    </div>
+                    <ul class="profile-tools">
+                        <li title="消息" class="profile-chat"><i></i></li>
+                        <li title="上传视频" class="profile-upload"><i></i></li>
+                        <li title="云盘" class="profile-cloud" @click="tocloud"><i></i></li>
+                        <li title="更改个人信息" class="profile-set"><i></i></li>
+                        <li title="注销" class="profile-logout" @click="logout"><i></i></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div v-if="this_user_admin" v-show="flags.admin" class="admin">
+            <div class="admin-content">
+                <div class="admin-server">
+                    <div class="admin-server-res">
+                        <div>
+                            <div class="card">
+                                <div style="display: flex;justify-content: space-between">
+                                    <p style="font-weight: 700" @click="serverDetail">服务器使用 : <i
+                                            class="admin-server-res-fresh"></i></p>
+                                    <div class="form-check form-switch" title="是否开启自动更新">
+                                        开启自动更新
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                               id="flexSwitchCheckChecked" v-model="serverupdate">
+                                        <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                                    </div>
                                 </div>
-                            </div>
-                            <hr/>
-                            <ul class="admin-server-res-detail-li">
-                                <li>CPU : <span> {[ serverDetaillist.CPU ]}</span></li>
-                                <li>内存占用 : <span> {[ serverDetaillist.MEM ]}</span></li>
-                                <li>硬盘使用 : <span> {[ serverDetaillist.DISK ]}</span></li>
-                                <li>流量 : <span> {[ serverDetaillist.NET ]}</span></li>
-                                <li>IP : <span> {[ serverDetaillist.IP ]}</span></li>
-                                <li>服务器已运行时间 : <span> {[ serverDetaillist.TIME ]}</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="admin-server-user">
-                    <div>
-                        <div class="card">
-                            <p style="font-weight: 700" @click="userDetail">用户 : <i class="admin-server-res-fresh"></i>
-                            </p>
-                            <hr/>
-                            <ul class="admin-user-detail-li">
-                                <li>用户总数 : <span> {[ userDetaillist.USER ]}</span></li>
-                                <li>当前在线人数 : <span> {[ userDetaillist.ONLINE ]}</span></li>
-                                <li>管理员数量 : <span> {[ userDetaillist.ADMIN ]}</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div style="margin-top: 20px">
-                        <div class="card">
-                            <ul class="shutdownorreboot">
-                                <li class="reboot" title="重启" @click="reboot"><i></i></li>
-                                <li class="shutdown" title="关机" @click="shutdown"><i></i></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="admin-info">
-                <div class="admin-terminal">
-                    <div>
-                        <div class="card">
-                                <ul class = "admin-terminal-list">
-                                    <li class = "admin-terminal-input">
-                                        <div><input type="text" placeholder="输入用户名，若空则使用默认" class="admin-terminal-user"></div>
-                                        <div><input type="password" class="admin-terminal-password"></div>
-                                        <div>命令:<input type="text" placeholder="带命令打开终端，若空则不带命令" class="admin-terminal-cmd" v-model="terminal_cmd">#tail -f /data/wwwroot/myproject/uwsgi/uwsgi.log</div>
-                                    </li>
-                                    <li>
-                                        <button type="button" class="btn btn-outline-primary" @click="terminal"><i class="admin-terminal-list-terminal"></i> 连接终端</button>
-
-                                    </li>
+                                <hr/>
+                                <ul class="admin-server-res-detail-li">
+                                    <li>CPU : <span> {[ serverDetaillist.CPU ]}</span></li>
+                                    <li>内存占用 : <span> {[ serverDetaillist.MEM ]}</span></li>
+                                    <li>硬盘使用 : <span> {[ serverDetaillist.DISK ]}</span></li>
+                                    <li>流量 : <span> {[ serverDetaillist.NET ]}</span></li>
+                                    <li>IP : <span> {[ serverDetaillist.IP ]}</span></li>
+                                    <li>服务器已运行时间 : <span> {[ serverDetaillist.TIME ]}</span></li>
                                 </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="admin-server-user">
+                        <div>
+                            <div class="card">
+                                <p style="font-weight: 700" @click="userDetail">用户 : <i class="admin-server-res-fresh"></i>
+                                </p>
+                                <hr/>
+                                <ul class="admin-user-detail-li">
+                                    <li>用户总数 : <span> {[ userDetaillist.USER ]}</span></li>
+                                    <li>当前在线人数 : <span> {[ userDetaillist.ONLINE ]}</span></li>
+                                    <li>管理员数量 : <span> {[ userDetaillist.ADMIN ]}</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px">
+                            <div class="card">
+                                <ul class="shutdownorreboot">
+                                    <li class="reboot" title="重启" @click="reboot"><i></i></li>
+                                    <li class="shutdown" title="关机" @click="shutdown"><i></i></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="admin-user-modify">
-                    <div>
-                        <div class="card admin-user-modify-card">
-                            <div style="display: flex;justify-content: space-between">
-                                <p style="font-weight: 700" >修改用户信息 :
-                                    <i  @click="getAllUsers"></i>
-                                </p>
-                                <p style="color: red;font-family: '微软雅黑 Light'">{[ Del_msg ]}
-                                    <i class="admin-user-show" @click="hidden_user_modify"> </i>
-                                </p>
+                <div class="admin-info">
+                    <div class="admin-terminal">
+                        <div>
+                            <div class="card">
+                                    <ul class = "admin-terminal-list">
+                                        <li class = "admin-terminal-input">
+                                            <div><input type="text" placeholder="输入用户名，若空则使用默认" class="admin-terminal-user"></div>
+                                            <div><input type="password" class="admin-terminal-password"></div>
+                                            <div>命令:<input type="text" placeholder="带命令打开终端，若空则不带命令" class="admin-terminal-cmd" v-model="terminal_cmd">#tail -f /data/wwwroot/myproject/uwsgi/uwsgi.log</div>
+                                        </li>
+                                        <li>
+                                            <button type="button" class="btn btn-outline-primary" @click="terminal"><i class="admin-terminal-list-terminal"></i> 连接终端</button>
+
+                                        </li>
+                                    </ul>
                             </div>
-                            <hr/>
-                            <table class="table table-striped table-hover">
-                                <thead>
-                                <tr>
-                                    <th scope="col">id</th>
-                                    <th scope="col">名字</th>
-                                    <th scope="col">邮箱</th>
-                                    <th scope="col">最后登录</th>
-                                    <th scope="col">封禁</th>
-                                    <th scope="col">管理员</th>
-                                    <th scope="col">提交修改</th>
-                                    <th scope="col">封禁</th>
-                                    <th scope="col">删除用户</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="(item,index) in AllUsers">
-                                    <td><p>{[ item.id ]}</p></td>
-                                    <td><p>{[ item.username ]}</p></td>
-                                    <td><p>{[ item.email ]}</p></td>
-                                    <td><p>{[ item.last_login ]}</p></td>
-                                    <td><p>{[ !item.is_active ]}</p></td>
-                                    <td><p>{[ item.is_superuser ]}</p></td>
-                                    <td><p class="admin-user-modify-submit" @click="damie"></p></td>
-                                    <td><p class="admin-user-modify-ban" @click="damie"></p></td>
-                                    <td><p class="admin-user-modify-kill" @click="Del_user(`${[ item.id ]}`)"></p></td>
-                                </tr>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
-                </div>
-                <div class="admin-user-modify">
-                    <div>
-                        <div class="card">
-                            <div style="display: flex;justify-content: space-between">
-                                <p style="font-weight: 700" >举报 :
-                                    <i class="admin-user-fresh" @click="getAllUsers"></i>
-                                </p>
-                                <p style="color: red;font-family: '微软雅黑 Light'">{[ Del_msg ]}</p>
+                    <div class="admin-user-modify">
+                        <div>
+                            <div class="card admin-user-modify-card">
+                                <div style="display: flex;justify-content: space-between">
+                                    <p style="font-weight: 700" >修改用户信息 :
+                                        <i  @click="getAllUsers"></i>
+                                    </p>
+                                    <p style="color: red;font-family: '微软雅黑 Light'">{[ Del_msg ]}
+                                        <i class="admin-user-show" @click="hidden_user_modify"> </i>
+                                    </p>
+                                </div>
+                                <hr/>
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">id</th>
+                                        <th scope="col">名字</th>
+                                        <th scope="col">邮箱</th>
+                                        <th scope="col">最后登录</th>
+                                        <th scope="col">封禁</th>
+                                        <th scope="col">管理员</th>
+                                        <th scope="col">提交修改</th>
+                                        <th scope="col">封禁</th>
+                                        <th scope="col">删除用户</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(item,index) in AllUsers">
+                                        <td><p>{[ item.id ]}</p></td>
+                                        <td><p>{[ item.username ]}</p></td>
+                                        <td><p>{[ item.email ]}</p></td>
+                                        <td><p>{[ item.last_login ]}</p></td>
+                                        <td><p>{[ !item.is_active ]}</p></td>
+                                        <td><p>{[ item.is_superuser ]}</p></td>
+                                        <td><p class="admin-user-modify-submit" @click="damie"></p></td>
+                                        <td><p class="admin-user-modify-ban" @click="damie"></p></td>
+                                        <td><p class="admin-user-modify-kill" @click="Del_user(`${[ item.id ]}`)"></p></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                            <hr/>
+                        </div>
+                    </div>
+                    <div class="admin-user-modify">
+                        <div>
+                            <div class="card">
+                                <div style="display: flex;justify-content: space-between">
+                                    <p style="font-weight: 700" >举报 :
+                                        <i class="admin-user-fresh" @click="getAllUsers"></i>
+                                    </p>
+                                    <p style="color: red;font-family: '微软雅黑 Light'">{[ Del_msg ]}</p>
+                                </div>
+                                <hr/>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="sidebar">
-    <div class="logo_content">
-        <div class="logo">
-            <i></i>
-            <div class="logo_name"></div>
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <i></i>
+                <div class="logo_name"></div>
+            </div>
+            <i id="navbtn"></i>
         </div>
-        <i id="navbtn"></i>
-    </div>
-    <ul class="searchnav" style="padding: 0px!important">
-        <li>
-            <input type="search" placeholder="请输入">
-            <i class="searchbtn"></i>
-        </li>
-    </ul>
-    <ul class="nav_list" style="padding: 0px!important">
-        <li id="default">
-            <i class="homebtn"></i>
-            <p>Home</p>
-        </li>
-        <li id="videos">
-            <i class="videosbtn"></i>
-            <p>视频</p>
-        </li>
-        {% if request.user.is_authenticated %}
-            <li id="character">
-                <i class="characterbtn"></i>
-                <p>角色</p>
+        <ul class="searchnav" style="padding: 0px!important">
+            <li>
+                <input type="search" placeholder="请输入">
+                <i class="searchbtn"></i>
             </li>
-            <li id="pics">
-                <i class="imgbtn"></i>
-                <p>图片</p>
+        </ul>
+        <ul class="nav_list" style="padding: 0px!important">
+            <li id="default">
+                <i class="homebtn"></i>
+                <p>Home</p>
             </li>
-            <li id="profile">
-                <i class="profilebtn"></i>
-                <p>个人资料</p>
+            <li id="videos">
+                <i class="videosbtn"></i>
+                <p>视频</p>
             </li>
-            {% if request.user.is_superuser == True %}
-                <li id="admin">
-                    <i class="adminbtn"></i>
-                    <p>管理</p>
+            {% if request.user.is_authenticated %}
+                <li id="character">
+                    <i class="characterbtn"></i>
+                    <p>角色</p>
                 </li>
+                <li id="pics">
+                    <i class="imgbtn"></i>
+                    <p>图片</p>
+                </li>
+                <li id="profile">
+                    <i class="profilebtn"></i>
+                    <p>个人资料</p>
+                </li>
+                {% if request.user.is_superuser == True %}
+                    <li id="admin">
+                        <i class="adminbtn"></i>
+                        <p>管理</p>
+                    </li>
+                {% endif %}
             {% endif %}
-        {% endif %}
-    </ul>
-    <audio src="{% static 'audio/secretbase.mp3' %}" controls="controls" preload id="music" hidden></audio>
-    <div class="login" @click="login()">
-        <img src="{% static 'images/' %}{{ request.user.picture }}" alt="">
-        {% if request.user.is_authenticated %}
-            <span class="logout" @click="logout"><i></i></span>
-            <p class="loginbtn active">
-                {{ request.user.username }}
-            </p>
-        {% else %}
-            <p class="loginbtn">
-                Login
-            </p>
-        {% endif %}
+        </ul>
+        <audio src="{% static 'audio/secretbase.mp3' %}" controls="controls" preload id="music" hidden></audio>
+        <div class="login" @click="login()">
+            <img src="{% static 'images/' %}{{ request.user.picture }}" alt="">
+            {% if request.user.is_authenticated %}
+                <span class="logout" @click="logout"><i></i></span>
+                <p class="loginbtn active">
+                    {{ request.user.username }}
+                </p>
+            {% else %}
+                <p class="loginbtn">
+                    Login
+                </p>
+            {% endif %}
+        </div>
+        <i class="toolbtn"></i>
+        <a href="#" target=""></a>
     </div>
-    <i class="toolbtn"></i>
-    <a href="#" target=""></a>
-</div>
 {% include 'wrapper.html' %}
 <footer><a href="https://beian.miit.gov.cn/#/Integrated/index">备案号:粤ICP备2021133316号</a></footer>
 </body>

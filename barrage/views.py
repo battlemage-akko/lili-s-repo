@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from barrage.models import test as barrageDatabase
 from barrage.models import video as videosTable
 from django.http import HttpResponse, JsonResponse
-from app.models import followUser as followtable
+# from app.models import followUser as followtable
 from app.models import AppUser as Userdatabase
 from moviepy.editor import VideoFileClip
 import random
@@ -51,7 +51,7 @@ def video(request,vid):
         "nextvideo": nextvideo,
         "nextvideolist": nextvideolist,
         "oncechance" : 1,
-        "followornot" : followtable.follow_check(request.user.id,result["user_id"])
+        # "followornot" : followtable.follow_check(request.user.id,result["user_id"])
     }
     return render(request,'video.html',data)
 
