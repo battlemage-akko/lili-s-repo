@@ -4,7 +4,7 @@ from django.contrib.auth.hashers import make_password
 from django.shortcuts import render,redirect
 from django.http import HttpResponse, JsonResponse
 from app.models import AppUser as Userdatabase
-# from app.models import followUser as followtable
+from app.models import followUser as followtable
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.backends import ModelBackend
@@ -208,46 +208,46 @@ def rebootorshutdown(request):
     else:
         return HttpResponse("牛逼")
 
-# @csrf_exempt
-# def follow(request):
-#     if(request.method=="POST"):
-#         follow_id = request.POST.get("follow_id")
-#         followed_id = request.POST.get("followed_id")
-#         msg = {
-#             "msg":"",
-#             "code": None
-#         }
-#         if(followed_id==follow_id):
-#             msg = {
-#                 "msg": "自己关注自己？？？",
-#                 "code": 0
-#             }
-#             return JsonResponse(msg)
-#         result = followtable.follow_check(from_user=follow_id,to_user=followed_id)
-#         if(result == 1):
-#             followtable.unfollow(follow_id,followed_id)
-#             Userdatabase.objects.filter(id=followed_id).update(
-#                 fans=Userdatabase.objects.filter(id=followed_id).values()[0]['fans'] - 1)
-#             msg = {
-#                 "msg": "取消成功",
-#                 "code": 2
-#             }
-#             return JsonResponse(msg)
-#         elif(result == 0):
-#             followtable.follow(follow_id, followed_id)
-#             Userdatabase.objects.filter(id=followed_id).update(
-#                 fans=Userdatabase.objects.filter(id=followed_id).values()[0]['fans'] + 1)
-#             msg = {
-#                 "msg": "关注成功",
-#                 "code": 1
-#             }
-#             return JsonResponse(msg)
-#         else:
-#             msg = {
-#                 "msg": "什么玩意？？",
-#                 "code": 9
-#             }
-#             return JsonResponse(msg)
+@csrf_exempt
+def follow(request):
+    if(request.method=="POST"):
+        follow_id = request.POST.get("follow_id")
+        followed_id = request.POST.get("followed_id")
+        msg = {
+            "msg":"",
+            "code": None
+        }
+        if(followed_id==follow_id):
+            msg = {
+                "msg": "自己关注自己？？？",
+                "code": 0
+            }
+            return JsonResponse(msg)
+        result = followtable.follow_check(from_user=follow_id,to_user=followed_id)
+        if(result == 1):
+            followtable.unfollow(follow_id,followed_id)
+            Userdatabase.objects.filter(id=followed_id).update(
+                fans=Userdatabase.objects.filter(id=followed_id).values()[0]['fans'] - 1)
+            msg = {
+                "msg": "取消成功",
+                "code": 2
+            }
+            return JsonResponse(msg)
+        elif(result == 0):
+            followtable.follow(follow_id, followed_id)
+            Userdatabase.objects.filter(id=followed_id).update(
+                fans=Userdatabase.objects.filter(id=followed_id).values()[0]['fans'] + 1)
+            msg = {
+                "msg": "关注成功",
+                "code": 1
+            }
+            return JsonResponse(msg)
+        else:
+            msg = {
+                "msg": "什么玩意？？",
+                "code": 9
+            }
+            return JsonResponse(msg)
 
 
 
