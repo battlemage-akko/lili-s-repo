@@ -15,6 +15,36 @@ class AppUser(AbstractUser):
     def getfans(id):
         return AppUser.objects.filter(id=id).values()[0]["fans"]
 
+class collectVideo(models.Model):
+    id = models.AutoField(primary_key=True)
+    user_id = models.IntegerField(default=0)
+    video_id = models.IntegerField(default=0)
+
+    def collect_check(user_id, video_id):
+        getAllCollect = collectVideo.objects.filter(user_id=user_id,video_id=video_id).all()
+        if(getAllCollect):
+            return 1
+        else:
+            return 0
+
+    def collect(user_id, video_id):
+        collectVideo(user_id = user_id,video_id=video_id).save()
+
+    def cancelCol(user_id, video_id):
+        f = collectVideo.objects.filter(user_id = user_id,video_id=video_id).all()
+        if f:
+            f.delete()
+            return 1
+        else:
+            return 0
+
+    def user_collected(user_id): #获取本人收藏的所有视频
+        getAllCollect = collectVideo.objects.filter(user_id=user_id).all()
+        user_collect = []
+        for video in getAllCollect:
+            user_collect.append(video.video_id)
+        return user_collect
+
 class likeVideo(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.IntegerField(default=0)

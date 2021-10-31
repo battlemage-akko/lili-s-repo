@@ -341,6 +341,10 @@
             content: "\e9d7";
             font-family: IcoMoon-Free;
         }
+        .videocollect.active::before{
+            content: "\e9d9";
+            color: #f7d400;
+        }
         .videoprofilepic{
             margin-left:20px;
             line-height: 90px;

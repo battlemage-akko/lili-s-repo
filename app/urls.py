@@ -12,4 +12,5 @@ urlpatterns = [
     re_path('^Del_user/',views.Del_user,name="Del_user"),
     re_path('^follow/',views.follow,name="follow"),
     re_path('^love/',views.love,name="love"),
+    re_path('^collect/',views.collect,name="collect"),
 ]

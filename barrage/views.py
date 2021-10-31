@@ -4,6 +4,7 @@ from barrage.models import test as barrageDatabase
 from barrage.models import video as videosTable
 from django.http import HttpResponse, JsonResponse
 from app.models import followUser as followtable
+from app.models import collectVideo as collecttable
 from app.models import likeVideo as lovetable
 from app.models import AppUser as Userdatabase
 from moviepy.editor import VideoFileClip
@@ -53,7 +54,8 @@ def video(request,vid):
         "nextvideolist": nextvideolist,
         "oncechance" : 1,
         "followornot" : followtable.follow_check(request.user.id,result["user_id"]),
-        "loveornot": lovetable.love_check(request.user.id, result["v_id"])
+        "loveornot": lovetable.love_check(request.user.id, result["v_id"]),
+        "collectornot": collecttable.collect_check(request.user.id, result["v_id"])
     }
     return render(request,'video.html',data)
 

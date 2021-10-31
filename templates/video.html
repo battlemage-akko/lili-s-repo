@@ -189,7 +189,7 @@
                                             <li><span class="videopay"></span></li>
                                             <li><span class="videoshare"></span></li>
                                             <li><span class="goodvideo" @click="love"></span></li>
-                                            <li><span class="videocollect"></span></li>
+                                            <li><span class="videocollect" @click="collect"></span></li>
                                         </ul>
                                     </div>
                                 </li>
@@ -263,6 +263,7 @@
             oncechance:{{ oncechance }},
             followornot: {{ followornot }},
             loveornot:{{ loveornot }},
+            collectornot:{{ collectornot }},
             video_detail: {
                 "v_id": {{ v_id }},
                 "v_ad": "{{ v_ad }}",
@@ -273,7 +274,6 @@
                 "v_collect": {{ v_collect }},
                 "v_like": {{ v_like }},
                 "user_id": {{ user_id }},
-                "followornot" : {{ followornot }}
             },
             video_option: {
                 controls:true,
@@ -462,7 +462,7 @@
             follow:async function (){
                 let param = new URLSearchParams()
                 param.append('follow_id', {{ request.user.id }})
-                param.append('followed_id',)
+                param.append('followed_id', {{ user_id }})
                 result = await axios({
                     method :"POST",
                     url:"{% url "follow" %}",
@@ -482,6 +482,19 @@
                 })
                 console.log(result.data.msg)
                 this.loveornot = result.data.code
+            },
+            collect:async function (){
+                let param = new URLSearchParams()
+                param.append('user_id', {{ request.user.id }})
+                param.append('video_id', this.video_detail.v_id)
+                param.append('status', this.collectornot)
+                result = await axios({
+                    method :"POST",
+                    url:"{% url "collect" %}",
+                    data: param,
+                })
+                console.log(result.data.msg)
+                this.collectornot = result.data.code
             }
         },
         mounted: function () {
@@ -539,6 +552,9 @@
             if(this.loveornot==1){
                 document.querySelector(".goodvideo").classList.toggle("active")
             }
+            if(this.collectornot==1){
+                document.querySelector(".videocollect").classList.toggle("active")
+            }
             this.getBarrage()
             if(this.video_detail.user_id == {{ request.user.id }}){
                 document.querySelector(".follow").style.display = "none"
@@ -559,6 +575,9 @@
             },
             loveornot: function (){
                 document.querySelector(".goodvideo").classList.toggle("active")
+            },
+            collectornot: function (){
+                document.querySelector(".videocollect").classList.toggle("active")
             },
             video_nowtime: function () {
                 if (vm.barrageArray.length != 0)
