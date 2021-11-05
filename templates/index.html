@@ -258,7 +258,10 @@
                     <ul class="videoslist-choose">
                         <li @click="changeVideosListTag('new')"><a href="javascript:">最新</a></li>
                         <li @click="changeVideosListTag('popular')"><a href="javascript:">热门</a></li>
-                        <li @click="changeVideosListTag('follow')"><a href="javascript:">关注</a></li>
+                        {% if request.user.is_authenticated %}
+                            <li @click="changeVideosListTag('follow')"><a href="javascript:">关注</a></li>
+                            <li @click="changeVideosListTag('collect')"><a href="javascript:">收藏</a></li>
+                        {% endif %}
                     </ul>
                 </div>
                 <ul class="videos-list videos-list-new" v-show="videosList_tags.new">
@@ -279,8 +282,12 @@
                 </ul>
                 <ul class="videos-list videos-list-popular" v-show="videosList_tags.popular">
                 </ul>
-                <ul class="videos-list videos-list-follow" v-show="videosList_tags.follow">
-                </ul>
+                {% if request.user.is_authenticated %}
+                    <ul class="videos-list videos-list-follow" v-show="videosList_tags.follow">
+                    </ul>
+                    <ul class="videos-list videos-list-collect" v-show="videosList_tags.collect">
+                    </ul>
+                {% endif %}
                 <div class="showmore-div">
                     <button class="btn btn-primary show_more_btn" v-show="show_more_btn" @click="getmorehotvideo"><i class="showmore-div-btn" ></i></button>
                     <div class="no-more" v-show="show_more_cat">
@@ -433,6 +440,7 @@
                         </li>
                     </ul>
                     <div class="profile-content">
+
                     </div>
                 </div>
                 <div class="profile-other">
@@ -701,10 +709,14 @@
             show_more_btn:true,
             videosList:[],
             videosList_new:{{ newvideolist|safe }},
+            videosList_hot:{{ hotvideolist|safe }},
+            videosList_collect:{{ collectvideolist|safe }},
+            videosList_mine:[],
             videosList_tags:{
                 "new":true,
                 "popular": false,
                 "follow": false,
+                "collect": false,
             },
             screen_choose: "auto",
             name: "{{ request.user.username }}",
@@ -950,10 +962,32 @@
                     document.querySelector(".show_more_btn").removeAttribute("disabled")
                 }
             },
-
+            getmorecollectvideo :async function(){
+                let param = new URLSearchParams()
+                param.append("count",this.videosList_collect.length)
+                param.append("user_id",this.id)
+                result = await axios({
+                    method:"POST",
+                    url:"{% url 'getMoreCollectVideo' %}",
+                    data: param
+                })
+            },
+            getmyvideo :async function(){
+                let param = new URLSearchParams()
+                param.append("user_id",this.id)
+                result = await axios({
+                    method:"POST",
+                    url:"{% url 'getmyvideo' %}",
+                    data: param
+                })
+            },
         },
         mounted: function () {
             this.is_login_check()
+            if(this.is_login){
+                this.getmorecollectvideo()
+                this.getmyvideo()
+            }
             if (this.this_user_admin) {
                 this.userDetail()
                 this.getAllUsers()

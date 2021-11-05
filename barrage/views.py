@@ -1,3 +1,4 @@
+
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from barrage.models import test as barrageDatabase
@@ -112,6 +113,22 @@ def getmorehotvideo(request):
         hotvideos.append(i)
     print(hotvideos)
     return JsonResponse(hotvideos, safe=False)
+
+@csrf_exempt
+def getmyvideo(request):
+    result = []
+    for i in videosTable.getvideosbyid(request.POST.get("user_id")).order_by("-v_id").values():
+        result.append(i)
+    print(result)
+    return HttpResponse()
+
+@csrf_exempt
+def getMoreCollectVideo(request):
+    if(request.method == "POST"):
+        user_id = request.POST.get("user_id")
+        count = request.POST.get("count")
+        print(user_id,count)
+    return HttpResponse()
 
 @csrf_exempt
 def save_video(request):

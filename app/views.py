@@ -39,13 +39,14 @@ def index(request):
     for i in result:
         i["v_time"] = i["v_time"].strftime('%Y-%m-%d %H:%M:%S')
         videos.append(i)
-    print(videos)
+    collectvideo = collecttable
     for i in range(10):
         Newvideos.append(videos[i])
     print(Newvideos)
     return render(request,'index.html',{
-        "videoslist": videos,
-        "newvideolist": Newvideos
+        "newvideolist": Newvideos,
+        "hotvideolist": [],
+        "collectvideolist": [],
     })
 
 def index_login(request):

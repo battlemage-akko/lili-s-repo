@@ -27,3 +27,7 @@ class video(models.Model):
     class Meta:
         app_label = "barrage"
 
+    def getvideosbyid(user_id):
+        videos = video.objects.filter(user_id=user_id).all()
+        return videos
+

@@ -7,4 +7,6 @@ urlpatterns = [
     re_path('^save_video/',views.save_video,name="save_video"),
     re_path('^getmorehotvideo/',views.getmorehotvideo,name="getmorehotvideo"),
     re_path('^hasbeenplayed/',views.hasbeenplayed,name="hasbeenplayed"),
+    re_path('^getMoreCollectVideo/',views.getMoreCollectVideo,name="getMoreCollectVideo"),
+    re_path('^getmyvideo/',views.getmyvideo,name="getmyvideo"),
 ]
