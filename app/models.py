@@ -1,4 +1,3 @@
-
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -14,6 +13,15 @@ class AppUser(AbstractUser):
 
     def getfans(id):
         return AppUser.objects.filter(id=id).values()[0]["fans"]
+
+class messages(models.Model):
+    m_id = models.AutoField(primary_key=True)
+    m_content = models.CharField(max_length=400,null=False)
+    m_user = models.IntegerField(null=False)
+    m_time = models.DateTimeField(auto_now_add=True)
+
+    def createMessage(m_content,m_user):
+        messages(m_content=m_content, m_user=m_user).save()
 
 class collectVideo(models.Model):
     id = models.AutoField(primary_key=True)
