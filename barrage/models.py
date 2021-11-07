@@ -12,6 +12,14 @@ class test(models.Model):
     class Meta:
         app_label = "barrage"
 
+    def delect(v_id):
+        b = test.objects.filter(v_id=v_id).all()
+        if b:
+            b.delete()
+            return 1
+        else:
+            return 0
+
 class video(models.Model):
     v_id = models.AutoField(primary_key = True)
     v_title = models.CharField(max_length=50,null=False,default="default title")
@@ -30,4 +38,12 @@ class video(models.Model):
     def getvideosbyid(user_id):
         videos = video.objects.filter(user_id=user_id).all()
         return videos
+
+    def delect(v_id):
+        v = video.objects.filter(v_id=v_id).all()
+        if v:
+            v.delete()
+            return 1
+        else:
+            return 0
 

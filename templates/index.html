@@ -238,7 +238,7 @@
                 </p>
             </div>
         </div>
-        <div v-show="flags.videos" class="videos">
+        <div v-show="flags.videos"  class="videos">
             <div class="videos-holder">
                 <div class="videoslist-title">
                     <div style="position: absolute" class="videoslist-search">
@@ -289,13 +289,13 @@
                     </ul>
                 {% endif %}
                 <div class="showmore-div">
-                    <button class="btn btn-primary show_more_btn" v-show="show_more_btn" @click="getmorehotvideo"><i class="showmore-div-btn" ></i></button>
+                    <button class="btn btn-primary show_more_btn" v-show="show_more_btn" @click="getmorenewvideo"><i class="showmore-div-btn" ></i></button>
                     <div class="no-more" v-show="show_more_cat">
                         <img src="{% static 'images/猫猫叹气.png' %}" alt="">
                     </div>
                 </div>
                 <div class="videos-notice">
-                    <div>本站为个人兴趣，非商业用途，所有内容均收集于互联网公开资源，本站只提供WEB页面服务，不提供影片资源储存也不参与录制与上传，若本站收录内容无意侵犯了贵公司版权，请给网页底部邮箱地址来信，我会及时处理，谢谢合作。邮箱:2878305660@qq.com</div>
+                    <div style="text-align: center;padding: 0px 10px">本站为个人兴趣，非商业用途，所有内容均收集于互联网公开资源，本站只提供WEB页面服务，不提供影片资源储存也不参与录制与上传，若本站收录内容无意侵犯了贵公司版权，请给网页底部邮箱地址来信，我会及时处理，谢谢合作。邮箱:2878305660@qq.com</div>
                 </div>
                 <div style="height: 30px"></div>
             </div>
@@ -440,7 +440,28 @@
                         </li>
                     </ul>
                     <div class="profile-content">
-
+                        <ul class="profile-content-btns">
+                            <li>upload</li>
+                            <li>star-empty</li>
+                        </ul>
+                        <div style="width: 100%">
+                            <ul class="profile-content-myvideos">
+                            <li v-for="(item,i) in videosList_mine" class="videos-each">
+                                <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'contain'}" class="videos-each-background" @click="getVideo(item.v_id)"></div>
+                                <span class="videos-each-tips" @click="getVideo(item.v_id)">
+                                    <i class="videos-each-play"></i>
+                                </span>
+                                <span class="videos-each-title" @click="getVideo(item.v_id)">
+                                    <h1>{[ item.v_title ]}</h1>
+                                    <p style="right: 10px">播放 : {[ item.v_play ]}</p>
+                                </span>
+                                </span>
+                                <span class="videos-each-del" @click="delVideo($event,item.v_id)">
+                                    <p class="videos-each-del-content">cancel</p>
+                                </span>
+                            </li>
+                        </ul>
+                        </div>
                     </div>
                 </div>
                 <div class="profile-other">
@@ -705,9 +726,11 @@
         el: "#app",
         delimiters: ['{[', ']}'],
         data: {
+            tmp:document.querySelector(".videos-list-new").scrollHeight,
             show_more_cat:false,
             show_more_btn:true,
             videosList:[],
+            videosList_isLoading:false,
             videosList_new:{{ newvideolist|safe }},
             videosList_hot:{{ hotvideolist|safe }},
             videosList_collect:{{ collectvideolist|safe }},
@@ -754,6 +777,9 @@
             video_url:"{% url "index" %}"+"video/",
         },
         methods: {
+            handleScroll:function (){
+                console.log(123)
+            },
             hidden_user_modify(){
                 document.querySelector(".admin-user-show").classList.toggle("active")
                 document.querySelector(".admin-user-modify-card").classList.toggle("active")
@@ -939,13 +965,14 @@
                 }
                 this.videosList_tags[tag]=true
             },
-            getmorehotvideo: async function (){
+            getmorenewvideo: async function (){
+                this.videosList_isLoading = true
                 document.querySelector(".show_more_btn").disabled = "disabled"
                 let param = new URLSearchParams()
                 param.append("count",this.videosList_new.length)
                 result = await axios({
                     method:"POST",
-                    url:"{% url 'getmorehotvideo' %}",
+                    url:"{% url 'getmorenewvideo' %}",
                     data: param
                 })
                 if(result.data.length == 0){
@@ -961,6 +988,7 @@
                     }
                     document.querySelector(".show_more_btn").removeAttribute("disabled")
                 }
+                this.videosList_isLoading = false
             },
             getmorecollectvideo :async function(){
                 let param = new URLSearchParams()
@@ -978,6 +1006,17 @@
                 result = await axios({
                     method:"POST",
                     url:"{% url 'getmyvideo' %}",
+                    data: param
+                })
+                this.videosList_mine  = result.data
+            },
+            delVideo: async function(e,v_id){
+                e.target.parentNode.parentNode.style.opacity = 0
+                let param = new URLSearchParams()
+                param.append("v_id",v_id)
+                result = await axios({
+                    method:"POST",
+                    url:"{% url 'delVideo' %}",
                     data: param
                 })
             },
@@ -1031,13 +1070,11 @@
             this.id == "pics" ? (document.body.style.minWidth = '1500px') : (document.body.style.minWidth = '500px');
         })
     }
-
     let defaultmountains = document.querySelector("#mountains")
     let defaultmountain = document.querySelector("#mountain")
     let defaultlogin = document.querySelector("#defaultlogin")
     let defaultsun = document.querySelector("#sun")
     let defaulttitle = document.querySelector("#defaulttitle")
-
     window.addEventListener('scroll', function () {
         var value = window.scrollY;
         defaultmountain.style.top = value * 0.5 + "px"

@@ -4,14 +4,14 @@ hr{
 .profilecontent{
     display: flex;
     width: 80%;
-    max-width: 1400px;
+    max-width: 1500px;
     margin-top: var(--Head-top);
     justify-content: space-evenly;
     flex-wrap: wrap;
+    margin-bottom: 50px;
 }
 .profile-detail{
-    height: 800px;
-    flex-basis: 1000px;
+    flex-basis: 1100px;
     padding: 20px;
     border-radius: 5px;
 }
@@ -21,7 +21,7 @@ hr{
     height: 800px;
     flex-grow: 1;
     /*border:5px dashed black;*/
-    max-width: 1000px;
+    max-width: 1100px;
 }
 .profilefooter{
     height: 50px;
@@ -119,6 +119,49 @@ hr{
 }
 .profile-content{
     background-color: white;
-    height: 270px;
+    min-height: 270px;
     padding: 10px;
+    display: flex;
+}
+.profile-content-myvideos{
+    list-style: none;
+    display: flex;
+    margin: 0px;
+    padding: 10px;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+.profile-content-myvideos li{
+    flex-basis: 314px;
+    height: 200px;
+    flex-grow: 1;
+    max-width: 220px;
+    min-width: 200px;
+    transition: all .5s ease;
+}
+.profile-content-myvideos li div{
+    height: 100%;
+    opacity: 0.7;
+}
+.profile-content-btns{
+    padding: 10px 0px;
+    list-style: none;
+    font-family: IcoMoon-Free;
+}
+.profile-content-btns li{
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all .5s ease;
+}
+.profile-content-btns li:hover{
+    color: #e3e3e3;
+    background-color: black;
+}
+.profile-content-btns li:first-child{
+    color: #e3e3e3;
+    background-color: black;
 }

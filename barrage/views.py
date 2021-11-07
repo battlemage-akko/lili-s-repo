@@ -101,26 +101,24 @@ def save_barrage(request):
         return HttpResponse("上传弹幕失败")
 
 @csrf_exempt
-def getmorehotvideo(request):
+def getmorenewvideo(request):
     result = videosTable.objects.all().order_by('-v_id').values()
     fromtag = int(request.POST.get("count"))
     totag = fromtag + 10
-    hotvideos = []
+    newvideos = []
     if (totag > len(result)):
         totag = len(result)
     for i in result[fromtag:totag]:
         i["v_time"] = i["v_time"].strftime('%Y-%m-%d %H:%M:%S')
-        hotvideos.append(i)
-    print(hotvideos)
-    return JsonResponse(hotvideos, safe=False)
+        newvideos.append(i)
+    return JsonResponse(newvideos, safe=False)
 
 @csrf_exempt
 def getmyvideo(request):
     result = []
     for i in videosTable.getvideosbyid(request.POST.get("user_id")).order_by("-v_id").values():
         result.append(i)
-    print(result)
-    return HttpResponse()
+    return JsonResponse(result, safe=False)
 
 @csrf_exempt
 def getMoreCollectVideo(request):
@@ -158,3 +156,9 @@ def finish_save(video_title,video_pic,video_file,username,user_id):
     result.save()
 
     return HttpResponse("保存完毕")
+
+@csrf_exempt
+def del_video(request):
+    if(request.method == "POST"):
+        v_id = request.POST.get("v_id")
+    return HttpResponse()

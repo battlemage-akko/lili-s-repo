@@ -81,6 +81,34 @@
     bottom: -22px;
     background-image: linear-gradient(to bottom, transparent, #000000);
 }
+.videos-each-del{
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    user-select:none;
+    display: flex;
+    pointer-events:auto;
+    justify-content: center;
+    align-items: center;
+    font-family: IcoMoon-Free;
+    font-size: 20px;
+    position: absolute;
+    color: #e3e3e3;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 30px;
+    height: 30px;
+    right: 0px;
+    top: 0px;
+
+}
+.videos-each-del-content{
+    width: 100%;
+    text-align: center;
+    transition: all .5s ease;
+}
+.videos-each-del:hover .videos-each-del-content{
+    color: #ff5e5e;
+    transform: rotate(90deg);
+}
 .videos-each:hover .videos-each-tips{
     display: block;
 }
