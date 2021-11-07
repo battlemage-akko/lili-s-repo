@@ -1,7 +1,7 @@
 
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from barrage.models import test as barrageDatabase
+from barrage.models import test as barrageTable
 from barrage.models import video as videosTable
 from django.http import HttpResponse, JsonResponse
 from app.models import followUser as followtable
@@ -64,7 +64,7 @@ def video(request,vid):
 def loadbarrage(request):
     v_id = request.POST.get("v_id")
     barrage = []
-    result = barrageDatabase.objects.filter(v_id=v_id).order_by('b_time').values()
+    result = barrageTable.objects.filter(v_id=v_id).order_by('b_time').values()
     for i in result:
         barrage.append(i)
     return JsonResponse(barrage, safe=False)
@@ -94,7 +94,7 @@ def save_barrage(request):
         b_auther = request.POST.get("b_auther")
         v_id = request.POST.get("v_id")
         print(b_content,b_time,b_auther,v_id)
-        result = barrageDatabase(b_content=b_content,b_time=b_time,b_auther=b_auther,v_id=v_id)
+        result = barrageTable(b_content=b_content,b_time=b_time,b_auther=b_auther,v_id=v_id)
         result.save()
         return HttpResponse("上传弹幕成功")
     else:
@@ -161,4 +161,9 @@ def finish_save(video_title,video_pic,video_file,username,user_id):
 def del_video(request):
     if(request.method == "POST"):
         v_id = request.POST.get("v_id")
+        v_result = videosTable.delect(v_id)
+        b_result = barrageTable.delect(v_id)
+        l_result = lovetable.delete(v_id)
+        c_result = collecttable.delete(v_id)
+        print([v_result,b_result,l_result,c_result])
     return HttpResponse()

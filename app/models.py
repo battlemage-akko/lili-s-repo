@@ -45,6 +45,14 @@ class collectVideo(models.Model):
             user_collect.append(video.video_id)
         return user_collect
 
+    def delete(v_id):
+        r = collectVideo.objects.filter(video_id=v_id).all()
+        if r:
+            r.delete()
+            return 1
+        else:
+            return 0
+
 class likeVideo(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.IntegerField(default=0)
@@ -61,9 +69,9 @@ class likeVideo(models.Model):
         likeVideo(user_id = user_id,video_id=video_id).save()
 
     def dislove(user_id, video_id):
-        f = likeVideo.objects.filter(user_id = user_id,video_id=video_id).all()
-        if f:
-            f.delete()
+        r = likeVideo.objects.filter(user_id = user_id,video_id=video_id).all()
+        if r:
+            r.delete()
             return 1
         else:
             return 0
@@ -74,6 +82,13 @@ class likeVideo(models.Model):
         for video in getAllLike:
             user_like.append(video.video_id)
         return user_like
+    def delete(v_id):
+        r = likeVideo.objects.filter(video_id=v_id).all()
+        if r:
+            r.delete()
+            return 1
+        else:
+            return 0
 
 
 class followUser(models.Model):

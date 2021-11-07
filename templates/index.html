@@ -1011,14 +1011,27 @@
                 this.videosList_mine  = result.data
             },
             delVideo: async function(e,v_id){
-                e.target.parentNode.parentNode.style.opacity = 0
-                let param = new URLSearchParams()
-                param.append("v_id",v_id)
-                result = await axios({
-                    method:"POST",
-                    url:"{% url 'delVideo' %}",
-                    data: param
-                })
+                let sure = prompt("确认删除本视频以及所有的弹幕?(y/n)")
+                sure = sure.toLowerCase()
+                if(sure=='y'||sure=='n'){
+                    if(sure=='y'){
+                        e.target.parentNode.parentNode.style.opacity = 0
+                        setTimeout(function(){e.target.parentNode.parentNode.style.display = "none"},500);
+                        let param = new URLSearchParams()
+                        param.append("v_id",v_id)
+                        result = await axios({
+                            method:"POST",
+                            url:"{% url 'delVideo' %}",
+                            data: param
+                        })
+                    }
+                    else{
+                        console.log("三思")
+                    }
+                }
+                else{
+                    console.log("输入的什么JB")
+                }
             },
         },
         mounted: function () {
