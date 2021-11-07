@@ -42,7 +42,6 @@ def index(request):
     collectvideo = collecttable
     for i in range(10):
         Newvideos.append(videos[i])
-    print(Newvideos)
     return render(request,'index.html',{
         "newvideolist": Newvideos,
         "hotvideolist": [],

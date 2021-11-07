@@ -5,7 +5,8 @@ from barrage.models import test as barrageTable
 from barrage.models import video as videosTable
 from django.http import HttpResponse, JsonResponse
 from app.models import followUser as followtable
-from app.models import collectVideo as collecttable
+from app.models import collectVideo as collectTable
+from app.models import messages as messagesTable
 from app.models import likeVideo as lovetable
 from app.models import AppUser as Userdatabase
 from moviepy.editor import VideoFileClip
@@ -14,7 +15,7 @@ import random
 def video(request,vid):
     result = videosTable.objects.filter(v_id=vid).values()
     if(len(result) == 0):
-        return HttpResponse("没有这个视频")
+        return render(request,'notfound.html')
     result = result[0]
     tmp = []
     Allvideoslist = videosTable.objects.all().order_by("v_id").values()
@@ -56,7 +57,7 @@ def video(request,vid):
         "oncechance" : 1,
         "followornot" : followtable.follow_check(request.user.id,result["user_id"]),
         "loveornot": lovetable.love_check(request.user.id, result["v_id"]),
-        "collectornot": collecttable.collect_check(request.user.id, result["v_id"])
+        "collectornot": collectTable.collect_check(request.user.id, result["v_id"])
     }
     return render(request,'video.html',data)
 
@@ -76,7 +77,6 @@ def getVideosList(request):
     result = videosTable.objects.all().values()
     for i in result:
         videos.append(i)
-    print(videos)
     return JsonResponse(videos, safe=False)
 
 @csrf_exempt
@@ -161,9 +161,11 @@ def finish_save(video_title,video_pic,video_file,username,user_id):
 def del_video(request):
     if(request.method == "POST"):
         v_id = request.POST.get("v_id")
+        user_id = videosTable.objects.get(v_id=v_id).user_id
         v_result = videosTable.delect(v_id)
         b_result = barrageTable.delect(v_id)
         l_result = lovetable.delete(v_id)
-        c_result = collecttable.delete(v_id)
+        c_result = collectTable.delete(v_id)
         print([v_result,b_result,l_result,c_result])
+        messagesTable.createMessage(m_content="成功删除"+v_id+"号视频",m_user=user_id)
     return HttpResponse()
