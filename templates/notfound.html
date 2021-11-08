@@ -11,15 +11,28 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        font-family: IcoMoon-Free;
+        text-align: center;
     }
     *{
         margin: 0;
         padding: 0;
     }
+    .home{
+        font-size: 35px;
+        cursor: pointer;
+        display: inline-block;
+        color: rgba(68,8,8,0.3);
+        transition: all .5s ease;
+    }
+    .home:hover{
+        color: rgba(68,8,8,1);
+    }
 </style>
 <body>
     <div>
-        <img src="{% static "images/notfound.png" %}" alt="">
+        <div><img src="{% static "images/notfound.png" %}" alt=""></div>
+        <div><p class="home" onclick="window.location.href='{% url 'index' %}'">home</p></div>
     </div>
 </body>
 </html>

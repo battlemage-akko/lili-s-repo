@@ -74,6 +74,11 @@ hr{
     height: 380px;
     padding: 10px;
 }
+.profile-message-content{
+    list-style : none;
+    padding: 5px;
+    font-size: 15px;
+}
 .profile-tools{
     height: 70px;
     margin-top: 16px;
@@ -164,4 +169,28 @@ hr{
 .profile-content-btns li:first-child{
     color: #e3e3e3;
     background-color: black;
+}
+.profile-content-myvideos-btn{
+    font-family: IcoMoon-Free;
+    padding: 10px 0px 0px 0px;
+    display: flex;
+    justify-content: right;
+}
+.profile-content-myvideos-btn span{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+    margin-bottom: 5px;
+    transition: all .5s ease;
+    color: rgba(0, 0, 0, 0.3);
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    user-select:none;
+}
+.profile-content-myvideos-btn span:hover{
+    color: black;
 }

@@ -23,6 +23,21 @@ class messages(models.Model):
     def createMessage(m_content,m_user):
         messages(m_content=m_content, m_user=m_user).save()
 
+    def delMessagesByUser(m_user):
+        r = messages.objects.filter(m_user=m_user).all()
+        if r:
+            r.delete()
+            return 1
+        else:
+            return 0
+
+    def getMessagesByUser(m_user):
+        r = messages.objects.filter(m_user=m_user).all().order_by('-m_time')
+        if r:
+            return r
+        else:
+            return 0
+
 class collectVideo(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.IntegerField(default=0)

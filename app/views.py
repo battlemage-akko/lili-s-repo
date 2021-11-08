@@ -7,6 +7,7 @@ from app.models import AppUser as Userdatabase
 from app.models import followUser as followtable
 from app.models import likeVideo as lovetable
 from app.models import collectVideo as collecttable
+from app.models import messages as messageTable
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.backends import ModelBackend
@@ -59,6 +60,40 @@ def wrapper(request):
 @xframe_options_sameorigin
 def upload_page(request):
     return render(request,'upload.html')
+
+@csrf_exempt
+def refreshmsg(request):
+
+    result = messageTable.getMessagesByUser(request.POST.get("user_id"))
+    messages = []
+    if not result:
+        print("empty")
+        return JsonResponse({
+            "msg": ["没有任何消息"],
+            "msgcount": 0
+        })
+
+    for i in result.values():
+        messages.append(i['m_content'])
+    return JsonResponse({
+        "msg":messages,
+        "msgcount": len(messages)
+    })
+
+@csrf_exempt
+def clearmsg(request):
+    if(request.method=="POST"):
+        result = messageTable.delMessagesByUser(request.POST.get("user_id"))
+        if result == 1:
+            return JsonResponse({
+                "msg":"删除成功",
+                "code":1
+            })
+        else:
+            return JsonResponse({
+                "msg": "删除失败",
+                "code": 0
+            })
 
 @csrf_exempt
 def login_check(request):

@@ -155,17 +155,19 @@ def finish_save(video_title,video_pic,video_file,username,user_id):
     result = videosTable(v_ad=video_title + '.mp4',v_pic=video_title + '.jpg',v_auther=username,user_id=user_id,v_title=video_title,v_like=0,v_play=0,v_collect=0,v_duaring=time)
     result.save()
 
+    messagesTable.createMessage(m_content="您成功上传了《"+video_title+"》", m_user=user_id)
     return HttpResponse("保存完毕")
 
 @csrf_exempt
 def del_video(request):
     if(request.method == "POST"):
         v_id = request.POST.get("v_id")
+        v_title = videosTable.objects.get(v_id=v_id).v_title
         user_id = videosTable.objects.get(v_id=v_id).user_id
         v_result = videosTable.delect(v_id)
         b_result = barrageTable.delect(v_id)
         l_result = lovetable.delete(v_id)
         c_result = collectTable.delete(v_id)
         print([v_result,b_result,l_result,c_result])
-        messagesTable.createMessage(m_content="成功删除"+v_id+"号视频",m_user=user_id)
+        messagesTable.createMessage(m_content="成功删除视频《"+v_title+"》与s视频弹幕,视频id(v_id)为"+v_id,m_user=user_id)
     return HttpResponse()

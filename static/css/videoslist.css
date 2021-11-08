@@ -97,8 +97,12 @@
     width: 30px;
     height: 30px;
     right: 0px;
-    top: 0px;
-
+    top: -30px;
+    transform-origin: right bottom;
+    transition: all .5s ease;
+}
+.videos-each-del.active{
+    transform: rotate(-90deg);
 }
 .videos-each-del-content{
     width: 100%;
@@ -109,6 +113,7 @@
     color: #ff5e5e;
     transform: rotate(90deg);
 }
+
 .videos-each:hover .videos-each-tips{
     display: block;
 }

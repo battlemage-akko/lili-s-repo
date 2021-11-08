@@ -445,21 +445,25 @@
                             <li>star-empty</li>
                         </ul>
                         <div style="width: 100%">
+                            <div class="profile-content-myvideos-btn">
+                                <span @click="active_delbtn">trashcan</span>
+                                <hr style="margin: 0">
+                            </div>
                             <ul class="profile-content-myvideos">
-                            <li v-for="(item,i) in videosList_mine" class="videos-each">
-                                <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'contain'}" class="videos-each-background" @click="getVideo(item.v_id)"></div>
-                                <span class="videos-each-tips" @click="getVideo(item.v_id)">
-                                    <i class="videos-each-play"></i>
-                                </span>
-                                <span class="videos-each-title" @click="getVideo(item.v_id)">
-                                    <h1>{[ item.v_title ]}</h1>
-                                    <p style="right: 10px">播放 : {[ item.v_play ]}</p>
-                                </span>
-                                </span>
-                                <span class="videos-each-del" @click="delVideo($event,item.v_id)">
-                                    <p class="videos-each-del-content">cancel</p>
-                                </span>
-                            </li>
+                                <li v-for="(item,i) in videosList_mine" class="videos-each">
+                                    <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'contain'}" class="videos-each-background" @click="getVideo(item.v_id)"></div>
+                                    <span class="videos-each-tips" @click="getVideo(item.v_id)">
+                                        <i class="videos-each-play"></i>
+                                    </span>
+                                    <span class="videos-each-title" @click="getVideo(item.v_id)">
+                                        <h1>{[ item.v_title ]}</h1>
+                                        <p style="right: 10px">播放 : {[ item.v_play ]}</p>
+                                    </span>
+                                    </span>
+                                    <span class="videos-each-del" @click="delVideo($event,item.v_id)">
+                                        <p class="videos-each-del-content">cancel</p>
+                                    </span>
+                                </li>
                         </ul>
                         </div>
                     </div>
@@ -471,8 +475,16 @@
                         <span style="font-weight: 600;letter-spacing: 2px"></span><span>id : {{ request.user.id }}</span><span>  加入 : {{ request.user.date_joined }} </span>
                     </div>
                     <div class="profile-message">
-                        消息
+                        <ul style="display: flex;list-style: none;justify-content: space-between;margin: 0">
+                            <li>消息 <span style="font-family: IcoMoon-Free;cursor: pointer" @click="refreshmsg"> loop2</span></li>
+                            <li><span style="font-family: IcoMoon-Free;cursor: pointer" @click="clearmsg">trashcan2</span></li>
+                        </ul>
                         <hr/>
+                        <ul class="profile-message-content">
+                            <li v-for="(item,i) in messages.msg">
+                                <p>{[ item ]}</p>
+                            </li>
+                        </ul>
                     </div>
                     <ul class="profile-tools">
                         <li title="消息" class="profile-chat"><i></i></li>
@@ -735,6 +747,7 @@
             videosList_hot:{{ hotvideolist|safe }},
             videosList_collect:{{ collectvideolist|safe }},
             videosList_mine:[],
+            messages: [],
             videosList_tags:{
                 "new":true,
                 "popular": false,
@@ -909,8 +922,10 @@
                                     history.go(0);
                                 });
                             }
+                            vm.refreshmsg()
                         }
                   });
+
             },
             terminal:function(){
                 console.log("terminal ready")
@@ -1010,6 +1025,11 @@
                 })
                 this.videosList_mine  = result.data
             },
+            active_delbtn:function (){
+                for(let item of document.querySelectorAll(".videos-each-del")){
+                    item.classList.toggle("active")
+                }
+            },
             delVideo: async function(e,v_id){
                 let sure = prompt("确认删除本视频以及所有的弹幕?(y/n)")
                 sure = sure.toLowerCase()
@@ -1024,6 +1044,7 @@
                             url:"{% url 'delVideo' %}",
                             data: param
                         })
+                        this.refreshmsg()
                     }
                     else{
                         console.log("三思")
@@ -1033,12 +1054,39 @@
                     console.log("输入的什么JB")
                 }
             },
+            refreshmsg:async function (){
+                let param = new URLSearchParams()
+                param.append("user_id",this.id)
+                result = await axios({
+                    method:"POST",
+                    url:"{% url 'refreshmsg' %}",
+                    data: param
+                })
+                this.messages = result.data
+            },
+            clearmsg:async function (){
+                if(this.messages.msgcount==0){
+                    alert("本来就没有")
+                }
+                else{
+                    let param = new URLSearchParams()
+                    param.append("user_id",this.id)
+                    result = await axios({
+                        method:"POST",
+                        url:"{% url 'clearmsg' %}",
+                        data: param
+                    })
+                    console.log(result)
+                    this.refreshmsg()
+                }
+            },
         },
         mounted: function () {
             this.is_login_check()
             if(this.is_login){
                 this.getmorecollectvideo()
                 this.getmyvideo()
+                this.refreshmsg()
             }
             if (this.this_user_admin) {
                 this.userDetail()
