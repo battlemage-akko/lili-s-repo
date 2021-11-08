@@ -202,7 +202,6 @@
             height: 100%;
             width: 150px;
             vertical-align: top;
-            margin-left: 10px;
         }
         .nextvideo div a:nth-child(1){
             height: 45px;
@@ -240,7 +239,6 @@
             height: 100%;
             width: 150px;
             vertical-align: top;
-            margin-left: 10px;
         }
         .videoslist li div a{
             display: block;

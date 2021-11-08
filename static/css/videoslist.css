@@ -199,14 +199,13 @@
     font-size: 20px;
 }
 .videos-each-background{
-    background-size:contain ;
     background: black;
     background-repeat: no-repeat;
     background-position: center ;
 }
 .showmore-div{
     padding: 40px 10px;
-    width: 100%;
+    margin: 0px 20px;
     text-align: center;
     border-top:1px solid #d4e1e6cc ;
 }

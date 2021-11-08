@@ -162,19 +162,21 @@ hr{
     cursor: pointer;
     transition: all .5s ease;
 }
+.profile-content-btns li.active{
+    color: #e3e3e3;
+    background-color: black;
+}
 .profile-content-btns li:hover{
     color: #e3e3e3;
     background-color: black;
 }
-.profile-content-btns li:first-child{
-    color: #e3e3e3;
-    background-color: black;
-}
+
 .profile-content-myvideos-btn{
     font-family: IcoMoon-Free;
     padding: 10px 0px 0px 0px;
     display: flex;
     justify-content: right;
+    height: 50px;
 }
 .profile-content-myvideos-btn span{
     display: flex;
@@ -193,4 +195,15 @@ hr{
 }
 .profile-content-myvideos-btn span:hover{
     color: black;
+}
+.page-bar{
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    user-select:none;
+    font-family: IcoMoon-Free;
+    color: rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+.page-bar span:hover{
+    color: rgba(0, 0, 0, 1);
 }

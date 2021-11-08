@@ -189,7 +189,6 @@ def userDetail(request):
 
 def getAllUsers(requests):
     usersdata = {}
-
     for i in Userdatabase.objects.all():
         usersdata[i.id] = {
             "id":i.id,

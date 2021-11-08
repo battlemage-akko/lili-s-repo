@@ -1,4 +1,3 @@
-
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from barrage.models import test as barrageTable
@@ -10,7 +9,7 @@ from app.models import messages as messagesTable
 from app.models import likeVideo as lovetable
 from app.models import AppUser as Userdatabase
 from moviepy.editor import VideoFileClip
-import random
+import random,os
 
 def video(request,vid):
     result = videosTable.objects.filter(v_id=vid).values()
@@ -162,12 +161,26 @@ def finish_save(video_title,video_pic,video_file,username,user_id):
 def del_video(request):
     if(request.method == "POST"):
         v_id = request.POST.get("v_id")
-        v_title = videosTable.objects.get(v_id=v_id).v_title
-        user_id = videosTable.objects.get(v_id=v_id).user_id
-        v_result = videosTable.delect(v_id)
-        b_result = barrageTable.delect(v_id)
-        l_result = lovetable.delete(v_id)
-        c_result = collectTable.delete(v_id)
-        print([v_result,b_result,l_result,c_result])
-        messagesTable.createMessage(m_content="成功删除视频《"+v_title+"》与s视频弹幕,视频id(v_id)为"+v_id,m_user=user_id)
-    return HttpResponse()
+        v = videosTable.objects.get(v_id=v_id)
+        if v:
+            v_title = v.v_title
+            user_id = v.user_id
+            v_pic = 'static/videos/videopic/' + v.v_pic
+            v_ad = 'static/videos/' + v.v_ad
+
+            if os.path.exists(v_ad) and os.path.exists(v_pic):
+
+                os.remove(v_pic)
+                os.remove(v_ad)
+
+                v_result = videosTable.delect(v_id)
+                b_result = barrageTable.delect(v_id)
+                l_result = lovetable.delete(v_id)
+                c_result = collectTable.delete(v_id)
+                print([v_result,b_result,l_result,c_result])
+
+                messagesTable.createMessage(m_content="成功删除视频《"+v_title+"》与s视频弹幕,视频id(v_id)为"+v_id,m_user=user_id)
+            else:
+                messagesTable.createMessage(m_content="删除视频《" + v_title + "》失败",
+                                            m_user=user_id)
+    return HttpResponse("done")
