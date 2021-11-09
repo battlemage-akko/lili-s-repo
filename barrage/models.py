@@ -63,7 +63,7 @@ class accusation_video(models.Model):
         else:
             return 0
 
-    def delect(a_id):
+    def delete(a_id):
         r = accusation_video.objects.filter(a_id=a_id).all()
         if r:
             r.delete()

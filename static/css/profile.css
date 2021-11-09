@@ -70,6 +70,7 @@ hr{
 .profile-message{
     font-family: "微软雅黑 Light";
     background-color: white;
+    overflow: hidden;
     margin-top: 20px;
     height: 380px;
     padding: 10px;
@@ -78,6 +79,7 @@ hr{
     list-style : none;
     padding: 5px;
     font-size: 15px;
+    margin: 0;
 }
 .profile-tools{
     height: 70px;

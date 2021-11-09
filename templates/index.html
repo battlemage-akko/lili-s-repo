@@ -504,15 +504,16 @@
                             <div class="card">
                                 <div style="display: flex;justify-content: space-between">
                                     <p style="font-weight: 700" >举报 :
-                                        <i class="admin-user-fresh" @click="getAllUsers"></i>
+                                        <i class="admin-user-fresh" @click="getAllVideoAccusation"></i>
                                     </p>
-                                    <p style="color: red;font-family: '微软雅黑 Light'">{[ Del_msg ]}</p>
+                                    <p style="color: red;font-family: '微软雅黑 Light'"></p>
                                 </div>
                                 <hr/>
                                  <table class="table table-striped table-hover">
                                     <thead>
                                     <tr>
-                                        <th scope="col">id</th>
+                                        <th scope="col">举报单号</th>
+                                        <th scope="col">视频</th>
                                         <th scope="col">举报人</th>
                                         <th scope="col">举报时间</th>
                                         <th scope="col">举报理由</th>
@@ -520,15 +521,14 @@
                                         <th scope="col">删除视频</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr v-for="(item,index) in AllUsers">
-                                        <td><p>{[ item.id ]}</p></td>
-                                        <td><p>{[ item.username ]}</p></td>
-                                        <td><p>{[ item.email ]}</p></td>
-                                        <td><p>{[ item.last_login ]}</p></td>
-                                        <td><p>{[ !item.is_active ]}</p></td>
-                                        <td><p>{[ item.is_superuser ]}</p></td>
-                                        <td><p class="admin-user-modify-submit" @click="damie"></p></td>
+                                    <tbody style="font-family: IcoMoon-Free">
+                                    <tr v-for="(item,index) in AllVideoAccusation">
+                                        <td><p>{[ item.a_id ]}</p></td>
+                                        <td><p @click="jumpbyv_id(item.v_id)" style="color: dodgerblue;cursor: pointer">《{[ item.v_title ]}》</p></td>
+                                        <td><p>{[ item.u_name ]}</p></td>
+                                        <td><p>{[ item.a_time ]}</p></td>
+                                        <td style="max-width: 520px"><p>{[ item.a_reason ]}</p></td>
+                                        <td><p @click="rejectVideoAcc(item.a_id)" style="cursor: pointer">reply</p></td>
                                         <td><p class="admin-user-modify-ban" @click="damie"></p></td>
                                     </tr>
                                     </tbody>
@@ -696,6 +696,7 @@
                 ONLINE: "none"
             },
             AllUsers: null,
+            AllVideoAccusation: null,
             showDelMenu: false,
             serverupdate: false,
             Interval: "",
@@ -796,6 +797,13 @@
                 });
                 this.AllUsers = result.data
                 this.Del_msg = null
+            },
+            getAllVideoAccusation: async function () {
+                result = await axios({
+                    method: 'GET',
+                    url: '{% url 'getAllVideoAccusation' %}',
+                });
+                this.AllVideoAccusation = result.data
             },
             damie: function () {
                 alert("达咩")
@@ -1013,6 +1021,16 @@
                     this.refreshmsg()
                 }
             },
+            rejectVideoAcc:async function(a_id){
+                let param = new URLSearchParams()
+                param.append("a_id",a_id)
+                result = await axios({
+                    method:"POST",
+                    url:"{% url 'rejectVideoAccusation' %}",
+                    data: param
+                })
+                this.getAllVideoAccusation()
+            },
             changeProfileContent:function (tag,e){
                 for(let item of document.querySelector(".profile-content-btns").querySelectorAll("li")){
                     item.classList = ""
@@ -1051,6 +1069,7 @@
                 this.refreshmsg()
             }
             if (this.this_user_admin) {
+                this.getAllVideoAccusation()
                 this.userDetail()
                 this.getAllUsers()
                 this.serverDetail()

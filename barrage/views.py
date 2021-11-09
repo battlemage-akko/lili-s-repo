@@ -198,3 +198,29 @@ def report(request):
         if(result["code"]==1):
             messagesTable.createMessage(m_content="您成功举报了《"+v_title+"》,请耐心等待管理员审核。感谢您的反馈！",m_user=u_id)
         return JsonResponse(result)
+
+@csrf_exempt
+def getAllVideoAccusation(request):
+    Accusationdata = {}
+    for i in accusationTable.objects.all():
+        Accusationdata[i.a_id] = {
+            "a_id": i.a_id,
+            "v_id": i.v_id,
+            "v_title": videosTable.objects.get(v_id=i.v_id).v_title,
+            "u_id": i.u_id,
+            "u_name": Userdatabase.objects.get(id=i.u_id).username,
+            "a_reason": i.a_reason,
+            "a_time": i.a_time,
+        }
+    print(Accusationdata)
+    return JsonResponse(Accusationdata)
+
+@csrf_exempt
+def rejectVideoAccusation(request):
+    if(request.method == "POST"):
+        a_id = request.POST.get("a_id")
+        v = videosTable.objects.get(v_id=accusationTable.objects.get(a_id=a_id).v_id)
+        u = Userdatabase.objects.get(id=accusationTable.objects.get(a_id=a_id).u_id)
+        accusationTable.delete(a_id=a_id)
+        messagesTable.createMessage(m_content="您对《" + v.v_title + "》的举报已被驳回，如有疑问请联系管理员", m_user=u.id)
+    return HttpResponse()
