@@ -5,6 +5,7 @@
     max-width: 1800px;
     justify-content: space-evenly;
     flex-wrap: wrap;
+    margin-bottom: 50px;
 }
 .admin-server{
     flex-grow: 1;
@@ -147,7 +148,17 @@
     overflow: hidden;
     height: 60px;
 }
-.admin-user-show.active{
+.admin-VideoAccusation-card{
+    transition: all .5s ease;
+}
+.admin-VideoAccusation-card.active{
+    overflow: hidden;
+    height: 60px;
+}
+.UserModify.active{
+    opacity: 1;
+}
+.VideoAccusation.active{
     opacity: 1;
 }
 .admin-user-show:before{

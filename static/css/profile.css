@@ -70,7 +70,6 @@ hr{
 .profile-message{
     font-family: "微软雅黑 Light";
     background-color: white;
-    overflow: hidden;
     margin-top: 20px;
     height: 380px;
     padding: 10px;
@@ -124,6 +123,25 @@ hr{
     font-style: normal;
     font-family: IcoMoon-Free;
 }
+.profile-message-container{
+    height: 315px;
+    overflow-y:auto;
+}
+.profile-message-container::-webkit-scrollbar{
+            width: 5px;
+            height: 5px;
+            scrollbar-arrow-color: red;
+        }
+.profile-message-container::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+            border-radius: 5px;
+            -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+            background: rgba(0, 0, 0, 0.1);
+            scrollbar-arrow-color:red;
+        }
+.profile-message-container::-webkit-scrollbar-track {/*滚动条里面轨道*/
+            border-radius: 0;
+            background: rgba(0,0,0,0.05);
+        }
 .profile-content{
     background-color: white;
     min-height: 270px;

@@ -546,6 +546,10 @@
                 this.collectornot = result.data.code
             },
             report:async function (){
+                if(this.AccReason==""){
+                    alert("丢你")
+                    return
+                }
                 let param = new URLSearchParams()
                 param.append('u_id', this.userdetail.id)
                 param.append('v_id', this.video_detail.v_id)

@@ -345,11 +345,14 @@
                             <li><span style="font-family: IcoMoon-Free;cursor: pointer" @click="clearmsg">trashcan2</span></li>
                         </ul>
                         <hr/>
-                        <ul class="profile-message-content">
-                            <li v-for="(item,i) in messages.msg">
-                                <p>{[ item ]}</p>
-                            </li>
-                        </ul>
+                        <div class="profile-message-container">
+                            <ul class="profile-message-content">
+                                <li v-for="(item,i) in messages.msg">
+                                    <p>{[ item ]}</p>
+                                    <hr/>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                     <ul class="profile-tools">
                         <li title="消息" class="profile-chat"><i></i></li>
@@ -464,7 +467,7 @@
                                         <i  @click="getAllUsers"></i>
                                     </p>
                                     <p style="color: red;font-family: '微软雅黑 Light'">{[ Del_msg ]}
-                                        <i class="admin-user-show" @click="hidden_user_modify"> </i>
+                                        <i class="admin-user-show UserModify" @click="hidden_user_modify"> </i>
                                     </p>
                                 </div>
                                 <hr/>
@@ -501,12 +504,14 @@
                     </div>
                     <div class="admin-user-modify">
                         <div>
-                            <div class="card">
+                            <div class="card admin-VideoAccusation-card">
                                 <div style="display: flex;justify-content: space-between">
-                                    <p style="font-weight: 700" >举报 :
+                                    <p style="font-weight: 700" >视频举报 :
                                         <i class="admin-user-fresh" @click="getAllVideoAccusation"></i>
                                     </p>
-                                    <p style="color: red;font-family: '微软雅黑 Light'"></p>
+                                    <p style="color: red;font-family: '微软雅黑 Light'">{[ Del_msg ]}
+                                        <i class="admin-user-show VideoAccusation" @click="hidden_videoAccusation"> </i>
+                                    </p>
                                 </div>
                                 <hr/>
                                  <table class="table table-striped table-hover">
@@ -715,8 +720,12 @@
                 console.log(123)
             },
             hidden_user_modify(){
-                document.querySelector(".admin-user-show").classList.toggle("active")
+                document.querySelector(".UserModify").classList.toggle("active")
                 document.querySelector(".admin-user-modify-card").classList.toggle("active")
+            },
+            hidden_videoAccusation(){
+                document.querySelector(".VideoAccusation").classList.toggle("active")
+                document.querySelector(".admin-VideoAccusation-card").classList.toggle("active")
             },
             logout: function () {
                 window.location.href = "{% url 'logout' %}", "_blank";
