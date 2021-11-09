@@ -87,6 +87,29 @@
             </li>
         </ul>
     </div>
+    <div class="videos-accusation"  v-show="AccMenu">
+        <div class="videos-accusation-content">
+            <div class="videos-accusation-title">
+                <span></span>
+                <span style="font-size: 16px">举报</span>
+                <span style="cursor: pointer" @click="closeAccMenu">cancel</span>
+            </div>
+            <div class="videos-accusation-warning">
+                <span style="color: red;font-size: 20px;margin: 0px 20px">warning</span>
+                <span style="color: black;display: flex;align-items: center;font-size: 15px">禁止恶意举报行为</span>
+            </div>
+            <div class="videos-accusation-reason">
+                <div class="form-floating">
+                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 150px" v-model="AccReason" maxlength="100"></textarea>
+                    <label for="floatingTextarea2">请描述举报理由:</label>
+                </div>
+                <ul class="videos-accusation-btns">
+                    <li style="font-family: '微软雅黑 Light'">{[ AccReason.length ]}/100字 <p style="color: red">{[ AccResult ]}</p></li>
+                    <li><button type="button" class="btn btn-outline-secondary" @click="report">提交</button></li>
+                </ul>
+            </div>
+        </div>
+    </div>
     <div class="videos">
         <div class="videos-holder">
             <div class="videocontent">
@@ -190,6 +213,7 @@
                                             <li><span class="videoshare"></span></li>
                                             <li><span class="goodvideo" @click="love"></span></li>
                                             <li><span class="videocollect" @click="collect"></span></li>
+                                            <li><span class="videoaccusation" @click="showAccMenu"></span></li>
                                         </ul>
                                     </div>
                                 </li>
@@ -275,6 +299,16 @@
                 "v_like": {{ v_like }},
                 "user_id": {{ user_id }},
             },
+            userdetail:{
+                name: "{{ request.user.username }}",
+                id: "{{ request.user.id }}",
+                email: "{{ request.user.email }}",
+                is_active: "{{ request.user.is_active }}",
+                date_joined: "{{ request.user.date_joined }}",
+                gender: "{{ request.user.gender }}",
+                picture: "{{ request.user.picture }}",
+                fans: "{{ request.user.fans }}"
+            },
             video_option: {
                 controls:true,
                 autoplay:true,
@@ -298,10 +332,25 @@
             input: "",
             fromhere: 0,
             is_login: false,
+            AccMenu: false,
+            AccReason :"",
+            AccResult: "",
             username: "",
             video_url:"{% url "index" %}"+"video/",
         },
         methods: {
+            showAccMenu:function (){
+                if(this.is_login){
+                    this.AccMenu = true
+                }
+                else{
+                    return
+                }
+            },
+            closeAccMenu:function (){
+                this.AccMenu = false
+            },
+
             played: async function (id){
                 let param = new URLSearchParams()
                 param.append('v_id', id)
@@ -485,7 +534,7 @@
             },
             collect:async function (){
                 let param = new URLSearchParams()
-                param.append('user_id', {{ request.user.id }})
+                param.append('user_id', this.userdetail.id)
                 param.append('video_id', this.video_detail.v_id)
                 param.append('status', this.collectornot)
                 result = await axios({
@@ -495,7 +544,32 @@
                 })
                 console.log(result.data.msg)
                 this.collectornot = result.data.code
-            }
+            },
+            report:async function (){
+                let param = new URLSearchParams()
+                param.append('u_id', this.userdetail.id)
+                param.append('v_id', this.video_detail.v_id)
+                param.append('a_reason', this.AccReason)
+                result = await axios({
+                    method :"POST",
+                    url:"{% url "report" %}",
+                    data: param,
+                })
+                if(result){
+                    if(result.data.code==1){
+                        this.AccResult = result.data.msg
+                        setTimeout(function(){vm.AccResult=""},3000);
+                    }
+                    else if(result.data.code==0){
+                        this.AccResult = result.data.msg
+                        setTimeout(function(){vm.AccResult=""},3000);
+                    }
+                    else{
+                        this.AccResult = "什么玩意?"
+                    }
+                }
+                this.AccReason=""
+            },
         },
         mounted: function () {
             this.is_login_check()

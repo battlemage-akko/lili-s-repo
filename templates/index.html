@@ -19,7 +19,7 @@
     <link href="{% static 'css/videoslist.css' %}" rel="stylesheet">
     <style>
         :root {
-            --Head-top: 100px;
+            --Head-top: 80px;
             --Test-color: null;
             --Background-color: #eeeef3;
             --shadow: 0 3px 3px 0 rgba(54, 58, 80, 0.32);
@@ -126,9 +126,10 @@
         }
 
         .logo.active {
-            left: 100px;
+            left: 110px;
             z-index: 4;
             position: fixed;
+            opacity: 0.3;
         }
 
         .sidebar.active .side {
@@ -138,14 +139,14 @@
 
         .logo {
             position: fixed;
-            width: 120px;
+            width: 140px;
             top: 35px;
             left: 50%;
             z-index: 4;
             transform: translateX(calc(-50% + 6px));
             transition: all 0.5s ease;
             cursor: pointer;
-            opacity: 0.2;
+            opacity: 0;
         }
 
         .logo:hover {
@@ -307,7 +308,7 @@
                                 <hr style="margin: 0">
                             </div>
                             <ul class="profile-content-myvideos">
-                                <li v-for="(item,i) in videosList_mine.slice(videosPage.begin,videosPage.end)" class="videos-each">
+                                <li v-for="(item,i) in videosList_mine.slice(videosPage.begin,videosPage.end)" class="videos-each" :id="'myvideo_'+item.v_id">
                                     <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'contain'}" class="videos-each-background" @click="getVideo(item.v_id)"></div>
                                     <span class="videos-each-tips" @click="getVideo(item.v_id)">
                                         <i class="videos-each-play"></i>
@@ -359,6 +360,32 @@
                     </ul>
                 </div>
             </div>
+            <div v-show="showDelMenu" class="del-warning">
+                    <div class="del-warning-content">
+                        <div class="del-warning-title">
+                            <span style="font-size: 15px">删除视频</span>
+                            <span @click="closeDelmenu" style="cursor: pointer">close</span>
+                        </div>
+                        <div class="del-warning-warn">
+                            <span style="color: red;font-size: 20px;margin: 0px 20px">warning</span>
+                            <span style="color: white;display: flex;align-items: center;font-size: 15px">删除的视频与弹幕不可恢复</span>
+                        </div>
+                        <div class="del-warning-detail">
+                            List:
+                            <ul class="del-warning-list">
+                                <li v-for="(item,index) in delList">
+                                    <a @click="jumpbyv_id(item.v_id)">《 {[item.v_title]} 》</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="del-warning-final">
+                            <div class="input-group">
+                              <input type="text" class="form-control" placeholder="请输入'y'/'Y'进行确认" aria-label="Recipient's username" aria-describedby="button-addon2" v-model="Del_sure">
+                              <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="delVideoSure">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
         <div v-if="this_user_admin" v-show="flags.admin" class="admin">
             <div class="admin-content">
@@ -482,6 +509,30 @@
                                     <p style="color: red;font-family: '微软雅黑 Light'">{[ Del_msg ]}</p>
                                 </div>
                                 <hr/>
+                                 <table class="table table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">id</th>
+                                        <th scope="col">举报人</th>
+                                        <th scope="col">举报时间</th>
+                                        <th scope="col">举报理由</th>
+                                        <th scope="col">驳回</th>
+                                        <th scope="col">删除视频</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(item,index) in AllUsers">
+                                        <td><p>{[ item.id ]}</p></td>
+                                        <td><p>{[ item.username ]}</p></td>
+                                        <td><p>{[ item.email ]}</p></td>
+                                        <td><p>{[ item.last_login ]}</p></td>
+                                        <td><p>{[ !item.is_active ]}</p></td>
+                                        <td><p>{[ item.is_superuser ]}</p></td>
+                                        <td><p class="admin-user-modify-submit" @click="damie"></p></td>
+                                        <td><p class="admin-user-modify-ban" @click="damie"></p></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -588,6 +639,7 @@
             show_more_cat:false,
             show_more_btn:true,
             videosList:[],
+            delList:[],
             videosList_isLoading:false,
             videosList_new:{{ newvideolist|safe }},
             videosList_hot:{{ hotvideolist|safe }},
@@ -644,8 +696,10 @@
                 ONLINE: "none"
             },
             AllUsers: null,
+            showDelMenu: false,
             serverupdate: false,
             Interval: "",
+            Del_sure:"",
             Del_msg:null,
             terminal_user: "administrator",
             terminal_password: window.btoa("123456"),
@@ -653,6 +707,9 @@
             video_url:"{% url "index" %}"+"video/",
         },
         methods: {
+            jumpbyv_id:function (v_id){
+                window.open(this.video_url+v_id)
+            },
             handleScroll:function (){
                 console.log(123)
             },
@@ -896,25 +953,35 @@
                     item.classList.toggle("active")
                 }
             },
-            delVideo: async function(e,v_id){
-                let sure = prompt("确认删除本视频以及所有的弹幕?(y/n)")
-                sure = sure.toLowerCase()
-                if(sure=='y'||sure=='n'){
-                    if(sure=='y'){
-                        e.target.parentNode.parentNode.style.opacity = 0
-                        setTimeout(function(){e.target.parentNode.parentNode.style.display = "none"},500);
-                        let param = new URLSearchParams()
-                        param.append("v_id",v_id)
-                        result = await axios({
-                            method:"POST",
-                            url:"{% url 'delVideo' %}",
-                            data: param
-                        })
-                        this.refreshmsg()
+            closeDelmenu:function (){
+                this.showDelMenu = false
+                this.delList = []
+            },
+            delVideo: function(e,v_id){
+                this.showDelMenu = true
+                for(let item of this.videosList_mine){
+                    if(item["v_id"] == v_id){
+                        this.delList.push(item)
                     }
-                    else{
-                        console.log("三思")
-                    }
+                }
+            },
+            delVideoSure:async function (node){
+                sure = this.Del_sure.toLowerCase()
+                node =  document.querySelector('#myvideo_'+this.delList[0]["v_id"])
+                if(sure=='y'){
+                    let param = new URLSearchParams()
+                    param.append("v_id",this.delList[0]["v_id"])
+                    result = await axios({
+                        method:"POST",
+                        url:"{% url 'delVideo' %}",
+                        data: param
+                    })
+                    this.refreshmsg()
+                    node.style.opacity = 0
+                    setTimeout(function(){
+                        node.style.display = "none"
+                    },500);
+                    this.showDelMenu = false
                 }
                 else{
                     console.log("输入的什么JB")

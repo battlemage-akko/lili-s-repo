@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from barrage.models import test as barrageTable
 from barrage.models import video as videosTable
+from barrage.models import accusation_video as accusationTable
 from django.http import HttpResponse, JsonResponse
 from app.models import followUser as followtable
 from app.models import collectVideo as collectTable
@@ -184,3 +185,16 @@ def del_video(request):
                 messagesTable.createMessage(m_content="删除视频《" + v_title + "》失败",
                                             m_user=user_id)
     return HttpResponse("done")
+
+@csrf_exempt
+def report(request):
+    if(request.method == "POST"):
+        v_id = request.POST.get('v_id')
+        v = videosTable.objects.get(v_id=v_id)
+        v_title = v.v_title
+        u_id = request.POST.get('u_id')
+        a_reason = request.POST.get('a_reason')
+        result = accusationTable.create(v_id=v_id,u_id=u_id,a_reason=a_reason)
+        if(result["code"]==1):
+            messagesTable.createMessage(m_content="您成功举报了《"+v_title+"》,请耐心等待管理员审核。感谢您的反馈！",m_user=u_id)
+        return JsonResponse(result)

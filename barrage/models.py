@@ -48,3 +48,45 @@ class video(models.Model):
         else:
             return 0
 
+class accusation_video(models.Model):
+    a_id = models.AutoField(primary_key=True)
+    v_id = models.IntegerField()
+    u_id = models.IntegerField()
+    a_reason = models.CharField(max_length=500,null=False)
+    a_time = models.DateTimeField(auto_now_add=True)
+
+    def delectAll(v_id):
+        r = accusation_video.objects.filter(v_id=v_id).all()
+        if r:
+            r.delete()
+            return 1
+        else:
+            return 0
+
+    def delect(a_id):
+        r = accusation_video.objects.filter(a_id=a_id).all()
+        if r:
+            r.delete()
+            return 1
+        else:
+            return 0
+
+    def accusation_check(u_id,v_id):
+        r = accusation_video.objects.filter(u_id=u_id,v_id=v_id).all()
+        if not r:
+            return 1
+        else :
+            return 0
+
+    def create(u_id,v_id,a_reason):
+        if accusation_video.accusation_check(u_id,v_id):
+            accusation_video(u_id=u_id, v_id=v_id, a_reason=a_reason).save()
+            return {
+                "msg":"举报成功",
+                "code":1
+            }
+        else:
+            return {
+                "msg":"后台已有待处理的举报",
+                "code": 0
+            }
