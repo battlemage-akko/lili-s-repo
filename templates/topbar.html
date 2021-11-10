@@ -1,0 +1,22 @@
+{% load static %}
+
+<div class="warning-myself">
+        <div>
+            <img src="{% static "images/logo.png" %}" alt="" style="height: 40px;margin: 10px;cursor: pointer">
+        </div>
+            <div class="input-group videos-top-search">
+              <button class="btn btn-outline-secondary" type="button" id="button-addon1" @click="search"><i class="videos-top-search-btn"></i></button>
+              <input type="text" class="form-control" placeholder="搜索" aria-label="Example text with button addon" aria-describedby="button-addon1" v-model="q">
+            </div>
+        <ul class="video-user-info">
+            <li>
+                <i class="video-user-menus"></i>
+            </li>
+            <li>
+                <i class="video-user-msg"></i>
+            </li>
+            <li>
+                <img src="{% static 'images/' %}{{ request.user.picture }}" alt="" class="video-user-pic">
+            </li>
+        </ul>
+    </div>

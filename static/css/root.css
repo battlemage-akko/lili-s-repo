@@ -1,0 +1,18 @@
+    :root {
+        --Head-top: 80px;
+        --Test-color: null;
+        --Background-color: #eeeef3;
+        --shadow: 0 3px 3px 0 rgba(54, 58, 80, 0.32);
+    }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+    }
+    p {
+        margin: 0 !important;
+    }
+    ul {
+        padding-left: 0;
+    }

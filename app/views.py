@@ -46,6 +46,7 @@ def index(request):
     return render(request,'index.html',{
         "newvideolist": Newvideos,
         "hotvideolist": [],
+
         "collectvideolist": [],
     })
 
@@ -137,6 +138,14 @@ def loginthisuser(request,user):
 def logoutthisuser(request):
     logout(request)
     return redirect("index")
+
+
+def search(request):
+    q = request.GET.get("q")
+    print(q)
+    return render(request,'search.html')
+
+
 @csrf_exempt
 def register(request):
     if (request.method == 'GET'):

@@ -17,34 +17,8 @@
     <link href="{% static 'css/profile.css' %}" rel="stylesheet">
     <link href="{% static 'css/admin.css' %}" rel="stylesheet">
     <link href="{% static 'css/videoslist.css' %}" rel="stylesheet">
+    <link href="{% static 'css/root.css' %}" rel="stylesheet">
     <style>
-        :root {
-            --Head-top: 80px;
-            --Test-color: null;
-            --Background-color: #eeeef3;
-            --shadow: 0 3px 3px 0 rgba(54, 58, 80, 0.32);
-        }
-        @font-face {
-            font-family: 'IcoMoon-Free';
-            src: url('{% static 'css/IcoMoon-Free.ttf'%}') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
-
-        p {
-            margin: 0 !important;
-        }
-
-        ul {
-            padding-left: 0;
-        }
-
         body {
             background-color: var(--Background-color);
             overflow-x: hidden;
@@ -283,7 +257,7 @@
                     <div class="profile-background">
                     </div>
                     <div style="display: flex;justify-content: center">
-                        <img src="{% static "images/" %}{{ request.user.picture }}" alt="" class="profile-img">
+                        <img :src="userdetail.picture" alt="" class="profile-img">
                     </div>
                     <ul style="list-style: none" class="profile-info">
                         <li>
@@ -588,13 +562,14 @@
             {% endif %}
         </ul>
         <div class="login">
-            <img src="{% static 'images/' %}{{ request.user.picture }}" alt="" style="border: 4px solid #d3d3d3">
             {% if request.user.is_authenticated %}
+                <img src="{% static 'images/' %}{{ request.user.picture }}" alt="" style="border: 4px solid #d3d3d3">
                 <span class="logout" @click="logout"><i></i></span>
                 <p class="loginbtn active">
                     {[ userdetail.name ]}
                 </p>
             {% else %}
+                <img src="{% static 'images/default.jpg' %}" alt="" style="border: 4px solid #d3d3d3">
                 <p class="loginbtn" @click="login">
                     Login
                 </p>
@@ -684,7 +659,7 @@
                 is_active: "{{ request.user.is_active }}",
                 date_joined: "{{ request.user.date_joined }}",
                 gender: "{{ request.user.gender }}",
-                picture: "{{ request.user.picture }}",
+                picture: "{% static "images/" %}{{ request.user.picture }}",
                 fans: "{{ request.user.fans }}",
             },
             flags: {

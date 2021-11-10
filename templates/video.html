@@ -6,43 +6,16 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="{% static 'css/videos.css' %}" rel="stylesheet">
+    <link href="{% static 'css/topbar.css' %}" rel="stylesheet">
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="shortcut icon" href="{% static 'images/video.PNG' %}">
+    <link href="{% static 'css/root.css' %}" rel="stylesheet">
     <link href="//cdn.bootcss.com/video.js/7.0.0-alpha.1/alt/video-js-cdn.css" rel="stylesheet">
     <script src="//cdn.bootcss.com/video.js/7.0.0-alpha.1/video.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>{{ v_title }}</title>
     <style>
-        :root {
-            --Head-top: 100px;
-            --Test-color: null;
-            --Background-color: #eeeef3;
-            --shadow: 0 3px 3px 0 rgba(54, 58, 80, 0.32);
-        }
-
-        @font-face {
-            font-family: 'IcoMoon-Free';
-            src: url('{% static 'css/IcoMoon-Free.ttf'%}') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
-
-        p {
-            margin: 0 !important;
-        }
-
-        ul {
-            padding-left: 0;
-        }
-
         body {
             background-color: var(--Background-color);
             overflow-x: hidden;
@@ -81,27 +54,9 @@
     </style>
 </head>
 <body>
+
 <div id="app">
-    <div class="warning-myself">
-        <div>
-            <img src="{% static "images/logo.png" %}" alt="" style="height: 40px;margin: 10px;cursor: pointer" onclick="window.location.href='{% url 'index' %}'">
-        </div>
-            <div class="input-group videos-top-search">
-              <button class="btn btn-outline-secondary" type="button" id="button-addon1"><i class="videos-top-search-btn"></i></button>
-              <input type="text" class="form-control" placeholder="搜索" aria-label="Example text with button addon" aria-describedby="button-addon1">
-            </div>
-        <ul class="video-user-info">
-            <li>
-                <i class="video-user-menus"></i>
-            </li>
-            <li>
-                <i class="video-user-msg"></i>
-            </li>
-            <li>
-                <img src="{% static 'images/' %}{{ request.user.picture }}" alt="" class="video-user-pic">
-            </li>
-        </ul>
-    </div>
+{% include 'topbar.html' %}
     <div class="videos-accusation"  v-show="AccMenu">
         <div class="videos-accusation-content">
             <div class="videos-accusation-title">
@@ -359,8 +314,14 @@
             AccResult: "",
             username: "",
             video_url:"{% url "index" %}"+"video/",
+            q:"",
+            base_url:"{% url 'index' %}"+"search?q="
         },
         methods: {
+            search:function (){
+                window.open(this.base_url+this.q)
+                this.q=""
+            },
             showAccMenu:function (){
                 if(this.is_login){
                     this.AccMenu = true
