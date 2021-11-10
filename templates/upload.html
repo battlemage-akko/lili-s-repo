@@ -163,6 +163,7 @@ const vm = new Vue({
         pre:"0%",
         tags:[],
         message:"",
+        tagsDamie:["none","无标签","null","undefined"],
     },
     methods:{
         clearMessage:function (){
@@ -195,11 +196,17 @@ const vm = new Vue({
                         tmp = []
                         return
                     }
-                    if(item.toLowerCase()=="none"){
-                        this.message = "闲的？"
-                        return
+                    for(let damie of this.tagsDamie){
+                        if(item.toLowerCase() == damie){
+                            this.message = "我看你是皮痒了"
+                            return
+                        }
                     }
                     if(tmp.length>=5){
+                        this.message = "标签不可多于5个"
+                        return
+                    }
+                    if(this.tags.length>=5){
                         this.message = "标签不可多于5个"
                         return
                     }
