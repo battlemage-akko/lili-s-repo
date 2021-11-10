@@ -179,6 +179,11 @@
                     </ul>
                     <h1 class="video-title">{{ v_title }}</h1>
                 </div>
+                <div class="videos-tags">
+                    <ul class="videos-tags-list">
+                        <li class="videos-tags-each" v-for="(item,index) in tags">{[ item ]}</li>
+                    </ul>
+                </div>
                 <div class="video-profile">
                     <div style="display: flex;width:200px;">
                         <span class="video-profilepic">
@@ -298,6 +303,7 @@
                 "v_collect": {{ v_collect }},
                 "v_like": {{ v_like }},
                 "user_id": {{ user_id }},
+                "v_tags": "{{ v_tags }}",
             },
             userdetail:{
                 name: "{{ request.user.username }}",
@@ -329,6 +335,7 @@
             video_nowtime: 0,
             barrageArray: [],
             barrage_divNode: "",
+            tags:[],
             input: "",
             fromhere: 0,
             is_login: false,
@@ -577,6 +584,13 @@
         },
         mounted: function () {
             this.is_login_check()
+            tagsTmp = this.video_detail.v_tags.split(",")
+            if(tagsTmp[0].toLowerCase()=="none"){
+                this.tags.push("无标签")
+            }
+            else{
+                this.tags = tagsTmp
+            }
             this.video_ready = videojs("video_ready", this.video_option, function () {
                 this.on('loadstart', function () {
                     console.log('loadstart')
@@ -610,7 +624,6 @@
                 })
             })
             if(this.video_ready.readyState()==0){
-                console.log("123")
                 this.video_ready.options_.sources = [
                     {
                         src: '{% static "videos/" %}{{ v_ad }}',
@@ -651,6 +664,7 @@
                     alert("取关成功")
                 }
             },
+
             loveornot: function (){
                 document.querySelector(".goodvideo").classList.toggle("active")
             },

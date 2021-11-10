@@ -683,4 +683,22 @@
             list-style: none;
             align-items: center;
         }
+        .videos-tags-list{
+            display: flex;
+            list-style: none;
+            cursor: pointer;
+            flex-wrap: wrap;
+        }
+        .videos-tags-each{
+            border:1px solid #a8a8a8;
+            background-color: rgba(112, 112, 112, 0.1);
+            padding: 3px 7px;
+            border-radius: 10px;
+            margin: 3px;
+            font-size: 10px;
+        }
+        .videos-tags-each:hover{
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #e3e3e3;
+        }
 

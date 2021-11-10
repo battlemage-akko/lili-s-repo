@@ -35,7 +35,6 @@ def video(request,vid):
         nextvideolist.append(tmp[i])
 
     tags = videosTable.objects.get(v_id=vid).v_tags
-    print(tags)
     data = {
         "v_id": result["v_id"],
         "v_ad": result["v_ad"],
@@ -55,7 +54,7 @@ def video(request,vid):
             "v_time_minute": result["v_time"].minute,
             "v_time_second": result["v_time"].second
         },
-        "tags":tags,
+        "v_tags": tags,
         "nextvideo": nextvideo,
         "nextvideolist": nextvideolist,
         "oncechance" : 1,

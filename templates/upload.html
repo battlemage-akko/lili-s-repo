@@ -194,6 +194,14 @@ const vm = new Vue({
                         tmp = []
                         return
                     }
+                    if(item.toLowerCase()=="none"){
+                        this.message = "闲的？"
+                        return
+                    }
+                    if(tmp.length>=5){
+                        this.message = "标签不可多于5个"
+                        return
+                    }
                     tmp.push(item)
                 }
                 this.tags = this.tags.concat(tmp)
