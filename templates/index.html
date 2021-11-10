@@ -588,7 +588,7 @@
             {% endif %}
         </ul>
         <div class="login">
-            <img src="{% static 'images/' %}{{ request.user.picture }}" alt="">
+            <img src="{% static 'images/' %}{{ request.user.picture }}" alt="" style="border: 4px solid #d3d3d3">
             {% if request.user.is_authenticated %}
                 <span class="logout" @click="logout"><i></i></span>
                 <p class="loginbtn active">
