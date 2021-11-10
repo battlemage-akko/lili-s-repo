@@ -389,7 +389,8 @@
                         <div class="del-warning-final">
                             <div class="input-group">
                               <input type="text" class="form-control" placeholder="请输入'y'/'Y'进行确认" aria-label="Recipient's username" aria-describedby="button-addon2" v-model="Del_sure">
-                              <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="delVideoSure">确认</button>
+                              <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="delVideoSure"
+                              >确认</button>
                             </div>
                         </div>
                     </div>
@@ -1068,7 +1069,7 @@
                 this.profile_content[tag] = true
 
             },
-            myvideosNextpage(){
+            myvideosNextpage:function(){
                 if(this.videosPage.end <= this.videosPage.total){
                     this.videosPage.begin += 8
                     this.videosPage.end += 8
@@ -1077,7 +1078,7 @@
                     return
                 }
             },
-            myvideosPrepage(){
+            myvideosPrepage:function(){
                 if(this.videosPage.begin > 0){
                     this.videosPage.begin -= 8
                     this.videosPage.end -= 8
