@@ -283,7 +283,7 @@
                     <div class="profile-background">
                     </div>
                     <div style="display: flex;justify-content: center">
-                        <img src="{% static "images/头像.png" %}" alt="" class="profile-img">
+                        <img src="{% static "images/" %}{{ request.user.picture }}" alt="" class="profile-img">
                     </div>
                     <ul style="list-style: none" class="profile-info">
                         <li>
