@@ -2,7 +2,7 @@ import json,psutil,re,datetime,socket,requests,os
 from django.contrib.auth import authenticate ,login, logout
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render,redirect
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse,HttpResponseRedirect
 from app.models import AppUser as Userdatabase
 from app.models import followUser as followtable
 from app.models import likeVideo as lovetable
@@ -51,8 +51,9 @@ def index(request):
 
 def index_login(request):
     if(request.user.is_authenticated):
-        return render(request, 'index.html')
-    return render(request,'login.html')
+        return redirect('index')
+    else:
+        return render(request,'login.html')
 
 def wrapper(request):
     return render(request,'wrapper.html')

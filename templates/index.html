@@ -587,7 +587,7 @@
                 {% endif %}
             {% endif %}
         </ul>
-        <div class="login" @click="login()">
+        <div class="login">
             <img src="{% static 'images/' %}{{ request.user.picture }}" alt="">
             {% if request.user.is_authenticated %}
                 <span class="logout" @click="logout"><i></i></span>
@@ -595,7 +595,7 @@
                     {[ userdetail.name ]}
                 </p>
             {% else %}
-                <p class="loginbtn">
+                <p class="loginbtn" @click="login">
                     Login
                 </p>
             {% endif %}
@@ -685,7 +685,7 @@
                 date_joined: "{{ request.user.date_joined }}",
                 gender: "{{ request.user.gender }}",
                 picture: "{{ request.user.picture }}",
-                fans: "{{ request.user.fans }}"
+                fans: "{{ request.user.fans }}",
             },
             flags: {
                 default: true,
