@@ -33,6 +33,9 @@ def video(request,vid):
     randomlist = random.sample(range(0, len(tmp)-2), 7)
     for i in randomlist:
         nextvideolist.append(tmp[i])
+
+    tags = videosTable.objects.get(v_id=vid).v_tags
+    print(tags)
     data = {
         "v_id": result["v_id"],
         "v_ad": result["v_ad"],
@@ -52,6 +55,7 @@ def video(request,vid):
             "v_time_minute": result["v_time"].minute,
             "v_time_second": result["v_time"].second
         },
+        "tags":tags,
         "nextvideo": nextvideo,
         "nextvideolist": nextvideolist,
         "oncechance" : 1,
@@ -136,11 +140,11 @@ def save_video(request):
         video_file = request.FILES.get("video_file")
         username = request.POST.get("username")
         user_id = request.POST.get("user_id")
-        print(video_file.name)
-        finish_save(video_title, video_pic, video_file,username,user_id)
+        tags = request.POST.get("tags")
+        finish_save(video_title, video_pic, video_file,username,user_id,tags)
     return HttpResponse("上传完成")
 
-def finish_save(video_title,video_pic,video_file,username,user_id):
+def finish_save(video_title,video_pic,video_file,username,user_id,tags):
     video_pic_save_path = 'static/videos/videopic/' + video_title + '.jpg'
     with open(video_pic_save_path, 'wb+') as f:
         f.write(video_pic.read())
@@ -152,7 +156,7 @@ def finish_save(video_title,video_pic,video_file,username,user_id):
     print(video_file.name, "done")
     time = round(VideoFileClip(video_file_save_path).duration)
 
-    result = videosTable(v_ad=video_title + '.mp4',v_pic=video_title + '.jpg',v_auther=username,user_id=user_id,v_title=video_title,v_like=0,v_play=0,v_collect=0,v_duaring=time)
+    result = videosTable(v_ad=video_title + '.mp4',v_pic=video_title + '.jpg',v_auther=username,user_id=user_id,v_title=video_title,v_like=0,v_play=0,v_collect=0,v_duaring=time,v_tags=tags)
     result.save()
 
     messagesTable.createMessage(m_content="您成功上传了《"+video_title+"》", m_user=user_id)
@@ -169,7 +173,7 @@ def del_video(request):
             v_pic = 'static/videos/videopic/' + v.v_pic
             v_ad = 'static/videos/' + v.v_ad
 
-            if os.path.exists(v_ad) and os.path.exists(v_pic):
+            if os.path.exists(v_ad) or os.path.exists(v_pic):
 
                 os.remove(v_pic)
                 os.remove(v_ad)
@@ -179,8 +183,8 @@ def del_video(request):
                 l_result = lovetable.delete(v_id)
                 c_result = collectTable.delete(v_id)
                 print([v_result,b_result,l_result,c_result])
-
-                messagesTable.createMessage(m_content="成功删除视频《"+v_title+"》与s视频弹幕,视频id(v_id)为"+v_id,m_user=user_id)
+                clearacc = accusationTable.delectAll(v_id=v_id)
+                messagesTable.createMessage(m_content="成功删除视频《"+v_title+"》与视频弹幕,视频id(v_id)为"+v_id,m_user=user_id)
             else:
                 messagesTable.createMessage(m_content="删除视频《" + v_title + "》失败",
                                             m_user=user_id)

@@ -181,8 +181,13 @@
             width: 100%;
             display: flex;
             justify-content: center;
+            align-items: center;
             background: url("{% static 'images/videoBackground.jpg' %}") right bottom no-repeat;
             background-size: cover;
+            transition: all .5s ease;
+        }
+        .videoslist-title.active{
+            height: 100vh;
         }
     </style>
 </head>
@@ -215,13 +220,13 @@
         <div v-show="flags.videos"  class="videos">
             <div class="videos-holder">
                 <div class="videoslist-title">
-                    <div style="position: absolute" class="videoslist-search">
+                    <div class="videoslist-search">
                         <div>
-                            <div class="input-group mb-2">
-                          <input type="text" class="form-control videoslist-search-input" placeholder="请输入" aria-label="Recipient's username" aria-describedby="button-addon2">
-                          <button class="btn btn-outline-secondary videoslist-search-btn" type="button" id="button-addon2"><i class="videoslist-input-btn"></i></button>
+                            <div class="input-group">
+                              <input type="text" class="form-control videoslist-search-input" placeholder="请输入" aria-label="Recipient's username" aria-describedby="button-addon2" @focus="changeVideoslistBack" @blur="changeVideoslistBack">
+                              <button class="btn btn-outline-secondary videoslist-search-btn" type="button" id="button-addon2"><i class="videoslist-input-btn"></i></button>
                             </div>
-                            <h2 style="font-size: 12px;padding: 0px 30px">
+                            <h2 style="font-size: 15px;padding: 10px 30px">
                                 推荐: <a href="javascript:"></a>
                             </h2>
                         </div>
@@ -309,7 +314,7 @@
                             </div>
                             <ul class="profile-content-myvideos">
                                 <li v-for="(item,i) in videosList_mine.slice(videosPage.begin,videosPage.end)" class="videos-each" :id="'myvideo_'+item.v_id">
-                                    <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'contain'}" class="videos-each-background" @click="getVideo(item.v_id)"></div>
+                                    <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'cover'}" class="videos-each-background" @click="getVideo(item.v_id)"></div>
                                     <span class="videos-each-tips" @click="getVideo(item.v_id)">
                                         <i class="videos-each-play"></i>
                                     </span>
@@ -464,7 +469,7 @@
                             <div class="card admin-user-modify-card">
                                 <div style="display: flex;justify-content: space-between">
                                     <p style="font-weight: 700" >修改用户信息 :
-                                        <i  @click="getAllUsers"></i>
+                                        <i class="admin-user-fresh" @click="getAllUsers"></i>
                                     </p>
                                     <p style="color: red;font-family: '微软雅黑 Light'">{[ Del_msg ]}
                                         <i class="admin-user-show UserModify" @click="hidden_user_modify"> </i>
@@ -509,7 +514,7 @@
                                     <p style="font-weight: 700" >视频举报 :
                                         <i class="admin-user-fresh" @click="getAllVideoAccusation"></i>
                                     </p>
-                                    <p style="color: red;font-family: '微软雅黑 Light'">{[ Del_msg ]}
+                                    <p style="color: red;font-family: '微软雅黑 Light'">
                                         <i class="admin-user-show VideoAccusation" @click="hidden_videoAccusation"> </i>
                                     </p>
                                 </div>
@@ -716,6 +721,10 @@
             jumpbyv_id:function (v_id){
                 window.open(this.video_url+v_id)
             },
+            changeVideoslistBack:function (){
+                document.querySelector(".videoslist-title").classList.toggle('active')
+                document.querySelector(".videoslist-search-input").classList.toggle('input-xlarge')
+            },
             handleScroll:function (){
                 console.log(123)
             },
@@ -733,7 +742,7 @@
             tocloud: function () {
                 window.open("https://cloud.lili-secretbase.com/");
             },
-            login() {
+            login:function() {
                 window.location.href = "{% url 'login' %}"
             },
             is_login_check() {
@@ -838,7 +847,7 @@
                     type: 2,
                     title: '上传视频',
                     closeBtn: 1,
-                    area: ['700px', '400px'],
+                    area: ['700px', '600px'],
                     shadeClose: true,
                     shade: false,
                     content: "{% url 'upload_page' %}",
@@ -966,9 +975,7 @@
                 this.videosPage.now = 1
             },
             active_delbtn:function (){
-                for(let item of document.querySelectorAll(".videos-each-del")){
-                    item.classList.toggle("active")
-                }
+                document.querySelector(".profile-content-myvideos").classList.toggle('active')
             },
             closeDelmenu:function (){
                 this.showDelMenu = false
@@ -982,23 +989,33 @@
                     }
                 }
             },
-            delVideoSure:async function (node){
+            delVideoSure:async function (){
                 sure = this.Del_sure.toLowerCase()
                 node =  document.querySelector('#myvideo_'+this.delList[0]["v_id"])
+                v_id = this.delList[0]["v_id"]
+                videoIndex = null
+                for(let item of this.videosList_mine){
+                    if(item["v_id"]==v_id){
+                        videoIndex = this.videosList_mine.indexOf(item)
+                    }
+                }
                 if(sure=='y'){
                     let param = new URLSearchParams()
-                    param.append("v_id",this.delList[0]["v_id"])
+                    param.append("v_id",v_id)
                     result = await axios({
                         method:"POST",
                         url:"{% url 'delVideo' %}",
                         data: param
                     })
                     this.refreshmsg()
-                    node.style.opacity = 0
+                    node.classList.toggle("dying")
                     setTimeout(function(){
-                        node.style.display = "none"
+                        vm.videosList_mine.splice(videoIndex, 1)
+                        node.classList.toggle("dying")
                     },500);
+                    this.Del_sure = ""
                     this.showDelMenu = false
+                    this.delList = []
                 }
                 else{
                     console.log("输入的什么JB")

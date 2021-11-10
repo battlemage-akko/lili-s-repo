@@ -42,10 +42,74 @@
         width: 100vw;
         height: 100vh;
     }
+    .addtags{
+        border: 2px dashed black;
+        padding: 5px;
+        cursor: pointer;
+        border-radius: 50px;
+        transition: all .5s ease;
+    }
+    .addtags:hover{
+        color: deeppink;
+        border: 2px solid deeppink;
+    }
+    .addtags.active{
+        color: deeppink;
+        border: 2px solid deeppink;
+    }
+    .message{
+        color: red;
+        font-family: "微软雅黑 Light";
+        margin-left: 20px;
+    }
+    .tagsList{
+        margin: 15px 0px;
+        display: flex;
+        flex-wrap: wrap;
+        list-style: none;
+    }
+    .tagsList li{
+        margin-right: 10px;
+    }
+    .tagsInput{
+        margin: 0px !important;
+    }
+    .tag-each{
+        margin: 0px !important;
+        border: 1px dashed black;
+        cursor: pointer;
+        -moz-user-select:none;
+        -webkit-user-select:none;
+        user-select:none;
+        overflow: hidden;
+        position: relative;
+    }
+    .tag-each:hover .tagCancel{
+        top: 0;
+    }
+    .tagsList-li{
+        overflow: hidden;
+    }
+    .tagCancel{
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.5);
+        width: 100%;
+        height: 100%;
+        top: 100%;
+        transition: all .3s ease;
+        color: rgba(247, 0, 78, 0.7);
+        font-size: 10px;
+    }
+    .this-tag{
+        padding: 2px 5px;
+    }
 </style>
 <body>
     <div id="app">
-        <form action="" class="upload-form">
+        <form action="" class="upload-form" @change="clearMessage">
             <div class="input-group">
               <label class="input-group-text" for="inputGroupFile01">视频(.mp4)</label>
               <input type="file" class="form-control" id="inputGroupFile01" @change="get_file($event)">
@@ -59,10 +123,27 @@
               <input type="text" aria-label="First name" class="form-control video_title" placeholder="输入标题" name="video_title" v-model="video_title">
               <input type="text" aria-label="Last name" class="form-control" placeholder="输入'1'确认信息无误" v-model="sure">
             </div>
+            <div style="font-family: IcoMoon-Free;margin: 5px 0px">
+                添加标签 : <span class="addtags" @click="addtags">add</span>
+                <ul class="tagsList">
+                    <li v-for="(item,index) in tags" @click="delTag($event)" class="tagsList-li">
+
+                        <div class="tag-each">
+                            <span class="tagCancel">cancel</span>
+                            <span class="this-tag">{[item]}</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="input-group tagsInput" v-show="showtagsInput">
+                  <input type="text" class="form-control" placeholder="添加标签名，多个标签由空格分隔" aria-label="Recipient's username" aria-describedby="button-addon2" v-model="tag">
+                  <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="submitTag">添加</button>
+                </div>
             <div>
                 <button type="button" class="btn btn-primary btn-sure" @click="upload_form_check">上传</button>
                 <button type="button" class="btn btn-danger" @click="clear_input">取消</button>
                 <button type="button" class="btn btn-danger">{[ pre ]}</button>
+                <span class="message">{[message]}</span>
             </div>
         </form>
     </div>
@@ -76,15 +157,55 @@ const vm = new Vue({
         video_pic:"",
         video_file:"",
         video_title:"",
+        tag:"",
+        showtagsInput:false,
         pre:"0%",
+        tags:[],
+        message:"",
     },
     methods:{
+        clearMessage:function (){
+            this.message = ""
+        },
+        delTag:function (e){
+            for(let item of this.tags){
+                if(item == e.target.parentNode.children[1].innerText){
+                    let tagIndex = this.tags.indexOf(e.target.parentNode.children[1].innerText)
+                    this.tags.splice(tagIndex, 1)
+                }
+            }
+        },
         clear_input:function (){
             document.querySelector('.upload-form').querySelectorAll('input').forEach((item)=>{
                 item.value = null
             })
             this.sure = 0
             this.video_title = ""
+        },
+        submitTag:function (){
+            if(this.tag==""||this.tag==null){
+                this.message="你添加了个**"
+            }
+            else{
+                tmp = []
+                for(let item of this.tag.trim().split(/\s+/)){
+                    if(item.length>=20){
+                        this.message = "标签长度不可大于20"
+                        tmp = []
+                        return
+                    }
+                    tmp.push(item)
+                }
+                this.tags = this.tags.concat(tmp)
+                this.tags = [...new Set(this.tags)]
+                this.tag = ""
+            }
+        },
+        addtags:function (){
+            document.querySelector('.addtags').classList.toggle("active")
+            if(this.showtagsInput||!this.showtagsInput){
+                this.showtagsInput = !this.showtagsInput
+            }
         },
         upload_form_check:function(){
           if(this.video_file==""){
@@ -112,6 +233,7 @@ const vm = new Vue({
             param.append('video_title',this.video_title)
             param.append('username', "{{ request.user.username }}")
             param.append('user_id', "{{ request.user.id }}")
+            param.append('tags',this.tags)
             document.querySelector('.upload-form').querySelectorAll('input').forEach((item)=>{
                 item.disabled = "disabled"
             })
