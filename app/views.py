@@ -145,7 +145,7 @@ def search_page(request):
     result = search(q)
     print(result)
     if(result['user']['exactness']):
-        result['user']['exactness'][0]['videos'] = videosTable.getvideosbyid(user_id=result['user']['exactness'][0]['id'],choose='time')
+        result['user']['exactness'][0]['videos'] = videosTable.getvideosbyid(user_id=result['user']['exactness'][0]['id'],choose='time')[0:4]
     return render(request,'search.html',{
         "result":result
     })

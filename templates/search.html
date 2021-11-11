@@ -42,26 +42,45 @@
                             <img :src="true == true?'{% static "images/" %}'+result.user.exactness[0].picture:'{% static "images/default.jpg" %}'" alt="">
                             <span class="search-result-user-name-follow">+关注</span>
                         </div>
-                        <div class="search-result-user-info">
-                            <div><div class="search-result-user-name">
+                        <div style="display: flex;flex-direction: column;justify-content: center;flex-grow: 1">
+                            <div class="search-result-user-info">
+                            <div>
+                                <div class="search-result-user-name">
                                 <h2 class="search-result-user-name-name">{[ result.user.exactness[0].username ]}</h2>
                             </div>
                             <div class="search-result-user-other">
                                 <p>{[ result.user.exactness[0].v_count  ]} 投稿</p>
+                                <p>|</p>
                                 <p>{[ result.user.exactness[0].fans ]} 粉丝</p>
                             </div>
                             <div class="search-result-user-desc">
                                 {[ result.user.exactness[0].desc ]}
                             </div>
-                            <ul class="search-result-user-videos">
-                                <li v-for="(item,index) in result.user.exactness[0].videos" class="search-result-user-videos-each">
-                                    <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'cover'}" class="search-result-user-videos-each-back" @click="getVideo(item.v_id)">
-                                    </div>
-                                    <div class="search-result-user-videos-info">
-                                        123
-                                    </div>
-                                </li>
-                            </ul></div>
+                                <ul class="search-result-user-videos">
+                                    <li v-for="(item,index) in result.user.exactness[0].videos" class="search-result-user-videos-each">
+                                        <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'cover'}" class="search-result-user-videos-each-back" @click="jumpbyV_id(item.v_id)">
+                                            <span class="search-result-user-videos-each-time">
+                                                <span>{[ Math.floor(item.v_duaring/60)<10?"0"+Math.floor(item.v_duaring/60):Math.floor(item.v_duaring/60) ]}:{[ item.v_duaring%60<10?"0"+item.v_duaring%60:item.v_duaring%60 ]}</span>
+                                            </span>
+                                        </div>
+                                        <div class="search-result-user-videos-info">
+                                            <div>
+                                                <div>《{[item.v_title]}》</div>
+                                            </div>
+                                            <div>
+                                                <div>player : {[item.v_play]}</div>
+                                                <div>table : {[ item.v_time.v_time_year ]}-{[ item.v_time.v_time_month ]}-{[ item.v_time.v_time_day ]}</div>
+                                            </div>
+                                        </div>
+
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                            <div style="display: flex;justify-content: center;cursor: pointer;padding-top: 10px">
+                                <span class="search-result-user-toprofile">点击进入他的空间</span>
+                            </div>
                         </div>
                     </li>
                 </ul>
@@ -76,10 +95,14 @@
         delimiters: ['{[', ']}'],
         data:{
             q:"",
+            video_url:"{% url "index" %}"+"video/",
             base_url:"{% url 'index' %}"+"search?q=",
             result:{{ result|safe }},
         },
         methods:{
+            jumpbyV_id(v_id){
+                window.open(this.video_url+v_id)
+            },
             inputActive(){
                 document.querySelector(".search-content-search-container").classList.toggle("active")
             },

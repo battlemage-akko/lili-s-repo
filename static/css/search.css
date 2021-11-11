@@ -8,6 +8,7 @@
     margin-top: 50px;
     min-width: 1px;
     flex-basis: 1200px;
+    max-width: 1200px;
     display: flex;
     justify-content: center;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
@@ -115,25 +116,60 @@
 }
 .search-result-user-desc{
     font-size: .85rem;
-    margin: 0px 0px 10px 10px;
+    margin: 0px 0px 20px 10px;
 }
 .search-result-user-videos{
     display: flex;
 }
 .search-result-user-videos li{
-    padding: 10px;
+    padding: 10px 5px;
 
 }
 .search-result-user-videos-each-back{
-    height: 100px;
-    width: 160px;
+    height: 90px;
+    width: 140px;
+    cursor: pointer;
+    position:relative;
 }
 .search-result-user-videos-each{
     display: flex;
+
 }
 .search-result-user-videos-info{
-    background-color: #ffcd3b;
-    width: 155px;
+    width: 100px;
+    padding-left: 5px;
+    font-size: 10px;
+    color: rgba(62, 62, 62, 0.5);
+    font-family: IcoMoon-Free;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+.search-result-user-videos-each-time{
+    bottom: 3px;
+    right: 3px;
+    position: absolute;
+    padding: 2px 3px;
+    text-align: center;
+    line-height: 15px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 10px;
+    font-family: "微软雅黑 Light";
+    letter-spacing:2px;
+}
+.search-result-user-toprofile{
+    padding: 5px 10px;
+    background-color: var(--Background-color);
+    color: #000000;
+    border: 1px solid;
+    font-size: 15px;
+    border-radius: 100px;
+}
+.search-result-user-toprofile:hover{
+    color: var(--Background-color);
+    background-color: black;
 }
     @media (max-width: 400px){
             .search-content-search{
