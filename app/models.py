@@ -10,10 +10,45 @@ class AppUser(AbstractUser):
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='male')
     desc = models.TextField(null=True, blank=True, verbose_name="描述")
     picture = models.CharField(max_length=20,default="default.png")
+    v_count = models.IntegerField(default=0)
 
     def getfans(id):
         return AppUser.objects.filter(id=id).values()[0]["fans"]
+    def getinfo(id, info):
+        return AppUser.objects.filter(id=id).values()[0][info]
+    def searchByName(name):
+        tmp1 = AppUser.objects.filter(username=name).all().values()
+        tmp2 = AppUser.objects.filter(username__contains=name).all().values()
+        result1 = []
+        result2 = []
+        if tmp1:
+            result1 = {
+                    "username":tmp1[0]["username"],
+                    "id":tmp1[0]["id"],
+                    "picture":tmp1[0]["picture"],
+                    "fans":tmp1[0]["fans"],
+                    "v_count": tmp1[0]["v_count"],
+                    "desc": tmp1[0]["desc"]
+                }
 
+        for item in tmp2:
+            if item not in tmp1:
+                result2.append({
+                    "username": item["username"],
+                    "id": item["id"],
+                    "picture": item["picture"],
+                    "fans": item["fans"],
+                    "v_count":item["v_count"],
+                    "desc": item[0]["desc"]
+                })
+        return {
+            "exactness": [result1],
+            "indistinct":result2,
+        }
+    def addvideo(id):
+        AppUser.objects.filter(id=id).update(v_count=AppUser.objects.filter(id=id).values()[0]["v_count"]+1)
+    def delvideo(id):
+        AppUser.objects.filter(id=id).update(v_count=AppUser.objects.filter(id=id).values()[0]["v_count"]-1)
 class messages(models.Model):
     m_id = models.AutoField(primary_key=True)
     m_content = models.CharField(max_length=400,null=False)

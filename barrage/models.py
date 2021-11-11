@@ -33,11 +33,32 @@ class video(models.Model):
     v_time = models.DateTimeField(auto_now_add=True)
     v_duaring = models.IntegerField(default=0)
     v_tags = models.CharField(max_length=1000,null=True,default="None")
+    v_note = models.CharField(max_length=1000,null=True,default="这个人很懒,什么都没有留下")
     class Meta:
         app_label = "barrage"
 
-    def getvideosbyid(user_id):
-        videos = video.objects.filter(user_id=user_id).all()
+    def getvideosbyid(user_id,choose):
+        tmp = video.objects.filter(user_id=user_id).all().values()
+        if(choose=="time"):
+            tmp = video.objects.filter(user_id=user_id).all().order_by('-v_time').values()
+        videos = []
+        for item in tmp:
+            videos.append({
+                "v_id":item["v_id"],
+                "v_title": item["v_title"],
+                "v_pic": item["v_pic"],
+                "v_play": item["v_play"],
+                "v_note": item["v_note"],
+                "v_duaring": item["v_duaring"],
+                "v_time": {
+                    "v_time_year": item["v_time"].year,
+                    "v_time_month": item["v_time"].month,
+                    "v_time_day": item["v_time"].day,
+                    "v_time_hour": item["v_time"].hour,
+                    "v_time_minute": item["v_time"].minute,
+                    "v_time_second": item["v_time"].second
+                },
+            })
         return videos
 
     def delect(v_id):
@@ -47,6 +68,73 @@ class video(models.Model):
             return 1
         else:
             return 0
+
+    def searchByTitle(title):
+        tmp = video.objects.filter(v_title__contains=title).all().values()
+        result = []
+        for item in tmp:
+            result.append({
+                "v_id": item["v_id"],
+                "v_pic": item["v_pic"],
+                "v_auther": item["v_auther"],
+                "v_play": item["v_play"],
+                "v_title": item["v_title"],
+                "v_time": {
+                    "v_time_year": item["v_time"].year,
+                    "v_time_month": item["v_time"].month,
+                    "v_time_day": item["v_time"].day,
+                    "v_time_hour": item["v_time"].hour,
+                    "v_time_minute": item["v_time"].minute,
+                    "v_time_second": item["v_time"].second
+                },
+                "v_note": item["v_note"],
+            })
+        return result
+
+    def searchByTag(tag):
+        tmp = video.objects.filter(v_tags__contains=tag).all().values()
+        result = []
+        for item in tmp:
+            result.append({
+                "v_id": item["v_id"],
+                "v_pic": item["v_pic"],
+                "v_auther": item["v_auther"],
+                "v_play": item["v_play"],
+                "v_title": item["v_title"],
+                "v_time": {
+                    "v_time_year": item["v_time"].year,
+                    "v_time_month": item["v_time"].month,
+                    "v_time_day": item["v_time"].day,
+                    "v_time_hour": item["v_time"].hour,
+                    "v_time_minute": item["v_time"].minute,
+                    "v_time_second": item["v_time"].second
+                },
+                "v_note": item["v_note"],
+            })
+        return result
+
+    def searchByAuther(user):
+        tmp = video.objects.filter(v_auther__contains=user).all().values()
+        result = []
+        for item in tmp:
+            result.append({
+                "v_id": item["v_id"],
+                "v_pic": item["v_pic"],
+                "v_auther": item["v_auther"],
+                "v_play": item["v_play"],
+                "v_title": item["v_title"],
+                "v_time": {
+                    "v_time_year": item["v_time"].year,
+                    "v_time_month": item["v_time"].month,
+                    "v_time_day": item["v_time"].day,
+                    "v_time_hour": item["v_time"].hour,
+                    "v_time_minute": item["v_time"].minute,
+                    "v_time_second": item["v_time"].second
+                },
+                "v_note": item["v_note"],
+            })
+        return result
+
 
 class accusation_video(models.Model):
     a_id = models.AutoField(primary_key=True)

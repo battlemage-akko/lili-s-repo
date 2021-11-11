@@ -104,6 +104,7 @@
             z-index: 4;
             position: fixed;
             opacity: 0.3;
+            display: unset;
         }
 
         .sidebar.active .side {
@@ -121,6 +122,7 @@
             transition: all 0.5s ease;
             cursor: pointer;
             opacity: 0;
+            display: none;
         }
 
         .logo:hover {
@@ -160,7 +162,8 @@
             background-size: cover;
             transition: all .5s ease;
         }
-        .videoslist-title.active{
+        .videoslist-title.active
+        {
             height: 100vh;
         }
     </style>
@@ -195,14 +198,14 @@
             <div class="videos-holder">
                 <div class="videoslist-title">
                     <div class="videoslist-search">
+                        <img src="{% static 'images/logo.png' %}" alt="" class="videoslist-search-logo">
                         <div>
-                            <div class="input-group">
-                              <input type="text" class="form-control videoslist-search-input" placeholder="请输入" aria-label="Recipient's username" aria-describedby="button-addon2" @focus="changeVideoslistBack" @blur="changeVideoslistBack">
-                              <button class="btn btn-outline-secondary videoslist-search-btn" type="button" id="button-addon2"><i class="videoslist-input-btn"></i></button>
+                            <div class="videolist-input-group">
+                                <i class="videolist-input-group-magnifier" @mousedown="sumbitSearch">
+                                </i>
+                                <input type="text" placeholder=" 请输入" class="videolist-input-group-input" @focus="changeVideoslistBack" @blur="changeVideoslistBack" v-model="q">
+                                <button class="videolist-input-group-btn" @mousedown="sumbitSearch">提交</button>
                             </div>
-                            <h2 style="font-size: 15px;padding: 10px 30px">
-                                推荐: <a href="javascript:"></a>
-                            </h2>
                         </div>
                     </div>
                     <span class="videoslist-upload" title="上传" @click="upload_video"></span>
@@ -273,6 +276,9 @@
                             </div>
                             <div>
                                 获赞:0
+                            </div>
+                            <div>
+                                视频:{{ request.user.v_count }}个
                             </div>
                         </li>
                     </ul>
@@ -691,15 +697,22 @@
             terminal_user: "administrator",
             terminal_password: window.btoa("123456"),
             terminal_cmd:"",
+            q:"",
             video_url:"{% url "index" %}"+"video/",
+            base_url:"{% url 'index' %}"+"search?q=",
         },
         methods: {
             jumpbyv_id:function (v_id){
                 window.open(this.video_url+v_id)
             },
+            sumbitSearch:function (){
+                window.open(this.base_url+this.q)
+                this.q=""
+            },
             changeVideoslistBack:function (){
                 document.querySelector(".videoslist-title").classList.toggle('active')
-                document.querySelector(".videoslist-search-input").classList.toggle('input-xlarge')
+                document.querySelector(".videoslist-search-logo").classList.toggle('active')
+                document.querySelector(".videolist-input-group-input").classList.toggle('active')
             },
             handleScroll:function (){
                 console.log(123)

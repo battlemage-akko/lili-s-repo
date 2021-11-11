@@ -140,12 +140,24 @@ def logoutthisuser(request):
     return redirect("index")
 
 
-def search(request):
+def search_page(request):
     q = request.GET.get("q")
-    print(q)
-    return render(request,'search.html')
+    result = search(q)
+    print(result)
+    if(result['user']['exactness']):
+        result['user']['exactness'][0]['videos'] = videosTable.getvideosbyid(user_id=result['user']['exactness'][0]['id'],choose='time')
+    return render(request,'search.html',{
+        "result":result
+    })
 
-
+def search(q):
+    result = {
+        "user": Userdatabase.searchByName(q),
+        "searchByAuther": videosTable.searchByAuther(q),
+        "searchByTag": videosTable.searchByTag(q),
+        "searchByTitle": videosTable.searchByTitle(q),
+    }
+    return result
 @csrf_exempt
 def register(request):
     if (request.method == 'GET'):

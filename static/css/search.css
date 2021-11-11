@@ -1,0 +1,142 @@
+.search-container{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    padding: 10px;
+}
+.search-content{
+    margin-top: 50px;
+    min-width: 1px;
+    flex-basis: 1200px;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    flex-direction: column;
+}
+.search-content ul{
+    list-style: none;
+    margin: 0;
+}
+.search-content-search{
+    width: 100%;
+    padding: 60px;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+.search-content-search-input{
+    height: 40px;
+    width: 100%;
+    left: 0;
+    top: 0;
+    border-radius: 25px;
+    outline: none;
+    border: none;
+    background: rgb(169, 169, 169);
+    padding-left: 40px;
+    padding-right: 40px;
+    font-size: 18px;
+    opacity: 0.5;
+
+}
+.search-content-search-container{
+    position: relative;
+    flex-grow: 1;
+    opacity: 0.3;
+    transition: all .5s ease;
+}
+.search-content-search-container.active{
+    opacity: 1;
+}
+.search-content-search-btn:after{
+    position: absolute;
+    content: "\e986";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+    cursor: pointer;
+    top: 8px;
+    left: 12px;
+}
+.search-content-search-cancel:before{
+    position: absolute;
+    content: "\ea0f";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+    cursor: pointer;
+    top: 8px;
+    right: 12px;
+    color: #595959;
+}
+.search-result-user li{
+    display: flex;
+    padding: 20px 10px;
+}
+.search-result-user li img{
+    width: 160px;
+    height: 160px;
+    border-radius: 160px;
+    margin: 10px 0px;
+}
+.search-result-user-info{
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+}
+.search-result-user-name{
+    display: flex;
+    height: 30px;
+}
+
+.search-result-user-name-name{
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10px 0 0 ;
+    min-width: 50px;
+}
+.search-result-user-name-follow{
+    background: black;
+    color: #e3e3e3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    padding: 10px;
+    margin: 20px 10px;
+}
+.search-result-user-other{
+    display: flex;
+    font-size: .75rem;
+    color: rgba(62, 62, 62, 0.5);
+}
+.search-result-user-other p{
+    margin: 10px !important;
+}
+.search-result-user-desc{
+    font-size: .85rem;
+    margin: 0px 0px 10px 10px;
+}
+.search-result-user-videos{
+    display: flex;
+}
+.search-result-user-videos li{
+    padding: 10px;
+
+}
+.search-result-user-videos-each-back{
+    height: 100px;
+    width: 160px;
+}
+.search-result-user-videos-each{
+    display: flex;
+}
+.search-result-user-videos-info{
+    background-color: #ffcd3b;
+    width: 155px;
+}
+    @media (max-width: 400px){
+            .search-content-search{
+                display: none;
+            }
+        }

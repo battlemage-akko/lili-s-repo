@@ -159,6 +159,7 @@ def finish_save(video_title,video_pic,video_file,username,user_id,tags):
     result.save()
 
     messagesTable.createMessage(m_content="您成功上传了《"+video_title+"》", m_user=user_id)
+    Userdatabase.addvideo(user_id)
     return HttpResponse("保存完毕")
 
 @csrf_exempt
@@ -183,6 +184,7 @@ def del_video(request):
                 c_result = collectTable.delete(v_id)
                 print([v_result,b_result,l_result,c_result])
                 clearacc = accusationTable.delectAll(v_id=v_id)
+                Userdatabase.delvideo(user_id)
                 messagesTable.createMessage(m_content="成功删除视频《"+v_title+"》与视频弹幕,视频id(v_id)为"+v_id,m_user=user_id)
             else:
                 messagesTable.createMessage(m_content="删除视频《" + v_title + "》失败",
