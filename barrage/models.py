@@ -70,10 +70,12 @@ class video(models.Model):
             return 0
 
     def searchByTitle(title):
-        tmp = video.objects.filter(v_title__contains=title).all().values()
-        result = []
+        tmp = video.objects.filter(v_title=title).all().values()
+        tmp2 = video.objects.filter(v_title__contains=title).all().values()
+        exactness = []
+        indistinct = []
         for item in tmp:
-            result.append({
+            exactness.append({
                 "v_id": item["v_id"],
                 "v_pic": item["v_pic"],
                 "v_auther": item["v_auther"],
@@ -89,7 +91,28 @@ class video(models.Model):
                 },
                 "v_note": item["v_note"],
             })
-        return result
+        for item in tmp2:
+            if item not in tmp:
+                indistinct.append({
+                    "v_id": item["v_id"],
+                    "v_pic": item["v_pic"],
+                    "v_auther": item["v_auther"],
+                    "v_play": item["v_play"],
+                    "v_title": item["v_title"],
+                    "v_time": {
+                        "v_time_year": item["v_time"].year,
+                        "v_time_month": item["v_time"].month,
+                        "v_time_day": item["v_time"].day,
+                        "v_time_hour": item["v_time"].hour,
+                        "v_time_minute": item["v_time"].minute,
+                        "v_time_second": item["v_time"].second
+                    },
+                    "v_note": item["v_note"],
+                })
+        return {
+            "exactness": exactness,
+            "indistinct": indistinct,
+        }
 
     def searchByTag(tag):
         tmp = video.objects.filter(v_tags__contains=tag).all().values()
@@ -114,10 +137,12 @@ class video(models.Model):
         return result
 
     def searchByAuther(user):
-        tmp = video.objects.filter(v_auther__contains=user).all().values()
-        result = []
+        tmp = video.objects.filter(v_auther=user).all().values()
+        tmp2 = video.objects.filter(v_auther__contains=user).all().values()
+        exactness = []
+        indistinct = []
         for item in tmp:
-            result.append({
+            exactness.append({
                 "v_id": item["v_id"],
                 "v_pic": item["v_pic"],
                 "v_auther": item["v_auther"],
@@ -133,7 +158,28 @@ class video(models.Model):
                 },
                 "v_note": item["v_note"],
             })
-        return result
+        for item in tmp2 :
+            if item not in tmp:
+                indistinct.append({
+                    "v_id": item["v_id"],
+                    "v_pic": item["v_pic"],
+                    "v_auther": item["v_auther"],
+                    "v_play": item["v_play"],
+                    "v_title": item["v_title"],
+                    "v_time": {
+                        "v_time_year": item["v_time"].year,
+                        "v_time_month": item["v_time"].month,
+                        "v_time_day": item["v_time"].day,
+                        "v_time_hour": item["v_time"].hour,
+                        "v_time_minute": item["v_time"].minute,
+                        "v_time_second": item["v_time"].second
+                    },
+                    "v_note": item["v_note"],
+                })
+        return {
+            "exactness": exactness,
+            "indistinct": indistinct,
+        }
 
 
 class accusation_video(models.Model):

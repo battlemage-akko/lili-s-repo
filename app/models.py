@@ -18,7 +18,9 @@ class AppUser(AbstractUser):
         return AppUser.objects.filter(id=id).values()[0][info]
     def searchByName(name):
         tmp1 = AppUser.objects.filter(username=name).all().values()
+
         tmp2 = AppUser.objects.filter(username__contains=name).all().values()
+
         result1 = []
         result2 = []
         if tmp1:
@@ -39,7 +41,7 @@ class AppUser(AbstractUser):
                     "picture": item["picture"],
                     "fans": item["fans"],
                     "v_count":item["v_count"],
-                    "desc": item[0]["desc"]
+                    "desc": item["desc"]
                 })
         return {
             "exactness": [result1],

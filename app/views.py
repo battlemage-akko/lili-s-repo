@@ -143,9 +143,11 @@ def logoutthisuser(request):
 def search_page(request):
     q = request.GET.get("q")
     result = search(q)
-    print(result)
-    if(result['user']['exactness']):
+    if(result['user']['exactness'][0]):
         result['user']['exactness'][0]['videos'] = videosTable.getvideosbyid(user_id=result['user']['exactness'][0]['id'],choose='time')[0:4]
+    else:
+        result['user']['exactness'] = []
+    print(result)
     return render(request,'search.html',{
         "result":result
     })
