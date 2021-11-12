@@ -3,6 +3,10 @@
 
 *.pot
 
+*.pid
+
+*.mp4
+
 *.pyc
 
 pycache
