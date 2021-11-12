@@ -150,7 +150,7 @@
                 </div>
                 <div class="videos-tags">
                     <ul class="videos-tags-list">
-                        <li class="videos-tags-each" v-for="(item,index) in tags">{[ item ]}</li>
+                        <li class="videos-tags-each" v-for="(item,index) in tags" @click="searchByTag(item)">{[ item ]}</li>
                     </ul>
                 </div>
                 <div class="video-profile">
@@ -320,6 +320,9 @@
             search:function (){
                 window.open(this.base_url+this.q)
                 this.q=""
+            },
+            searchByTag:function (tag){
+                window.open(this.base_url+tag)
             },
             showAccMenu:function (){
                 if(this.is_login){
