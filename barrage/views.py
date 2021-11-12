@@ -140,6 +140,8 @@ def save_video(request):
         username = request.POST.get("username")
         user_id = request.POST.get("user_id")
         tags = request.POST.get("tags")
+        if not tags:
+            tags = 'None'
         finish_save(video_title, video_pic, video_file,username,user_id,tags)
     return HttpResponse("上传完成")
 

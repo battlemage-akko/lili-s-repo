@@ -128,7 +128,6 @@
                 添加标签 : <span class="addtags" @click="addtags">add</span>
                 <ul class="tagsList">
                     <li v-for="(item,index) in tags" @click="delTag($event)" class="tagsList-li">
-
                         <div class="tag-each">
                             <span class="tagCancel">cancel</span>
                             <span class="this-tag">{[item]}</span>
