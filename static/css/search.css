@@ -1,3 +1,38 @@
+.play:before{
+    content: '\ea15';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+.search:before{
+    content: "\e986";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+.list:before{
+    content: '\e9ba';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+.date:before{
+    content: '\e953';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+.tablelist:before{
+    content: '\ea71';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+.auther:before{
+    content: '\e971';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+.sliders:before{
+    content: '\e992';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
 .search-container{
     display: flex;
     justify-content: center;
@@ -38,13 +73,25 @@
     padding-right: 40px;
     font-size: 18px;
     opacity: 0.5;
-
+}
+.search-content-search-input-btn{
+    border: none;
+    outline: none;
+    border: 1px solid;
+    padding: 5px 10px;
+    margin-left: 20px;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
 }
 .search-content-search-container{
     position: relative;
     flex-grow: 1;
     opacity: 0.3;
     transition: all .5s ease;
+    display: flex;
 }
 .search-content-search-container.active{
     opacity: 1;
@@ -76,8 +123,8 @@
     padding: 20px 10px;
 }
 .search-result-user li img{
-    width: 160px;
-    height: 160px;
+    width: 120px;
+    height: 120px;
     border-radius: 160px;
     margin: 10px 0px;
 }
@@ -86,18 +133,23 @@
     display: flex;
     align-items: center;
 }
+.search-result-user-info li{
+    padding: 0;
+    margin-top: 5px;
+}
 .search-result-user-name{
     display: flex;
     height: 30px;
 }
 
 .search-result-user-name-name{
-    font-size: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-size: 18px;
     margin: 0 10px 0 0 ;
     min-width: 50px;
+    font-family: "Helvetica Neue";
+    font-weight: 600;
+    display: flex;
+    align-items: center;
 }
 .search-result-user-name-follow{
     background: black;
@@ -105,9 +157,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 15px;
-    padding: 10px;
-    margin: 20px 10px;
+    font-size: .5rem;
+    padding: 3px 10px;
 }
 .search-result-user-other{
     display: flex;
@@ -115,22 +166,22 @@
     color: rgba(62, 62, 62, 0.5);
 }
 .search-result-user-other p{
-    margin: 10px !important;
+    margin: 3px 5px 0px 0px!important;
 }
 .search-result-user-desc{
-    font-size: .85rem;
-    margin: 0px 0px 20px 10px;
+    font-size: .75rem;
+    color: rgba(62, 62, 62, 0.7);
 }
 .search-result-user-videos{
     display: flex;
 }
 .search-result-user-videos li{
-    padding: 10px 5px;
+    padding: 5px;
 
 }
 .search-result-user-videos-each-back{
-    height: 90px;
-    width: 140px;
+    height: 60px;
+    width: 100px;
     cursor: pointer;
     position:relative;
 }
@@ -149,8 +200,8 @@
     flex-direction: column;
 }
 .search-result-user-videos-each-time{
-    bottom: 3px;
-    right: 3px;
+    bottom: 1px;
+    right: 1px;
     position: absolute;
     padding: 2px 3px;
     text-align: center;
@@ -158,9 +209,10 @@
     background: rgba(0, 0, 0, 0.8);
     color: #ffffff;
     font-weight: 500;
-    font-size: 10px;
-    font-family: "微软雅黑 Light";
+    font-size: 8px;
+    font-family: "微软雅黑";
     letter-spacing:2px;
+    -webkit-transform: scale(0.80);
 }
 .search-result-user-toprofile{
     padding: 5px 10px;
@@ -177,7 +229,7 @@
 .search-result-video{
     display: flex;
     flex-wrap: wrap;
-    width: 80%;
+    width: 100%;
     flex-direction: column;
 }
 .search-result-video-each{
@@ -186,20 +238,83 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 .search-result-video-each-back{
-    height: 150px;
-    width: 240px;
+    height: 120px;
+    width: 200px;
     cursor: pointer;
     position:relative;
 }
 .search-result-video-container{
     display: flex;
     position: relative;
+    min-width: 1200px;
 }
-.search-result-video-btns{
-    width: 20%;
+.search-result-video-each-info{
+    margin-left: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+.search-result-video-each-info h2{
+    font-size: 17px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-family: "微软雅黑 Light";
+}
+.search-result-video-each-info h2 i{
+    font-style: normal;
+    font-size: 8px;
+    border: 1px solid;
+    margin-right: 10px;
+    padding: 3px 6px;
+    border-radius: 20px;
+    font-weight: 700;
     background-color: black;
-    position: sticky;
     color: #e3e3e3;
+}
+.search-result-video-each-info-info span{
+    margin-right: 20px;
+    font-size: 15px;
+    color: rgba(62, 62, 62, 0.5);
+}
+.search-result-video-topbtns-container{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+ }
+.search-result-video-topbtns{
+    display: flex;
+}
+.search-result-video-topbtns li{
+    margin: 5px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.search-result-video-topbtns li.active{
+    color: white;
+    background-color: rgba(255, 99, 182, 0.5);
+}
+.search-result-video-change{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 10px;
+}
+.search-result-video-change span{
+    margin: 0px 10px;
+    cursor: pointer;
+    color: rgba(66, 66, 66, 0.2);
+}
+.search-result-video-change span.active{
+    color: rgba(66, 66, 66, 0.8);
+}
+.noresult{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0px;
 }
     @media (max-width: 400px){
             .search-content-search{

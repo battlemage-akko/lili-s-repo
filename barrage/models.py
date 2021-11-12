@@ -141,6 +141,29 @@ class video(models.Model):
             })
         return result
 
+    def searchByType(type):
+        tmp = video.objects.filter(v_type=type).all().order_by("-v_time").values()
+        result = []
+        for item in tmp:
+            result.append({
+                "v_id": item["v_id"],
+                "v_pic": item["v_pic"],
+                "v_auther": item["v_auther"],
+                "v_play": item["v_play"],
+                "v_title": item["v_title"],
+                "v_time": {
+                    "v_time_year": item["v_time"].year,
+                    "v_time_month": item["v_time"].month,
+                    "v_time_day": item["v_time"].day,
+                    "v_time_hour": item["v_time"].hour,
+                    "v_time_minute": item["v_time"].minute,
+                    "v_time_second": item["v_time"].second
+                },
+                "v_note": item["v_note"],
+                "v_type": item["v_type"],
+            })
+        return result
+
     def searchByAuther(user):
         tmp = video.objects.filter(v_auther=user).all().order_by("-v_time").values()
         tmp2 = video.objects.filter(v_auther__contains=user).all().order_by("-v_time").values()

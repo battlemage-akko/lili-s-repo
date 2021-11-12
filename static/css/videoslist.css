@@ -282,13 +282,16 @@
 }
 .videolist-input-group-input.active{
     width: 300px;
+    padding-left: 20px;
 }
 .videolist-input-group:hover .videolist-input-group-input
 {
     width: 300px;
+    padding-left: 20px;
 }
 .videolist-input-group-input:focus .videolist-input-group-input{
     width: 300px;
+    padding-left: 20px;
 }
 .videoslist-search-logo{
     position: absolute;

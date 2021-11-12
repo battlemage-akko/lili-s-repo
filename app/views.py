@@ -142,22 +142,35 @@ def logoutthisuser(request):
 
 def search_page(request):
     q = request.GET.get("q")
-    result = search(q)
+    q = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+","",q)
+    result = search(q,0)
+    print(q)
     if(result['user']['exactness'][0]):
-        result['user']['exactness'][0]['videos'] = videosTable.getvideosbyid(user_id=result['user']['exactness'][0]['id'],choose='time')[0:4]
+        result['user']['exactness'][0]['videos'] = videosTable.getvideosbyid(user_id=result['user']['exactness'][0]['id'],choose='time')[0:5]
     else:
         result['user']['exactness'] = []
-    print(result)
+
     return render(request,'search.html',{
         "result":result
     })
 
-def search(q):
+def search(q,count):
+    queen = []
+    searchByTitle = videosTable.searchByTitle(q)
+    searchByTag = videosTable.searchByTag(q)
+    searchByType = videosTable.searchByType(q)
+
+    for item in searchByTitle['exactness']:
+        queen.append(item)
+    for item in searchByTitle['indistinct']:
+        if item not in queen:
+            queen.append(item)
+    for item in searchByType:
+        if item not in queen:
+            queen.append(item)
     result = {
         "user": Userdatabase.searchByName(q),
-        "searchByAuther": videosTable.searchByAuther(q),
-        "searchByTag": videosTable.searchByTag(q),
-        "searchByTitle": videosTable.searchByTitle(q),
+        "queen": queen[count:count+20],
     }
     return result
 @csrf_exempt

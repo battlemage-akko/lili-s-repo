@@ -16,50 +16,58 @@
             overflow-x: hidden;
             transition: all .5s ease;
         }
-        .videos-top-search{
+
+        .videos-top-search {
             display: none;
         }
     </style>
 </head>
 <body>
-    <div id="app">
-        {% include 'topbar.html' %}
-        <div class="search-container">
-            <div class="search-content">
-                <ul class="search-content-search">
-                        <li style="position: relative;">
-                        </li>
-                        <li class="search-content-search-container">
-                            <input type="text" placeholder="搜索" class="search-content-search-input" v-model="q" @focus="inputActive" @blur="inputActive">
-                            <i class="search-content-search-btn" @mousedown="search"></i>
-                            <i class="search-content-search-cancel" @mousedown="clear"></i>
-                        </li>
-                    </ul>
-                <div class="search-result">
-                    <ul class="search-result-user">
-                        <li v-for="(item,index) in result.user.exactness">
-                            <div>
-                                <img :src="true == true?'{% static "images/" %}'+result.user.exactness[0].picture:'{% static "images/default.jpg" %}'" alt="">
-                                <span class="search-result-user-name-follow">+关注</span>
-                            </div>
-                            <div style="display: flex;flex-direction: column;justify-content: center;flex-grow: 1">
-                                <div class="search-result-user-info">
+<div id="app">
+    {% include 'topbar.html' %}
+    <div class="search-container">
+        <div class="search-content">
+            <ul class="search-content-search">
+                <li style="position: relative;">
+                </li>
+                <li class="search-content-search-container">
+                    <div style="position: relative;width: 100%">
+                        <input type="text" placeholder="搜索" class="search-content-search-input" v-model="q"
+                               @focus="inputActive" @blur="inputActive">
+                        <i class="search-content-search-btn" @mousedown="search"></i>
+                        <i class="search-content-search-cancel" @mousedown="clear"></i>
+                    </div>
+                    <button class="search-content-search-input-btn" @mousedown="search">
+                        <i class="search"></i><span> 搜索</span>
+                    </button>
+                </li>
+            </ul>
+            <div class="search-result">
+                <ul class="search-result-user">
+                    <li v-for="(item,index) in result.user.exactness">
+                        <div>
+                            <img :src="true == true?'{% static "images/" %}'+result.user.exactness[0].picture:'{% static "images/default.jpg" %}'"
+                                 alt="">
+
+                        </div>
+                        <div style="display: flex;flex-direction: column;justify-content: center;flex-grow: 1">
+                            <div class="search-result-user-info">
                                 <div>
-                                    <div class="search-result-user-name">
-                                    <h2 class="search-result-user-name-name">{[ result.user.exactness[0].username ]}</h2>
-                                </div>
-                                <div class="search-result-user-other">
-                                    <p>{[ result.user.exactness[0].v_count  ]} 投稿</p>
-                                    <p>|</p>
-                                    <p>{[ result.user.exactness[0].fans ]} 粉丝</p>
-                                </div>
-                                <div class="search-result-user-desc">
-                                    {[ result.user.exactness[0].desc ]}
-                                </div>
-                                    <div style="padding-left: 10px;font-size: 15px" v-if="result.user.exactness[0].videos.length!=0">最新投稿</div>
+                                    <ul style="padding: 0px;margin-left: 5px">
+                                        <li><h2 class="search-result-user-name-name">{[ result.user.exactness[0].username ]}</h2><span class="search-result-user-name-follow">+关注</span></li>
+                                        <li class="search-result-user-other">
+                                            <p>{[ result.user.exactness[0].v_count ]} 投稿</p>
+                                            <p>|</p>
+                                            <p>{[ result.user.exactness[0].fans ]} 粉丝</p>
+                                        </li>
+                                        <li class="search-result-user-desc">{[ result.user.exactness[0].desc ]}</li>
+                                    </ul>
                                     <ul class="search-result-user-videos">
-                                        <li v-for="(item,index) in result.user.exactness[0].videos" class="search-result-user-videos-each">
-                                            <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'cover'}" class="search-result-user-videos-each-back" @click="jumpbyV_id(item.v_id)">
+                                        <li v-for="(item,index) in result.user.exactness[0].videos"
+                                            class="search-result-user-videos-each">
+                                            <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'cover'}"
+                                                 class="search-result-user-videos-each-back"
+                                                 @click="jumpbyV_id(item.v_id)">
                                                 <span class="search-result-user-videos-each-time">
                                                     <span>{[ Math.floor(item.v_duaring/60)<10?"0"+Math.floor(item.v_duaring/60):Math.floor(item.v_duaring/60) ]}:{[ item.v_duaring%60<10?"0"+item.v_duaring%60:item.v_duaring%60 ]}</span>
                                                 </span>
@@ -69,86 +77,100 @@
                                                     <div>《{[item.v_title]}》</div>
                                                 </div>
                                                 <div>
-                                                    <div>player : {[item.v_play]}</div>
-                                                    <div>table : {[ item.v_time.v_time_year ]}-{[ item.v_time.v_time_month ]}-{[ item.v_time.v_time_day ]}</div>
+                                                    <div><i class="play"></i> : {[item.v_play]}</div>
+                                                    <div><i class="date"></i> : {[ item.v_time.v_time_year ]}-{[
+                                                        item.v_time.v_time_month ]}-{[ item.v_time.v_time_day ]}
+                                                    </div>
                                                 </div>
                                             </div>
 
                                         </li>
                                     </ul>
-
                                 </div>
                             </div>
-                                <div style="display: flex;justify-content: center;cursor: pointer;padding-top: 10px">
-                                    <span class="search-result-user-toprofile">点击进入他的空间</span>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+                        </div>
+                    </li>
+                </ul>
+                <div>
+                    <div class="search-result-video-topbtns-container">
+                        <ul class="search-result-video-topbtns">
+                            <li class="active">综合排序</li>
+                            <li>最新发布</li>
+                            <li>最多播放</li>
+                        </ul>
+                        <div class="search-result-video-change">
+                            <span class="list active"></span>
+                            <span class="tablelist"></span>
+                        </div>
+                    </div>
+                    <div class="noresult" v-if="count==0">
+                        <img src="{% static 'images/猫猫叹气.png' %}" alt="">
+                    </div>
                     <div class="search-result-video-container">
                         <ul class="search-result-video">
                             <li v-for="(item,index) in queen" class="search-result-video-each">
-                                <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'cover'}" class="search-result-video-each-back" @click="jumpbyV_id(item.v_id)"></div>
-                                <div>1</div>
+                                <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'cover'}"
+                                     class="search-result-video-each-back" @click="jumpbyV_id(item.v_id)"></div>
+                                <div class="search-result-video-each-info">
+                                    <div>
+                                        <h2>
+                                            <i>{[item.v_type]}</i>
+                                            <span @click="jumpbyV_id(item.v_id)">{[item.v_title]}</span>
+                                        </h2>
+                                        <div style="font-size: 10px;color: rgba(42,42,42,0.5)">{[ item.v_note ]}</div>
+                                    </div>
+                                    <div class="search-result-video-each-info-info">
+                                        <span><i class="play"></i> : {[item.v_play]} </span>
+                                        <span><i class="date"></i> : {[ item.v_time.v_time_year ]}-{[ item.v_time.v_time_month ]}-{[ item.v_time.v_time_day ]} {[ item.v_time.v_time_hour ]}:{[ item.v_time.v_time_minute ]}:{[ item.v_time.v_time_second ]}</span>
+                                        <span><i class="auther"></i> : {[item.v_auther]} </span>
+                                    </div>
+                                </div>
+
                             </li>
-                        </ul>
-                        <ul class="search-result-video-btns">
-                            <li>1</li>
-                            <li>1</li>
-                            <li>1</li>
-                            <li>1</li>
-                            <li>1</li>
-                            <li>1</li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </body>
 <script>
     const vm = new Vue({
         el: "#app",
         delimiters: ['{[', ']}'],
-        data:{
-            q:"",
-            video_url:"{% url "index" %}"+"video/",
-            base_url:"{% url 'index' %}"+"search?q=",
+        data: {
+            q: "",
+            video_url: "{% url "index" %}" + "video/",
+            base_url: "{% url 'index' %}" + "search?q=",
             result:{{ result|safe }},
-            queen:[],
+            queen: [],
+            count: 0,
         },
-        methods:{
-            jumpbyV_id(v_id){
-                window.open(this.video_url+v_id)
+        methods: {
+            jumpbyV_id(v_id) {
+                window.open(this.video_url + v_id)
             },
-            inputActive(){
+            inputActive() {
                 document.querySelector(".search-content-search-container").classList.toggle("active")
             },
-            search(){
+            search() {
                 window.location.href = this.base_url + this.q
             },
-            clear(){
-                this.q=""
+            clear() {
+                this.q = ""
             },
         },
-        mounted:function (){
-            if(this.result.searchByTitle.exactness.length!=0){
-                this.queen.push(this.result.searchByTitle.exactness[0])
-            }
-            if(this.result.searchByTitle.indistinct.length!=0){
-                for(let item of this.result.searchByTitle.indistinct){
+        mounted: function () {
+            if (this.result.queen != 0) {
+                this.count = this.result.queen.length
+                for (let item of this.result.queen) {
                     this.queen.push(item)
                 }
-            }
-            if(this.result.searchByAuther.exactness.length!=0){
-                for(let item of this.result.searchByAuther.exactness){
-                    this.queen.push(item)
-                }
+            } else {
             }
         },
-        watch:{
-
-        },
+        watch: {},
     })
 </script>
 </html>
