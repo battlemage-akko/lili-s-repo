@@ -281,22 +281,23 @@
     pointer-events: auto;
 }
 .videolist-input-group-input.active{
-    width: 300px;
+    width: 40vw;
     padding-left: 20px;
 }
 .videolist-input-group:hover .videolist-input-group-input
 {
-    width: 300px;
+    width: 40vw;
     padding-left: 20px;
 }
 .videolist-input-group-input:focus .videolist-input-group-input{
-    width: 300px;
+    width: 40vw;
     padding-left: 20px;
 }
 .videoslist-search-logo{
     position: absolute;
-    flex-basis: 400px;
-    top: -200px;
+    width: 40%;
+    max-width: 500px;
+    top: -400px;
     transition: all .5s ease;
 }
 .videoslist-search-logo.active{
