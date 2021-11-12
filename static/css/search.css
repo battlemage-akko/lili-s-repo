@@ -198,11 +198,12 @@
     display: flex;
     justify-content: space-between;
     flex-direction: column;
+}
+.search-result-user-videos-info div{
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
     word-break: break-all;
-
 }
 .search-result-user-videos-each-time{
     bottom: 1px;
