@@ -161,11 +161,22 @@ def search(q,count):
     searchByType = videosTable.searchByType(q)
 
     for item in searchByTitle['exactness']:
+        if (len(queen) > (count+20)):
+            break
         queen.append(item)
     for item in searchByTitle['indistinct']:
+        if (len(queen) > (count+20)):
+            break
         if item not in queen:
             queen.append(item)
     for item in searchByType:
+        if (len(queen) > (count+20)):
+            break
+        if item not in queen:
+            queen.append(item)
+    for item in searchByTag:
+        if (len(queen) > (count+20)):
+            break
         if item not in queen:
             queen.append(item)
     result = {

@@ -97,15 +97,15 @@
                             <li>最多播放</li>
                         </ul>
                         <div class="search-result-video-change">
-                            <span class="list active"></span>
-                            <span class="tablelist"></span>
+                            <span class="list active" @click="changeMode('list',$event)"></span>
+                            <span class="tablelist" @click="changeMode('table',$event)"></span>
                         </div>
                     </div>
                     <div class="noresult" v-if="count==0">
                         <img src="{% static 'images/猫猫叹气.png' %}" alt="">
                     </div>
-                    <div class="search-result-video-container">
-                        <ul class="search-result-video">
+                    <div class="search-result-video-list-container">
+                        <ul class="search-result-video" v-if="mode.list">
                             <li v-for="(item,index) in queen" class="search-result-video-each">
                                 <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'cover'}"
                                      class="search-result-video-each-back" @click="jumpbyV_id(item.v_id)"></div>
@@ -122,6 +122,30 @@
                                         <span><i class="date"></i> : {[ item.v_time.v_time_year ]}-{[ item.v_time.v_time_month ]}-{[ item.v_time.v_time_day ]} {[ item.v_time.v_time_hour ]}:{[ item.v_time.v_time_minute ]}:{[ item.v_time.v_time_second ]}</span>
                                         <span><i class="auther"></i> : {[item.v_auther]} </span>
                                     </div>
+                                </div>
+
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="search-result-video-table-container">
+                        <ul class="search-result-table-video" v-if="mode.table">
+                            <li v-for="(item,index) in queen" class="search-result-table-video-each">
+                                <div>
+                                    <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'cover'}" class="search-result-table-video-each-back" @click="jumpbyV_id(item.v_id)"></div>
+                                <div class="search-result-video-table-each-info">
+                                    <div>
+                                        <h2>
+                                            <span @click="jumpbyV_id(item.v_id)">{[item.v_title]}</span>
+                                        </h2>
+                                    </div>
+                                    <div class="search-result-table-video-each-info-info">
+                                        <span><i class="play"></i> : {[item.v_play]} </span>
+                                        <span><i class="date"></i> : {[ item.v_time.v_time_year ]}-{[ item.v_time.v_time_month ]}-{[ item.v_time.v_time_day ]}</span>
+                                    </div>
+                                    <div class="search-result-table-video-each-info-info">
+                                        <span><i class="auther"></i> : {[item.v_auther]} </span>
+                                    </div>
+                                </div>
                                 </div>
 
                             </li>
@@ -144,6 +168,10 @@
             result:{{ result|safe }},
             queen: [],
             count: 0,
+            mode:{
+                table:false,
+                list:true,
+            }
         },
         methods: {
             jumpbyV_id(v_id) {
@@ -157,6 +185,19 @@
             },
             clear() {
                 this.q = ""
+            },
+            changeMode(mode,e){
+                if(this.mode[mode] == true){
+                    return
+                }
+                for(let key in this.mode)
+                    this.mode[key] = false
+                this.mode[mode]=true
+                console.log(e.target)
+                for(let node of document.querySelector('.search-result-video-change').querySelectorAll('span')){
+                    node.classList.remove("active")
+                }
+                e.target.classList.add("active")
             },
         },
         mounted: function () {
