@@ -68,6 +68,9 @@
     right: 12px;
     color: #595959;
 }
+.search-result-user{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
 .search-result-user li{
     display: flex;
     padding: 20px 10px;
@@ -170,6 +173,33 @@
 .search-result-user-toprofile:hover{
     color: var(--Background-color);
     background-color: black;
+}
+.search-result-video{
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+    flex-direction: column;
+}
+.search-result-video-each{
+    padding: 10px;
+    display: flex;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+.search-result-video-each-back{
+    height: 150px;
+    width: 240px;
+    cursor: pointer;
+    position:relative;
+}
+.search-result-video-container{
+    display: flex;
+    position: relative;
+}
+.search-result-video-btns{
+    width: 20%;
+    background-color: black;
+    position: sticky;
+    color: #e3e3e3;
 }
     @media (max-width: 400px){
             .search-content-search{

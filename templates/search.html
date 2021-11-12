@@ -85,6 +85,22 @@
                             </div>
                         </li>
                     </ul>
+                    <div class="search-result-video-container">
+                        <ul class="search-result-video">
+                            <li v-for="(item,index) in queen" class="search-result-video-each">
+                                <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'cover'}" class="search-result-video-each-back" @click="jumpbyV_id(item.v_id)"></div>
+                                <div>1</div>
+                            </li>
+                        </ul>
+                        <ul class="search-result-video-btns">
+                            <li>1</li>
+                            <li>1</li>
+                            <li>1</li>
+                            <li>1</li>
+                            <li>1</li>
+                            <li>1</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -99,6 +115,7 @@
             video_url:"{% url "index" %}"+"video/",
             base_url:"{% url 'index' %}"+"search?q=",
             result:{{ result|safe }},
+            queen:[],
         },
         methods:{
             jumpbyV_id(v_id){
@@ -114,8 +131,24 @@
                 this.q=""
             },
         },
-        mount:{},
-        watch:{},
+        mounted:function (){
+            if(this.result.searchByTitle.exactness.length!=0){
+                this.queen.push(this.result.searchByTitle.exactness[0])
+            }
+            if(this.result.searchByTitle.indistinct.length!=0){
+                for(let item of this.result.searchByTitle.indistinct){
+                    this.queen.push(item)
+                }
+            }
+            if(this.result.searchByAuther.exactness.length!=0){
+                for(let item of this.result.searchByAuther.exactness){
+                    this.queen.push(item)
+                }
+            }
+        },
+        watch:{
+
+        },
     })
 </script>
 </html>

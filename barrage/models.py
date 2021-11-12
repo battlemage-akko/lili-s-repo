@@ -30,6 +30,7 @@ class video(models.Model):
     v_play = models.IntegerField(default=0)
     v_like=models.IntegerField(default=0)
     v_collect=models.IntegerField(default=0)
+    v_type = models.CharField(max_length=20,null=False,default="二次元")
     v_time = models.DateTimeField(auto_now_add=True)
     v_duaring = models.IntegerField(default=0)
     v_tags = models.CharField(max_length=1000,null=True,default="None")
@@ -58,6 +59,7 @@ class video(models.Model):
                     "v_time_minute": item["v_time"].minute,
                     "v_time_second": item["v_time"].second
                 },
+                "v_type": item["v_type"],
             })
         return videos
 
@@ -70,8 +72,8 @@ class video(models.Model):
             return 0
 
     def searchByTitle(title):
-        tmp = video.objects.filter(v_title=title).all().values()
-        tmp2 = video.objects.filter(v_title__contains=title).all().values()
+        tmp = video.objects.filter(v_title=title).all().order_by("-v_time").values()
+        tmp2 = video.objects.filter(v_title__contains=title).all().order_by("-v_time").values()
         exactness = []
         indistinct = []
         for item in tmp:
@@ -90,6 +92,7 @@ class video(models.Model):
                     "v_time_second": item["v_time"].second
                 },
                 "v_note": item["v_note"],
+                "v_type": item["v_type"],
             })
         for item in tmp2:
             if item not in tmp:
@@ -108,6 +111,7 @@ class video(models.Model):
                         "v_time_second": item["v_time"].second
                     },
                     "v_note": item["v_note"],
+                    "v_type": item["v_type"],
                 })
         return {
             "exactness": exactness,
@@ -115,7 +119,7 @@ class video(models.Model):
         }
 
     def searchByTag(tag):
-        tmp = video.objects.filter(v_tags__contains=tag).all().values()
+        tmp = video.objects.filter(v_tags__contains=tag).all().order_by("-v_time").values()
         result = []
         for item in tmp:
             result.append({
@@ -133,12 +137,13 @@ class video(models.Model):
                     "v_time_second": item["v_time"].second
                 },
                 "v_note": item["v_note"],
+                "v_type": item["v_type"],
             })
         return result
 
     def searchByAuther(user):
-        tmp = video.objects.filter(v_auther=user).all().values()
-        tmp2 = video.objects.filter(v_auther__contains=user).all().values()
+        tmp = video.objects.filter(v_auther=user).all().order_by("-v_time").values()
+        tmp2 = video.objects.filter(v_auther__contains=user).all().order_by("-v_time").values()
         exactness = []
         indistinct = []
         for item in tmp:
@@ -157,6 +162,7 @@ class video(models.Model):
                     "v_time_second": item["v_time"].second
                 },
                 "v_note": item["v_note"],
+                "v_type": item["v_type"],
             })
         for item in tmp2 :
             if item not in tmp:
@@ -175,6 +181,7 @@ class video(models.Model):
                         "v_time_second": item["v_time"].second
                     },
                     "v_note": item["v_note"],
+                    "v_type": item["v_type"],
                 })
         return {
             "exactness": exactness,
