@@ -46,9 +46,7 @@
                 <ul class="search-result-user">
                     <li v-for="(item,index) in result.user.exactness">
                         <div>
-                            <img :src="true == true?'{% static "images/" %}'+result.user.exactness[0].picture:'{% static "images/default.jpg" %}'"
-                                 alt="">
-
+                            <img :src="true == true?'{% static "images/" %}'+result.user.exactness[0].picture:'{% static "images/default.jpg" %}'" alt="">
                         </div>
                         <div style="display: flex;flex-direction: column;justify-content: center;flex-grow: 1">
                             <div class="search-result-user-info">
