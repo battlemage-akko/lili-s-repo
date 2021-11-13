@@ -257,8 +257,12 @@ class discuss(models.Model):
     u_id = models.IntegerField()
     d_content = models.CharField(max_length=500,null=False)
     d_answer = models.BooleanField(default=False)
-    answer_id = models.IntegerField()
-
+    answer_id = models.IntegerField(null=True)
+    def create(u_id,v_id,d_content):
+        accusation_video(u_id=u_id, v_id=v_id, d_content=d_content).save()
+        return {
+            "msg":"评论成功",
+        }
 class answer(models.Model):
     answer_id = models.AutoField(primary_key=True)
     d_id = models.IntegerField()
