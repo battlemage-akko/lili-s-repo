@@ -1,4 +1,3 @@
-
     :root {
         --Head-top: 80px;
         --Test-color: null;
@@ -32,4 +31,66 @@
         content: "\ea14";
         font-family: IcoMoon-Free;
         font-style: normal;
+    }
+    .play:before{
+        content: '\ea15';
+        font-family: IcoMoon-Free;
+        font-style: normal;
+    }
+    .search:before{
+        content: "\e986";
+        font-family: IcoMoon-Free;
+        font-style: normal;
+    }
+    .list:before{
+        content: '\e9ba';
+        font-family: IcoMoon-Free;
+        font-style: normal;
+    }
+    .date:before{
+        content: '\e953';
+        font-family: IcoMoon-Free;
+        font-style: normal;
+    }
+    .tablelist:before{
+        content: '\ea71';
+        font-family: IcoMoon-Free;
+        font-style: normal;
+    }
+    .auther:before{
+        content: '\e971';
+        font-family: IcoMoon-Free;
+        font-style: normal;
+    }
+    .sliders:before{
+        content: '\e992';
+        font-family: IcoMoon-Free;
+        font-style: normal;
+    }
+    .share::before{
+        content: "\ea82";
+        font-family: IcoMoon-Free;
+    }
+    .pay::before{
+        content: "\e93e";
+        font-family: IcoMoon-Free;
+    }
+    .good::before{
+        content: "\e9da";
+        font-family: IcoMoon-Free;
+    }
+    .good.active{
+        color: #ff8a8a;
+    }
+    .collect::before{
+        content: "\e9d7";
+        font-family: IcoMoon-Free;
+    }
+    .collect.active::before{
+        content: "\e9d9";
+        color: #f7d400;
+    }
+    .accusation:before{
+        content: "\ea07";
+        font-family: IcoMoon-Free;
     }

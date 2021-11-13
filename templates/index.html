@@ -204,13 +204,13 @@
             <div class="videos-holder">
                 <div class="videoslist-title">
                     <div class="videoslist-search">
-                        <img src="{% static 'images/logo.png' %}" alt="" class="videoslist-search-logo">
+                        <img :src="this.logo" alt="" class="videoslist-search-logo">
                         <div>
                             <div class="videolist-input-group">
-                                <i class="videolist-input-group-magnifier" @mousedown="sumbitSearch">
+                                <i class="videolist-input-group-magnifier" @mousedown="search">
                                 </i>
                                 <input type="text" placeholder=" 请输入" class="videolist-input-group-input" @focus="changeVideoslistBack" @blur="changeVideoslistBack" v-model="q">
-                                <button class="videolist-input-group-btn" @mousedown="sumbitSearch">提交</button>
+                                <button class="videolist-input-group-btn" @mousedown="search">提交</button>
                             </div>
                         </div>
                     </div>
@@ -226,7 +226,7 @@
                 </div>
                 <ul class="videos-list videos-list-new" v-show="videosList_tags.new">
                     <li v-for="(item,i) in videosList_new" @click="getVideo(item.v_id)" class="videos-each">
-                        <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'cover'}" class="videos-each-background"></div>
+                        <div :style="{'background-image': 'url('+video_pic_url+item.v_pic+')','background-size':'cover'}" class="videos-each-background"></div>
                         <span class="videos-each-tips">
                             <i class="videos-each-play"></i>
                         </span>
@@ -242,12 +242,10 @@
                 </ul>
                 <ul class="videos-list videos-list-popular" v-show="videosList_tags.popular">
                 </ul>
-                {% if request.user.is_authenticated %}
-                    <ul class="videos-list videos-list-follow" v-show="videosList_tags.follow">
-                    </ul>
-                    <ul class="videos-list videos-list-collect" v-show="videosList_tags.collect">
-                    </ul>
-                {% endif %}
+                <ul v-if="is_login" class="videos-list videos-list-follow" v-show="videosList_tags.follow">
+                </ul>
+                <ul v-if="is_login" class="videos-list videos-list-collect" v-show="videosList_tags.collect">
+                </ul>
                 <div class="showmore-div">
                     <button class="btn btn-primary show_more_btn" v-show="show_more_btn" @click="getmorenewvideo"><i class="showmore-div-btn" ></i></button>
                     <div class="no-more" v-show="show_more_cat">
@@ -266,7 +264,7 @@
                     <div class="profile-background">
                     </div>
                     <div style="display: flex;justify-content: center">
-                        <img :src="userdetail.picture" alt="" class="profile-img">
+                        <img :src="this.avatar_url+userdetail.picture" alt="" class="profile-img">
                     </div>
                     <ul style="list-style: none" class="profile-info">
                         <li>
@@ -278,13 +276,13 @@
                         </li>
                         <li style="display: flex">
                             <div>
-                                粉丝:{{ request.user.fans }}
+                                粉丝:{[ userdetail.fans ]}
                             </div>
                             <div>
                                 获赞:0
                             </div>
                             <div>
-                                视频:{{ request.user.v_count }}个
+                                视频:{[ userdetail.v_count ]}个
                             </div>
                         </li>
                     </ul>
@@ -300,7 +298,7 @@
                             </div>
                             <ul class="profile-content-myvideos">
                                 <li v-for="(item,i) in videosList_mine.slice(videosPage.begin,videosPage.end)" class="videos-each" :id="'myvideo_'+item.v_id">
-                                    <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'cover'}" class="videos-each-background" @click="getVideo(item.v_id)"></div>
+                                    <div :style="{'background-image': 'url('+video_pic_url+item.v_pic+')','background-size':'cover'}" class="videos-each-background" @click="getVideo(item.v_id)"></div>
                                     <span class="videos-each-tips" @click="getVideo(item.v_id)">
                                         <i class="videos-each-play"></i>
                                     </span>
@@ -465,30 +463,30 @@
                                 <hr/>
                                 <table class="table table-striped table-hover">
                                     <thead>
-                                    <tr>
-                                        <th scope="col">id</th>
-                                        <th scope="col">名字</th>
-                                        <th scope="col">邮箱</th>
-                                        <th scope="col">最后登录</th>
-                                        <th scope="col">封禁</th>
-                                        <th scope="col">管理员</th>
-                                        <th scope="col">提交修改</th>
-                                        <th scope="col">封禁</th>
-                                        <th scope="col">删除用户</th>
-                                    </tr>
+                                        <tr>
+                                            <th scope="col">id</th>
+                                            <th scope="col">名字</th>
+                                            <th scope="col">邮箱</th>
+                                            <th scope="col">最后登录</th>
+                                            <th scope="col">封禁</th>
+                                            <th scope="col">管理员</th>
+                                            <th scope="col">提交修改</th>
+                                            <th scope="col">封禁</th>
+                                            <th scope="col">删除用户</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="(item,index) in AllUsers">
-                                        <td><p>{[ item.id ]}</p></td>
-                                        <td><p>{[ item.username ]}</p></td>
-                                        <td><p>{[ item.email ]}</p></td>
-                                        <td><p>{[ item.last_login ]}</p></td>
-                                        <td><p>{[ !item.is_active ]}</p></td>
-                                        <td><p>{[ item.is_superuser ]}</p></td>
-                                        <td><p class="admin-user-modify-submit" @click="damie"></p></td>
-                                        <td><p class="admin-user-modify-ban" @click="damie"></p></td>
-                                        <td><p class="admin-user-modify-kill" @click="Del_user(`${[ item.id ]}`)"></p></td>
-                                    </tr>
+                                        <tr v-for="(item,index) in AllUsers">
+                                            <td><p>{[ item.id ]}</p></td>
+                                            <td><p>{[ item.username ]}</p></td>
+                                            <td><p>{[ item.email ]}</p></td>
+                                            <td><p>{[ item.last_login ]}</p></td>
+                                            <td><p>{[ !item.is_active ]}</p></td>
+                                            <td><p>{[ item.is_superuser ]}</p></td>
+                                            <td><p class="admin-user-modify-submit" @click="damie"></p></td>
+                                            <td><p class="admin-user-modify-ban" @click="damie"></p></td>
+                                            <td><p class="admin-user-modify-kill" @click="Del_user(`${[ item.id ]}`)"></p></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -536,110 +534,65 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="sidebar">
-        <div class="logo_content">
-            <div class="logo">
-                <i></i>
-                <div class="logo_name"></div>
+        <div class="sidebar">
+            <div class="logo_content">
+                <div class="logo">
+                    <i></i>
+                    <div class="logo_name"></div>
+                </div>
+                <i id="navbtn" @click="showsidebar"></i>
             </div>
-            <i id="navbtn" @click="showsidebar"></i>
-        </div>
-        <ul class="searchnav" style="padding: 0px!important">
-            <li>
-                <input type="search" placeholder="请输入" v-model="q">
-                <i class="searchbtn" @click="search"></i>
-            </li>
-        </ul>
-        <ul class="nav_list" style="padding: 0px!important">
-            <li id="default" @click="changePage('default')">
-                <i class="homebtn"></i>
-                <p>Home</p>
-            </li>
-            <li id="videos" @click="changePage('videos')">
-                <i class="videosbtn"></i>
-                <p>视频</p>
-            </li>
-            {% if request.user.is_authenticated %}
-                <li id="profile" @click="changePage('profile')">
-                    <i class="profilebtn"></i>
-                    <p>个人资料</p>
+            <ul class="searchnav" style="padding: 0px!important">
+                <li>
+                    <input type="search" placeholder="请输入" v-model="q">
+                    <i class="searchbtn" @click="search"></i>
                 </li>
-                {% if request.user.is_superuser == True %}
-                    <li id="admin" @click="changePage('admin')">
-                        <i class="adminbtn"></i>
-                        <p>管理</p>
+            </ul>
+            <ul class="nav_list" style="padding: 0px!important">
+                <li id="default" @click="changePage('default')">
+                    <i class="homebtn"></i>
+                    <p>Home</p>
+                </li>
+                <li id="videos" @click="changePage('videos')">
+                    <i class="videosbtn"></i>
+                    <p>视频</p>
+                </li>
+                {% if request.user.is_authenticated %}
+                    <li id="profile" @click="changePage('profile')">
+                        <i class="profilebtn"></i>
+                        <p>个人资料</p>
                     </li>
+                    {% if request.user.is_superuser == True %}
+                        <li id="admin" @click="changePage('admin')">
+                            <i class="adminbtn"></i>
+                            <p>管理</p>
+                        </li>
+                    {% endif %}
                 {% endif %}
-            {% endif %}
-        </ul>
-        <div class="login">
-            {% if request.user.is_authenticated %}
-                <img src="{% static 'images/' %}{{ request.user.picture }}" alt="" style="border: 4px solid #d3d3d3">
-                <span class="logout" @click="logout"><i></i></span>
-                <p class="loginbtn active">
-                    {[ userdetail.name ]}
-                </p>
-            {% else %}
-                <img src="{% static 'images/default.jpg' %}" alt="" style="border: 4px solid #d3d3d3">
-                <p class="loginbtn" @click="login">
-                    Login
-                </p>
-            {% endif %}
+            </ul>
+            <div class="login">
+                {% if request.user.is_authenticated %}
+                    <img :src="this.avatar_url+userdetail.picture" alt="" style="border: 4px solid #d3d3d3">
+                    <span class="logout" @click="logout"><i></i></span>
+                    <p class="loginbtn active">
+                        {[ userdetail.name ]}
+                    </p>
+                {% else %}
+                    <img src="{% static 'images/default.png' %}" alt="" style="border: 4px solid #d3d3d3">
+                    <p class="loginbtn" @click="login">
+                        Login
+                    </p>
+                {% endif %}
+            </div>
+            <i class="toolbtn"></i>
+            <a href="#" target=""></a>
         </div>
-        <i class="toolbtn"></i>
-        <a href="#" target=""></a>
     </div>
+
 {% include 'wrapper.html' %}
 <footer><a href="https://beian.miit.gov.cn/#/Integrated/index">备案号:粤ICP备2021133316号</a></footer>
 </body>
 <script>
-    const siderbar = new Vue({
-        el: ".sidebar",
-        delimiters: ['{[', ']}'],
-        data:{
-            userdetail:{
-                name: "{{ request.user.username }}",
-            },
-            q:"",
-        },
-        methods: {
-            login:function() {
-                window.location.href = "{% url 'login' %}"
-            },
-            logout: async function () {
-                result = await axios({
-                    method: "GET",
-                    url: "{% url 'logout' %}",
-                })
-                if(result.data == "done"){
-                    location.reload()
-                }
-            },
-            showsidebar: function (){
-                document.querySelector("#app").classList.toggle("active")
-                document.querySelector(".sidebar").classList.toggle("active")
-                document.querySelector(".logo").classList.toggle("active")
-                document.querySelector(".nav_list").classList.toggle("active")
-                document.querySelector(".toolbtn").classList.toggle("active")
-                document.querySelector(".searchnav").classList.toggle("active")
-                document.querySelector("#sun").classList.toggle("active")
-                if (document.querySelector(".logout")) {
-                    document.querySelector(".logout").classList.toggle("active")
-                }
-            },
-            changePage:function (Page){
-                for(let key in vm.flags){
-                    vm.flags[key] = false
-                }
-                vm.flags[Page] = true
-            },
-            search:function (){
-                window.open(vm.base_url+this.q)
-                this.q=""
-            },
-        },
-    })
     const vm = new Vue({
         el: "#app",
         delimiters: ['{[', ']}'],
@@ -683,8 +636,9 @@
                 is_active: "{{ request.user.is_active }}",
                 date_joined: "{{ request.user.date_joined }}",
                 gender: "{{ request.user.gender }}",
-                picture: "{% static "images/" %}{{ request.user.picture }}",
+                picture: "{{ request.user.picture }}",
                 fans: "{{ request.user.fans }}",
+                v_count:"{{ request.user.fans }}",
             },
             flags: {
                 default: true,
@@ -718,36 +672,11 @@
             q:"",
             video_url:"{% url "index" %}"+"video/",
             base_url:"{% url 'index' %}"+"search?q=",
-            image_url: "{% static 'images/' %}",
+            avatar_url: "{% static 'images/avatar/' %}",
+            logo:"{% static 'images/logo.png' %}",
+            video_pic_url:"{% static 'videos/videopic/' %}",
         },
         methods: {
-            jumpbyv_id:function (v_id){
-                window.open(this.video_url+v_id)
-            },
-            sumbitSearch:function (){
-                window.open(this.base_url+this.q)
-                this.q=""
-            },
-            changeVideoslistBack:function (){
-                document.querySelector(".videoslist-title").classList.toggle('active')
-                document.querySelector(".videoslist-search-logo").classList.toggle('active')
-                document.querySelector(".videolist-input-group-input").classList.toggle('active')
-            },
-            handleScroll:function (){
-                console.log(123)
-            },
-            hidden_user_modify(){
-                document.querySelector(".UserModify").classList.toggle("active")
-                document.querySelector(".admin-user-modify-card").classList.toggle("active")
-            },
-            hidden_videoAccusation(){
-                document.querySelector(".VideoAccusation").classList.toggle("active")
-                document.querySelector(".admin-VideoAccusation-card").classList.toggle("active")
-            },
-
-            tocloud: function () {
-                window.open("https://cloud.lili-secretbase.com/");
-            },
             login:function() {
                 window.location.href = "{% url 'login' %}"
             },
@@ -769,6 +698,53 @@
                 } else {
                     this.is_login = false
                 }
+            },
+            search:function (){
+                window.open(this.base_url+this.q)
+                this.q=""
+            },
+            jumpbyv_id:function (v_id){
+                window.open(this.video_url+v_id)
+            },
+
+
+
+            showsidebar: function (){
+                document.querySelector("#app").classList.toggle("active")
+                document.querySelector(".sidebar").classList.toggle("active")
+                document.querySelector(".logo").classList.toggle("active")
+                document.querySelector(".nav_list").classList.toggle("active")
+                document.querySelector(".toolbtn").classList.toggle("active")
+                document.querySelector(".searchnav").classList.toggle("active")
+                document.querySelector("#sun").classList.toggle("active")
+                if (document.querySelector(".logout")) {
+                    document.querySelector(".logout").classList.toggle("active")
+                }
+            },
+            changePage:function (Page){
+                for(let key in vm.flags){
+                    this.flags[key] = false
+                }
+                vm.flags[Page] = true
+            },
+            changeVideoslistBack:function (){
+                document.querySelector(".videoslist-title").classList.toggle('active')
+                document.querySelector(".videoslist-search-logo").classList.toggle('active')
+                document.querySelector(".videolist-input-group-input").classList.toggle('active')
+            },
+            handleScroll:function (){
+                console.log(123)
+            },
+            hidden_user_modify(){
+                document.querySelector(".UserModify").classList.toggle("active")
+                document.querySelector(".admin-user-modify-card").classList.toggle("active")
+            },
+            hidden_videoAccusation(){
+                document.querySelector(".VideoAccusation").classList.toggle("active")
+                document.querySelector(".admin-VideoAccusation-card").classList.toggle("active")
+            },
+            tocloud: function () {
+                window.open("https://cloud.lili-secretbase.com/");
             },
             Del_user:async function(id) {
                 if(id == this.userdetail.id){

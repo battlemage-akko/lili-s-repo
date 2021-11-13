@@ -176,7 +176,7 @@
                 <div class="video-profile">
                     <div style="display: flex;width:200px;">
                         <span class="video-profilepic">
-                                        <img src="{% static 'images/头像.png' %}" alt="">
+                                        <img :src="avatar_url+video_detail.u_pic" alt="">
                                     </span>
                         <span class="video-profile-name">
                            <div><a href="javascript:">{{ v_auther }}</a></div>
@@ -194,7 +194,7 @@
                 <div class="video-discuss" v-if="is_login">
                     <div class="video-discuss-content">
                         <div class="video-discuss-profile">
-                            <img :src="userdetail.picture" alt="">
+                            <img :src="avatar_url+userdetail.picture" alt="">
                         </div>
                         <div class="form-floating video-discuss-input">
                           <textarea class="form-control video-discuss-input-area" placeholder="Leave a comment here"
@@ -222,7 +222,7 @@
                 <ul class="video-discuss-list">
                     <li v-for="(item,index) in video_detail.d_content" class="video-discuss-list-each">
                         <div class="video-discuss-list-each-pic">
-                            <img :src="image_url+item.userdetail.picture" alt="">
+                            <img :src="avatar_url+item.userdetail.picture" alt="">
                         </div>
                         <div class="video-discuss-list-each-content">
                             <div>
@@ -256,11 +256,11 @@
                                 <li>
                                     <div class="video-danmucontent-switch">
                                         <ul class="videobtns">
-                                            <li><span class="videopay"></span></li>
-                                            <li><span class="videoshare"></span></li>
-                                            <li><span class="goodvideo" @click="love"></span></li>
-                                            <li><span class="videocollect" @click="collect"></span></li>
-                                            <li><span class="videoaccusation" @click="showAccMenu"></span></li>
+                                            <li><span class="pay"></span></li>
+                                            <li><span class="share"></span></li>
+                                            <li><span class="good" @click="love"></span></li>
+                                            <li><span class="collect" @click="collect"></span></li>
+                                            <li><span class="accusation" @click="showAccMenu"></span></li>
                                         </ul>
                                     </div>
                                 </li>
@@ -349,18 +349,20 @@
                 "v_collect": {{ v_collect }},
                 "v_like": {{ v_like }},
                 "user_id": {{ user_id }},
+                "u_pic":"{{ u_pic }}",
                 "v_tags": "{{ v_tags }}",
                 "d_content": {{ discuss|safe }},
             },
-            userdetail: {
+            userdetail:{
                 name: "{{ request.user.username }}",
                 id: "{{ request.user.id }}",
                 email: "{{ request.user.email }}",
                 is_active: "{{ request.user.is_active }}",
                 date_joined: "{{ request.user.date_joined }}",
                 gender: "{{ request.user.gender }}",
-                picture: "{% static 'images/' %}{{ request.user.picture }}",
-                fans: "{{ request.user.fans }}"
+                picture: "{{ request.user.picture }}",
+                fans: "{{ request.user.fans }}",
+                v_count:"{{ request.user.fans }}",
             },
             video_option: {
                 controls: true,
@@ -390,10 +392,10 @@
             AccReason: "",
             AccResult: "",
             username: "",
-            video_url: "{% url "index" %}" + "video/",
-            image_url: "{% static 'images/' %}",
             q: "",
-            base_url: "{% url 'index' %}" + "search?q=",
+            video_url:"{% url "index" %}"+"video/",
+            base_url:"{% url 'index' %}"+"search?q=",
+            avatar_url: "{% static 'images/avatar/' %}",
             discuss: "",
             discuss_msg: "",
         },

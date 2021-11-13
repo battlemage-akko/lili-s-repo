@@ -62,6 +62,7 @@ def video(request,vid):
             "v_time_second": result["v_time"].second
         },
         "v_tags": tags,
+        "u_pic": Userdatabase.getinfo(id=result["user_id"],info="picture"),
         "nextvideo": nextvideo,
         "nextvideolist": nextvideolist,
         "oncechance" : 1,

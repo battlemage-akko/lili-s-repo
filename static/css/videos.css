@@ -292,33 +292,6 @@
                 background-position: 400%;
             }
         }
-        .videoshare::before{
-            content: "\ea82";
-            font-family: IcoMoon-Free;
-        }
-        .videopay::before{
-            content: "\e93e";
-            font-family: IcoMoon-Free;
-        }
-        .goodvideo::before{
-            content: "\e9da";
-            font-family: IcoMoon-Free;
-        }
-        .goodvideo.active{
-            color: #ff8a8a;
-        }
-        .videocollect::before{
-            content: "\e9d7";
-            font-family: IcoMoon-Free;
-        }
-        .videocollect.active::before{
-            content: "\e9d9";
-            color: #f7d400;
-        }
-        .videoaccusation:before{
-            content: "\ea07";
-            font-family: IcoMoon-Free;
-        }
         .videoprofilepic{
             margin-left:20px;
             line-height: 90px;

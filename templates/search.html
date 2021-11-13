@@ -168,8 +168,6 @@
         delimiters: ['{[', ']}'],
         data: {
             q: "",
-            video_url: "{% url "index" %}" + "video/",
-            base_url: "{% url 'index' %}" + "search?q=",
             result:{{ result|safe }},
             queen: [],
             count: 0,
@@ -178,16 +176,22 @@
                 list:true,
             },
             is_login:false,
-            userdetail: {
+            userdetail:{
                 name: "{{ request.user.username }}",
                 id: "{{ request.user.id }}",
                 email: "{{ request.user.email }}",
                 is_active: "{{ request.user.is_active }}",
                 date_joined: "{{ request.user.date_joined }}",
                 gender: "{{ request.user.gender }}",
-                picture: "{% static 'images/' %}{{ request.user.picture }}",
-                fans: "{{ request.user.fans }}"
+                picture: "{{ request.user.picture }}",
+                fans: "{{ request.user.fans }}",
+                v_count:"{{ request.user.fans }}",
             },
+            video_url:"{% url "index" %}"+"video/",
+            base_url:"{% url 'index' %}"+"search?q=",
+            avatar_url: "{% static 'images/avatar/' %}",
+            logo:"{% static 'images/logo.png' %}",
+            video_pic_url:"{% static 'videos/videopic/' %}",
         },
         methods: {
             login:function() {
