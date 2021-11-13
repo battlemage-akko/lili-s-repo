@@ -756,16 +756,35 @@
             cursor: pointer;
         }
         .videos-discuss-login{
-            margin: 10px 0px;
+            margin: 30px 0px;
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
             background-size: contain;
             opacity: 0.7;
-
         }
         .videos-discuss-login img{
             width: 15%;
             opacity: 0.5;
+        }
+        .videos-discuss-login span{
+            padding: 1px 3px;
+            margin: 0px 5px;
+            border: 1px solid black;
+            cursor: pointer;
+            transition: all .3s ease;
+            font-size: 15px;
+        }
+        .videos-discuss-login span:hover{
+            background-color: black;
+            color: #e3e3e3;
+        }
+        .video-no-discuss{
+            width: 100%;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: rgba(0, 0, 0, 0.3);
         }

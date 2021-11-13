@@ -215,7 +215,7 @@
                 </div>
                 <div class="videos-discuss-login" v-if="!is_login">
                     <img src="{% static 'images/please.png' %}" alt="">
-                    请先<a href="">登录</a>再评论哦~
+                    请先<span @click="login">登录</span>再评论哦~
                 </div>
                 <h2 style="padding: 2px 0px 20px 0px;font-size: 20px;border-bottom: 1px solid rgba(0,0,0,0.05);margin: 0">
                     {[ video_detail.d_content.length ]} 条评论</h2>
@@ -244,10 +244,10 @@
                         </div>
                     </li>
                 </ul>
+                <div class="video-no-discuss" v-if="video_detail.d_content.length==0">快来发一条评论吧~</div>
             </div>
             <div class="danmu">
                 <div class="ad">
-
                 </div>
                 <div class="danmuholder">
                     <div class="danmutitle">

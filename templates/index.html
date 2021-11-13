@@ -547,8 +547,8 @@
         </div>
         <ul class="searchnav" style="padding: 0px!important">
             <li>
-                <input type="search" placeholder="请输入">
-                <i class="searchbtn"></i>
+                <input type="search" placeholder="请输入" v-model="q">
+                <i class="searchbtn" @click="search"></i>
             </li>
         </ul>
         <ul class="nav_list" style="padding: 0px!important">
@@ -600,7 +600,8 @@
         data:{
             userdetail:{
                 name: "{{ request.user.username }}",
-            }
+            },
+            q:"",
         },
         methods: {
             login:function() {
@@ -632,7 +633,11 @@
                     vm.flags[key] = false
                 }
                 vm.flags[Page] = true
-            }
+            },
+            search:function (){
+                window.open(vm.base_url+this.q)
+                this.q=""
+            },
         },
     })
     const vm = new Vue({

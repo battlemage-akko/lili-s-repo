@@ -11,7 +11,7 @@ from app.models import messages as messagesTable
 from app.models import likeVideo as lovetable
 from app.models import AppUser as Userdatabase
 from moviepy.editor import VideoFileClip
-import random,os
+import random,os,re
 
 def video(request,vid):
     result = videosTable.objects.filter(v_id=vid).values()
@@ -156,6 +156,9 @@ def save_video(request):
         username = request.POST.get("username")
         user_id = request.POST.get("user_id")
         tags = request.POST.get("tags")
+        tmp = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+","",tags)
+        if(tmp==""):
+            tags = "None"
         finish_save(video_title, video_pic, video_file,username,user_id,tags)
     return HttpResponse("上传完成")
 

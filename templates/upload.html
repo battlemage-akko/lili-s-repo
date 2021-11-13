@@ -144,7 +144,7 @@
                 </ul>
             </div>
             <div class="input-group tagsInput" v-show="showtagsInput">
-                  <input type="text" class="form-control" placeholder="添加标签名，多个标签由空格分隔" aria-label="Recipient's username" aria-describedby="button-addon2" v-model="tag">
+                  <input type="text" class="form-control" placeholder="添加标签名，多个标签由空格或逗号分隔" aria-label="Recipient's username" aria-describedby="button-addon2" v-model="tag">
                   <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="submitTag">添加</button>
                 </div>
             <div>
@@ -197,7 +197,12 @@ const vm = new Vue({
             }
             else{
                 tmp = []
-                for(let item of this.tag.trim().split(/\s+/)){
+                for(let item of this.tag.trim().split(/\s|，|,/)){
+                    if(item.length>=20){
+                        this.message = "标签长度不可大于20"
+                        tmp = []
+                        return
+                    }
                     if(item.length>=20){
                         this.message = "标签长度不可大于20"
                         tmp = []
