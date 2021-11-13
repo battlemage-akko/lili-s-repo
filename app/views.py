@@ -61,7 +61,10 @@ def wrapper(request):
 
 @xframe_options_sameorigin
 def upload_page(request):
-    return render(request,'upload.html')
+    if request.user.is_authenticated:
+        return render(request,'upload.html')
+    else:
+        return render(request,'notfound.html')
 
 @csrf_exempt
 def refreshmsg(request):
