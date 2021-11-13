@@ -222,7 +222,7 @@
                 <ul class="video-discuss-list">
                     <li v-for="(item,index) in video_detail.d_content" class="video-discuss-list-each">
                         <div class="video-discuss-list-each-pic">
-                            <img src="{% static 'images/default.png' %}" alt="">
+                            <img :src="image_url+item.userdetail.picture" alt="">
                         </div>
                         <div class="video-discuss-list-each-content">
                             <div>
@@ -391,6 +391,7 @@
             AccResult: "",
             username: "",
             video_url: "{% url "index" %}" + "video/",
+            image_url: "{% static 'images/' %}",
             q: "",
             base_url: "{% url 'index' %}" + "search?q=",
             discuss: "",

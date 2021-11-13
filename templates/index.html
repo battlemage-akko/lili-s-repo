@@ -654,6 +654,7 @@
             videosList_hot:{{ hotvideolist|safe }},
             videosList_collect:{{ collectvideolist|safe }},
             videosList_mine:[],
+
             videosPage:{
                 now:"",
                 page:"",
@@ -717,6 +718,7 @@
             q:"",
             video_url:"{% url "index" %}"+"video/",
             base_url:"{% url 'index' %}"+"search?q=",
+            image_url: "{% static 'images/' %}",
         },
         methods: {
             jumpbyv_id:function (v_id){

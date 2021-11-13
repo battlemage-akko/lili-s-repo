@@ -19,7 +19,7 @@
                 <i class="logout"></i>
             </li>
             <li>
-                <img src="{% static 'images/default.png' %}" alt="" class="video-user-pic" >
+                <img :src="userdetail.picture" alt="" class="video-user-pic" >
             </li>
         </ul>
         <ul class="video-user-info" v-if="!is_login">

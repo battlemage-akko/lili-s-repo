@@ -176,7 +176,18 @@
             mode:{
                 table:false,
                 list:true,
-            }
+            },
+            is_login:false,
+            userdetail: {
+                name: "{{ request.user.username }}",
+                id: "{{ request.user.id }}",
+                email: "{{ request.user.email }}",
+                is_active: "{{ request.user.is_active }}",
+                date_joined: "{{ request.user.date_joined }}",
+                gender: "{{ request.user.gender }}",
+                picture: "{% static 'images/' %}{{ request.user.picture }}",
+                fans: "{{ request.user.fans }}"
+            },
         },
         methods: {
             login:function() {
@@ -226,6 +237,7 @@
             },
         },
         mounted: function () {
+            this.is_login_check()
             if (this.result.queen != 0) {
                 this.count = this.result.queen.length
                 for (let item of this.result.queen) {
