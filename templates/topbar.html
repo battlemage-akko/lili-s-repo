@@ -8,15 +8,23 @@
               <button class="btn btn-outline-secondary" type="button" id="button-addon1" @click="search"><i class="videos-top-search-btn"></i></button>
               <input type="text" class="form-control" placeholder="搜索" aria-label="Example text with button addon" aria-describedby="button-addon1" v-model="q">
             </div>
-        <ul class="video-user-info">
+        <ul class="video-user-info" v-if="is_login">
             <li>
-                <i class="video-user-menus"></i>
+                <i class="menus"></i>
             </li>
             <li>
-                <i class="video-user-msg"></i>
+                <i class="msg"></i>
+            </li>
+            <li @click="logout">
+                <i class="logout"></i>
             </li>
             <li>
-                <img src="{% static 'images/' %}{{ request.user.picture }}" alt="" class="video-user-pic">
+                <img src="{% static 'images/default.png' %}" alt="" class="video-user-pic" >
+            </li>
+        </ul>
+        <ul class="video-user-info" v-if="!is_login">
+            <li>
+                <span class="video-user-info-login" @click="login">登录</span>
             </li>
         </ul>
     </div>

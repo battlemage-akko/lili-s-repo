@@ -16,4 +16,20 @@
     }
     ul {
         padding-left: 0;
+        list-style: none;
+    }
+    .msg:before{
+        content: "\e945";
+        font-family: IcoMoon-Free;
+        font-style: normal;
+    }
+    .menus:before{
+        content: "\ea7a";
+        font-family: IcoMoon-Free;
+        font-style: normal;
+    }
+    .logout:before{
+        content: "\ea14";
+        font-family: IcoMoon-Free;
+        font-style: normal;
     }

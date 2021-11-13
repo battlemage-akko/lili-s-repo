@@ -603,11 +603,17 @@
             }
         },
         methods: {
-            login: function () {
-                window.open("{% url 'login' %}", "_blank")
+            login:function() {
+                window.location.href = "{% url 'login' %}"
             },
-            logout: function () {
-                window.location.href = "{% url 'logout' %}", "_blank"
+            logout: async function () {
+                result = await axios({
+                    method: "GET",
+                    url: "{% url 'logout' %}",
+                })
+                if(result.data == "done"){
+                    location.reload()
+                }
             },
             showsidebar: function (){
                 document.querySelector("#app").classList.toggle("active")
@@ -731,14 +737,21 @@
                 document.querySelector(".VideoAccusation").classList.toggle("active")
                 document.querySelector(".admin-VideoAccusation-card").classList.toggle("active")
             },
-            logout: function () {
-                window.location.href = "{% url 'logout' %}", "_blank";
-            },
+
             tocloud: function () {
                 window.open("https://cloud.lili-secretbase.com/");
             },
             login:function() {
                 window.location.href = "{% url 'login' %}"
+            },
+            logout: async function () {
+                result = await axios({
+                    method: "GET",
+                    url: "{% url 'logout' %}",
+                })
+                if(result.data == "done"){
+                    location.reload()
+                }
             },
             is_login_check() {
                 if ("{{ request.user.is_authenticated }}" == "True") {

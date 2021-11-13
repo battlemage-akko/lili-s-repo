@@ -137,8 +137,7 @@ def loginthisuser(request,user):
 
 def logoutthisuser(request):
     logout(request)
-    return redirect("index")
-
+    return HttpResponse("done")
 
 def search_page(request):
     q = request.GET.get("q")

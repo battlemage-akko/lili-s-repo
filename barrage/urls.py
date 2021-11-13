@@ -11,6 +11,7 @@ urlpatterns = [
     re_path('^getMoreCollectVideo/',views.getMoreCollectVideo,name="getMoreCollectVideo"),
     re_path('^getmyvideo/',views.getmyvideo,name="getmyvideo"),
     re_path('^del_video/',views.del_video,name="delVideo"),
+    re_path('^sendDiscussion/',views.sendDiscussion,name="sendDiscussion"),
     re_path('^getAllVideoAccusation/',views.getAllVideoAccusation,name="getAllVideoAccusation"),
     re_path('^rejectVideoAccusation/',views.rejectVideoAccusation,name="rejectVideoAccusation"),
 ]

@@ -3,7 +3,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="{% static 'css/videos.css' %}" rel="stylesheet">
     <link href="{% static 'css/topbar.css' %}" rel="stylesheet">
@@ -22,27 +23,32 @@
             font-weight: normal;
             font-style: normal;
         }
+
         body {
             background-color: var(--Background-color);
             overflow-x: hidden;
             transition: all .5s ease;
         }
-            body::-webkit-scrollbar{
+
+        body::-webkit-scrollbar {
             width: 5px;
             height: 5px;
             scrollbar-arrow-color: red;
         }
-        body::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+
+        body::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
             border-radius: 5px;
-            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-            background: rgba(0,0,0,0.4);
-            scrollbar-arrow-color:red;
+            -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.4);
+            scrollbar-arrow-color: red;
         }
-        body::-webkit-scrollbar-track {/*滚动条里面轨道*/
-            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+
+        body::-webkit-scrollbar-track { /*滚动条里面轨道*/
+            -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
             border-radius: 0;
-            background: rgba(0,0,0,0.1);
+            background: rgba(0, 0, 0, 0.1);
         }
+
         #app {
             width: 100vw;
             height: 100vh;
@@ -61,8 +67,8 @@
 </head>
 <body>
 <div id="app">
-{% include 'topbar.html' %}
-    <div class="videos-accusation"  v-show="AccMenu">
+    {% include 'topbar.html' %}
+    <div class="videos-accusation" v-show="AccMenu">
         <div class="videos-accusation-content">
             <div class="videos-accusation-title">
                 <span></span>
@@ -75,12 +81,16 @@
             </div>
             <div class="videos-accusation-reason">
                 <div class="form-floating">
-                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 150px" v-model="AccReason" maxlength="100"></textarea>
+                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                              style="height: 150px" v-model="AccReason" maxlength="100"></textarea>
                     <label for="floatingTextarea2">请描述举报理由:</label>
                 </div>
                 <ul class="videos-accusation-btns">
-                    <li style="font-family: '微软雅黑 Light'">{[ AccReason.length ]}/100字 <p style="color: red">{[ AccResult ]}</p></li>
-                    <li><button type="button" class="btn btn-outline-secondary" @click="report">提交</button></li>
+                    <li style="font-family: '微软雅黑 Light'">{[ AccReason.length ]}/100字 <p style="color: red">{[ AccResult
+                        ]}</p></li>
+                    <li>
+                        <button type="button" class="btn btn-outline-secondary" @click="report">提交</button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -147,7 +157,9 @@
                 </div>
                 <div class="videodetail">
                     <ul class="video-title-span">
-                        <li><i class="video-title-date"></i>&nbsp;{{ v_time.v_time_year }}年{{ v_time.v_time_month }}月{{ v_time.v_time_day }}日 {{ v_time.v_time_hour }}:{{ v_time.v_time_minute }}:{{ v_time.v_time_second }}</li>
+                        <li>
+                            <i class="video-title-date"></i>&nbsp;{{ v_time.v_time_year }}年{{ v_time.v_time_month }}月{{ v_time.v_time_day }}日 {{ v_time.v_time_hour }}:{{ v_time.v_time_minute }}:{{ v_time.v_time_second }}
+                        </li>
                         <li><i class="video-title-play"></i>&nbsp;{{ v_play }}</li>
                         <li><i class="video-title-like"></i>&nbsp;{{ v_like }}</li>
                         <li><i class="video-title-collect"> </i>&nbsp;{{ v_collect }}</li>
@@ -156,7 +168,9 @@
                 </div>
                 <div class="videos-tags">
                     <ul class="videos-tags-list">
-                        <li class="videos-tags-each" v-for="(item,index) in tags" @click="searchByTag(item)">{[ item ]}</li>
+                        <li class="videos-tags-each" v-for="(item,index) in tags" @click="searchByTag(item)">{[ item
+                            ]}
+                        </li>
                     </ul>
                 </div>
                 <div class="video-profile">
@@ -177,7 +191,59 @@
                         </div>
                     </div>
                 </div>
-                <div class="video"></div>
+                <div class="video-discuss" v-if="is_login">
+                    <div class="video-discuss-content">
+                        <div class="video-discuss-profile">
+                            <img :src="userdetail.picture" alt="">
+                        </div>
+                        <div class="form-floating video-discuss-input">
+                          <textarea class="form-control video-discuss-input-area" placeholder="Leave a comment here"
+                                    id="floatingTextarea" @focus="changeInputMode" @blur="changeInputMode"
+                                    v-model="discuss">
+                          </textarea>
+                            <label class="video-discuss-input-line" for="floatingTextarea">
+                                评论 :
+                            </label>
+                        </div>
+                    </div>
+                    <div class="video-discuss-btns">
+                        <ul class="video-discuss-btns-content">
+                            <li style="border: none">{[ discuss_msg ]}</li>
+                            <li @click="sendDiscussion"><span>发表评论</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="videos-discuss-login" v-if="!is_login">
+                    <img src="{% static 'images/please.png' %}" alt="">
+                    请先<a href="">登录</a>再评论哦~
+                </div>
+                <h2 style="padding: 2px 0px 20px 0px;font-size: 20px;border-bottom: 1px solid rgba(0,0,0,0.05);margin: 0">
+                    {[ video_detail.d_content.length ]} 条评论</h2>
+                <ul class="video-discuss-list">
+                    <li v-for="(item,index) in video_detail.d_content" class="video-discuss-list-each">
+                        <div class="video-discuss-list-each-pic">
+                            <img src="{% static 'images/default.png' %}" alt="">
+                        </div>
+                        <div class="video-discuss-list-each-content">
+                            <div>
+                                <h2 style="font-size: 12px;letter-spacing: 1px;margin-bottom: 5px;font-weight: 600">
+                                    {[item.userdetail.username]}
+                                </h2>
+                                <p>
+                                    {[item.d_content]}
+                                </p>
+                            </div>
+                            <div class="video-discuss-list-each-btns">
+                                <span>{[ item.d_time.d_time_year ]}年{[ item.d_time.d_time_month ]}月{[ item.d_time.d_time_day ]}日 {[ item.d_time.d_time_hour ]}:{[ item.d_time.d_time_minute ]}:{[ item.d_time.d_time_second ]}</span>
+                                <span class="heart"> 0</span>
+                                <span class="heart-broken"> 0</span>
+                                <span>回复</span>
+                                <hr>
+                            </div>
+
+                        </div>
+                    </li>
+                </ul>
             </div>
             <div class="danmu">
                 <div class="ad">
@@ -230,21 +296,25 @@
                         </div>
                     </div>
                     <div class="nextvideo">
-                        <div style="background: url('{% static 'videos/videopic/' %}{{ nextvideo.v_pic }}') center center no-repeat;background-size: cover;background-color: black;cursor: pointer" @click="getVideo({{ nextvideo.v_id }})"></div>
-                        <div  class="videoslist-info">
+                        <div style="background: url('{% static 'videos/videopic/' %}{{ nextvideo.v_pic }}') center center no-repeat;background-size: cover;background-color: black;cursor: pointer"
+                             @click="getVideo({{ nextvideo.v_id }})"></div>
+                        <div class="videoslist-info">
                             <a href="javascript:" @click="getVideo({{ nextvideo.v_id }})">{{ nextvideo.v_title }}</a>
                             <a href="javascript:">作者：{{ nextvideo.v_auther }}</a>
-                            <a href="javascript:" @click="getVideo({{ nextvideo.v_id }})">{{ nextvideo.v_play }} 播放 0 弹幕</a>
+                            <a href="javascript:" @click="getVideo({{ nextvideo.v_id }})">{{ nextvideo.v_play }} 播放 0
+                                弹幕</a>
                         </div>
                     </div>
                     <ul class="videoslist">
                         {% for item in nextvideolist %}
                             <li>
-                                <div style="background: url('{% static 'videos/videopic/' %}{{ item.v_pic }}') center center no-repeat;background-size: cover;background-color: black;cursor: pointer" @click="getVideo({{ item.v_id }})"></div>
+                                <div style="background: url('{% static 'videos/videopic/' %}{{ item.v_pic }}') center center no-repeat;background-size: cover;background-color: black;cursor: pointer"
+                                     @click="getVideo({{ item.v_id }})"></div>
                                 <div class="videoslist-info">
                                     <a href="javascript:" @click="getVideo({{ item.v_id }})">{{ item.v_title }}</a>
                                     <a href="javascript:">作者：{{ item.v_auther }}</a>
-                                    <a href="javascript:" @click="getVideo({{ item.v_id }})">{{ item.v_play }} 播放 0 弹幕</a>
+                                    <a href="javascript:" @click="getVideo({{ item.v_id }})">{{ item.v_play }} 播放 0
+                                        弹幕</a>
                                 </div>
                             </li>
                         {% endfor %}
@@ -280,21 +350,22 @@
                 "v_like": {{ v_like }},
                 "user_id": {{ user_id }},
                 "v_tags": "{{ v_tags }}",
+                "d_content": {{ discuss|safe }},
             },
-            userdetail:{
+            userdetail: {
                 name: "{{ request.user.username }}",
                 id: "{{ request.user.id }}",
                 email: "{{ request.user.email }}",
                 is_active: "{{ request.user.is_active }}",
                 date_joined: "{{ request.user.date_joined }}",
                 gender: "{{ request.user.gender }}",
-                picture: "{{ request.user.picture }}",
+                picture: "{% static 'images/' %}{{ request.user.picture }}",
                 fans: "{{ request.user.fans }}"
             },
             video_option: {
-                controls:true,
-                autoplay:true,
-                preload: "none" ,
+                controls: true,
+                autoplay: true,
+                preload: "none",
                 playbackRates: [0.5, 1, 1.5, 2],
                 attributes: true,
                 childList: true,
@@ -311,47 +382,84 @@
             video_nowtime: 0,
             barrageArray: [],
             barrage_divNode: "",
-            tags:[],
+            tags: [],
             input: "",
             fromhere: 0,
             is_login: false,
             AccMenu: false,
-            AccReason :"",
+            AccReason: "",
             AccResult: "",
             username: "",
-            video_url:"{% url "index" %}"+"video/",
-            q:"",
-            base_url:"{% url 'index' %}"+"search?q="
+            video_url: "{% url "index" %}" + "video/",
+            q: "",
+            base_url: "{% url 'index' %}" + "search?q=",
+            discuss: "",
+            discuss_msg: "",
         },
         methods: {
-            search:function (){
-                window.open(this.base_url+this.q)
-                this.q=""
+            search: function () {
+                window.open(this.base_url + this.q)
+                this.q = ""
             },
-            searchByTag:function (tag){
-                window.open(this.base_url+tag)
+            searchByTag: function (tag) {
+                window.open(this.base_url + tag)
             },
-            showAccMenu:function (){
-                if(this.is_login){
+            changeInputMode: function () {
+                document.querySelector(".video-discuss-input-area").classList.toggle("active")
+                document.querySelector(".video-discuss-input-line").classList.toggle("active")
+
+            },
+            showAccMenu: function () {
+                if (this.is_login) {
                     this.AccMenu = true
-                }
-                else{
+                } else {
                     return
                 }
             },
-            closeAccMenu:function (){
+            closeAccMenu: function () {
                 this.AccMenu = false
             },
-
-            played: async function (id){
+            sendDiscussion: async function () {
                 let param = new URLSearchParams()
-                param.append('v_id', id)
-                this.oncechance -= 1
-                result = axios({
-                    method:"POST",
-                    url:"{% url "hasbeenplayed" %}",
-                    data:param
+                param.append('d_content', this.discuss)
+                param.append('u_id', this.userdetail.id)
+                param.append('v_id', this.video_detail.v_id)
+                result = await axios({
+                    method: "POST",
+                    data: param,
+                    url: "{% url 'sendDiscussion' %}"
                 })
+                this.discuss_msg = result.data
+                this.video_detail.d_content.unshift({
+                    agreement: 0,
+                    d_content: this.discuss,
+                    u_id: this.userdetail.id,
+                    d_time: {
+                        d_time_year: 0,
+                        d_time_month: 0,
+                        d_time_day: 0,
+                        d_time_hour: 0,
+                        d_time_minute: 0,
+                        d_time_secon: 0,
+                    },
+                    userdetail: {
+                        username: this.userdetail.name,
+                        picture: this.userdetail.picture,
+                    },
+                })
+                this.discuss = ""
+            },
+            login:function() {
+                window.location.href = "{% url 'login' %}"
+            },
+            logout: async function () {
+                result = await axios({
+                    method: "GET",
+                    url: "{% url 'logout' %}",
+                })
+                if(result.data == "done"){
+                    location.reload()
+                }
             },
             is_login_check() {
                 if ("{{ request.user.is_authenticated }}" == "True") {
@@ -360,6 +468,16 @@
                 } else {
                     this.is_login = false
                 }
+            },
+            played: async function (id) {
+                let param = new URLSearchParams()
+                param.append('v_id', id)
+                this.oncechance -= 1
+                result = axios({
+                    method: "POST",
+                    url: "{% url "hasbeenplayed" %}",
+                    data: param
+                })
             },
             send_msg_check: function () {
                 if (this.is_login) {
@@ -406,7 +524,7 @@
                     alert('空的，尼玛')
                     return false;
                 }
-                console.log(vm.video_ready.currentTime(),Math.ceil(vm.video_ready.currentTime()))
+                console.log(vm.video_ready.currentTime(), Math.ceil(vm.video_ready.currentTime()))
                 tmp = {
                     b_content: inputValue,
                     b_time: Math.ceil(vm.video_ready.currentTime()),
@@ -420,9 +538,9 @@
                 param.append('b_auther', this.username)
                 param.append('b_content', tmp.b_content)
                 param.append('b_time', tmp.b_time)
-                param.append('v_id', {{ v_id }})
+                param.append('v_id', this.video_detail.v_id)
                 result = await axios({
-                    method:"POST",
+                    method: "POST",
                     data: param,
                     url: "{% url 'save_barrage' %}"
                 })
@@ -477,12 +595,12 @@
                     alert('举报成功');
                 }
             },
-            getBarrage: async function(){
+            getBarrage: async function () {
                 let param = new URLSearchParams()
                 param.append('v_id', {{ v_id }})
-                result = await  axios({
-                    method :"POST",
-                    url:"{% url "loadbarrage" %}",
+                result = await axios({
+                    method: "POST",
+                    url: "{% url "loadbarrage" %}",
                     data: param,
                 })
                 this.barrageArray = result.data
@@ -493,52 +611,55 @@
                     vm.createBarrage(item.text, false)
                 });
             },
-            getVideo:function (v_id){
-                window.open(this.video_url+v_id)
+            getVideo: function (v_id) {
+                window.open(this.video_url + v_id)
             },
-            reloadvideo:function (){
+            reloadvideo: function () {
                 this.video_ready.load()
                 console.log("重载")
             },
-            follow:async function (){
+            follow: async function () {
+                if(!this.is_login){
+                    this.login()
+                }
                 let param = new URLSearchParams()
                 param.append('follow_id', {{ request.user.id }})
                 param.append('followed_id', {{ user_id }})
                 result = await axios({
-                    method :"POST",
-                    url:"{% url "follow" %}",
+                    method: "POST",
+                    url: "{% url "follow" %}",
                     data: param,
                 })
                 this.followornot = result.data.code
             },
-            love:async function (){
+            love: async function () {
                 let param = new URLSearchParams()
                 param.append('user_id', {{ request.user.id }})
                 param.append('video_id', this.video_detail.v_id)
                 param.append('status', this.loveornot)
                 result = await axios({
-                    method :"POST",
-                    url:"{% url "love" %}",
+                    method: "POST",
+                    url: "{% url "love" %}",
                     data: param,
                 })
                 console.log(result.data.msg)
                 this.loveornot = result.data.code
             },
-            collect:async function (){
+            collect: async function () {
                 let param = new URLSearchParams()
                 param.append('user_id', this.userdetail.id)
                 param.append('video_id', this.video_detail.v_id)
                 param.append('status', this.collectornot)
                 result = await axios({
-                    method :"POST",
-                    url:"{% url "collect" %}",
+                    method: "POST",
+                    url: "{% url "collect" %}",
                     data: param,
                 })
                 console.log(result.data.msg)
                 this.collectornot = result.data.code
             },
-            report:async function (){
-                if(this.AccReason==""){
+            report: async function () {
+                if (this.AccReason == "") {
                     alert("丢你")
                     return
                 }
@@ -547,33 +668,34 @@
                 param.append('v_id', this.video_detail.v_id)
                 param.append('a_reason', this.AccReason)
                 result = await axios({
-                    method :"POST",
-                    url:"{% url "report" %}",
+                    method: "POST",
+                    url: "{% url "report" %}",
                     data: param,
                 })
-                if(result){
-                    if(result.data.code==1){
+                if (result) {
+                    if (result.data.code == 1) {
                         this.AccResult = result.data.msg
-                        setTimeout(function(){vm.AccResult=""},3000);
-                    }
-                    else if(result.data.code==0){
+                        setTimeout(function () {
+                            vm.AccResult = ""
+                        }, 3000);
+                    } else if (result.data.code == 0) {
                         this.AccResult = result.data.msg
-                        setTimeout(function(){vm.AccResult=""},3000);
-                    }
-                    else{
+                        setTimeout(function () {
+                            vm.AccResult = ""
+                        }, 3000);
+                    } else {
                         this.AccResult = "什么玩意?"
                     }
                 }
-                this.AccReason=""
+                this.AccReason = ""
             },
         },
         mounted: function () {
             this.is_login_check()
             tagsTmp = this.video_detail.v_tags.split(",")
-            if(tagsTmp[0].toLowerCase()=="none"){
+            if (tagsTmp[0].toLowerCase() == "none") {
                 this.tags.push("无标签")
-            }
-            else{
+            } else {
                 this.tags = tagsTmp
             }
             this.video_ready = videojs("video_ready", this.video_option, function () {
@@ -588,27 +710,27 @@
                 });
                 this.on('pause', function () {
                     console.log("暂停")
-                    for(let i of document.querySelector("#barrage").querySelectorAll("div")){
+                    for (let i of document.querySelector("#barrage").querySelectorAll("div")) {
                         cancelAnimationFrame(i.timer);
                     }
                 });
                 this.on('play', function () {
                     console.log("播放")
-                    if(vm.oncechance == 1){
+                    if (vm.oncechance == 1) {
                         vm.played({{ v_id }})
                     }
-                    for(let i of document.querySelector("#barrage").querySelectorAll("div")){
+                    for (let i of document.querySelector("#barrage").querySelectorAll("div")) {
                         vm.barrageAnimate(i);
                     }
                 });
-                this.on("error", function(){
+                this.on("error", function () {
                     console.log("加载错误")
                 });
-                this.on("stalled",function(){
+                this.on("stalled", function () {
                     console.log("网速异常");
                 })
             })
-            if(this.video_ready.readyState()==0){
+            if (this.video_ready.readyState() == 0) {
                 this.video_ready.options_.sources = [
                     {
                         src: '{% static "videos/" %}{{ v_ad }}',
@@ -617,43 +739,41 @@
                 ]
                 this.reloadvideo()
             }
-            if(this.followornot==1){
+            if (this.followornot == 1) {
                 document.querySelector('.follow-btn').innerHTML = "tick"
                 document.querySelector('.follow-text').innerHTML = "已关注"
-            }
-            else if(this.followornot==2){
+            } else if (this.followornot == 2) {
                 document.querySelector('.follow-btn').innerHTML = "add"
                 document.querySelector('.follow-text').innerHTML = "求关注"
             }
-            if(this.loveornot==1){
+            if (this.loveornot == 1) {
                 document.querySelector(".goodvideo").classList.toggle("active")
             }
-            if(this.collectornot==1){
+            if (this.collectornot == 1) {
                 document.querySelector(".videocollect").classList.toggle("active")
             }
             this.getBarrage()
-            if(this.video_detail.user_id == {{ request.user.id }}){
+            if (this.video_detail.user_id == '{{ request.user.id }}') {
                 document.querySelector(".follow").style.display = "none"
             }
         },
         watch: {
-            followornot: function (){
-                if(this.followornot==1){
+            followornot: function () {
+                if (this.followornot == 1) {
                     document.querySelector('.follow-btn').innerHTML = "tick"
                     document.querySelector('.follow-text').innerHTML = "已关注"
                     alert("关注成功")
-                }
-                else if(this.followornot==2){
+                } else if (this.followornot == 2) {
                     document.querySelector('.follow-btn').innerHTML = "add"
                     document.querySelector('.follow-text').innerHTML = "求关注"
                     alert("取关成功")
                 }
             },
 
-            loveornot: function (){
+            loveornot: function () {
                 document.querySelector(".goodvideo").classList.toggle("active")
             },
-            collectornot: function (){
+            collectornot: function () {
                 document.querySelector(".videocollect").classList.toggle("active")
             },
             video_nowtime: function () {

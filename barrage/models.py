@@ -258,11 +258,31 @@ class discuss(models.Model):
     d_content = models.CharField(max_length=500,null=False)
     d_answer = models.BooleanField(default=False)
     answer_id = models.IntegerField(null=True)
+    agreement = models.IntegerField(default=0)
+    d_time = models.DateTimeField(auto_now_add=True)
     def create(u_id,v_id,d_content):
-        accusation_video(u_id=u_id, v_id=v_id, d_content=d_content).save()
-        return {
-            "msg":"评论成功",
-        }
+        if not discuss(u_id=u_id, v_id=v_id, d_content=d_content).save() :
+            return "评论成功!"
+        else :
+            return "评论失败!"
+    def getDiscussByV_id(v_id):
+        tmp = discuss.objects.filter(v_id=v_id).order_by('-d_time').all().values()
+        result = []
+        for item in tmp:
+            result.append({
+                "u_id": item["u_id"],
+                "d_content": item["d_content"],
+                "agreement": item["agreement"],
+                "d_time": {
+                    "d_time_year": item["d_time"].year,
+                    "d_time_month": item["d_time"].month,
+                    "d_time_day": item["d_time"].day,
+                    "d_time_hour": item["d_time"].hour,
+                    "d_time_minute": item["d_time"].minute,
+                    "d_time_second": item["d_time"].second
+                },
+            })
+        return result
 class answer(models.Model):
     answer_id = models.AutoField(primary_key=True)
     d_id = models.IntegerField()

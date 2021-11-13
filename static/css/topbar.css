@@ -10,8 +10,8 @@
         }
         .video-user-info{
             display: flex;
-            list-style: none;
             margin: 0px;
+            min-width: 100px;
         }
         .video-user-info li{
             height: 100%;
@@ -19,16 +19,6 @@
             display: flex;
             flex-direction: column;
             margin: 0px 20px;
-        }
-        .video-user-msg:before{
-            content: "\e945";
-            font-family: IcoMoon-Free;
-            font-style: normal;
-        }
-        .video-user-menus:before{
-            content: "\ea7a";
-            font-family: IcoMoon-Free;
-            font-style: normal;
         }
         .video-user-pic{
             height: 40px;
@@ -46,8 +36,22 @@
             font-family: IcoMoon-Free;
             font-style: normal;
         }
+        .video-user-info-login{
+            padding: 5px 10px;
+            border: 1px solid;
+            cursor: pointer;
+            transition: all .3s ease;
+            flex-wrap: nowrap;
+            font-size: 15px;
+
+        }
+        .video-user-info-login:hover{
+            background-color: black;
+            color: #e3e3e3;
+        }
         @media (max-width: 750px){
             .videos-top-search{
                 opacity: 0;
             }
         }
+

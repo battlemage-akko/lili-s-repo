@@ -179,6 +179,26 @@
             }
         },
         methods: {
+            login:function() {
+                window.location.href = "{% url 'login' %}"
+            },
+            logout: async function () {
+                result = await axios({
+                    method: "GET",
+                    url: "{% url 'logout' %}",
+                })
+                if(result.data == "done"){
+                    location.reload()
+                }
+            },
+            is_login_check() {
+                if ("{{ request.user.is_authenticated }}" == "True") {
+                    this.is_login = true
+                    this.username = "{{ request.user.username }}"
+                } else {
+                    this.is_login = false
+                }
+            },
             jumpbyV_id(v_id) {
                 window.open(this.video_url + v_id)
             },

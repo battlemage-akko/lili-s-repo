@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from barrage.models import test as barrageTable
 from barrage.models import video as videosTable
+from barrage.models import discuss as discussTable
 from barrage.models import accusation_video as accusationTable
 from django.http import HttpResponse, JsonResponse
 from app.models import followUser as followtable
@@ -35,6 +36,12 @@ def video(request,vid):
         nextvideolist.append(tmp[i])
 
     tags = videosTable.objects.get(v_id=vid).v_tags
+    discuss = discussTable.getDiscussByV_id(v_id=vid)
+    for i in discuss:
+        i["userdetail"] = {
+            'username' : Userdatabase.getinfo(id=i['u_id'],info="username"),
+            'picture' : Userdatabase.getinfo(id=i['u_id'],info="picture")
+        }
     data = {
         "v_id": result["v_id"],
         "v_ad": result["v_ad"],
@@ -60,10 +67,10 @@ def video(request,vid):
         "oncechance" : 1,
         "followornot" : followtable.follow_check(request.user.id,result["user_id"]),
         "loveornot": lovetable.love_check(request.user.id, result["v_id"]),
-        "collectornot": collectTable.collect_check(request.user.id, result["v_id"])
+        "collectornot": collectTable.collect_check(request.user.id, result["v_id"]),
+        "discuss": [item for item in discuss],
     }
     return render(request,'video.html',data)
-
 @csrf_exempt
 def loadbarrage(request):
     v_id = request.POST.get("v_id")
@@ -88,6 +95,15 @@ def hasbeenplayed(request):
         v_id = request.POST.get("v_id")
         videosTable.objects.filter(v_id=v_id).update(v_play=videosTable.objects.filter(v_id=v_id).values()[0]['v_play']+1)
     return HttpResponse()
+
+@csrf_exempt
+def sendDiscussion(request):
+    if(request.method=="POST"):
+        v_id = request.POST.get("v_id")
+        u_id = request.POST.get("u_id")
+        d_content = request.POST.get("d_content")
+        result = discussTable.create(u_id=u_id,v_id=v_id,d_content=d_content)
+        return HttpResponse(result)
 
 @csrf_exempt
 def save_barrage(request):
