@@ -2,7 +2,7 @@
 
 <div class="warning-myself">
         <div>
-            <img src="{% static "images/logo.png" %}" alt="" style="height: 40px;margin: 10px;cursor: pointer">
+            <img src="{% static "images/logo.png" %}" alt="" style="height: 40px;margin: 10px;cursor: pointer" onclick="window.open('{% url 'index' %}')">
         </div>
             <div class="input-group videos-top-search">
               <button class="btn btn-outline-secondary" type="button" id="button-addon1" @click="search"><i class="videos-top-search-btn"></i></button>
