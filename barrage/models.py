@@ -19,7 +19,6 @@ class test(models.Model):
             return 1
         else:
             return 0
-
 class video(models.Model):
     v_id = models.AutoField(primary_key = True)
     v_title = models.CharField(max_length=50,null=False,default="default title")
@@ -210,8 +209,6 @@ class video(models.Model):
             "exactness": exactness,
             "indistinct": indistinct,
         }
-
-
 class accusation_video(models.Model):
     a_id = models.AutoField(primary_key=True)
     v_id = models.IntegerField()
@@ -254,3 +251,16 @@ class accusation_video(models.Model):
                 "msg":"后台已有待处理的举报",
                 "code": 0
             }
+class discuss(models.Model):
+    d_id = models.AutoField(primary_key=True)
+    v_id = models.IntegerField()
+    u_id = models.IntegerField()
+    d_content = models.CharField(max_length=500,null=False)
+    d_answer = models.BooleanField(default=False)
+    answer_id = models.IntegerField()
+
+class answer(models.Model):
+    answer_id = models.AutoField(primary_key=True)
+    d_id = models.IntegerField()
+    u_id = models.IntegerField()
+    aanswer_content = models.CharField(max_length=500,null=False)

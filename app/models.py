@@ -74,7 +74,6 @@ class messages(models.Model):
             return r
         else:
             return 0
-
 class collectVideo(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.IntegerField(default=0)
@@ -112,7 +111,6 @@ class collectVideo(models.Model):
             return 1
         else:
             return 0
-
 class likeVideo(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.IntegerField(default=0)
@@ -149,8 +147,6 @@ class likeVideo(models.Model):
             return 1
         else:
             return 0
-
-
 class followUser(models.Model):
     id = models.AutoField(primary_key=True)
     follow_id = models.IntegerField(default=0)
