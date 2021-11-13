@@ -136,11 +136,6 @@
         .logout.active{
             opacity: 1;
         }
-        .logout i:before{
-            content: "\ea14";
-            font-family: IcoMoon-Free;
-            font-style: normal;
-        }
 
         .loginbtn::before {
             position: absolute;
