@@ -2,9 +2,9 @@
     display: flex;
     flex-basis: 1870px;
     min-width: 390px;
-    background-color: #f9faff;
+    /*background-color: #f9faff;*/
+    /*box-shadow: var(--shadow);*/
     flex-direction: column;
-    box-shadow: var(--shadow);
 }
 .videos-list{
     display: flex;
@@ -220,9 +220,6 @@
     width: 100%;
     display: flex;
     justify-content: center;
-}
-.show_more_btn.active{
-    content: "\e97a";
 }
 .videos-notice{
     width: 100%;

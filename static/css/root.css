@@ -17,6 +17,22 @@
         padding-left: 0;
         list-style: none;
     }
+    body::-webkit-scrollbar{
+            width: 5px;
+            height: 5px;
+            scrollbar-arrow-color: red;
+        }
+        body::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+            border-radius: 5px;
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.4);
+            scrollbar-arrow-color:red;
+        }
+        body::-webkit-scrollbar-track {/*滚动条里面轨道*/
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            border-radius: 0;
+            background: rgba(0,0,0,0.1);
+        }
     .msg:before{
         content: "\e945";
         font-family: IcoMoon-Free;
@@ -99,4 +115,24 @@
     }
     .good.active{
         color: #ff8a8a;
+    }
+    @keyframes rotate{
+        from{
+            transform: rotate(0deg)
+        }
+        to{
+            transform: rotate(360deg)
+        }
+    }
+    .loading.active{
+        animation: rotate 1s linear infinite;
+    }
+    .loading{
+        display: inline-block;
+    }
+    .loading:before{
+        font-size: 25px;
+        content: "\e97c";
+        font-style: normal;
+        font-family: IcoMoon-Free;
     }

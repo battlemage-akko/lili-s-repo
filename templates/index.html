@@ -30,25 +30,10 @@
             overflow-x: hidden;
             transition: all .5s ease;
         }
-        body::-webkit-scrollbar{
-            width: 5px;
-            height: 5px;
-            scrollbar-arrow-color: red;
-        }
-        body::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
-            border-radius: 5px;
-            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-            background: rgba(0,0,0,0.4);
-            scrollbar-arrow-color:red;
-        }
-        body::-webkit-scrollbar-track {/*滚动条里面轨道*/
-            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-            border-radius: 0;
-            background: rgba(0,0,0,0.1);
-        }
         #app {
             width: 100vw;
             height: 100vh;
+            position: relative;
             padding-left: 50px;
             transition: padding-left .5s ease;
         }
@@ -64,11 +49,11 @@
         .videos {
             right: 0;
             width: 100%;
-            min-height: 100vh;
-            transition: all .5s ease;
+            height: 100vh;
             white-space: nowrap;
             display: flex;
             justify-content: center;
+            overflow:auto;
         }
         .sidebar {
             position: fixed;
@@ -159,7 +144,7 @@
         }
         .videoslist-title{
             position: relative;
-            height: 300px;
+            min-height: 300px;
             width: 100%;
             display: flex;
             justify-content: center;
@@ -170,7 +155,7 @@
         }
         .videoslist-title.active
         {
-            height: 100vh;
+            min-height: 100vh;
         }
     </style>
 </head>
@@ -200,7 +185,7 @@
                 </p>
             </div>
         </div>
-        <div v-show="flags.videos"  class="videos">
+        <div v-show="flags.videos" @scroll="listenScroll" class="videos">
             <div class="videos-holder">
                 <div class="videoslist-title">
                     <div class="videoslist-search">
@@ -216,7 +201,7 @@
                     </div>
                     <span class="videoslist-upload" title="上传" @click="upload_video"></span>
                 </div>
-                <div style="padding: 0px 20px">
+                <div>
                     <ul class="videoslist-choose">
                         <li @click="changeVideosListTag('new')"><a href="javascript:">最新</a></li>
                         <li @click="changeVideosListTag('popular')"><a href="javascript:">热门</a></li>
@@ -247,13 +232,14 @@
                 <ul v-if="is_login" class="videos-list videos-list-collect" v-show="videosList_tags.collect">
                 </ul>
                 <div class="showmore-div">
-                    <button class="btn btn-primary show_more_btn" v-show="show_more_btn" @click="getmorenewvideo"><i class="showmore-div-btn" ></i></button>
+                    <div v-if="!videosList_isLoading" style="color: rgba(0,0,0,0.5)">下滑加载更多视频</div>
+                    <div v-if="videosList_isLoading && !show_more_cat" ><p class="loading active"></p></div>
                     <div class="no-more" v-show="show_more_cat">
                         <img src="{% static 'images/猫猫叹气.png' %}" alt="">
                     </div>
                 </div>
                 <div class="videos-notice">
-                    <div style="text-align: center;padding: 0px 10px">本站为个人兴趣，非商业用途，所有内容均收集于互联网公开资源，本站只提供WEB页面服务，不提供影片资源储存也不参与录制与上传，若本站收录内容无意侵犯了贵公司版权，请给网页底部邮箱地址来信，我会及时处理，谢谢合作。邮箱:2878305660@qq.com</div>
+                    <div style="text-align: center;padding: 0px 10px;margin-bottom: 30px" >本站为个人兴趣，非商业用途，所有内容均收集于互联网公开资源，本站只提供WEB页面服务，不提供影片资源储存也不参与录制与上传，若本站收录内容无意侵犯了贵公司版权，请给网页底部邮箱地址来信，我会及时处理，谢谢合作。邮箱:2878305660@qq.com</div>
                 </div>
                 <div style="height: 30px"></div>
             </div>
@@ -919,7 +905,6 @@
             },
             getmorenewvideo: async function (){
                 this.videosList_isLoading = true
-                document.querySelector(".show_more_btn").disabled = "disabled"
                 let param = new URLSearchParams()
                 param.append("count",this.videosList_new.length)
                 result = await axios({
@@ -931,14 +916,12 @@
                     this.show_more_btn = false
                     this.show_more_cat = true
                     console.log("到头了")
-                    document.querySelector(".show_more_btn").removeAttribute("disabled")
                     return
                 }
                 else{
                     for(let item of result.data){
                         this.videosList_new.push(item)
                     }
-                    document.querySelector(".show_more_btn").removeAttribute("disabled")
                 }
                 this.videosList_isLoading = false
             },
@@ -1077,6 +1060,13 @@
                     return
                 }
             },
+            listenScroll:function(){
+                console.log(document.querySelector('.videos').scrollTop)
+                if(document.querySelector('.videos').scrollTop + document.querySelector('.videos').offsetHeight > document.querySelector('.videos').scrollHeight - 50 &&  this.videosList_isLoading!=true){
+                    this.videosList_isLoading=true
+                    this.getmorenewvideo()
+                }
+            },
         },
         mounted: function () {
             this.is_login_check()
@@ -1103,7 +1093,20 @@
             },
             AllUsers: function () {
                 console.log(this.AllUsers.data)
-            }
+            },
+            flags:{
+                handler(val, oldval){
+                    if(val.videos==true){
+                        setTimeout(()=>{
+                            dom = document.querySelector(".videos-list-new")
+                            domholder = document.querySelector(".videos-holder")
+                            console.log(document.body.scrollHeight,document.body.scrollTop)
+                        },300)
+                    }
+                },
+                immediate: true,
+                deep:true
+            },
         }
     })
 
