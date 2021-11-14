@@ -259,20 +259,62 @@ class discuss(models.Model):
     d_answer = models.BooleanField(default=False)
     answer_id = models.IntegerField(null=True)
     agreement = models.IntegerField(default=0)
+    disagreement = models.IntegerField(default=0)
     d_time = models.DateTimeField(auto_now_add=True)
     def create(u_id,v_id,d_content):
-        if not discuss(u_id=u_id, v_id=v_id, d_content=d_content).save() :
-            return "评论成功!"
-        else :
-            return "评论失败!"
+        if not discuss(u_id=u_id, v_id=v_id, d_content=d_content).save():
+            return discuss.objects.filter(u_id=u_id, v_id=v_id, d_content=d_content).values()[0][
+                'd_id']
+        else:
+            return 0
+    def delByV_id(v_id):
+        r =  discuss.objects.filter(v_id=v_id).all()
+        if r:
+            r.delete()
+            return 1
+        else:
+            return 0
+
+    def delByD_id(d_id):
+        r =  discuss.objects.filter(d_id=d_id).all()
+        if r:
+            r.delete()
+            return 1
+        else:
+            return 0
+
+    def getDiscussByD_id(d_id):
+        tmp = discuss.objects.get(d_id=d_id)
+        result = []
+        if tmp:
+            tmp = tmp.__dict__
+            result.append({
+                "u_id": tmp["u_id"],
+                "d_id": tmp["d_id"],
+                "d_content": tmp["d_content"],
+                "agreement": tmp["agreement"],
+                "disagreement": tmp["disagreement"],
+                "d_time": {
+                    "d_time_year": tmp["d_time"].year,
+                    "d_time_month": tmp["d_time"].month,
+                    "d_time_day": tmp["d_time"].day,
+                    "d_time_hour": tmp["d_time"].hour,
+                    "d_time_minute": tmp["d_time"].minute,
+                    "d_time_second": tmp["d_time"].second
+                },
+            })
+        return result
+
     def getDiscussByV_id(v_id):
         tmp = discuss.objects.filter(v_id=v_id).order_by('-d_time').all().values()
         result = []
         for item in tmp:
             result.append({
                 "u_id": item["u_id"],
+                "d_id": item["d_id"],
                 "d_content": item["d_content"],
                 "agreement": item["agreement"],
+                "disagreement": item["disagreement"],
                 "d_time": {
                     "d_time_year": item["d_time"].year,
                     "d_time_month": item["d_time"].month,
@@ -285,6 +327,76 @@ class discuss(models.Model):
         return result
 class answer(models.Model):
     answer_id = models.AutoField(primary_key=True)
+    v_id = models.IntegerField()
     d_id = models.IntegerField()
     u_id = models.IntegerField()
-    aanswer_content = models.CharField(max_length=500,null=False)
+    answer_content = models.CharField(max_length=500,null=False)
+    answer_time = models.DateTimeField(auto_now_add=True)
+    d_id = models.IntegerField(null=False)
+    agreement = models.IntegerField(default=0)
+    disagreement = models.IntegerField(default=0)
+    def delByV_id(v_id):
+        r =  answer.objects.filter(v_id=v_id).all()
+        if r:
+            r.delete()
+            return 1
+        else:
+            return 0
+    def delByD_id(d_id):
+        r =  answer.objects.filter(d_id=d_id).all()
+        if r:
+            r.delete()
+            return 1
+        else:
+            return 0
+    def create(u_id,v_id,answer_content,d_id):
+        if not answer(u_id=u_id, v_id=v_id, answer_content=answer_content, d_id=d_id).save() :
+            return answer.objects.filter(u_id=u_id, v_id=v_id, answer_content=answer_content, d_id=d_id).values()[0]['answer_id']
+        else :
+            return 0
+
+    def getAnswerByAnswer_id(answer_id):
+        tmp = answer.objects.get(answer_id=answer_id)
+        result = []
+
+        if tmp:
+            tmp = tmp.__dict__
+            result.append({
+                "u_id": tmp["u_id"],
+                "d_id": tmp["d_id"],
+                "answer_id": tmp["answer_id"],
+                "answer_content": tmp["answer_content"],
+                "agreement": tmp["agreement"],
+                "disagreement": tmp["disagreement"],
+                "answer_time": {
+                    "answer_time_year": tmp["answer_time"].year,
+                    "answer_time_month": tmp["answer_time"].month,
+                    "answer_time_day": tmp["answer_time"].day,
+                    "answer_time_hour": tmp["answer_time"].hour,
+                    "answer_time_minute": tmp["answer_time"].minute,
+                    "answer_time_second": tmp["answer_time"].second
+                },
+            })
+        return result
+
+    def getAnswerByD_id(d_id):
+        tmp = answer.objects.filter(d_id=d_id).order_by('-answer_time').all().values()
+        result = []
+        for item in tmp:
+            result.append({
+                "u_id": item["u_id"],
+                "d_id": item["d_id"],
+                "answer_id": item["answer_id"],
+                "answer_content": item["answer_content"],
+                "agreement": item["agreement"],
+                "disagreement": item["disagreement"],
+                "answer_time": {
+                    "answer_time_year": item["answer_time"].year,
+                    "answer_time_month": item["answer_time"].month,
+                    "answer_time_day": item["answer_time"].day,
+                    "answer_time_hour": item["answer_time"].hour,
+                    "answer_time_minute": item["answer_time"].minute,
+                    "answer_time_second": item["answer_time"].second
+                },
+            })
+        return result

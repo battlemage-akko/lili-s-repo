@@ -11,8 +11,8 @@
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="shortcut icon" href="{% static 'images/video.PNG' %}">
     <link href="{% static 'css/root.css' %}" rel="stylesheet">
-    <link href="//cdn.bootcss.com/video.js/7.0.0-alpha.1/alt/video-js-cdn.css" rel="stylesheet">
-    <script src="//cdn.bootcss.com/video.js/7.0.0-alpha.1/video.min.js"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/video.js/7.15.0/alt/video-js-cdn.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/video.js/7.15.0/alt/video.core.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>{{ v_title }}</title>
@@ -158,11 +158,11 @@
                 <div class="videodetail">
                     <ul class="video-title-span">
                         <li>
-                            <i class="video-title-date"></i>&nbsp;{{ v_time.v_time_year }}年{{ v_time.v_time_month }}月{{ v_time.v_time_day }}日 {{ v_time.v_time_hour }}:{{ v_time.v_time_minute }}:{{ v_time.v_time_second }}
+                            <i class="date"></i>&nbsp;{{ v_time.v_time_year }}年{{ v_time.v_time_month }}月{{ v_time.v_time_day }}日 {{ v_time.v_time_hour }}:{{ v_time.v_time_minute }}:{{ v_time.v_time_second }}
                         </li>
-                        <li><i class="video-title-play"></i>&nbsp;{{ v_play }}</li>
-                        <li><i class="video-title-like"></i>&nbsp;{{ v_like }}</li>
-                        <li><i class="video-title-collect"> </i>&nbsp;{{ v_collect }}</li>
+                        <li><i class="play"></i>&nbsp;{{ v_play }}</li>
+                        <li><i class="good"></i>&nbsp;{{ v_like }}</li>
+                        <li><i class="collect"> </i>&nbsp;{{ v_collect }}</li>
                     </ul>
                     <h1 class="video-title">{{ v_title }}</h1>
                 </div>
@@ -198,7 +198,7 @@
                         </div>
                         <div class="form-floating video-discuss-input">
                           <textarea class="form-control video-discuss-input-area" placeholder="Leave a comment here"
-                                    id="floatingTextarea" @focus="changeInputMode" @blur="changeInputMode"
+                                    id="floatingTextarea" @focus="changeInputMode('discuss')" @blur="changeInputMode('discuss')"
                                     v-model="discuss">
                           </textarea>
                             <label class="video-discuss-input-line" for="floatingTextarea">
@@ -220,27 +220,73 @@
                 <h2 style="padding: 2px 0px 20px 0px;font-size: 20px;border-bottom: 1px solid rgba(0,0,0,0.05);margin: 0">
                     {[ video_detail.d_content.length ]} 条评论</h2>
                 <ul class="video-discuss-list">
-                    <li v-for="(item,index) in video_detail.d_content" class="video-discuss-list-each">
-                        <div class="video-discuss-list-each-pic">
-                            <img :src="avatar_url+item.userdetail.picture" alt="">
-                        </div>
-                        <div class="video-discuss-list-each-content">
-                            <div>
-                                <h2 style="font-size: 12px;letter-spacing: 1px;margin-bottom: 5px;font-weight: 600">
-                                    {[item.userdetail.username]}
-                                </h2>
-                                <p>
-                                    {[item.d_content]}
-                                </p>
+                    <li v-for="(item,index) in video_detail.d_content" class="video-discuss-list-each"
+                        :id="'discuss_'+item.d_id">
+                        <div class="video-discuss-list-each-div">
+                            <div class="video-discuss-list-each-pic">
+                                <img :src="avatar_url+item.userdetail.picture" alt="">
                             </div>
-                            <div class="video-discuss-list-each-btns">
-                                <span>{[ item.d_time.d_time_year ]}年{[ item.d_time.d_time_month ]}月{[ item.d_time.d_time_day ]}日 {[ item.d_time.d_time_hour ]}:{[ item.d_time.d_time_minute ]}:{[ item.d_time.d_time_second ]}</span>
-                                <span class="heart"> 0</span>
-                                <span class="heart-broken"> 0</span>
-                                <span>回复</span>
+                            <div class="video-discuss-list-each-content">
+                                <div>
+                                    <h2 style="font-size: 12px;letter-spacing: 1px;margin-bottom: 5px;font-weight: 600">
+                                        {[item.userdetail.username]}
+                                    </h2>
+                                    <p style="white-space: normal;">
+                                        {[item.d_content]}
+                                    </p>
+                                </div>
+                                <div class="video-discuss-list-each-btns">
+                                    <span>{[ item.d_time.d_time_year ]}年{[ item.d_time.d_time_month ]}月{[ item.d_time.d_time_day ]}日 {[ item.d_time.d_time_hour ]}:{[ item.d_time.d_time_minute ]}:{[ item.d_time.d_time_second ]}</span>
+                                    <span class="heart"> 0</span>
+                                    <span class="heart-broken"> 0</span>
+                                    <span @click="showAnswer(item.d_id)" style="cursor: pointer">回复</span>
+                                    <span @click="delDiscussion(item.d_id)" style="cursor: pointer" v-if="userdetail.id==video_detail.user_id || userdetail.id==item.u_id">删除</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="video-discuss-list-each-div">
+                            <div class="video-answer-container">
+                                <ul class="video-answer-list-container">
+                                    <li v-for="(answer,index) in item.answer" class="video-answer-list-each" >
+                                        <div class="video-answer-list-each-content">
+                                            <img :src="avatar_url+userdetail.picture" alt="">
+                                            <div class="video-answer-list-each-word"><span> {[ answer.userdetail.username ]} : </span>{[ answer.answer_content ]}</div>
+                                        </div>
+                                        <div class="video-answer-list-each-date">
+                                            <span>{[ answer.answer_time.answer_time_year ]}年{[ answer.answer_time.answer_time_month ]}月{[ answer.answer_time.answer_time_day ]}日 {[ answer.answer_time.answer_time_hour ]}:{[ answer.answer_time.answer_time_minute ]}:{[ answer.answer_time.answer_time_second ]}
+                                            </span>
+                                            <span class="heart"> 0</span>
+                                            <span class="heart-broken"> 0</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="video-answer-content" :id="'answer_'+item.d_id">
+                                    <div class="video-answer-content-container">
+                                        <div class="video-answer-profile">
+                                            <img :src="avatar_url+userdetail.picture" alt="">
+                                        </div>
+                                        <div class="form-floating video-answer-input">
+                                              <textarea class="form-control video-answer-input-area"
+                                                        placeholder="Leave a comment here"
+                                                        id="floatingTextarea" @focus="changeInputMode('answer')"
+                                                        @blur="changeInputMode('answer')"
+                                                        v-model="answerTmp[item.d_id]">
+                                              </textarea>
+                                            <label class="video-answer-input-line" for="floatingTextarea">
+                                                回复 :
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <ul class="video-answer-content-btns">
+                                        <li></li>
+                                        <li>
+                                            <span @click="showAnswer(item.d_id)" style="cursor: pointer">取消</span>
+                                            <span @click="sendAnswer(item.d_id)" style="cursor: pointer">回复</span>
+                                        </li>
+                                    </ul>
+                                </div>
                                 <hr>
                             </div>
-
                         </div>
                     </li>
                 </ul>
@@ -333,6 +379,7 @@
         data: {
             barrageWidth: document.querySelector('.thisvideo').clientWidth,
             barrageTipWidth: 50,
+            screenWidth: document.body.clientWidth,
             nextbarrageTop: 0,
             screen_choose: "auto",
             oncechance:{{ oncechance }},
@@ -398,8 +445,20 @@
             avatar_url: "{% static 'images/avatar/' %}",
             discuss: "",
             discuss_msg: "",
+            answerTmp:{},
         },
         methods: {
+            showAnswer:function (id){
+                    document.querySelector('#answer_'+id).classList.toggle('active')
+                    answerTextarea = document.querySelector('#answer_'+id).querySelector('.video-answer-input').querySelector('textarea')
+                    for(let item of document.querySelector('#answer_'+id).classList){
+                        if(item=='active'){
+                            answerTextarea.focus()
+                            return
+                        }
+                    }
+                    answerTextarea.blur()
+            },
             search: function () {
                 window.open(this.base_url + this.q)
                 this.q = ""
@@ -407,10 +466,18 @@
             searchByTag: function (tag) {
                 window.open(this.base_url + tag)
             },
-            changeInputMode: function () {
-                document.querySelector(".video-discuss-input-area").classList.toggle("active")
-                document.querySelector(".video-discuss-input-line").classList.toggle("active")
-
+            changeInputMode: function (string) {
+                if(string=='answer'){
+                    document.querySelector(".video-answer-input-area").classList.toggle("active")
+                    document.querySelector(".video-answer-input-line").classList.toggle("active")
+                }
+                else if(string=='discuss'){
+                    document.querySelector(".video-discuss-input-area").classList.toggle("active")
+                    document.querySelector(".video-discuss-input-line").classList.toggle("active")
+                }
+                else{
+                    return
+                }
             },
             showAccMenu: function () {
                 if (this.is_login) {
@@ -432,25 +499,30 @@
                     data: param,
                     url: "{% url 'sendDiscussion' %}"
                 })
-                this.discuss_msg = result.data
-                this.video_detail.d_content.unshift({
-                    agreement: 0,
-                    d_content: this.discuss,
-                    u_id: this.userdetail.id,
-                    d_time: {
-                        d_time_year: 0,
-                        d_time_month: 0,
-                        d_time_day: 0,
-                        d_time_hour: 0,
-                        d_time_minute: 0,
-                        d_time_secon: 0,
-                    },
-                    userdetail: {
-                        username: this.userdetail.name,
-                        picture: this.userdetail.picture,
-                    },
-                })
+                this.discuss_msg = result.data.msg
+                if(result.data.result.length == 1){
+                    this.video_detail.d_content.unshift(result.data.result[0])
+                }
                 this.discuss = ""
+            },
+            sendAnswer: async function (d_id) {
+                let param = new URLSearchParams()
+                param.append('answer_content', this.answerTmp[d_id])
+                param.append('u_id', this.userdetail.id)
+                param.append('v_id', this.video_detail.v_id)
+                param.append('d_id', d_id)
+                result = await axios({
+                    method: "POST",
+                    data: param,
+                    url: "{% url 'sendAnswer' %}"
+                })
+                for(let item of this.video_detail.d_content){
+                    if(result.data.result.d_id == item.d_id){
+                        item.answer.unshift(result.data.result)
+                    }
+                }
+                this.answerTmp[d_id] = ""
+
             },
             login:function() {
                 window.location.href = "{% url 'login' %}"
@@ -692,8 +764,46 @@
                 }
                 this.AccReason = ""
             },
+            delAnswer: async function (a_id) {
+                let param = new URLSearchParams()
+                param.append('a_id', a_id)
+                result = await axios({
+                    method: "POST",
+                    url: "{% url "report" %}",
+                    data: param,
+                })
+            },
+            delDiscussion: async function (d_id) {
+                let param = new URLSearchParams()
+                param.append('d_id', d_id)
+                result = await axios({
+                    method: "POST",
+                    url: "{% url "delDiscussion" %}",
+                    data: param,
+                })
+                this.discuss_msg = result.data.msg
+                if(result.data.code==1){
+                    for(let item of this.video_detail.d_content){
+                        if(item.d_id==d_id){
+                            discussIndex = this.video_detail.d_content.indexOf(item)
+                            document.querySelector('#discuss_'+d_id).classList.add("dying")
+                            setTimeout(function(){
+                                vm.video_detail.d_content.splice(discussIndex, 1)
+                                document.querySelector('#discuss_'+d_id).classList.remove("dying")
+                            },500);
+                        }
+                    }
+                }
+            },
         },
         mounted: function () {
+            const that = this
+            window.onresize = () => {
+                return (() => {
+                    window.screenWidth = document.body.clientWidth
+                    that.screenWidth = window.screenWidth
+                })()
+            }
             this.is_login_check()
             tagsTmp = this.video_detail.v_tags.split(",")
             if (tagsTmp[0].toLowerCase() == "none") {
@@ -709,7 +819,7 @@
                     console.log('off')
                 });
                 this.on('timeupdate', function () {
-                    vm.video_nowtime = Math.floor(vm.video_ready.currentTime())
+                    that .video_nowtime = Math.floor(vm.video_ready.currentTime())
                 });
                 this.on('pause', function () {
                     console.log("暂停")
@@ -720,10 +830,10 @@
                 this.on('play', function () {
                     console.log("播放")
                     if (vm.oncechance == 1) {
-                        vm.played({{ v_id }})
+                        that .played({{ v_id }})
                     }
                     for (let i of document.querySelector("#barrage").querySelectorAll("div")) {
-                        vm.barrageAnimate(i);
+                        that .barrageAnimate(i);
                     }
                 });
                 this.on("error", function () {
@@ -750,10 +860,10 @@
                 document.querySelector('.follow-text').innerHTML = "求关注"
             }
             if (this.loveornot == 1) {
-                document.querySelector(".goodvideo").classList.toggle("active")
+                document.querySelector(".videobtns").querySelector('.good').classList.toggle("active")
             }
             if (this.collectornot == 1) {
-                document.querySelector(".videocollect").classList.toggle("active")
+                document.querySelector(".videobtns").querySelector(".collect").classList.toggle("active")
             }
             this.getBarrage()
             if (this.video_detail.user_id == '{{ request.user.id }}') {
@@ -774,10 +884,10 @@
             },
 
             loveornot: function () {
-                document.querySelector(".goodvideo").classList.toggle("active")
+                document.querySelector(".videobtns").querySelector('.good').classList.toggle("active")
             },
             collectornot: function () {
-                document.querySelector(".videocollect").classList.toggle("active")
+                document.querySelector(".videobtns").querySelector(".collect").classList.toggle("active")
             },
             video_nowtime: function () {
                 if (vm.barrageArray.length != 0)
@@ -785,6 +895,17 @@
                         let tmp = vm.barrageArray.shift()
                         this.createBarrage(tmp.b_content, false)
                     }
+            },
+            screenWidth(val){
+                // 为了避免频繁触发resize函数导致页面卡顿，使用定时器
+                if(!this.timer){
+                    this.screenWidth = val
+                    this.timer = true
+                    let that = this
+                    setTimeout(function(){
+                        that.timer = false
+                    },200)
+                }
             }
         }
     })
@@ -813,9 +934,6 @@
             danmu.style.height = 50 + 'px'
         }
     })
-    window.onresize = function () {
-        console.log(video.clientWidth)
-    }
     let nextbarrageTop = 0
 
 </script>

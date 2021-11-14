@@ -1,763 +1,948 @@
-        .heart:before{
-            content: "\e9da";
-            font-family: IcoMoon-Free;
-        }
-        .heart-broken:before{
-            content: "\e9db";
-            font-family: IcoMoon-Free;
+.heart:before {
+    content: "\e9da";
+    font-family: IcoMoon-Free;
+}
 
-        }
-        .videos-holder{
-            display: flex;
-            margin-top: 60px;
-            max-width: 1400px;
-            min-width: 1px;
-            margin-bottom: 50px;
-        }
-        .video-card{
-            box-shadow: var(--shadow);
-            background-color: rgba(0,0,0,0);
-            display: flex;
-            flex-direction: column;
-        }
-        .videologo::before {
-            color: white;
-            width: 30px;
-            height: 30px;
-            background-color: black;
-            content: "\ea15";
-            position: relative;
-            display: inline-block;
-            font-family: IcoMoon-Free;
-            font-style: normal;
-            line-height: 30px;
-            text-align: center;
-            border-radius: 5px;
-        }
-        .danmu {
-            display: flex;
-            flex-direction: column;
-            width: 350px;
-            margin-left: 50px;
-            background-color: var(--Test-color);
-        }
-        .videocontent {
-            display: flex;
-            flex-direction: column;
-            vertical-align: top;
-            background-color: var(--Test-color);
-            max-width: 1000px;
-            align-content: normal;
-        }
-        .danmutitle {
-            position: relative;
-            height: 100%;
-            overflow: hidden;
-            background-color: white;
-            box-shadow: var(--shadow);
-        }
+.heart-broken:before {
+    content: "\e9db";
+    font-family: IcoMoon-Free;
 
-        .danmutitle i {
-            right: 15px;
-            display: inline-block;
-            transition: all 0.5s ease;
-        }
+}
 
-        .danmutitle i::after {
-            content: "\ea43";
-            font-family: IcoMoon-Free;
-            cursor: pointer;
-            font-style: normal;
-        }
+.videos-holder {
+    display: flex;
+    margin-top: 60px;
+    max-width: 1400px;
+    min-width: 1px;
+    margin-bottom: 50px;
+}
 
-        .danmutitle i.active {
-            transform: rotate(180deg);
-        }
-        .danmutitle-btn-list{
-            display: flex;
-            justify-content: space-between;
-            list-style: none;
-            height: 50px;
-        }
-        .danmuholder{
-            height: 50px;
-            transition: all .5s ease;
-        }
+.video-card {
+    box-shadow: var(--shadow);
+    background-color: rgba(0, 0, 0, 0);
+    display: flex;
+    flex-direction: column;
+}
 
-        .danmuholder.active {
-            height: 500px;
-        }
+.videologo::before {
+    color: white;
+    width: 30px;
+    height: 30px;
+    background-color: black;
+    content: "\ea15";
+    position: relative;
+    display: inline-block;
+    font-family: IcoMoon-Free;
+    font-style: normal;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 5px;
+}
 
-        .danmutitle div span {
-            display: inline-block;
-        }
-        .danmu-input-group{
-            width: 0;
-        }
-        .danmutitlecontent {
-            background-color: #ffffff;
-            height: 50px;
-            line-height: 50px;
-            margin: 0;
-        }
-        .ad {
-            height: 30px;
-            padding: 10px;
-        }
-        .videolistcontent{
-            position: relative;
-        }
-        .nextvideo {
-            width: 100%;
-            height: 100px;
-            padding: 10px;
-            border: 1px dashed black;
-        }
-        .danmulist::-webkit-scrollbar{
-            width: 5px;
-            height: 5px;
-            scrollbar-arrow-color: red;
-        }
-        .danmulist::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
-            border-radius: 5px;
-            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-            background: rgba(0,0,0,0.4);
-            scrollbar-arrow-color:red;
-        }
-        .danmulist::-webkit-scrollbar-track {/*滚动条里面轨道*/
-            -webkit-box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
-            border-radius: 0;
-            background: rgba(255, 255, 255, 0.1);
-        }
-        .danmulist {
-            overflow: scroll;
-            overflow-x:hidden;
-            height: 0px;
-        }
-        .danmulist li span{
-            vertical-align: top;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            font-size: 10px;
-            display:inline-block;
-            text-align: center;
-        }
-        .danmulist li span:nth-child(1){
-            width: 50px;
-        }
-        .danmulist li span:nth-child(2){
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            width: 100px;
-        }
-        .danmulist li span:nth-child(3){
-            width: 122px;
-        }
-        .nextvideo img {
-            display: inline-block;
-            height: 80px;
-            width: 130px;
-        }
-        .nextvideo div a{
-            display: block;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            text-decoration: none;
-            font-size: 15px;
-            color: black;
-        }
-        .nextvideo div{
-            display: inline-block;
-            height: 100%;
-            width: 150px;
-            vertical-align: top;
-        }
-        .nextvideo div a:nth-child(1){
-            height: 45px;
-        }
-        .nextvideo div a:nth-child(2){
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            font-size: 10px;
-        }
-        .nextvideo div a:nth-child(3){
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            font-size: 10px;
-        }
-        .nextvideo div a:hover{
-            color: #5c636a;
-        }
-        .videoslist{
-            list-style: none;
-        }
-        .videoslist-info{
-            margin-left: 10px;
-        }
-        .videoslist li{
-            height: 100px;
-            padding: 10px;
-        }
-        .videoslist li img{
-            display: inline-block;
-            height: 80px;
-            width: 130px;
-        }
-        .videoslist li div{
-            display: inline-block;
-            height: 100%;
-            width: 150px;
-            vertical-align: top;
-        }
-        .videoslist li div a{
-            display: block;
-            width: 150px;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            text-decoration: none;
-            font-size: 15px;
-            color: black;
-        }
-        .videoslist li div a:nth-child(1){
-            height: 45px;
-        }
-        .videoslist li div a:nth-child(2){
-            opacity: .5;
-            font-size: 10px;
-        }
-        .videoslist li div a:nth-child(3){
-            opacity: .5;
-            font-size: 10px;
-        }
-        .videoslist li div a:hover{
-            color: #5c636a;
-        }
-        .video-profile{
-            display: flex;
-            justify-content: space-between;
-            height: 100px;
-            border-top: 1px solid rgba(0, 0, 0, 0.3);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            border-radius: 5px;
-            padding: 20px;
-        }
-        .videodetail{
-            display: flex;
-            width: 100%;
-            height: 40px;
-            margin:10px 0px ;
-            border:0px dashed black;
-            justify-content: space-between;
-            flex-direction: row;
-            align-items: center;
-        }
-        .video-detail-play span{
-            font-weight: 700;
-            font-size: 20px;
-            margin-left: 20px;
-            color: #5c636a;
-            cursor: pointer;
-            opacity: 0.5;
-        }
-        .videodetail span:hover{
-            opacity: 1;
-        }
-        .videobtns{
-            height: 100%;
-            display: flex;
-            list-style: none;
-        }
-        .videobtns span{
-            text-align: center;
-            height: 50px;
-            width: 50px;
-            font-size: 16px;
-            opacity: 1;
-            color: rgba(42, 42, 42, 0.3);
-            transition: all .2s ease;
-            cursor: pointer;
-        }
-        .videobtns span:hover{
-            background: #d2d2d2;
-        }
-        @keyframes animate{
-            0%{
-                background-position: 0%;
-            }
-            0%{
-                background-position: 400%;
-            }
-        }
-        .videoprofilepic{
-            margin-left:20px;
-            line-height: 90px;
-        }
-        .video-profilepic img{
-            height: 100%;
-            border-radius: 70px;
-        }
-        .video-profile-name{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .video-profile-name a{
-            margin-left: 10px;
-            color: black;
-            text-decoration: none;
-            font-style: normal;
-            opacity: 0.7;
-        }
-        .video-profile-name a:hover{
-            opacity: 1;
-        }
-        .follow-holder{
-            display: flex;
-            align-items: center;
-        }
-        .follow{
-            max-height: 35px;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-        .follow::before {
-            content: "";
-            left: 0;
-            top: 0;
-            height: 10px;
-            width: 10px;
-            border-top: 2px solid black;
-            border-left: 2px solid black;
-            align-self: start;
-        }
-        .follow::after {
-            content: "";
-            bottom: 0;
-            right: 0;
-            height: 10px;
-            width: 10px;
-            border-bottom: 2px solid black;
-            border-right: 2px solid black;
-            align-self: end;
-        }
-        .follow a{
-            text-decoration: none;
-            color:black;
-        }
+.danmu {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    margin-left: 50px;
+    background-color: var(--Test-color);
+}
 
-        .thisvideo {
-            min-width: 600px;
-            max-width: 1000px;
-            width: 50vw;
-            position: relative;
-        }
-        .danmucontent {
-            padding: 10px 30px;
-            position: relative;
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            height: 60px;
-            background-color: white;
-        }
-        .play-tools{
-            position: relative;
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            height: 30px;
-            background-color: #21272e;
+.videocontent {
+    display: flex;
+    flex-direction: column;
+    vertical-align: top;
+    background-color: var(--Test-color);
+    max-width: 1000px;
+    align-content: normal;
+}
 
-        }
-        .play-tools-main{
-            display: flex;
-            list-style: none;
-            font-family: IcoMoon-Free;
-            font-size: 15px;
-            height: 30px;
-            margin: 0px;
-            color: white;
-        }
-        .play-tools-main li{
-            margin: 0px 5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            width: 30px;
-            height: 30px;
-        }
-        .play-tools-refresh:before{
-            content: "\ea2e";
-            font-style: normal;
-            font-weight: 800;
-        }
-        .play-tools-refresh:hover{
-            transform: rotate(720deg);
-        }
-        .play-tools-refresh{
-            transition: all 3s ease;
-        }
-        .play-tools-stop:before{
-            content: "\ea1e";
-            font-style: normal;
-        }
-        .video-danmucontent-switch{
-            display: flex;
-            align-items: center;
-        }
-        .video-danmucontent-tools li:hover{
-            color: white;
-        }
-        .fullscreen-window:before{
-            content: "\ea7f";
-            font-style: normal;
-        }
-        .fullscreen-sets:before{
-            content: "\e994";
-            font-style: normal;
-        }
-        .fullscreen-sets{
-            transition: all .5s ease;
-        }
-        .fullscreen-sets:hover{
-            transform: rotate(180deg);
-        }
-        .videotitle-holder {
-            min-height: 30px;
-        }
-        .video-auther{
-            display: flex;
-            width: 240px;
-        }
-        .video-title{
-            font-weight: 700;
-            font-size: 20px;
-            margin: 0px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            color: rgba(0, 0, 0, 0.5);
-        }
+.danmutitle {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    background-color: white;
+    box-shadow: var(--shadow);
+}
 
-        .video-title-span{
-            color: rgba(0, 0, 0, 0.3);
-            display: flex;
-            list-style: none;
-            margin: 0;
-            height: 100%;
-        }
-        .video-title-span li{
-            height: 100%;
-            padding: 0px 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .video-title-date:before{
-            content: "\e953 ";
-            font-family: IcoMoon-Free;
-            font-style: normal;
-        }
-        .video-title-like:before{
-            content: "\e9da";
-            font-family: IcoMoon-Free;
-            font-style: normal;
-        }
-        .video-title-play:before{
-            content: "\ea15";
-            font-family: IcoMoon-Free;
-            font-style: normal;
-        }
-        .video-title-collect:before{
-            content: "\e9d9";
-            font-family: IcoMoon-Free;
-            font-style: normal;
-        }
-        .video-holder{
-            width: 100%;
-            height: 100%;
-        }
-        .choose-dropdown{
-            display: none;
-            position: absolute;
-            color: white;
-            list-style: none;
-            margin: 0px;
-            bottom: 30px;
-            background-color: black;
-            opacity: 0.7;
-        }
-        .choose-dropdown div:hover{
-            background-color: #3e3e3e;
-            opacity: 0.7;
-        }
-        .choose-dropdown div{
-            text-align: center;
-            padding: 10px;
-        }
-        .play-tools-choose:hover .choose-dropdown{
-            display: block;
-        }
-        #barrage{
-            position: absolute;
-            z-index: 2;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-            overflow: hidden;
-            pointer-events: none;
-        }
+.danmutitle i {
+    right: 15px;
+    display: inline-block;
+    transition: all 0.5s ease;
+}
 
-        .barrage-item {
-            position: absolute;
-            left: 100%;
-            white-space: nowrap;
-            cursor: pointer;
-            color: red;
-            height: 30px;
-            line-height: 30px;
-        }
-        .barrage-item-active {
-            border: 1px blue solid;
-        }
+.danmutitle i::after {
+    content: "\ea43";
+    font-family: IcoMoon-Free;
+    cursor: pointer;
+    font-style: normal;
+}
 
-        .barrage-item .barrage-tip {
-            display: none;
-            position: absolute;
-            left: 0;
-            padding: 7px 15px;
-            line-height: 12px;
-            font-size: 12px;
-            color: #f20606;
-            background-color: rgba(0,0,0,0.2);
-            white-space: nowrap;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            -webkit-box-shadow: 0 0 10px 1px rgba(0, 0, 0, .1);
-            box-shadow: 0 0 10px 1px rgba(0, 0, 0, .1);
-            -webkit-transform-origin: 15px 100%;
-            -ms-transform-origin: 15px 100%;
-            transform-origin: 15px 100%;
-            webkit-animation: tipScale cubic-bezier(.22, .58, .12, .98) .4s;
-            animation: tipScale cubic-bezier(.22, .58, .12, .98) .4s;
-        }
-        .barrage-item .barrage-tip:hover{
-            background-color: white;
-        }
-        .form-control:focus{
-            border: 1px;
-        }
+.danmutitle i.active {
+    transform: rotate(180deg);
+}
 
-        .videos-auther-name{
-            font-size: 20px;
-            font-weight: 700;
-            font-style: normal;
-            text-decoration:none
-        }
-        .follow-content{
-            width: 16px;
-            overflow: hidden;
-            transition: all .5s ease;
-            font-family: IcoMoon-Free;
-        }
-        .follow-holder:hover .follow-content{
-            width: 75px;
-        }
-        .videos-accusation{
-            position: fixed;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-            -moz-user-select:none;
-            -webkit-user-select:none;
-            user-select:none;
-            z-index: 11;
-        }
-        .videos-accusation-title{
-            padding: 10px;
-            color: #000000;
-            font-weight: 500;
-            display: flex;
-            justify-content: space-between;
-        }
-        .videos-accusation-warning{
-            padding: 10px;
-            display: flex;
-            border-top: 1px solid rgba(255, 0, 0, 0.4);
-            border-bottom: 1px solid rgba(255, 0, 0, 0.4);
-            background-color: rgba(255, 0, 0, 0.1);
-        }
-        .videos-accusation-content{
-            font-family: IcoMoon-Free;
-            flex-basis: 500px;
-            background-color: #f5fcff;
-            border-radius: 5px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        .videos-accusation-reason{
-            padding: 20px;
-        }
-        .videos-accusation-btns{
-            margin: 20px 0 0 0 ;
-            display: flex;
-            justify-content: space-between;
-            list-style: none;
-            align-items: center;
-        }
-        .videos-tags-list{
-            display: flex;
-            list-style: none;
-            cursor: pointer;
-            flex-wrap: wrap;
-        }
-        .videos-tags-each{
-            border:1px solid #a8a8a8;
-            background-color: rgba(112, 112, 112, 0.1);
-            padding: 3px 7px;
-            border-radius: 10px;
-            margin: 3px;
-            font-size: 10px;
-        }
-        .videos-tags-each:hover{
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #e3e3e3;
-        }
-        .video-discuss{
-            padding: 15px 0px 5px 0px;
-            display: flex;
-            flex-direction: column;
-        }
-        .video-discuss-content{
-            display: flex;
-        }
-        .video-discuss-profile{
-            display: flex;
-            align-items: center;
-            margin: 0px 10px;
-        }
-        .video-discuss-profile img{
-            width: 40px;
-            height: 40px;
-            border-radius: 40px;
-            border: 4px solid rgba(0, 0, 0, 0.1);
-        }
-        .video-discuss-input{
-            flex-grow: 1;
-        }
-        .video-discuss-input-area{
-            background-color: rgba(255, 255, 255, 0) !important;
-            display: none;
-            color: rgba(62, 62, 62, 0.4)!important;
-            border: none!important;
-        }
-        .video-discuss-input-area.active{
-            background-color: rgb(255, 255, 255) !important;
-            opacity: 1;
-            color: black!important;
-        }
-        .video-discuss-input-line hr{
-            margin: 0px
-        }
-        .video-discuss-input-line.active hr{
-            opacity: 0;
-        }
-        .video-discuss-btns{
-            display: flex;
-            justify-content: right;
-        }
-        .video-discuss-input-line{
-            font-size: 15px;
-            width: 100%;
-            color: rgba(42, 42, 42, 0.4);
-        }
-        .video-discuss-btns-content{
-            display: flex;
-            margin: 0;
-        }
-        .video-discuss-btns-content li{
-            margin-top: 15px;
-            margin-left: 10px;
-            padding: 3px 8px;
-            border-radius: 10px;
-            border:1px solid rgba(0, 0, 0, 0.3);
-            cursor: pointer;
-            color: rgba(0, 0, 0, 0.7);
-        }
-        .video-discuss-list-each{
-            display: flex;
-            margin: 25px 0px;
-        }
-        .video-discuss-list-each-content{
-            height: 80px;
-            display: flex;
-            flex-grow: 1;
-            flex-direction: column;
-            justify-content: space-between;
-            margin-left: 15px;
-        }
-        .video-discuss-list-each-pic{
-            display: flex;
-            align-items: center;
-            margin: 0px 10px 20px 10px;
-        }
-        .video-discuss-list-each-pic img{
-            width: 60px;
-            height: 60px;
-            border-radius: 40px;
-        }
-        .video-discuss-list-each-btns{
-            height: 20px;
-            font-size: 12px;
-            color: rgba(0, 0, 0, 0.3);
-        }
-        .video-discuss-list-each-btns hr{
-            margin: 4px 0px;
-            color: rgba(0, 0, 0, 0.2);
-        }
-        .video-discuss-list-each-btns span{
-            margin-right: 10px;
-            cursor: pointer;
-        }
-        .videos-discuss-login{
-            margin: 30px 0px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-size: contain;
-            opacity: 0.7;
-        }
-        .videos-discuss-login img{
-            width: 15%;
-            opacity: 0.5;
-        }
-        .videos-discuss-login span{
-            padding: 1px 3px;
-            margin: 0px 5px;
-            border: 1px solid black;
-            cursor: pointer;
-            transition: all .3s ease;
-            font-size: 15px;
-        }
-        .videos-discuss-login span:hover{
-            background-color: black;
-            color: #e3e3e3;
-        }
-        .video-no-discuss{
-            width: 100%;
-            padding: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: rgba(0, 0, 0, 0.3);
-        }
+.danmutitle-btn-list {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    height: 50px;
+}
+
+.danmuholder {
+    height: 50px;
+    transition: all .5s ease;
+}
+
+.danmuholder.active {
+    height: 500px;
+}
+
+.danmutitle div span {
+    display: inline-block;
+}
+
+.danmu-input-group {
+    width: 0;
+}
+
+.danmutitlecontent {
+    background-color: #ffffff;
+    height: 50px;
+    line-height: 50px;
+    margin: 0;
+}
+
+.ad {
+    height: 30px;
+    padding: 10px;
+}
+
+.videolistcontent {
+    position: relative;
+}
+
+.nextvideo {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border: 1px dashed black;
+}
+
+.danmulist::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    scrollbar-arrow-color: red;
+}
+
+.danmulist::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.4);
+    scrollbar-arrow-color: red;
+}
+
+.danmulist::-webkit-scrollbar-track { /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
+    border-radius: 0;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.danmulist {
+    overflow: scroll;
+    overflow-x: hidden;
+    height: 0px;
+}
+
+.danmulist li span {
+    vertical-align: top;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 10px;
+    display: inline-block;
+    text-align: center;
+}
+
+.danmulist li span:nth-child(1) {
+    width: 50px;
+}
+
+.danmulist li span:nth-child(2) {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100px;
+}
+
+.danmulist li span:nth-child(3) {
+    width: 122px;
+}
+
+.nextvideo img {
+    display: inline-block;
+    height: 80px;
+    width: 130px;
+}
+
+.nextvideo div a {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-decoration: none;
+    font-size: 15px;
+    color: black;
+}
+
+.nextvideo div {
+    display: inline-block;
+    height: 100%;
+    width: 150px;
+    vertical-align: top;
+}
+
+.nextvideo div a:nth-child(1) {
+    height: 45px;
+}
+
+.nextvideo div a:nth-child(2) {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 10px;
+}
+
+.nextvideo div a:nth-child(3) {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 10px;
+}
+
+.nextvideo div a:hover {
+    color: #5c636a;
+}
+
+.videoslist {
+    list-style: none;
+}
+
+.videoslist-info {
+    margin-left: 10px;
+}
+
+.videoslist li {
+    height: 100px;
+    padding: 10px;
+}
+
+.videoslist li img {
+    display: inline-block;
+    height: 80px;
+    width: 130px;
+}
+
+.videoslist li div {
+    display: inline-block;
+    height: 100%;
+    width: 150px;
+    vertical-align: top;
+}
+
+.videoslist li div a {
+    display: block;
+    width: 150px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-decoration: none;
+    font-size: 15px;
+    color: black;
+}
+
+.videoslist li div a:nth-child(1) {
+    height: 45px;
+}
+
+.videoslist li div a:nth-child(2) {
+    opacity: .5;
+    font-size: 10px;
+}
+
+.videoslist li div a:nth-child(3) {
+    opacity: .5;
+    font-size: 10px;
+}
+
+.videoslist li div a:hover {
+    color: #5c636a;
+}
+
+.video-profile {
+    display: flex;
+    justify-content: space-between;
+    height: 100px;
+    border-top: 1px solid rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.videodetail {
+    display: flex;
+    width: 100%;
+    height: 40px;
+    margin: 10px 0px;
+    border: 0px dashed black;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+}
+
+.video-detail-play span {
+    font-weight: 700;
+    font-size: 20px;
+    margin-left: 20px;
+    color: #5c636a;
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.videodetail span:hover {
+    opacity: 1;
+}
+
+.videobtns {
+    height: 100%;
+    display: flex;
+    list-style: none;
+}
+
+.videobtns span {
+    text-align: center;
+    height: 50px;
+    width: 50px;
+    font-size: 16px;
+    opacity: 1;
+    color: rgba(42, 42, 42, 0.3);
+    transition: all .2s ease;
+    cursor: pointer;
+}
+
+.videobtns span:hover {
+    background: #d2d2d2;
+}
+
+@keyframes animate {
+    0% {
+        background-position: 0%;
+    }
+    0% {
+        background-position: 400%;
+    }
+}
+
+.videoprofilepic {
+    margin-left: 20px;
+    line-height: 90px;
+}
+
+.video-profilepic img {
+    height: 100%;
+    border-radius: 70px;
+}
+
+.video-profile-name {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.video-profile-name a {
+    margin-left: 10px;
+    color: black;
+    text-decoration: none;
+    font-style: normal;
+    opacity: 0.7;
+}
+
+.video-profile-name a:hover {
+    opacity: 1;
+}
+
+.follow-holder {
+    display: flex;
+    align-items: center;
+}
+
+.follow {
+    max-height: 35px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.follow::before {
+    content: "";
+    left: 0;
+    top: 0;
+    height: 10px;
+    width: 10px;
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    align-self: start;
+}
+
+.follow::after {
+    content: "";
+    bottom: 0;
+    right: 0;
+    height: 10px;
+    width: 10px;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+    align-self: end;
+}
+
+.follow a {
+    text-decoration: none;
+    color: black;
+}
+
+.thisvideo {
+    min-width: 600px;
+    max-width: 1000px;
+    width: 70vw;
+    position: relative;
+}
+
+.danmucontent {
+    padding: 10px 30px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 60px;
+    background-color: white;
+}
+
+.play-tools {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 30px;
+    background-color: #21272e;
+
+}
+
+.play-tools-main {
+    display: flex;
+    list-style: none;
+    font-family: IcoMoon-Free;
+    font-size: 15px;
+    height: 30px;
+    margin: 0px;
+    color: white;
+}
+
+.play-tools-main li {
+    margin: 0px 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+}
+
+.play-tools-refresh:before {
+    content: "\ea2e";
+    font-style: normal;
+    font-weight: 800;
+}
+
+.play-tools-refresh:hover {
+    transform: rotate(720deg);
+}
+
+.play-tools-refresh {
+    transition: all 3s ease;
+}
+
+.play-tools-stop:before {
+    content: "\ea1e";
+    font-style: normal;
+}
+
+.video-danmucontent-switch {
+    display: flex;
+    align-items: center;
+}
+
+.video-danmucontent-tools li:hover {
+    color: white;
+}
+
+.fullscreen-window:before {
+    content: "\ea7f";
+    font-style: normal;
+}
+
+.fullscreen-sets:before {
+    content: "\e994";
+    font-style: normal;
+}
+
+.fullscreen-sets {
+    transition: all .5s ease;
+}
+
+.fullscreen-sets:hover {
+    transform: rotate(180deg);
+}
+
+.videotitle-holder {
+    min-height: 30px;
+}
+
+.video-auther {
+    display: flex;
+    width: 240px;
+}
+
+.video-title {
+    font-weight: 700;
+    font-size: 20px;
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.video-title-span {
+    color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    list-style: none;
+    margin: 0;
+    height: 100%;
+}
+
+.video-title-span li {
+    height: 100%;
+    padding: 0px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.video-holder {
+    width: 100%;
+    height: 100%;
+}
+
+.choose-dropdown {
+    display: none;
+    position: absolute;
+    color: white;
+    list-style: none;
+    margin: 0px;
+    bottom: 30px;
+    background-color: black;
+    opacity: 0.7;
+}
+
+.choose-dropdown div:hover {
+    background-color: #3e3e3e;
+    opacity: 0.7;
+}
+
+.choose-dropdown div {
+    text-align: center;
+    padding: 10px;
+}
+
+.play-tools-choose:hover .choose-dropdown {
+    display: block;
+}
+
+#barrage {
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.barrage-item {
+    position: absolute;
+    left: 100%;
+    white-space: nowrap;
+    cursor: pointer;
+    color: red;
+    height: 30px;
+    line-height: 30px;
+}
+
+.barrage-item-active {
+    border: 1px blue solid;
+}
+
+.barrage-item .barrage-tip {
+    display: none;
+    position: absolute;
+    left: 0;
+    padding: 7px 15px;
+    line-height: 12px;
+    font-size: 12px;
+    color: #f20606;
+    background-color: rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    -webkit-box-shadow: 0 0 10px 1px rgba(0, 0, 0, .1);
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, .1);
+    -webkit-transform-origin: 15px 100%;
+    -ms-transform-origin: 15px 100%;
+    transform-origin: 15px 100%;
+    webkit-animation: tipScale cubic-bezier(.22, .58, .12, .98) .4s;
+    animation: tipScale cubic-bezier(.22, .58, .12, .98) .4s;
+}
+
+.barrage-item .barrage-tip:hover {
+    background-color: white;
+}
+
+.form-control:focus {
+    border: 1px;
+}
+
+.videos-auther-name {
+    font-size: 20px;
+    font-weight: 700;
+    font-style: normal;
+    text-decoration: none
+}
+
+.follow-content {
+    width: 16px;
+    overflow: hidden;
+    transition: all .5s ease;
+    font-family: IcoMoon-Free;
+}
+
+.follow-holder:hover .follow-content {
+    width: 75px;
+}
+
+.videos-accusation {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    z-index: 11;
+}
+
+.videos-accusation-title {
+    padding: 10px;
+    color: #000000;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+}
+
+.videos-accusation-warning {
+    padding: 10px;
+    display: flex;
+    border-top: 1px solid rgba(255, 0, 0, 0.4);
+    border-bottom: 1px solid rgba(255, 0, 0, 0.4);
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
+.videos-accusation-content {
+    font-family: IcoMoon-Free;
+    flex-basis: 500px;
+    background-color: #f5fcff;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.videos-accusation-reason {
+    padding: 20px;
+}
+
+.videos-accusation-btns {
+    margin: 20px 0 0 0;
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    align-items: center;
+}
+
+.videos-tags-list {
+    display: flex;
+    list-style: none;
+    cursor: pointer;
+    flex-wrap: wrap;
+}
+
+.videos-tags-each {
+    border: 1px solid #a8a8a8;
+    background-color: rgba(112, 112, 112, 0.1);
+    padding: 3px 7px;
+    border-radius: 10px;
+    margin: 3px;
+    font-size: 10px;
+}
+
+.videos-tags-each:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #e3e3e3;
+}
+
+.video-discuss {
+    padding: 15px 0px 5px 0px;
+    display: flex;
+    flex-direction: column;
+}
+.video-answer-content{
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: all .3s ease;
+    height: 0px;
+}
+.video-answer-content.active{
+    min-height: 110px;
+    padding: 10px 5px;
+}
+.video-answer-content-container{
+    display:flex;
+    flex-direction: row
+}
+.video-discuss-content {
+    display: flex;
+}
+
+.video-discuss-profile {
+    display: flex;
+    align-items: center;
+    margin: 0px 10px;
+}
+.video-answer-container{
+    padding-left: 95px;
+    width: 100%;
+}
+.video-answer-list-each{
+
+}
+.video-answer-list-each img{
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+}
+.video-answer-list-each-content{
+    display: flex;
+    margin: 5px 0px;
+    position: relative;
+}
+.video-answer-list-each-word{
+    white-space: normal;
+    padding:6px 0px 0px 10px;
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.5);
+}
+.video-answer-list-each-date{
+    padding-left: 40px;
+    font-size: 12px;
+}
+.video-answer-list-each-date span{
+    margin-right: 10px;
+    color: rgba(0, 0, 0, 0.3);
+}
+.video-discuss-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+}
+.video-answer-profile{
+    margin-right: 10px;
+}
+.video-answer-profile img{
+    width: 30px;
+    height: 30px;
+    border-radius: 40px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+}
+.video-discuss-input {
+    flex-grow: 1;
+}
+.video-answer-input {
+    flex-grow: 1;
+}
+.video-discuss-input-area {
+    background-color: rgba(255, 255, 255, 0) !important;
+    color: rgba(62, 62, 62, 0.4) !important;
+    border: none !important;
+}
+.video-discuss-input-area.active {
+    background-color: rgb(255, 255, 255) !important;
+    opacity: 1;
+    color: black !important;
+}
+
+.video-discuss-btns {
+    display: flex;
+    justify-content: right;
+}
+.video-answer-content-btns{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+.video-answer-content-btns span{
+    padding: 3px 5px;
+    border: 1px solid black;
+}
+.video-discuss-input-line {
+    font-size: 15px;
+    width: 100%;
+    color: rgba(42, 42, 42, 0.4);
+}
+.video-discuss-input-line hr {
+    margin: 0px
+}
+
+.video-discuss-input-line.active hr {
+    opacity: 0;
+}
+
+.video-answer-input-line {
+    font-size: 15px;
+    width: 100%;
+    color: rgba(42, 42, 42, 0.4);
+}
+.video-answer-input-line hr {
+    margin: 0px
+}
+
+.video-answer-input-line.active hr {
+    opacity: 0;
+}
+.video-discuss-btns-content {
+    display: flex;
+    margin: 0;
+}
+
+.video-discuss-btns-content li {
+    margin-top: 15px;
+    margin-left: 10px;
+    padding: 3px 8px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.7);
+}
+.video-discuss-list{
+    width: 100%;
+}
+.video-discuss-list-each hr{
+    margin: 5px 0px;
+}
+.video-discuss-list-each {
+    display: flex;
+    margin: 25px 0px;
+    flex-direction: column;
+    transition: all .5s ease;
+}
+.video-discuss-list-each.dying{
+    opacity: 0;
+}
+.video-discuss-list-each-div{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+.video-discuss-list-each-content {
+    min-height: 80px;
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 15px;
+}
+
+.video-discuss-list-each-pic {
+    display: flex;
+    align-items: center;
+    margin: 0px 10px 20px 10px;
+}
+
+.video-discuss-list-each-pic img {
+    width: 60px;
+    height: 60px;
+    border-radius: 40px;
+}
+
+.video-discuss-list-each-btns {
+    height: 20px;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.3);
+}
+
+.video-discuss-list-each-btns hr {
+    margin: 4px 0px;
+    color: rgba(0, 0, 0, 0.2);
+}
+
+.video-discuss-list-each-btns span {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.videos-discuss-login {
+    margin: 30px 0px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: contain;
+    opacity: 0.7;
+}
+
+.videos-discuss-login img {
+    width: 15%;
+    opacity: 0.5;
+}
+
+.videos-discuss-login span {
+    padding: 1px 3px;
+    margin: 0px 5px;
+    border: 1px solid black;
+    cursor: pointer;
+    transition: all .3s ease;
+    font-size: 15px;
+}
+
+.videos-discuss-login span:hover {
+    background-color: black;
+    color: #e3e3e3;
+}
+
+.video-no-discuss {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgba(0, 0, 0, 0.3);
+}

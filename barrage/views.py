@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from barrage.models import test as barrageTable
 from barrage.models import video as videosTable
 from barrage.models import discuss as discussTable
+from barrage.models import answer as answerTable
 from barrage.models import accusation_video as accusationTable
 from django.http import HttpResponse, JsonResponse
 from app.models import followUser as followtable
@@ -31,7 +32,7 @@ def video(request,vid):
     tmp.remove(nextvideo)
 
     nextvideolist = []
-    randomlist = random.sample(range(0, len(tmp)-2), 7)
+    randomlist = random.sample(range(0, len(tmp)-2), 9)
     for i in randomlist:
         nextvideolist.append(tmp[i])
 
@@ -42,6 +43,12 @@ def video(request,vid):
             'username' : Userdatabase.getinfo(id=i['u_id'],info="username"),
             'picture' : Userdatabase.getinfo(id=i['u_id'],info="picture")
         }
+        i["answer"] = answerTable.getAnswerByD_id(i['d_id'])
+        for j in i["answer"]:
+            j["userdetail"] = {
+                'username': Userdatabase.getinfo(id=j['u_id'], info="username"),
+                'picture': Userdatabase.getinfo(id=j['u_id'], info="picture")
+            }
     data = {
         "v_id": result["v_id"],
         "v_ad": result["v_ad"],
@@ -104,8 +111,46 @@ def sendDiscussion(request):
         u_id = request.POST.get("u_id")
         d_content = request.POST.get("d_content")
         result = discussTable.create(u_id=u_id,v_id=v_id,d_content=d_content)
-        return HttpResponse(result)
+        if result:
+            result = discussTable.getDiscussByD_id(d_id=result)
+            result[0]["userdetail"] = {
+                'username': Userdatabase.getinfo(id=result[0]['u_id'], info="username"),
+                'picture': Userdatabase.getinfo(id=result[0]['u_id'], info="picture")
+            }
+            result[0]["answer"] = []
+            return JsonResponse({
+                "result": result,
+                "msg": "发送成功"
+            })
+        else:
+            return JsonResponse({
+                "result": [],
+                "msg": "发送失败"
+            })
 
+@csrf_exempt
+def sendAnswer(request):
+    if (request.method == "POST"):
+        v_id = request.POST.get("v_id")
+        u_id = request.POST.get("u_id")
+        d_id = request.POST.get("d_id")
+        answer_content = request.POST.get("answer_content")
+        result = answerTable.create(u_id=u_id,v_id=v_id,d_id=d_id,answer_content=answer_content)
+        if result:
+            result = answerTable.getAnswerByAnswer_id(answer_id=result)[0]
+            result["userdetail"] = {
+                'username': Userdatabase.getinfo(id=result['u_id'], info="username"),
+                'picture': Userdatabase.getinfo(id=result['u_id'], info="picture")
+            }
+            return JsonResponse({
+                "result":result,
+                "msg":"发送成功"
+            })
+        else:
+            return JsonResponse({
+                "result": [],
+                "msg": "发送失败"
+            })
 @csrf_exempt
 def save_barrage(request):
     if(request.method == 'POST'):
@@ -183,6 +228,22 @@ def finish_save(video_title,video_pic,video_file,username,user_id,tags):
     return HttpResponse("保存完毕")
 
 @csrf_exempt
+def del_Discussion(request):
+    if (request.method == "POST"):
+        d_id = request.POST.get("d_id")
+        result = discussTable.delByD_id(d_id=d_id)
+        if result:
+            answerTable.delByD_id(d_id=d_id)
+            return JsonResponse({
+                "msg":"删除评论成功",
+                "code": 1
+            })
+        else :
+            return JsonResponse({
+                "msg": "删除失败",
+                "code": 0
+            })
+@csrf_exempt
 def del_video(request):
     if(request.method == "POST"):
         v_id = request.POST.get("v_id")
@@ -205,6 +266,8 @@ def del_video(request):
                 print([v_result,b_result,l_result,c_result])
                 clearacc = accusationTable.delectAll(v_id=v_id)
                 Userdatabase.delvideo(user_id)
+                discussTable.delByV_id(v_id=v_id)
+                answerTable.delByV_id(v_id=v_id)
                 messagesTable.createMessage(m_content="成功删除视频《"+v_title+"》与视频弹幕,视频id(v_id)为"+v_id,m_user=user_id)
             else:
                 messagesTable.createMessage(m_content="删除视频《" + v_title + "》失败",

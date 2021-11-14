@@ -70,27 +70,33 @@
     .share::before{
         content: "\ea82";
         font-family: IcoMoon-Free;
+        font-style: normal;
     }
     .pay::before{
         content: "\e93e";
         font-family: IcoMoon-Free;
+        font-style: normal;
     }
     .good::before{
         content: "\e9da";
         font-family: IcoMoon-Free;
-    }
-    .good.active{
-        color: #ff8a8a;
+        font-style: normal;
     }
     .collect::before{
         content: "\e9d7";
         font-family: IcoMoon-Free;
-    }
-    .collect.active::before{
-        content: "\e9d9";
-        color: #f7d400;
+        font-style: normal;
     }
     .accusation:before{
         content: "\ea07";
         font-family: IcoMoon-Free;
+        font-style: normal;
+    }
+    .collect.active::before{
+        content: "\e9d9";
+        color: #f7d400;
+        font-style: normal;
+    }
+    .good.active{
+        color: #ff8a8a;
     }
