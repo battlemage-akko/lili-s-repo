@@ -209,18 +209,20 @@ def save_video(request):
     return HttpResponse("上传完成")
 
 def finish_save(video_title,video_pic,video_file,username,user_id,tags):
-    video_pic_save_path = 'static/videos/videopic/' + video_title + '.jpg'
+    video_title_tmp = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+","",video_title)
+
+    video_pic_save_path = 'static/videos/videopic/' +  video_title_tmp + '.jpg'
     with open(video_pic_save_path, 'wb+') as f:
         f.write(video_pic.read())
     print(video_pic.name, "done")
 
-    video_file_save_path = 'static/videos/' + video_title + '.mp4'
+    video_file_save_path = 'static/videos/' +  video_title_tmp + '.mp4'
     with open(video_file_save_path, 'wb+') as f:
         f.write(video_file.read())
     print(video_file.name, "done")
     time = round(VideoFileClip(video_file_save_path).duration)
 
-    result = videosTable(v_ad=video_title + '.mp4',v_pic=video_title + '.jpg',v_auther=username,user_id=user_id,v_title=video_title,v_like=0,v_play=0,v_collect=0,v_duaring=time,v_tags=tags)
+    result = videosTable(v_ad=video_title_tmp + '.mp4',v_pic=video_title_tmp + '.jpg',v_auther=username,user_id=user_id,v_title=video_title,v_like=0,v_play=0,v_collect=0,v_duaring=time,v_tags=tags)
     result.save()
 
     messagesTable.createMessage(m_content="您成功上传了《"+video_title+"》", m_user=user_id)
