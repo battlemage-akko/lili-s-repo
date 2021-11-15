@@ -55,6 +55,22 @@
             justify-content: center;
             overflow:auto;
         }
+        .videos::-webkit-scrollbar{
+            width: 5px;
+            height: 5px;
+            scrollbar-arrow-color: red;
+        }
+        .videos::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+            border-radius: 5px;
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.6);
+            scrollbar-arrow-color:red;
+        }
+        .videos::-webkit-scrollbar-track {/*滚动条里面轨道*/
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.0);
+            border-radius: 0;
+            background: rgba(0,0,0,0.0);
+        }
         .sidebar {
             position: fixed;
             top: 0;
@@ -1062,7 +1078,7 @@
             },
             listenScroll:function(){
                 console.log(document.querySelector('.videos').scrollTop)
-                if(document.querySelector('.videos').scrollTop + document.querySelector('.videos').offsetHeight > document.querySelector('.videos').scrollHeight - 50 &&  this.videosList_isLoading!=true){
+                if(document.querySelector('.videos').scrollTop + document.querySelector('.videos').offsetHeight > document.querySelector('.videos').scrollHeight - 40 &&  this.videosList_isLoading!=true){
                     this.videosList_isLoading=true
                     this.getmorenewvideo()
                 }

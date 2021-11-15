@@ -28,6 +28,8 @@
             background-color: var(--Background-color);
             overflow-x: hidden;
             transition: all .5s ease;
+            width: 100vw;
+            height: 100vh;
         }
 
         body::-webkit-scrollbar {
@@ -50,18 +52,19 @@
         }
 
         #app {
-            width: 100vw;
-            height: 100vh;
             transition: padding-left .5s ease;
         }
 
         .videos {
+            width: 100vw;
+            height: 100vh;
             right: 0;
             justify-content: center;
             transition: all .5s ease;
             white-space: nowrap;
             display: flex;
             margin: 0px 30px;
+            overflow: auto;
         }
     </style>
 </head>
@@ -95,7 +98,7 @@
             </div>
         </div>
     </div>
-    <div class="videos">
+    <div class="videos" @scroll="listenScroll">
         <div class="videos-holder">
             <div class="videocontent">
                 <div class="videotitle-holder">
@@ -446,6 +449,7 @@
             discuss: "",
             discuss_msg: "",
             answerTmp:{},
+            videosList_isLoading:false,
         },
         methods: {
             showAnswer:function (id){
@@ -490,6 +494,10 @@
                 this.AccMenu = false
             },
             sendDiscussion: async function () {
+                if(this.discuss.trim().split(' ') == ""){
+                    alert("空的")
+                    return
+                }
                 let param = new URLSearchParams()
                 param.append('d_content', this.discuss)
                 param.append('u_id', this.userdetail.id)
@@ -795,6 +803,12 @@
                     }
                 }
             },
+            listenScroll:function(){
+                if(document.querySelector('.videos').scrollTop + document.querySelector('.videos').offsetHeight > document.querySelector('.videos').scrollHeight - 40 &&  this.videosList_isLoading!=true){
+                    this.videosList_isLoading=true
+                    console.log(1)
+                }
+            }
         },
         mounted: function () {
             const that = this
@@ -906,7 +920,8 @@
                         that.timer = false
                     },200)
                 }
-            }
+            },
+
         }
     })
     let inputBox = document.querySelector("#danmu_content")

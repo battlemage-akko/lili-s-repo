@@ -396,7 +396,7 @@ class answer(models.Model):
                     "answer_time_day": item["answer_time"].day,
                     "answer_time_hour": item["answer_time"].hour,
                     "answer_time_minute": item["answer_time"].minute,
-                    "answer_time_second": item["answer_time"].second
+                    "answer_time_second": item["answer_time"].second,
                 },
             })
         return result
