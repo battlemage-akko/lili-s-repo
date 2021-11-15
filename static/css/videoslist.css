@@ -240,7 +240,14 @@
     font-family: IcoMoon-Free;
     font-style: normal;
 }
-
+.showmore-div-btn:before{
+    content:"\ea0a";
+    font-style: normal;
+    font-family: IcoMoon-Free;
+}
+.show_more_btn{
+    margin-left: 10px;
+}
 .videolist-input-group-input
 {
     border: none;

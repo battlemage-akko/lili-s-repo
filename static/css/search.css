@@ -13,6 +13,7 @@
     justify-content: center;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     flex-direction: column;
+
 }
 .search-content ul{
     list-style: none;
@@ -298,6 +299,7 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     display: flex;
     justify-content: space-between;
+    height: 45px;
  }
 .search-result-video-topbtns{
     display: flex;

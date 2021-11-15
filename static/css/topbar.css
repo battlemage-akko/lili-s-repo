@@ -1,6 +1,6 @@
  .warning-myself{
             position: fixed;
-            width: 100%;
+            width: calc(100% - 5px);
             height: 60px;
             background-color: white;
             z-index: 10;

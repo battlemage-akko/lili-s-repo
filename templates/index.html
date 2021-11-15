@@ -248,7 +248,10 @@
                 <ul v-if="is_login" class="videos-list videos-list-collect" v-show="videosList_tags.collect">
                 </ul>
                 <div class="showmore-div">
-                    <div v-if="!videosList_isLoading" style="color: rgba(0,0,0,0.5)">下滑加载更多视频</div>
+                    <div v-if="!videosList_isLoading" style="color: rgba(0,0,0,0.5)">
+                        下滑加载更多视频
+                        <button class="btn btn-primary show_more_btn" v-show="show_more_btn" @click="getmorenewvideo"><i class="showmore-div-btn" ></i></button>
+                    </div>
                     <div v-if="videosList_isLoading && !show_more_cat" ><p class="loading active"></p></div>
                     <div class="no-more" v-show="show_more_cat">
                         <img src="{% static 'images/猫猫叹气.png' %}" alt="">
@@ -1077,7 +1080,6 @@
                 }
             },
             listenScroll:function(){
-                console.log(document.querySelector('.videos').scrollTop)
                 if(document.querySelector('.videos').scrollTop + document.querySelector('.videos').offsetHeight > document.querySelector('.videos').scrollHeight - 40 &&  this.videosList_isLoading!=true){
                     this.videosList_isLoading=true
                     this.getmorenewvideo()

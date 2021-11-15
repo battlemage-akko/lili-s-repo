@@ -71,33 +71,6 @@
 <body>
 <div id="app">
     {% include 'topbar.html' %}
-    <div class="videos-accusation" v-show="AccMenu">
-        <div class="videos-accusation-content">
-            <div class="videos-accusation-title">
-                <span></span>
-                <span style="font-size: 16px">举报</span>
-                <span style="cursor: pointer" @click="closeAccMenu">cancel</span>
-            </div>
-            <div class="videos-accusation-warning">
-                <span style="color: red;font-size: 20px;margin: 0px 20px">warning</span>
-                <span style="color: black;display: flex;align-items: center;font-size: 15px">禁止恶意举报行为</span>
-            </div>
-            <div class="videos-accusation-reason">
-                <div class="form-floating">
-                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-                              style="height: 150px" v-model="AccReason" maxlength="100"></textarea>
-                    <label for="floatingTextarea2">请描述举报理由:</label>
-                </div>
-                <ul class="videos-accusation-btns">
-                    <li style="font-family: '微软雅黑 Light'">{[ AccReason.length ]}/100字 <p style="color: red">{[ AccResult
-                        ]}</p></li>
-                    <li>
-                        <button type="button" class="btn btn-outline-secondary" @click="report">提交</button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
     <div class="videos" @scroll="listenScroll">
         <div class="videos-holder">
             <div class="videocontent">
@@ -370,6 +343,33 @@
                     </ul>
                     <div style="width: 100%;height: 30px;"></div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="videos-accusation" v-show="AccMenu">
+        <div class="videos-accusation-content">
+            <div class="videos-accusation-title">
+                <span></span>
+                <span style="font-size: 16px">举报</span>
+                <span style="cursor: pointer" @click="closeAccMenu">cancel</span>
+            </div>
+            <div class="videos-accusation-warning">
+                <span style="color: red;font-size: 20px;margin: 0px 20px">warning</span>
+                <span style="color: black;display: flex;align-items: center;font-size: 15px">禁止恶意举报行为</span>
+            </div>
+            <div class="videos-accusation-reason">
+                <div class="form-floating">
+                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                              style="height: 150px" v-model="AccReason" maxlength="100"></textarea>
+                    <label for="floatingTextarea2">请描述举报理由:</label>
+                </div>
+                <ul class="videos-accusation-btns">
+                    <li style="font-family: '微软雅黑 Light'">{[ AccReason.length ]}/100字 <p style="color: red">{[ AccResult
+                        ]}</p></li>
+                    <li>
+                        <button type="button" class="btn btn-outline-secondary" @click="report">提交</button>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
