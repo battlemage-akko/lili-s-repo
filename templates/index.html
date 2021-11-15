@@ -602,7 +602,6 @@
         el: "#app",
         delimiters: ['{[', ']}'],
         data: {
-            tmp:document.querySelector(".videos-list-new").scrollHeight,
             show_more_cat:false,
             show_more_btn:true,
             videosList:[],
@@ -670,6 +669,8 @@
             serverupdate: false,
             Interval: "",
             Del_sure:"",
+            videos_holder_clientHeight:null,
+            videos_new_scrollHeight:null,
             Del_msg:null,
             terminal_user: "administrator",
             terminal_password: window.btoa("123456"),
@@ -1115,15 +1116,29 @@
             flags:{
                 handler(val, oldval){
                     if(val.videos==true){
-                        setTimeout(()=>{
-                            dom = document.querySelector(".videos-list-new")
-                            domholder = document.querySelector(".videos-holder")
-                            console.log(document.body.scrollHeight,document.body.scrollTop)
-                        },300)
+                        that = this
+                        setTimeout(function (){
+                            that.videos_holder_clientHeight = document.querySelector('.videos-holder').clientHeight
+                            that.videos_new_scrollHeight = document.querySelector('.videos-list-new').scrollHeight
+                            console.log(that.videos_holder_clientHeight,that.videos_new_scrollHeight)
+                        },200)
                     }
                 },
                 immediate: true,
                 deep:true
+            },
+            videos_new_scrollHeight: function (){
+                if(this.videos_new_scrollHeight + 340 < this.videos_holder_clientHeight){
+                    if(this.show_more_cat == true){
+                        return
+                    }
+                    this.videosList_isLoading=true
+                    this.getmorenewvideo()
+                    that = this
+                    setTimeout(function (){
+                            that.videos_new_scrollHeight = document.querySelector('.videos-list-new').scrollHeight
+                        },200)
+                }
             },
         }
     })
