@@ -251,7 +251,7 @@
                                 <ul class="video-answer-list-container">
                                     <li v-for="(answer,index) in item.answer" class="video-answer-list-each" >
                                         <div class="video-answer-list-each-content">
-                                            <img :src="avatar_url+userdetail.picture" alt="">
+                                            <img :src="avatar_url+answer.userdetail.picture" alt="">
                                             <div class="video-answer-list-each-word"><span> {[ answer.userdetail.username ]} : </span>{[ answer.answer_content ]}</div>
                                         </div>
                                         <div class="video-answer-list-each-date">

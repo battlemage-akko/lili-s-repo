@@ -30,6 +30,7 @@ urlpatterns = [
     path('testvue/', TemplateView.as_view(template_name="index.html")),
     path('login/', views.index_login, name="login"),
     path('',views.index,name="index"),
+    path('index_back',views.index_back),
     path('video/<int:vid>',barrageView.video,name="video"),
     path('search', views.search_page,name="search"),
     path('profile', views.profile,name="profile"),

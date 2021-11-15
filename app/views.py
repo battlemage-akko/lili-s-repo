@@ -48,6 +48,21 @@ def index(request):
 
         "collectvideolist": [],
     })
+def index_back(request):
+    videos = []
+    Newvideos = []
+    result = videosTable.objects.all().order_by('-v_id').values()
+    for i in result:
+        i["v_time"] = i["v_time"].strftime('%Y-%m-%d %H:%M:%S')
+        videos.append(i)
+    for i in range(10):
+        Newvideos.append(videos[i])
+    return render(request,'index back.html',{
+        "newvideolist": Newvideos,
+        "hotvideolist": [],
+
+        "collectvideolist": [],
+    })
 
 def index_login(request):
     if(request.user.is_authenticated):
