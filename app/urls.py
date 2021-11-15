@@ -1,7 +1,9 @@
-from django.urls import re_path, include
+from django.urls import re_path, include,path
 from app import views
 
 urlpatterns = [
+    path('getNameAndPic',views.getNameAndPic,name="getNameAndPic"),
+    path('java_checkAuther',views.java_checkAuther,name="java_checkAuther"),
     re_path('^login_check/',views.login_check,name="login_check"),
     re_path('^register/',views.register,name="register"),
     re_path('^logout/',views.logoutthisuser,name="logout"),

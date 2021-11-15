@@ -14,7 +14,7 @@
         margin: 0 !important;
     }
     ul {
-        padding-left: 0;
+        padding-left: 0!important;
         list-style: none;
     }
     body::-webkit-scrollbar{
@@ -50,6 +50,11 @@
     }
     .play:before{
         content: '\ea15';
+        font-family: IcoMoon-Free;
+        font-style: normal;
+    }
+    .play2:before{
+        content: '\ea1c';
         font-family: IcoMoon-Free;
         font-style: normal;
     }

@@ -49,8 +49,8 @@
     </style>
 </head>
 <body>
+{% include 'topbar.html' %}
 <div id="app" @scroll="listenScroll">
-    {% include 'topbar.html' %}
     <div class="search-container">
         <div class="search-content">
             <ul class="search-content-search">
@@ -72,7 +72,7 @@
                 <ul class="search-result-user">
                     <li v-for="(item,index) in result.user.exactness">
                         <div>
-                            <img :src="avatar_url+userdetail.picture" alt="">
+                            <img :src="avatar_url+result.user.exactness[0].picture" alt="">
                         </div>
                         <div style="display: flex;flex-direction: column;justify-content: center;flex-grow: 1">
                             <div class="search-result-user-info">
@@ -180,7 +180,7 @@
                     </div>
                 </div>
             </div>
-            <div style="text-align: center;padding: 10px 10px;font-size: 15px;color: rgba(0,0,0,0.3)" >本站为个人兴趣，非商业用途，所有内容均收集于互联网公开资源，本站只提供WEB页面服务，不提供影片资源储存也不参与录制与上传，若本站收录内容无意侵犯了贵公司版权，请给网页底部邮箱地址来信，我会及时处理，谢谢合作。邮箱:2878305660@qq.com</div>
+            <div style="text-align: center;padding: 10px 10px;font-size: 15px;color: rgba(0,0,0,0.3);" >本站为个人兴趣，非商业用途，所有内容均收集于互联网公开资源，本站只提供WEB页面服务，不提供影片资源储存也不参与录制与上传，若本站收录内容无意侵犯了贵公司版权，请给网页底部邮箱地址来信，我会及时处理，谢谢合作。邮箱:2878305660@qq.com</div>
         </div>
     </div>
 </div>
@@ -200,18 +200,8 @@
                 table:false,
                 list:true,
             },
-            is_login:false,
-            userdetail:{
-                name: "{{ request.user.username }}",
-                id: "{{ request.user.id }}",
-                email: "{{ request.user.email }}",
-                is_active: "{{ request.user.is_active }}",
-                date_joined: "{{ request.user.date_joined }}",
-                gender: "{{ request.user.gender }}",
-                picture: "{{ request.user.picture }}",
-                fans: "{{ request.user.fans }}",
-                v_count:"{{ request.user.fans }}",
-            },
+            is_login:topbar.is_login,
+            userdetail:topbar.userdetail,
             video_url:"{% url "index" %}"+"video/",
             base_url:"{% url 'index' %}"+"search?q=",
             avatar_url: "{% static 'images/avatar/' %}",
@@ -219,26 +209,6 @@
             video_pic_url:"{% static 'videos/videopic/' %}",
         },
         methods: {
-            login:function() {
-                window.location.href = "{% url 'login' %}"
-            },
-            logout: async function () {
-                result = await axios({
-                    method: "GET",
-                    url: "{% url 'logout' %}",
-                })
-                if(result.data == "done"){
-                    location.reload()
-                }
-            },
-            is_login_check() {
-                if ("{{ request.user.is_authenticated }}" == "True") {
-                    this.is_login = true
-                    this.username = "{{ request.user.username }}"
-                } else {
-                    this.is_login = false
-                }
-            },
             jumpbyV_id(v_id) {
                 window.open(this.video_url + v_id)
             },
@@ -279,7 +249,6 @@
             },
         },
         mounted: function () {
-            this.is_login_check()
             that = this
             if (this.result.queen != 0) {
                 tmp = this.count

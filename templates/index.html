@@ -85,21 +85,11 @@
             user-select:none;
         }
 
-        .profile {
-            display: flex;
-            justify-content: center;
-            align-content: center;
-        }
-
         .admin {
             display: flex;
             justify-content: center;
             align-content: center;
             margin-bottom: 35px;
-        }
-
-        .profile-background {
-            background: url("{% static "images/background.jpg" %}") round;
         }
 
         .sidebar.active {
@@ -262,128 +252,6 @@
                 </div>
                 <div style="height: 30px"></div>
             </div>
-        </div>
-        <div v-if="is_login" v-show="flags.profile" class="profile">
-            <div class="profilecontent">
-                <div class="profile-detail">
-                    <div class="profile-background">
-                    </div>
-                    <div style="display: flex;justify-content: center">
-                        <img :src="this.avatar_url+userdetail.picture" alt="" class="profile-img">
-                    </div>
-                    <ul style="list-style: none" class="profile-info">
-                        <li>
-                            <div>{[ userdetail.name ]}
-                                <span v-if="this_user_admin">
-                                    (管理员)
-                                </span>
-                            </div>
-                        </li>
-                        <li style="display: flex">
-                            <div>
-                                粉丝:{[ userdetail.fans ]}
-                            </div>
-                            <div>
-                                获赞:0
-                            </div>
-                            <div>
-                                视频:{[ userdetail.v_count ]}个
-                            </div>
-                        </li>
-                    </ul>
-                    <div class="profile-content">
-                        <ul class="profile-content-btns">
-                            <li class="active" @click="changeProfileContent('myvideos',$event)">upload</li>
-                            <li @click="changeProfileContent('mycollection',$event)">star-empty</li>
-                        </ul>
-                        <div v-if="profile_content.myvideos" style="width: 100%">
-                            <div class="profile-content-myvideos-btn">
-                                <span @click="active_delbtn">trashcan</span>
-                                <hr style="margin: 0">
-                            </div>
-                            <ul class="profile-content-myvideos">
-                                <li v-for="(item,i) in videosList_mine.slice(videosPage.begin,videosPage.end)" class="videos-each" :id="'myvideo_'+item.v_id">
-                                    <div :style="{'background-image': 'url('+video_pic_url+item.v_pic+')','background-size':'cover'}" class="videos-each-background" @click="getVideo(item.v_id)"></div>
-                                    <span class="videos-each-tips" @click="getVideo(item.v_id)">
-                                        <i class="videos-each-play"></i>
-                                    </span>
-                                    <span class="videos-each-title" @click="getVideo(item.v_id)">
-                                        <h1>{[ item.v_title ]}</h1>
-                                        <p style="right: 10px">播放 : {[ item.v_play ]}</p>
-                                    </span>
-                                    </span>
-                                    <span class="videos-each-del" @click="delVideo($event,item.v_id)">
-                                        <p class="videos-each-del-content">cancel</p>
-                                    </span>
-                                </li>
-                            </ul>
-                            <div class="page-bar">
-                                <span @click="myvideosPrepage">arrow-left2</span>
-                                <span @click="myvideosNextpage">arrow-right2</span>
-                            </div>
-                        </div>
-                        <div v-if="profile_content.mycollection" style="width: 100%">
-                            <ul class="profile-content-mycollection"></ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="profile-other">
-                    <div class="profile-id">
-                        个人信息
-                        <hr/>
-                        <span style="font-weight: 600;letter-spacing: 2px"></span><span>id : {{ request.user.id }}</span><span>  加入 : {{ request.user.date_joined }} </span>
-                    </div>
-                    <div class="profile-message">
-                        <ul style="display: flex;list-style: none;justify-content: space-between;margin: 0">
-                            <li>消息 <span style="font-family: IcoMoon-Free;cursor: pointer" @click="refreshmsg"> loop2</span></li>
-                            <li><span style="font-family: IcoMoon-Free;cursor: pointer" @click="clearmsg">trashcan2</span></li>
-                        </ul>
-                        <hr/>
-                        <div class="profile-message-container">
-                            <ul class="profile-message-content">
-                                <li v-for="(item,i) in messages.msg">
-                                    <p>{[ item ]}</p>
-                                    <hr/>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <ul class="profile-tools">
-                        <li title="消息" class="profile-chat"><i></i></li>
-                        <li title="上传视频" class="profile-upload"><i></i></li>
-                        <li title="云盘" class="profile-cloud" @click="tocloud"><i></i></li>
-                        <li title="更改个人信息" class="profile-set"><i></i></li>
-                        <li title="注销" class="profile-logout" @click="logout"><i></i></li>
-                    </ul>
-                </div>
-            </div>
-            <div v-show="showDelMenu" class="del-warning">
-                    <div class="del-warning-content">
-                        <div class="del-warning-title">
-                            <span style="font-size: 15px">删除视频</span>
-                            <span @click="closeDelmenu" style="cursor: pointer">close</span>
-                        </div>
-                        <div class="del-warning-warn">
-                            <span style="color: red;font-size: 20px;margin: 0px 20px">warning</span>
-                            <span style="color: white;display: flex;align-items: center;font-size: 15px">删除的视频与弹幕不可恢复</span>
-                        </div>
-                        <div class="del-warning-detail">
-                            List:
-                            <ul class="del-warning-list">
-                                <li v-for="(item,index) in delList">
-                                    <a @click="jumpbyv_id(item.v_id)">《 {[item.v_title]} 》</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="del-warning-final">
-                            <div class="input-group">
-                              <input type="text" class="form-control" placeholder="请输入'y'/'Y'进行确认" aria-label="Recipient's username" aria-describedby="button-addon2" v-model="Del_sure">
-                              <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="delVideoSure"
-                              >确认</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
         </div>
         <div v-if="this_user_admin" v-show="flags.admin" class="admin">
             <div class="admin-content">
@@ -562,24 +430,18 @@
                     <i class="videosbtn"></i>
                     <p>视频</p>
                 </li>
-                {% if request.user.is_authenticated %}
-                    <li id="profile" @click="changePage('profile')">
-                        <i class="profilebtn"></i>
-                        <p>个人资料</p>
-                    </li>
                     {% if request.user.is_superuser == True %}
                         <li id="admin" @click="changePage('admin')">
                             <i class="adminbtn"></i>
                             <p>管理</p>
                         </li>
                     {% endif %}
-                {% endif %}
             </ul>
             <div class="login">
                 {% if request.user.is_authenticated %}
-                    <img :src="this.avatar_url+userdetail.picture" alt="" style="border: 4px solid #d3d3d3">
+                    <img :src="this.avatar_url+userdetail.picture" alt="" style="border: 4px solid #d3d3d3" @click="toProfile()">
                     <span class="logout" @click="logout"><i></i></span>
-                    <p class="loginbtn active">
+                    <p class="loginbtn active" @click="toProfile()">
                         {[ userdetail.name ]}
                     </p>
                 {% else %}
@@ -605,30 +467,15 @@
             show_more_cat:false,
             show_more_btn:true,
             videosList:[],
-            delList:[],
             videosList_isLoading:false,
             videosList_new:{{ newvideolist|safe }},
             videosList_hot:{{ hotvideolist|safe }},
             videosList_collect:{{ collectvideolist|safe }},
-            videosList_mine:[],
-
-            videosPage:{
-                now:"",
-                page:"",
-                total:"",
-                begin: 0,
-                end: 8,
-            },
-            messages: [],
             videosList_tags:{
                 "new":true,
                 "popular": false,
                 "follow": false,
                 "collect": false,
-            },
-            profile_content:{
-                "myvideos":true,
-                "mycollection":false
             },
             screen_choose: "auto",
             this_user_admin: false,
@@ -647,7 +494,6 @@
             flags: {
                 default: true,
                 videos: false,
-                profile: false,
                 admin: false,
             },
             serverDetaillist: {
@@ -665,19 +511,19 @@
             },
             AllUsers: null,
             AllVideoAccusation: null,
-            showDelMenu: false,
             serverupdate: false,
             Interval: "",
-            Del_sure:"",
             videos_holder_clientHeight:null,
             videos_new_scrollHeight:null,
             Del_msg:null,
             terminal_user: "administrator",
             terminal_password: window.btoa("123456"),
             terminal_cmd:"",
+
             q:"",
             video_url:"{% url "index" %}"+"video/",
             base_url:"{% url 'index' %}"+"search?q=",
+            profile_url:"{% url 'profile' %}"+"?user=",
             avatar_url: "{% static 'images/avatar/' %}",
             logo:"{% static 'images/logo.png' %}",
             video_pic_url:"{% static 'videos/videopic/' %}",
@@ -709,12 +555,14 @@
                 window.open(this.base_url+this.q)
                 this.q=""
             },
+            toProfile:function (id='me'){
+                if(id=='me'){
+                   window.open('{% url 'profile' %}')
+                }
+            },
             jumpbyv_id:function (v_id){
                 window.open(this.video_url+v_id)
             },
-
-
-
             showsidebar: function (){
                 document.querySelector("#app").classList.toggle("active")
                 document.querySelector(".sidebar").classList.toggle("active")
@@ -748,9 +596,6 @@
             hidden_videoAccusation(){
                 document.querySelector(".VideoAccusation").classList.toggle("active")
                 document.querySelector(".admin-VideoAccusation-card").classList.toggle("active")
-            },
-            tocloud: function () {
-                window.open("https://cloud.lili-secretbase.com/");
             },
             Del_user:async function(id) {
                 if(id == this.userdetail.id){
@@ -945,102 +790,6 @@
                 }
                 this.videosList_isLoading = false
             },
-            getmorecollectvideo :async function(){
-                let param = new URLSearchParams()
-                param.append("count",this.videosList_collect.length)
-                param.append("user_id",this.userdetail.id)
-                result = await axios({
-                    method:"POST",
-                    url:"{% url 'getMoreCollectVideo' %}",
-                    data: param
-                })
-            },
-            getmyvideo :async function(){
-                let param = new URLSearchParams()
-                param.append("user_id",this.userdetail.id)
-                result = await axios({
-                    method:"POST",
-                    url:"{% url 'getmyvideo' %}",
-                    data: param
-                })
-                this.videosList_mine  = result.data
-                this.videosPage.total = this.videosList_mine.length
-                this.videosPage.page = Math.ceil(this.videosPage.total/8)
-                this.videosPage.now = 1
-            },
-            active_delbtn:function (){
-                document.querySelector(".profile-content-myvideos").classList.toggle('active')
-            },
-            closeDelmenu:function (){
-                this.showDelMenu = false
-                this.delList = []
-            },
-            delVideo: function(e,v_id){
-                this.showDelMenu = true
-                for(let item of this.videosList_mine){
-                    if(item["v_id"] == v_id){
-                        this.delList.push(item)
-                    }
-                }
-            },
-            delVideoSure:async function (){
-                sure = this.Del_sure.toLowerCase()
-                node =  document.querySelector('#myvideo_'+this.delList[0]["v_id"])
-                v_id = this.delList[0]["v_id"]
-                videoIndex = null
-                for(let item of this.videosList_mine){
-                    if(item["v_id"]==v_id){
-                        videoIndex = this.videosList_mine.indexOf(item)
-                    }
-                }
-                if(sure=='y'){
-                    let param = new URLSearchParams()
-                    param.append("v_id",v_id)
-                    result = await axios({
-                        method:"POST",
-                        url:"{% url 'delVideo' %}",
-                        data: param
-                    })
-                    this.refreshmsg()
-                    node.classList.toggle("dying")
-                    setTimeout(function(){
-                        vm.videosList_mine.splice(videoIndex, 1)
-                        node.classList.toggle("dying")
-                    },500);
-                    this.Del_sure = ""
-                    this.showDelMenu = false
-                    this.delList = []
-                }
-                else{
-                    console.log("输入的什么JB")
-                }
-            },
-            refreshmsg:async function (){
-                let param = new URLSearchParams()
-                param.append("user_id",this.userdetail.id)
-                result = await axios({
-                    method:"POST",
-                    url:"{% url 'refreshmsg' %}",
-                    data: param
-                })
-                this.messages = result.data
-            },
-            clearmsg:async function (){
-                if(this.messages.msgcount==0){
-                    alert("本来就没有")
-                }
-                else{
-                    let param = new URLSearchParams()
-                    param.append("user_id",this.userdetail.id)
-                    result = await axios({
-                        method:"POST",
-                        url:"{% url 'clearmsg' %}",
-                        data: param
-                    })
-                    console.log(result)
-                    this.refreshmsg()
-                }
-            },
             rejectVideoAcc:async function(a_id){
                 let param = new URLSearchParams()
                 param.append("a_id",a_id)
@@ -1062,24 +811,6 @@
                 this.profile_content[tag] = true
 
             },
-            myvideosNextpage:function(){
-                if(this.videosPage.end <= this.videosPage.total){
-                    this.videosPage.begin += 8
-                    this.videosPage.end += 8
-                }
-                else{
-                    return
-                }
-            },
-            myvideosPrepage:function(){
-                if(this.videosPage.begin > 0){
-                    this.videosPage.begin -= 8
-                    this.videosPage.end -= 8
-                }
-                else{
-                    return
-                }
-            },
             listenScroll:function(){
                 if(document.querySelector('.videos').scrollTop + document.querySelector('.videos').offsetHeight > document.querySelector('.videos').scrollHeight - 40 &&  this.videosList_isLoading!=true){
                     this.videosList_isLoading=true
@@ -1089,11 +820,6 @@
         },
         mounted: function () {
             this.is_login_check()
-            if(this.is_login){
-                this.getmorecollectvideo()
-                this.getmyvideo()
-                this.refreshmsg()
-            }
             if (this.this_user_admin) {
                 this.getAllVideoAccusation()
                 this.userDetail()

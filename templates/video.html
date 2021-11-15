@@ -68,8 +68,35 @@
     </style>
 </head>
 <body>
+{% include 'topbar.html' %}
 <div id="app">
-    {% include 'topbar.html' %}
+    <div class="videos-accusation" v-show="AccMenu">
+        <div class="videos-accusation-content">
+            <div class="videos-accusation-title">
+                <span></span>
+                <span style="font-size: 16px">举报</span>
+                <span style="cursor: pointer" @click="closeAccMenu">cancel</span>
+            </div>
+            <div class="videos-accusation-warning">
+                <span style="color: red;font-size: 20px;margin: 0px 20px">warning</span>
+                <span style="color: black;display: flex;align-items: center;font-size: 15px">禁止恶意举报行为</span>
+            </div>
+            <div class="videos-accusation-reason">
+                <div class="form-floating">
+                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                              style="height: 150px" v-model="AccReason" maxlength="100"></textarea>
+                    <label for="floatingTextarea2">请描述举报理由:</label>
+                </div>
+                <ul class="videos-accusation-btns">
+                    <li style="font-family: '微软雅黑 Light'">{[ AccReason.length ]}/100字 <p style="color: red">{[ AccResult
+                        ]}</p></li>
+                    <li>
+                        <button type="button" class="btn btn-outline-secondary" @click="report">提交</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
     <div class="videos" @scroll="listenScroll">
         <div class="videos-holder">
             <div class="videocontent">
@@ -135,11 +162,11 @@
                         <li>
                             <i class="date"></i>&nbsp;{{ v_time.v_time_year }}年{{ v_time.v_time_month }}月{{ v_time.v_time_day }}日 {{ v_time.v_time_hour }}:{{ v_time.v_time_minute }}:{{ v_time.v_time_second }}
                         </li>
-                        <li><i class="play"></i>&nbsp;{{ v_play }}</li>
-                        <li><i class="good"></i>&nbsp;{{ v_like }}</li>
-                        <li><i class="collect"> </i>&nbsp;{{ v_collect }}</li>
+                        <li><i class="play"></i>&nbsp;{[ video_detail.v_play ]}</li>
+                        <li><i class="good"></i>&nbsp;{[ video_detail.v_like ]}</li>
+                        <li><i class="collect"> </i>&nbsp;{[ video_detail.v_collect ]}</li>
                     </ul>
-                    <h1 class="video-title">{{ v_title }}</h1>
+                    <h1 class="video-title"><span class="play2" style="margin-right: 5px"></span> {{ v_title }}</h1>
                 </div>
                 <div class="videos-tags">
                     <ul class="videos-tags-list">
@@ -168,7 +195,7 @@
                 </div>
                 <div class="video-discuss" v-if="is_login">
                     <div class="video-discuss-content">
-                        <div class="video-discuss-profile">
+                        <div class="video-discuss-profile" >
                             <img :src="avatar_url+userdetail.picture" alt="">
                         </div>
                         <div class="form-floating video-discuss-input">
@@ -345,33 +372,6 @@
             </div>
         </div>
     </div>
-    <div class="videos-accusation" v-show="AccMenu">
-        <div class="videos-accusation-content">
-            <div class="videos-accusation-title">
-                <span></span>
-                <span style="font-size: 16px">举报</span>
-                <span style="cursor: pointer" @click="closeAccMenu">cancel</span>
-            </div>
-            <div class="videos-accusation-warning">
-                <span style="color: red;font-size: 20px;margin: 0px 20px">warning</span>
-                <span style="color: black;display: flex;align-items: center;font-size: 15px">禁止恶意举报行为</span>
-            </div>
-            <div class="videos-accusation-reason">
-                <div class="form-floating">
-                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-                              style="height: 150px" v-model="AccReason" maxlength="100"></textarea>
-                    <label for="floatingTextarea2">请描述举报理由:</label>
-                </div>
-                <ul class="videos-accusation-btns">
-                    <li style="font-family: '微软雅黑 Light'">{[ AccReason.length ]}/100字 <p style="color: red">{[ AccResult
-                        ]}</p></li>
-                    <li>
-                        <button type="button" class="btn btn-outline-secondary" @click="report">提交</button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
 </div>
 </body>
 <script>
@@ -402,17 +402,7 @@
                 "v_tags": "{{ v_tags }}",
                 "d_content": {{ discuss|safe }},
             },
-            userdetail:{
-                name: "{{ request.user.username }}",
-                id: "{{ request.user.id }}",
-                email: "{{ request.user.email }}",
-                is_active: "{{ request.user.is_active }}",
-                date_joined: "{{ request.user.date_joined }}",
-                gender: "{{ request.user.gender }}",
-                picture: "{{ request.user.picture }}",
-                fans: "{{ request.user.fans }}",
-                v_count:"{{ request.user.fans }}",
-            },
+            userdetail:topbar.userdetail,
             video_option: {
                 controls: true,
                 autoplay: true,
@@ -436,7 +426,7 @@
             tags: [],
             input: "",
             fromhere: 0,
-            is_login: false,
+            is_login: topbar.is_login,
             AccMenu: false,
             AccReason: "",
             AccResult: "",
@@ -444,13 +434,16 @@
             q: "",
             video_url:"{% url "index" %}"+"video/",
             base_url:"{% url 'index' %}"+"search?q=",
-            avatar_url: "{% static 'images/avatar/' %}",
+            avatar_url: topbar.avatar_url,
             discuss: "",
             discuss_msg: "",
             answerTmp:{},
             videosList_isLoading:false,
         },
         methods: {
+            login:function() {
+                topbar.login()
+            },
             showAnswer:function (id){
                     document.querySelector('#answer_'+id).classList.toggle('active')
                     answerTextarea = document.querySelector('#answer_'+id).querySelector('.video-answer-input').querySelector('textarea')
@@ -461,10 +454,6 @@
                         }
                     }
                     answerTextarea.blur()
-            },
-            search: function () {
-                window.open(this.base_url + this.q)
-                this.q = ""
             },
             searchByTag: function (tag) {
                 window.open(this.base_url + tag)
@@ -486,7 +475,7 @@
                 if (this.is_login) {
                     this.AccMenu = true
                 } else {
-                    return
+                    this.login()
                 }
             },
             closeAccMenu: function () {
@@ -530,26 +519,6 @@
                 }
                 this.answerTmp[d_id] = ""
 
-            },
-            login:function() {
-                window.location.href = "{% url 'login' %}"
-            },
-            logout: async function () {
-                result = await axios({
-                    method: "GET",
-                    url: "{% url 'logout' %}",
-                })
-                if(result.data == "done"){
-                    location.reload()
-                }
-            },
-            is_login_check() {
-                if ("{{ request.user.is_authenticated }}" == "True") {
-                    this.is_login = true
-                    this.username = "{{ request.user.username }}"
-                } else {
-                    this.is_login = false
-                }
             },
             played: async function (id) {
                 let param = new URLSearchParams()
@@ -713,8 +682,12 @@
                     data: param,
                 })
                 this.followornot = result.data.code
+
             },
             love: async function () {
+                if(!this.is_login){
+                    this.login()
+                }
                 let param = new URLSearchParams()
                 param.append('user_id', {{ request.user.id }})
                 param.append('video_id', this.video_detail.v_id)
@@ -726,8 +699,17 @@
                 })
                 console.log(result.data.msg)
                 this.loveornot = result.data.code
+                if(result.data.code==1){
+                    this.video_detail.v_like +=1
+                }
+                else{
+                    this.video_detail.v_like -=1
+                }
             },
             collect: async function () {
+                if(!this.is_login){
+                    this.login()
+                }
                 let param = new URLSearchParams()
                 param.append('user_id', this.userdetail.id)
                 param.append('video_id', this.video_detail.v_id)
@@ -739,10 +721,16 @@
                 })
                 console.log(result.data.msg)
                 this.collectornot = result.data.code
+                if(result.data.code==1){
+                    this.video_detail.v_collect +=1
+                }
+                else{
+                    this.video_detail.v_collect -=1
+                }
             },
             report: async function () {
                 if (this.AccReason == "") {
-                    alert("丢你")
+                    this.AccResult = "丢你"
                     return
                 }
                 let param = new URLSearchParams()
@@ -817,7 +805,6 @@
                     that.screenWidth = window.screenWidth
                 })()
             }
-            this.is_login_check()
             tagsTmp = this.video_detail.v_tags.split(",")
             if (tagsTmp[0].toLowerCase() == "none") {
                 this.tags.push("无标签")

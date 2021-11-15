@@ -40,7 +40,6 @@ def index(request):
     for i in result:
         i["v_time"] = i["v_time"].strftime('%Y-%m-%d %H:%M:%S')
         videos.append(i)
-    collectvideo = collecttable
     for i in range(10):
         Newvideos.append(videos[i])
     return render(request,'index.html',{
@@ -86,6 +85,15 @@ def refreshmsg(request):
     })
 
 @csrf_exempt
+def getNameAndPic(request):
+    u_id = request.GET.get("u_id")
+    return JsonResponse({
+        "username":Userdatabase.getinfo(id=u_id,info="username"),
+        "picture": Userdatabase.getinfo(id=u_id, info="picture"),
+        "password": Userdatabase.getinfo(id=u_id, info="password"),
+    })
+
+@csrf_exempt
 def clearmsg(request):
     if(request.method=="POST"):
         result = messageTable.delMessagesByUser(request.POST.get("user_id"))
@@ -99,7 +107,13 @@ def clearmsg(request):
                 "msg": "删除失败",
                 "code": 0
             })
-
+@csrf_exempt
+def java_checkAuther(request):
+    username = request.GET.get("username")
+    password = request.GET.get("password")
+    id = request.GET.get("id")
+    print(username,password,id)
+    return HttpResponse("true")
 @csrf_exempt
 def login_check(request):
     if (request.method == 'GET'):
@@ -141,6 +155,26 @@ def loginthisuser(request,user):
 def logoutthisuser(request):
     logout(request)
     return HttpResponse("done")
+def profile(request):
+    user_id = request.GET.get("user")
+    if not user_id:
+        if request.user.is_authenticated:
+            return render(request, 'profile.html', {
+                "newvideolist": [],
+                "hotvideolist": [],
+                "collectvideolist": [],
+            })
+        else:
+            return render(request,'notfound.html')
+    else:
+        if user_id=="me":
+            return render(request, 'profile.html', {
+                "newvideolist": [],
+                "hotvideolist": [],
+                "collectvideolist": [],
+            })
+        else:
+            return render(request,'notfound.html')
 
 def search_page(request):
     q = request.GET.get("q")

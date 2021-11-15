@@ -19,7 +19,7 @@
                 <i class="logout"></i>
             </li>
             <li>
-                 <img :src="this.avatar_url+userdetail.picture" alt="" class="video-user-pic" >
+                 <img :src="this.avatar_url+userdetail.picture" alt="" class="video-user-pic" v-if="is_login" @click="toProfile('me')">
             </li>
         </ul>
         <ul class="video-user-info" v-if="!is_login">
@@ -27,4 +27,66 @@
                 <span class="video-user-info-login" @click="login">登录</span>
             </li>
         </ul>
-    </div>
+</div>
+<script>
+    const topbar = new Vue({
+        el: ".warning-myself",
+        delimiters: ['{[', ']}'],
+        data:{
+            q: "",
+            video_url:"{% url "index" %}"+"video/",
+            base_url:"{% url 'index' %}"+"search?q=",
+            avatar_url: "{% static 'images/avatar/' %}",
+            profile_url:"{% url 'profile' %}"+"?user=",
+            is_login: false,
+            userdetail:{
+                name: "{{ request.user.username }}",
+                id: "{{ request.user.id }}",
+                email: "{{ request.user.email }}",
+                is_active: "{{ request.user.is_active }}",
+                date_joined: "{{ request.user.date_joined }}",
+                gender: "{{ request.user.gender }}",
+                picture: "{{ request.user.picture }}",
+                fans: "{{ request.user.fans }}",
+                v_count:"{{ request.user.fans }}",
+            },
+        },
+        methods:{
+            search: function () {
+                window.open(this.base_url + this.q)
+                this.q = ""
+            },
+            login:function() {
+                window.location.href = "{% url 'login' %}"
+            },
+            logout: async function () {
+                result = await axios({
+                    method: "GET",
+                    url: "{% url 'logout' %}",
+                })
+                if(result.data == "done"){
+                    location.reload()
+                }
+            },
+            is_login_check() {
+                if ("{{ request.user.is_authenticated }}" == "True") {
+                    this.is_login = true
+                    this.username = "{{ request.user.username }}"
+                } else {
+                    this.is_login = false
+                }
+            },
+            toProfile:function (id='me'){
+                if(id=='me'){
+                    window.open('{% url 'profile' %}')
+                }
+                else{
+                    window.open(this.profile_url+id)
+                }
+            },
+        },
+        mounted: function () {
+            this.is_login_check()
+        },
+    })
+</script>

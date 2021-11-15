@@ -512,11 +512,11 @@
 }
 
 .video-title {
-    font-weight: 700;
+    font-weight: 600;
     font-size: 20px;
     margin: 0px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     color: rgba(0, 0, 0, 0.5);
 }
@@ -649,7 +649,7 @@
     -moz-user-select: none;
     -webkit-user-select: none;
     user-select: none;
-    z-index: 11;
+    z-index: 20;
 }
 
 .videos-accusation-title {
