@@ -106,7 +106,7 @@ def getNameAndPic(request):
         "username":Userdatabase.getinfo(id=u_id,info="username"),
         "picture": Userdatabase.getinfo(id=u_id, info="picture"),
         "password": Userdatabase.getinfo(id=u_id, info="password"),
-        "is_login": str(request.user.is_authenticated())
+        "is_online": str(request.user.is_authenticated())
     })
 
 @csrf_exempt
