@@ -180,10 +180,10 @@
                 <div class="video-profile">
                     <div style="display: flex;width:200px;">
                         <span class="video-profilepic">
-                                        <img :src="avatar_url+video_detail.u_pic" alt="">
-                                    </span>
+                            <img :src="avatar_url+video_detail.u_pic" alt="" @click="toProfile(video_detail.user_id)">
+                        </span>
                         <span class="video-profile-name">
-                           <div><a href="javascript:">{{ v_auther }}</a></div>
+                           <div><a href="javascript:" @click="toProfile(video_detail.user_id)">{{ v_auther }}</a></div>
                             <a href="javascript:" style="font-size: 10px">{{ fans }} 位订阅者</a>
                         </span>
                     </div>
@@ -228,11 +228,11 @@
                         :id="'discuss_'+item.d_id">
                         <div class="video-discuss-list-each-div">
                             <div class="video-discuss-list-each-pic">
-                                <img :src="avatar_url+item.userdetail.picture" alt="">
+                                <img :src="avatar_url+item.userdetail.picture" alt="" @click="toProfile(item.u_id)" style="cursor: pointer">
                             </div>
                             <div class="video-discuss-list-each-content">
                                 <div>
-                                    <h2 style="font-size: 12px;letter-spacing: 1px;margin-bottom: 5px;font-weight: 600">
+                                    <h2 style="font-size: 12px;letter-spacing: 1px;margin-bottom: 5px;font-weight: 600;cursor: pointer" @click="toProfile(item.u_id)">
                                         {[item.userdetail.username]}
                                     </h2>
                                     <p style="white-space: normal;">
@@ -253,8 +253,8 @@
                                 <ul class="video-answer-list-container">
                                     <li v-for="(answer,index) in item.answer" class="video-answer-list-each" >
                                         <div class="video-answer-list-each-content">
-                                            <img :src="avatar_url+answer.userdetail.picture" alt="">
-                                            <div class="video-answer-list-each-word"><span> {[ answer.userdetail.username ]} : </span>{[ answer.answer_content ]}</div>
+                                            <img :src="avatar_url+answer.userdetail.picture" alt="" @click="toProfile(answer.u_id)" style="cursor: pointer">
+                                            <div class="video-answer-list-each-word"><span @click="toProfile(answer.u_id)" style="cursor: pointer"> {[ answer.userdetail.username ]}</span> : {[ answer.answer_content ]}</div>
                                         </div>
                                         <div class="video-answer-list-each-date">
                                             <span>{[ answer.answer_time.answer_time_year ]}年{[ answer.answer_time.answer_time_month ]}月{[ answer.answer_time.answer_time_day ]}日 {[ answer.answer_time.answer_time_hour ]}:{[ answer.answer_time.answer_time_minute ]}:{[ answer.answer_time.answer_time_second ]}
@@ -443,6 +443,9 @@
             videosList_isLoading:false,
         },
         methods: {
+            toProfile:function (id){
+                topbar.toProfile(id)
+            },
             login:function() {
                 topbar.login()
             },

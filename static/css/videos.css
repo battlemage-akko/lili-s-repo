@@ -349,6 +349,7 @@
     height: 60px;
     width: 60px;
     border-radius: 70px;
+    cursor: pointer;
 }
 
 .video-profile-name {
