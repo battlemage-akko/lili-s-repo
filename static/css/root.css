@@ -1,143 +1,200 @@
-    :root {
-        --Head-top: 80px;
-        --Test-color: null;
-        --Background-color: #eeeef3;
-        --shadow: 0 3px 3px 0 rgba(54, 58, 80, 0.32);
+:root {
+    --Head-top: 80px;
+    --Test-color: null;
+    --Background-color: #eeeef3;
+    --shadow: 0 3px 3px 0 rgba(54, 58, 80, 0.32);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+p {
+    margin: 0 !important;
+}
+
+ul {
+    list-style: none;
+}
+
+body::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    scrollbar-arrow-color: red;
+}
+
+body::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.4);
+    scrollbar-arrow-color: red;
+}
+
+body::-webkit-scrollbar-track { /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.msg:before {
+    content: "\e945";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+
+.menus:before {
+    content: "\ea7a";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+
+.logout:before {
+    content: "\ea14";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+
+.play:before {
+    content: '\ea15';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+.clock:before{
+    content: "\e94e";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+.play2:before {
+    content: '\ea1c';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+
+.search:before {
+    content: "\e986";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+
+.list:before {
+    content: '\e9ba';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+
+.date:before {
+    content: '\e953';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+
+.tablelist:before {
+    content: '\ea71';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+
+.auther:before {
+    content: '\e971';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+
+.male:before {
+    content: '\e9dc';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+    color: rgb(104, 165, 255);
+    font-size: 20px;
+}
+
+.female:before {
+    content: '\e9dd';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+    color: rgb(255, 192, 203);
+    font-size: 20px;
+}
+
+.auther:before {
+    content: '\e971';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+.picture:before{
+    content: '\e90d';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+.sliders:before {
+    content: '\e992';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+
+.share::before {
+    content: "\ea82";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+
+.pay::before {
+    content: "\e93e";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+
+.good::before {
+    content: "\e9da";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+
+.collect::before {
+    content: "\e9d7";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+
+.accusation:before {
+    content: "\ea07";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+
+.collect.active::before {
+    content: "\e9d9";
+    color: #f7d400;
+    font-style: normal;
+}
+
+.good.active {
+    color: #ff8a8a;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg)
     }
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        scroll-behavior: smooth;
+    to {
+        transform: rotate(360deg)
     }
-    p {
-        margin: 0 !important;
-    }
-    ul {
-        padding-left: 0!important;
-        list-style: none;
-    }
-    body::-webkit-scrollbar{
-            width: 5px;
-            height: 5px;
-            scrollbar-arrow-color: red;
-        }
-        body::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
-            border-radius: 5px;
-            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-            background: rgba(0,0,0,0.4);
-            scrollbar-arrow-color:red;
-        }
-        body::-webkit-scrollbar-track {/*滚动条里面轨道*/
-            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-            border-radius: 0;
-            background: rgba(0,0,0,0.1);
-        }
-    .msg:before{
-        content: "\e945";
-        font-family: IcoMoon-Free;
-        font-style: normal;
-    }
-    .menus:before{
-        content: "\ea7a";
-        font-family: IcoMoon-Free;
-        font-style: normal;
-    }
-    .logout:before{
-        content: "\ea14";
-        font-family: IcoMoon-Free;
-        font-style: normal;
-    }
-    .play:before{
-        content: '\ea15';
-        font-family: IcoMoon-Free;
-        font-style: normal;
-    }
-    .play2:before{
-        content: '\ea1c';
-        font-family: IcoMoon-Free;
-        font-style: normal;
-    }
-    .search:before{
-        content: "\e986";
-        font-family: IcoMoon-Free;
-        font-style: normal;
-    }
-    .list:before{
-        content: '\e9ba';
-        font-family: IcoMoon-Free;
-        font-style: normal;
-    }
-    .date:before{
-        content: '\e953';
-        font-family: IcoMoon-Free;
-        font-style: normal;
-    }
-    .tablelist:before{
-        content: '\ea71';
-        font-family: IcoMoon-Free;
-        font-style: normal;
-    }
-    .auther:before{
-        content: '\e971';
-        font-family: IcoMoon-Free;
-        font-style: normal;
-    }
-    .sliders:before{
-        content: '\e992';
-        font-family: IcoMoon-Free;
-        font-style: normal;
-    }
-    .share::before{
-        content: "\ea82";
-        font-family: IcoMoon-Free;
-        font-style: normal;
-    }
-    .pay::before{
-        content: "\e93e";
-        font-family: IcoMoon-Free;
-        font-style: normal;
-    }
-    .good::before{
-        content: "\e9da";
-        font-family: IcoMoon-Free;
-        font-style: normal;
-    }
-    .collect::before{
-        content: "\e9d7";
-        font-family: IcoMoon-Free;
-        font-style: normal;
-    }
-    .accusation:before{
-        content: "\ea07";
-        font-family: IcoMoon-Free;
-        font-style: normal;
-    }
-    .collect.active::before{
-        content: "\e9d9";
-        color: #f7d400;
-        font-style: normal;
-    }
-    .good.active{
-        color: #ff8a8a;
-    }
-    @keyframes rotate{
-        from{
-            transform: rotate(0deg)
-        }
-        to{
-            transform: rotate(360deg)
-        }
-    }
-    .loading.active{
-        animation: rotate 1s linear infinite;
-    }
-    .loading{
-        display: inline-block;
-    }
-    .loading:before{
-        font-size: 25px;
-        content: "\e97c";
-        font-style: normal;
-        font-family: IcoMoon-Free;
-    }
+}
+
+.loading.active {
+    animation: rotate 1s linear infinite;
+}
+
+.loading {
+    display: inline-block;
+}
+
+.loading:before {
+    font-size: 25px;
+    content: "\e97c";
+    font-style: normal;
+    font-family: IcoMoon-Free;
+}

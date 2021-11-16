@@ -16,6 +16,27 @@ class AppUser(AbstractUser):
         return AppUser.objects.filter(id=id).values()[0]["fans"]
     def getinfo(id, info):
         return AppUser.objects.filter(id=id).values()[0][info]
+    def getProfile(id):
+        result = AppUser.objects.filter(id=int(id)).all().values()
+        if result:
+            return {
+                    "username": result[0]["username"],
+                    "id": result[0]["id"],
+                    "picture": result[0]["picture"],
+                    "fans": result[0]["fans"],
+                    "v_count": result[0]["v_count"],
+                    "desc": result[0]["desc"],
+                    "is_superuser":str(result[0]["is_superuser"]),
+                    "is_me":"",
+                    "join":{
+                        "year":result[0]["date_joined"].year,
+                        "month": result[0]["date_joined"].month,
+                        "day": result[0]["date_joined"].day
+                    },
+                    "gender":result[0]["gender"],
+                }
+        else:
+            return 0
     def searchByName(name):
         tmp1 = AppUser.objects.filter(username=name).all().values()
 

@@ -1,60 +1,69 @@
- .warning-myself{
-            position: fixed;
-            width: calc(100% - 5px);
-            height: 60px;
-            background-color: white;
-            z-index: 10;
-            display: flex;
-            justify-content: space-between;
-            padding: 0px 30px;
-        }
-        .video-user-info{
-            display: flex;
-            margin: 0px;
-            min-width: 100px;
-        }
-        .video-user-info li{
-            height: 100%;
-            justify-content: center;
-            display: flex;
-            flex-direction: column;
-            margin: 0px 20px;
-        }
-        .video-user-info i{
-            cursor: pointer;
-        }
-        .video-user-pic{
-            height: 40px;
-            width: 40px;
-            border-radius: 50px;
-            cursor: pointer;
-            border: 3px solid rgba(0,0,0,0.1);
-        }
-        .videos-top-search{
-            padding: 10px 100px;
-            max-width: 800px;
-        }
-        .videos-top-search-btn:before{
-            content: "\e986" ;
-            font-family: IcoMoon-Free;
-            font-style: normal;
-        }
-        .video-user-info-login{
-            padding: 5px 10px;
-            border: 1px solid;
-            cursor: pointer;
-            transition: all .3s ease;
-            flex-wrap: nowrap;
-            font-size: 15px;
+.warning-myself {
+    position: fixed;
+    width: calc(100% - 5px);
+    height: 60px;
+    background-color: white;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 30px;
+}
 
-        }
-        .video-user-info-login:hover{
-            background-color: black;
-            color: #e3e3e3;
-        }
-        @media (max-width: 750px){
-            .videos-top-search{
-                opacity: 0;
-            }
-        }
+.video-user-info {
+    display: flex;
+    margin: 0px;
+    min-width: 100px;
+}
+
+.video-user-info li {
+    height: 100%;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    margin: 0px 20px;
+}
+
+.video-user-info i {
+    cursor: pointer;
+}
+
+.video-user-pic {
+    height: 40px;
+    width: 40px;
+    border-radius: 50px;
+    cursor: pointer;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+.videos-top-search {
+    padding: 10px 100px;
+    max-width: 800px;
+}
+
+.videos-top-search-btn:before {
+    content: "\e986";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+
+.video-user-info-login {
+    padding: 5px 10px;
+    border: 1px solid;
+    cursor: pointer;
+    transition: all .3s ease;
+    flex-wrap: nowrap;
+    font-size: 15px;
+
+}
+
+.video-user-info-login:hover {
+    background-color: black;
+    color: #e3e3e3;
+}
+
+@media (max-width: 750px) {
+    .videos-top-search {
+        opacity: 0;
+    }
+}
 

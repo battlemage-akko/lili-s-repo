@@ -33,6 +33,7 @@
             display: flex;
             justify-content: center;
             align-content: center;
+            min-width: 950px;
         }
         .profile-background {
             background: url("{% static "images/background.jpg" %}") round;
@@ -47,29 +48,50 @@
                 <div class="profilecontent">
                     <div class="profile-detail">
                         <div class="profile-background">
+                            <span v-if="is_me" class="profile-background-change picture"></span>
                         </div>
-                        <div style="display: flex;justify-content: center">
-                            <img :src="this.avatar_url+userdetail.picture" alt="" class="profile-img">
+                        <div>
+                            <img :src="this.avatar_url+profile_detail.picture" alt="" class="profile-img">
                         </div>
-                        <ul style="list-style: none" class="profile-info">
+                        <ul class="profile-info">
                             <li>
-                                <div>{[ userdetail.name ]}
-                                    <span v-if="this_user_admin">
+                                <div class="profile-info-name">
+                                    <span v-if="profile_detail.gender == 'male'" class="male"></span>
+                                    <span v-if="profile_detail.gender == 'female'" class="female"></span>
+                                    {[ profile_detail.username ]}
+                                    <span v-if="profile_detail.is_superuser == 'True'">
                                         (管理员)
                                     </span>
                                 </div>
                             </li>
                             <li style="display: flex">
-                                <div>
-                                    粉丝:{[ userdetail.fans ]}
-                                </div>
+
                                 <div>
                                     获赞:0
                                 </div>
                                 <div>
-                                    视频:{[ userdetail.v_count ]}个
+                                    视频: {[ profile_detail.v_count ]}个
                                 </div>
                             </li>
+                        </ul>
+                        <div class="profile-info-desc" v-if="profile_detail.desc">
+                            {[profile_detail.desc]}
+                        </div>
+                        <ul class="profile-info-other">
+                                <li style="color: rgba(0,0,0,0.5);font-family: 'Segoe UI';font-size: 15px">
+                                    <div style="margin-bottom: 5px">
+                                        <span><span style="font-weight: 700">{[ profile_detail.fans ]}</span> 关注者</span>
+                                        <span style="margin-left: 20px"><span style="font-weight: 700">0</span> 正在关注</span>
+                                    </div>
+                                    <div>
+                                        <span class="clock"> 加入于 {[ profile_detail.join.year ]}年{[ profile_detail.join.month ]}月{[ profile_detail.join.day ]}日 </span>
+                                    <span class="auther" style="margin-left: 20px"> id号为 <span style="font-weight: 700">{[ profile_detail.id ]}</span></span>
+                                    </div>
+                                </li>
+                                <li class="profile-info-other-btns" v-if="!is_me">
+                                    <span class="follow-text" @click="follow">+关注</span>
+                                    <span>发消息</span>
+                                </li>
                         </ul>
                         <div class="profile-content">
                             <ul class="profile-content-btns">
@@ -77,7 +99,7 @@
                                 <li @click="changeProfileContent('mycollection',$event)">star-empty</li>
                             </ul>
                             <div v-if="profile_content.myvideos" style="width: 100%">
-                                <div class="profile-content-myvideos-btn">
+                                <div class="profile-content-myvideos-btn" v-if="is_me">
                                     <span @click="active_delbtn">trashcan</span>
                                     <hr style="margin: 0">
                                 </div>
@@ -107,12 +129,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="profile-other">
-                        <div class="profile-id">
-                            个人信息
-                            <hr/>
-                            <span style="font-weight: 600;letter-spacing: 2px"></span><span>id : {{ request.user.id }}</span><span>  加入 : {{ request.user.date_joined }} </span>
-                        </div>
+                    <div class="profile-other" v-if="is_me">
                         <div class="profile-message">
                             <ul style="display: flex;list-style: none;justify-content: space-between;margin: 0">
                                 <li>消息 <span style="font-family: IcoMoon-Free;cursor: pointer" @click="refreshmsg"> loop2</span></li>
@@ -137,7 +154,7 @@
                         </ul>
                     </div>
                 </div>
-                <div v-show="showDelMenu" class="del-warning">
+                <div v-if="is_me" v-show="showDelMenu" class="del-warning">
                         <div class="del-warning-content">
                             <div class="del-warning-title">
                                 <span style="font-size: 15px">删除视频</span>
@@ -183,11 +200,14 @@
                 fans: "{{ request.user.fans }}",
                 v_count:"{{ request.user.fans }}",
             },
+            followornot: {{ followornot }},
+            profile_detail:{{ profile_detail | safe }},
             showDelMenu: false,
-             videosList_collect:{{ collectvideolist|safe }},
+            videosList_collect:{{ collectvideolist|safe }},
             videosList_mine:[],
             messages: [],
             delList:[],
+            is_me:false,
             Del_sure:"",
             videosPage:{
                 now:"",
@@ -210,6 +230,21 @@
             video_pic_url:"{% static 'videos/videopic/' %}",
         },
         methods:{
+            follow: async function () {
+                if(!this.is_login){
+                    this.login()
+                }
+                let param = new URLSearchParams()
+                param.append('follow_id', this.userdetail.id)
+                param.append('followed_id', this.profile_detail.id)
+                result = await axios({
+                    method: "POST",
+                    url: "{% url "follow" %}",
+                    data: param,
+                })
+                this.followornot = result.data.code
+
+            },
             logout:function (){
                 topbar.logout()
             },
@@ -341,11 +376,31 @@
                 })
             },
         },
+        watch:{
+            followornot: function () {
+                if (this.followornot == 1) {
+                    document.querySelector('.follow-text').innerHTML = "已关注"
+                    this.profile_detail.fans += 1
+                } else if (this.followornot == 2) {
+                    document.querySelector('.follow-text').innerHTML = "+关注"
+                    this.profile_detail.fans -= 1
+                }
+            },
+
+        },
         mounted: function () {
-            if(this.is_login){
-                this.getmorecollectvideo()
-                this.getmyvideo()
+            if (this.followornot == 1) {
+                    document.querySelector('.follow-text').innerHTML = "已关注"
+                } else if (this.followornot == 2) {
+                    document.querySelector('.follow-text').innerHTML = "+关注"
+                }
+            if(this.profile_detail.is_me == "True"){
+                this.is_me = true
                 this.refreshmsg()
+                this.getmorecollectvideo()
+            }
+            if(this.is_login){
+                this.getmyvideo()
             }
         }
     })

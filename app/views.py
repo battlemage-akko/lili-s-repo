@@ -170,26 +170,43 @@ def loginthisuser(request,user):
 def logoutthisuser(request):
     logout(request)
     return HttpResponse("done")
+
 def profile(request):
     user_id = request.GET.get("user")
     if not user_id:
         if request.user.is_authenticated:
+            userdetail = Userdatabase.getProfile(request.user.id)
+            userdetail["is_me"] = "True"
             return render(request, 'profile.html', {
-                "newvideolist": [],
-                "hotvideolist": [],
+                "profile_detail":userdetail,
                 "collectvideolist": [],
+                "followornot": 1,
             })
         else:
             return render(request,'notfound.html')
     else:
         if user_id=="me":
+            userdetail = Userdatabase.getProfile(request.user.id)
+            userdetail["is_me"] = "True"
             return render(request, 'profile.html', {
-                "newvideolist": [],
-                "hotvideolist": [],
+                "profile_detail": userdetail,
                 "collectvideolist": [],
+                "followornot": 1,
             })
         else:
-            return render(request,'notfound.html')
+            if user_id.isdigit():
+                userdetail = Userdatabase.getProfile(user_id)
+                if userdetail:
+                    userdetail["is_me"] = str(request.user.id == userdetail["id"])
+                    return render(request, 'profile.html', {
+                        "profile_detail": userdetail,
+                        "collectvideolist": [],
+                        "followornot": followtable.follow_check(request.user.id,user_id),
+                    })
+                else :
+                    return render(request, "notfound.html")
+            else:
+                return render(request, "notfound.html")
 
 def search_page(request):
     q = request.GET.get("q")
