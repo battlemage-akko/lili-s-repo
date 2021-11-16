@@ -178,12 +178,11 @@ def getmorenewvideo(request):
         newvideos.append(i)
     return JsonResponse(newvideos, safe=False)
 
-@csrf_exempt
-def getmyvideo(request):
+def getmyvideo(u_id):
     result = []
-    for i in videosTable.getvideosbyid(request.POST.get("user_id"),"time"):
+    for i in videosTable.getvideosbyid(u_id,"time"):
         result.append(i)
-    return JsonResponse(result, safe=False)
+    return result
 
 @csrf_exempt
 def getMoreCollectVideo(request):

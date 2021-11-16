@@ -130,8 +130,11 @@
     font-weight: 600;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
-
+.search-result-user-name-name:hover{
+    color: rgba(0, 0, 0, 0.5);
+}
 .search-result-user-name-follow {
     background: black;
     color: #e3e3e3;
@@ -158,6 +161,7 @@
 }
 
 .search-result-user-videos {
+    padding-left: 0;
     display: flex;
 }
 
@@ -179,7 +183,7 @@
 }
 
 .search-result-user-videos-info {
-    width: 100px;
+    width: 95px;
     padding-left: 5px;
     font-size: 10px;
     color: rgba(62, 62, 62, 0.5);
@@ -231,6 +235,7 @@
     flex-wrap: wrap;
     width: 100%;
     flex-direction: column;
+    padding-left: 0;
 }
 
 .search-result-table-video {
@@ -238,6 +243,7 @@
     flex-wrap: wrap;
     width: 100%;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 0;
 }
 
 .search-result-video-each {

@@ -8,7 +8,7 @@ class AppUser(AbstractUser):
     )
     fans = models.IntegerField(default=0)
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='male')
-    desc = models.TextField(null=True, blank=True, verbose_name="描述")
+    desc = models.TextField(null=True, blank=True, verbose_name="描述",default='这个人很懒,什么也没有留下')
     picture = models.CharField(max_length=20,default="default.png")
     v_count = models.IntegerField(default=0)
 
@@ -24,8 +24,9 @@ class AppUser(AbstractUser):
                     "id": result[0]["id"],
                     "picture": result[0]["picture"],
                     "fans": result[0]["fans"],
+                    "follow": len(followUser.user_follow(from_user=result[0]["id"])),
                     "v_count": result[0]["v_count"],
-                    "desc": result[0]["desc"],
+                    "desc": str(result[0]["desc"]),
                     "is_superuser":str(result[0]["is_superuser"]),
                     "is_me":"",
                     "join":{
@@ -188,15 +189,15 @@ class followUser(models.Model):
         if f:
             f.delete()
 
-    def user_followed(from_user): #获取本人关注的所有人
+    def user_follow(from_user): #获取本人关注的所有人
         getAllFollow = followUser.objects.filter(follow_id=from_user).all()
-        user_follow = []
+        user_follows = []
         for followeder in getAllFollow:
-            user_follow.append(followeder.followed)
-        return user_follow
+            user_follows.append(followeder)
+        return user_follows
 
     def user_followed(to_user): #获取这个人都被谁关注了
-        getAllFollow = followUser.objects.filter(followed_id=to_user).all()
+        getAllFollow = followUser.objects.filter(followed_id=to_user).all().values()
         user_followed = []
         for followeder in getAllFollow:
             user_followed.append(followeder.follow)

@@ -43,7 +43,7 @@
 <body>
 {% include 'topbar.html' %}
     <div id="app">
-        <title>{[userdetail.name]} 的主页</title>
+        <title>{[profile_detail.username]} 的主页</title>
         <div class="profile">
                 <div class="profilecontent">
                     <div class="profile-detail">
@@ -81,7 +81,7 @@
                                 <li style="color: rgba(0,0,0,0.5);font-family: 'Segoe UI';font-size: 15px">
                                     <div style="margin-bottom: 5px">
                                         <span><span style="font-weight: 700">{[ profile_detail.fans ]}</span> 关注者</span>
-                                        <span style="margin-left: 20px"><span style="font-weight: 700">0</span> 正在关注</span>
+                                        <span style="margin-left: 20px"><span style="font-weight: 700">{[ profile_detail.follow ]}</span> 正在关注</span>
                                     </div>
                                     <div>
                                         <span class="clock"> 加入于 {[ profile_detail.join.year ]}年{[ profile_detail.join.month ]}月{[ profile_detail.join.day ]}日 </span>
@@ -204,7 +204,7 @@
             profile_detail:{{ profile_detail | safe }},
             showDelMenu: false,
             videosList_collect:{{ collectvideolist|safe }},
-            videosList_mine:[],
+            videosList_mine:{{ videosList_mine | safe }},
             messages: [],
             delList:[],
             is_me:false,
@@ -331,19 +331,6 @@
                     this.refreshmsg()
                 }
             },
-            getmyvideo :async function(){
-                let param = new URLSearchParams()
-                param.append("user_id",this.userdetail.id)
-                result = await axios({
-                    method:"POST",
-                    url:"{% url 'getmyvideo' %}",
-                    data: param
-                })
-                this.videosList_mine  = result.data
-                this.videosPage.total = this.videosList_mine.length
-                this.videosPage.page = Math.ceil(this.videosPage.total/8)
-                this.videosPage.now = 1
-            },
             myvideosNextpage:function(){
                 if(this.videosPage.end <= this.videosPage.total){
                     this.videosPage.begin += 8
@@ -398,9 +385,6 @@
                 this.is_me = true
                 this.refreshmsg()
                 this.getmorecollectvideo()
-            }
-            if(this.is_login){
-                this.getmyvideo()
             }
         }
     })

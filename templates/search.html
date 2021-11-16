@@ -25,6 +25,7 @@
         .videos-top-search {
             display: none;
         }
+
         #app{
             height: 100vh;
             width: 100vw;
@@ -78,7 +79,7 @@
                             <div class="search-result-user-info">
                                 <div>
                                     <ul style="padding: 0px;margin-left: 5px">
-                                        <li><h2 class="search-result-user-name-name">{[ result.user.exactness[0].username ]}</h2><span class="search-result-user-name-follow">+关注</span></li>
+                                        <li><h2 class="search-result-user-name-name" @click="toProfile(result.user.exactness[0].id)">{[ result.user.exactness[0].username ]}</h2><span class="search-result-user-name-follow">+关注</span></li>
                                         <li class="search-result-user-other">
                                             <p>{[ result.user.exactness[0].v_count ]} 投稿</p>
                                             <p>|</p>
@@ -146,7 +147,7 @@
                                     <div class="search-result-video-each-info-info">
                                         <span><i class="play"></i> : {[item.v_play]} </span>
                                         <span><i class="date"></i> : {[ item.v_time.v_time_year ]}-{[ item.v_time.v_time_month ]}-{[ item.v_time.v_time_day ]} {[ item.v_time.v_time_hour ]}:{[ item.v_time.v_time_minute ]}:{[ item.v_time.v_time_second ]}</span>
-                                        <span><i class="auther"></i> : {[item.v_auther]} </span>
+                                        <span @click="toProfile(item.v_auther_id)" style="cursor: pointer"><i class="auther"></i> : {[item.v_auther]} </span>
                                     </div>
                                 </div>
 
@@ -170,7 +171,7 @@
                                         <span><i class="date"></i> : {[ item.v_time.v_time_year ]}-{[ item.v_time.v_time_month ]}-{[ item.v_time.v_time_day ]}</span>
                                     </div>
                                     <div class="search-result-table-video-each-info-info">
-                                        <span><i class="auther"></i> : {[item.v_auther]} </span>
+                                        <span @click="toProfile(item.v_auther_id)" style="cursor: pointer"><i class="auther"></i> : {[item.v_auther]} </span>
                                     </div>
                                 </div>
                                 </div>
@@ -247,6 +248,9 @@
                     this.is_loading = true
                 }
             },
+            toProfile:function (id){
+                topbar.toProfile(id)
+            }
         },
         mounted: function () {
             that = this

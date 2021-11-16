@@ -80,6 +80,7 @@ class video(models.Model):
                 "v_id": item["v_id"],
                 "v_pic": item["v_pic"],
                 "v_auther": item["v_auther"],
+                "v_auther_id": item["user_id"],
                 "v_play": item["v_play"],
                 "v_title": item["v_title"],
                 "v_time": {
@@ -99,6 +100,7 @@ class video(models.Model):
                     "v_id": item["v_id"],
                     "v_pic": item["v_pic"],
                     "v_auther": item["v_auther"],
+                    "v_auther_id": item["user_id"],
                     "v_play": item["v_play"],
                     "v_title": item["v_title"],
                     "v_time": {
@@ -125,6 +127,7 @@ class video(models.Model):
                 "v_id": item["v_id"],
                 "v_pic": item["v_pic"],
                 "v_auther": item["v_auther"],
+                "v_auther_id": item["user_id"],
                 "v_play": item["v_play"],
                 "v_title": item["v_title"],
                 "v_time": {
@@ -148,6 +151,7 @@ class video(models.Model):
                 "v_id": item["v_id"],
                 "v_pic": item["v_pic"],
                 "v_auther": item["v_auther"],
+                "v_auther_id": item["user_id"],
                 "v_play": item["v_play"],
                 "v_title": item["v_title"],
                 "v_time": {
@@ -173,6 +177,7 @@ class video(models.Model):
                 "v_id": item["v_id"],
                 "v_pic": item["v_pic"],
                 "v_auther": item["v_auther"],
+                "v_auther_id": item["user_id"],
                 "v_play": item["v_play"],
                 "v_title": item["v_title"],
                 "v_time": {
@@ -192,6 +197,7 @@ class video(models.Model):
                     "v_id": item["v_id"],
                     "v_pic": item["v_pic"],
                     "v_auther": item["v_auther"],
+                    "v_auther_id": item["user_id"],
                     "v_play": item["v_play"],
                     "v_title": item["v_title"],
                     "v_time": {

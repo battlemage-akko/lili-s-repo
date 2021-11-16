@@ -14,6 +14,7 @@ from django.contrib.auth.backends import ModelBackend
 from django.views.decorators.clickjacking import xframe_options_exempt,xframe_options_sameorigin
 from django.db.models import Q
 from barrage.models import video as videosTable
+from barrage.views import getmyvideo
 AllUsers = [Userdatabase.objects.all()]
 realIP = requests.get(url="http://members.3322.org/dyndns/getip").text
 
@@ -45,7 +46,6 @@ def index(request):
     return render(request,'index.html',{
         "newvideolist": Newvideos,
         "hotvideolist": [],
-
         "collectvideolist": [],
     })
 def index_back(request):
@@ -173,14 +173,17 @@ def logoutthisuser(request):
 
 def profile(request):
     user_id = request.GET.get("user")
+    is_login =  request.user.is_authenticated
+
     if not user_id:
-        if request.user.is_authenticated:
+        if is_login:
             userdetail = Userdatabase.getProfile(request.user.id)
             userdetail["is_me"] = "True"
             return render(request, 'profile.html', {
                 "profile_detail":userdetail,
-                "collectvideolist": [],
+                "videosList_mine": getmyvideo(request.user.id),
                 "followornot": 1,
+                "collectvideolist": []
             })
         else:
             return render(request,'notfound.html')
@@ -190,8 +193,9 @@ def profile(request):
             userdetail["is_me"] = "True"
             return render(request, 'profile.html', {
                 "profile_detail": userdetail,
-                "collectvideolist": [],
+                "videosList_mine": getmyvideo(request.user.id),
                 "followornot": 1,
+                "collectvideolist": []
             })
         else:
             if user_id.isdigit():
@@ -200,8 +204,9 @@ def profile(request):
                     userdetail["is_me"] = str(request.user.id == userdetail["id"])
                     return render(request, 'profile.html', {
                         "profile_detail": userdetail,
-                        "collectvideolist": [],
+                        "videosList_mine": getmyvideo(userdetail["id"]),
                         "followornot": followtable.follow_check(request.user.id,user_id),
+                        "collectvideolist": []
                     })
                 else :
                     return render(request, "notfound.html")
