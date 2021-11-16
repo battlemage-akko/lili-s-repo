@@ -33,7 +33,7 @@ class video(models.Model):
     v_time = models.DateTimeField(auto_now_add=True)
     v_duaring = models.IntegerField(default=0)
     v_tags = models.CharField(max_length=1000,null=True,default="None")
-    v_note = models.CharField(max_length=1000,null=True,default="这个人很懒,什么都没有留下")
+    v_note = models.CharField(max_length=1000,null=True,default="这个人很懒,什么都没有留下！")
     class Meta:
         app_label = "barrage"
 
