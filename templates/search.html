@@ -133,7 +133,7 @@
                     </div>
                     <div class="search-result-video-list-container">
                         <ul class="search-result-video" v-if="mode.list">
-                            <li v-for="(item,index) in queen" class="search-result-video-each">
+                            <li v-for="(item,index) in queen.slice(listCount.begin,listCount.end)" class="search-result-video-each">
                                 <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'cover'}"
                                      class="search-result-video-each-back" @click="jumpbyV_id(item.v_id)"></div>
                                 <div class="search-result-video-each-info">
@@ -154,10 +154,16 @@
                             </li>
                             <li></li>
                         </ul>
+                        <div class="search-result-video-list-load">
+                            <div v-if="!listCount.all && !is_loading">下滑加载更多~</div>
+                            <div class="loading active" v-if="is_loading"></div>
+                            <div v-if="listCount.all">到头了~</div>
+                        </div>
                     </div>
                     <div class="search-result-video-table-container">
-                        <ul class="search-result-table-video" v-if="mode.table">
-                            <li v-for="(item,index) in queen" class="search-result-table-video-each">
+                        <div v-if="mode.table">
+                            <ul class="search-result-table-video" >
+                            <li v-for="(item,index) in queen.slice(tablePage.begin,tablePage.end)" class="search-result-table-video-each">
                                 <div>
                                     <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'cover'}" class="search-result-table-video-each-back" @click="jumpbyV_id(item.v_id)"></div>
                                 <div class="search-result-video-table-each-info">
@@ -178,6 +184,28 @@
 
                             </li>
                         </ul>
+                            <ul class="paging">
+                                    <li @click="prePage">上一页</li>
+                                    <li v-if="tablePage.now>3" @click="changePage(1)">1</li>
+                                    <li v-if="tablePage.now>4">...</li>
+                                    <li v-for="index of tablePage.now" :key="index"
+                                        v-if="index>tablePage.now-3 && index!=tablePage.now"
+                                        @click="changePage(index)">
+                                        {[ index ]}
+                                    </li>
+                                    <li class="active">{[ tablePage.now ]}</li>
+                                    <li v-for="index of tablePage.total" :key="index"
+                                        v-if="index>tablePage.now && index<tablePage.now+3"
+                                        @click="changePage(index)">
+                                        {[ index ]}
+                                    </li>
+                                    <li v-if="tablePage.now<tablePage.total-3">...</li>
+                                    <li v-if="tablePage.now<tablePage.total-2" @click="changePage(tablePage.total)">
+                                        {[tablePage.total]}
+                                    </li>
+                                    <li @click="nextPage">下一页</li>
+                                </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -197,6 +225,7 @@
             count: 0,
             is_loading:false,
             videosList_isLoading:false,
+            videosList_end:false,
             mode:{
                 table:false,
                 list:true,
@@ -208,8 +237,43 @@
             avatar_url: "{% static 'images/avatar/' %}",
             logo:"{% static 'images/logo.png' %}",
             video_pic_url:"{% static 'videos/videopic/' %}",
+            tablePage: {
+                now: 1,
+                page: "",
+                total: 1,
+                begin: 0,
+                end: 20,
+                each: 20,
+            },
+            listCount: {
+                begin: 0,
+                end: 10,
+                each: 10,
+                all:false,
+            },
         },
         methods: {
+            changePage: function (page) {
+                this.tablePage.now = page
+                this.tablePage.begin = page * this.tablePage.each - this.tablePage.each
+                this.tablePage.end = page * this.tablePage.each
+            },
+            nextPage: function (){
+                if(this.tablePage.now == this.tablePage.total){
+                    return
+                }
+                this.tablePage.begin = this.tablePage.begin + this.tablePage.each
+                this.tablePage.end = this.tablePage.begin + this.tablePage.each
+                this.tablePage.now += 1
+            },
+            prePage: function (){
+                if(this.tablePage.now==1){
+                    return
+                }
+                this.tablePage.begin = this.tablePage.begin - this.tablePage.each
+                this.tablePage.end = this.tablePage.begin + this.tablePage.each
+                this.tablePage.now -= 1
+            },
             jumpbyV_id(v_id) {
                 window.open(this.video_url + v_id)
             },
@@ -229,23 +293,25 @@
                 for(let key in this.mode)
                     this.mode[key] = false
                 this.mode[mode]=true
-                console.log(e.target)
                 for(let node of document.querySelector('.search-result-video-change').querySelectorAll('span')){
                     node.classList.remove("active")
                 }
                 e.target.classList.add("active")
             },
             loadVideoList:function (){
-                count = this.queen.length
-                for(let item = count;item<count+5;item++){
-                    this.queen.push(this.result.queen[item])
+                this.listCount.end = this.listCount.end+this.listCount.each
+                if(this.listCount.end>=this.queen.length){
+                    this.listCount.all = true
                 }
                 this.is_loading = false
             },
             listenScroll:function(){
-                if(document.querySelector('#app').scrollTop + document.querySelector('#app').offsetHeight > document.querySelector('#app').scrollHeight - 40 &&  this.videosList_isLoading!=true){
-                    this.loadVideoList()
+                if(this.mode.table == true || this.videosList_isLoading==true || this.listCount.all==true){
+                    return
+                }
+                if(document.querySelector('#app').scrollTop + document.querySelector('#app').offsetHeight > document.querySelector('#app').scrollHeight - 15 ){
                     this.is_loading = true
+                    this.loadVideoList()
                 }
             },
             toProfile:function (id){
@@ -254,19 +320,27 @@
         },
         mounted: function () {
             that = this
+            this.tablePage.total = Math.ceil(this.result.queen.length/20)
             if (this.result.queen != 0) {
-                tmp = this.count
                 for (let item of this.result.queen) {
-                    if(that.count >= tmp+5){
-                        break
-                    }
                     this.queen.push(item)
-                    this.count += 1
                 }
-            } else {
+                this.count = this.result.queen.length
+            } else {}
+
+        },
+        watch: {
+            mode:{
+                handler(val, oldval){
+                    if(val.table==true){
+                        while(this.queen.length<20){
+                            this.loadVideoList()
+                        }
+                    }
+                },
+                deep:true,
             }
         },
-        watch: {},
     })
 </script>
 </html>

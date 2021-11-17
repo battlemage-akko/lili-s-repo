@@ -33,7 +33,14 @@ class CustomBackend(ModelBackend):
 @login_required
 def test(request):
     return render(request,'test.html')
-
+def null(request):
+    r = requests.post('http://192.168.43.114:8080/socket/chat', data = {
+        'pwd':'pbkdf2_sha256$260000$A4EUuXokECx3EovbVhuawB$APUueptK/skUXjSfPawYv2XzVECo4Z40ssK17XIav88=',
+        'uuid':'7',
+        'user':"test"
+    })
+    response = HttpResponseRedirect(r.url)
+    return response
 def index(request):
     videos = []
     Newvideos = []
@@ -220,7 +227,6 @@ def search_page(request):
         result['user']['exactness'][0]['videos'] = videosTable.getvideosbyid(user_id=result['user']['exactness'][0]['id'],choose='time')[0:5]
     else:
         result['user']['exactness'] = []
-
     return render(request,'search.html',{
         "result":result
     })
@@ -232,29 +238,30 @@ def search(q,count):
     searchByType = videosTable.searchByType(q)
 
     for item in searchByTitle['exactness']:
-        if (len(queen) > (count+20)):
-            break
+        # if (len(queen) > (count+5)):
+        #     break
         queen.append(item)
     for item in searchByTitle['indistinct']:
-        if (len(queen) > (count+20)):
-            break
+        # if (len(queen) > (count+5)):
+        #     break
         if item not in queen:
             queen.append(item)
     for item in searchByType:
-        if (len(queen) > (count+20)):
-            break
+        # if (len(queen) > (count+5)):
+        #     break
         if item not in queen:
             queen.append(item)
     for item in searchByTag:
-        if (len(queen) > (count+20)):
-            break
+        # if (len(queen) > (count+5)):
+        #     break
         if item not in queen:
             queen.append(item)
     result = {
         "user": Userdatabase.searchByName(q),
-        "queen": queen[count:count+20],
+        "queen": queen,
     }
     return result
+
 @csrf_exempt
 def register(request):
     if (request.method == 'GET'):
@@ -296,6 +303,7 @@ def serverDetail(request):
         "IP" : "公网IP : "+realIP+" /内网IP : "+socket.gethostbyname(socket.gethostname()),
      }
     return JsonResponse(result)
+
 @csrf_exempt
 def userDetail(request):
     admin = AllUsers[0].filter(is_superuser=1)

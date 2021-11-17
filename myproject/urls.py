@@ -26,7 +26,7 @@ urlpatterns = [
     # url(r'^static/(?P<path>.*)$', static.serve,
     #   {'document_root': settings.STATIC_ROOT}, name='static'),
     path('test/', views.test, name="test"),
-    path('null/', channelsviews.channelsviews, name="null"),
+    path('null/', views.null, name="null"),
     path('testvue/', TemplateView.as_view(template_name="index.html")),
     path('login/', views.index_login, name="login"),
     path('',views.index,name="index"),

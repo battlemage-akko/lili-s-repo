@@ -241,8 +241,7 @@
 .search-result-table-video {
     display: flex;
     flex-wrap: wrap;
-    width: 100%;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    width: 1200px;
     padding-left: 0;
 }
 
@@ -253,7 +252,7 @@
 }
 
 .search-result-table-video-each {
-    padding: 30px 10px;
+    padding: 5px 5px;
     width: 20%;
     display: flex;
     flex-direction: column;
@@ -277,6 +276,7 @@
 .search-result-video-list-container {
     display: flex;
     position: relative;
+    flex-direction: column;
     min-width: 1200px;
 }
 
@@ -285,7 +285,15 @@
     position: relative;
     min-width: 1200px;
 }
-
+.search-result-video-list-load{
+    display: flex;
+    justify-content: center;
+    font-family: "Segoe UI";
+    color: rgba(0, 0, 0, 0.2);
+    width: 100%;
+    padding: 10px;
+    font-size: 20px;
+}
 .search-result-video-each-info {
     margin-left: 20px;
     display: flex;
