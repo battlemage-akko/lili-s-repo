@@ -451,7 +451,7 @@ def collect(request):
         video_id = request.POST.get("video_id")
         status = int(request.POST.get("status"))
         print(status,user_id,video_id)
-        msg = {+
+        msg = {
             "msg":"",
             "code": None
         }

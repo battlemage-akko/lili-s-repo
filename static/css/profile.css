@@ -232,8 +232,9 @@ hr {
 .profile-content-myvideos li {
     height: 200px;
     flex-grow: 1;
-    min-width: 200px;
+    min-width: 250px;
     transition: all .5s ease;
+    max-width: 400px;
 }
 
 .profile-content-myvideos li div {
@@ -346,4 +347,126 @@ hr {
 
 .del-warning-final {
     padding: 20px;
+}
+
+.videos-each-tips{
+    top: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    line-height: 200px;
+    display: none;
+}
+.videos-each-time{
+    top: 3px;
+    right: 3px;
+    position: absolute;
+    padding: 2px 3px;
+    text-align: center;
+    line-height: 15px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 10px;
+    font-family: "微软雅黑 Light";
+    letter-spacing:2px;
+}
+.videos-each-play:before{
+    content: "\ea15";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+    color: rgba(62, 62, 62, 0.59);
+    font-size: 50px;
+}
+.videos-each{
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    position: relative;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+.videos-each.dying{
+    opacity: 0;
+}
+.videos-each-status{
+    position: absolute;
+    top: 0;
+    height: 70px;
+    color: rgba(255, 255, 255, 0.68);
+    width: 100%;
+    padding: 10px;
+    transition: all .2s ease;
+    bottom: -22px;
+}
+.videos-each-status span{
+    font-weight: 600;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.7);
+    font-family: "Segoe UI";
+    text-shadow: 0px 0px 2px #ffffff;
+}
+.videos-each-title{
+    position: absolute;
+    bottom: 0;
+    height: 70px;
+    color: rgba(255, 255, 255, 0.68);
+    width: 100%;
+    padding: 10px;
+    transition: all .2s ease;
+    bottom: -22px;
+    background-image: linear-gradient(to bottom, transparent, #000000);
+}
+.videos-each-del{
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    user-select:none;
+    display: flex;
+    pointer-events:auto;
+    justify-content: center;
+    align-items: center;
+    font-family: IcoMoon-Free;
+    font-size: 20px;
+    position: absolute;
+    color: #e3e3e3;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 30px;
+    height: 30px;
+    right: 0px;
+    top: -30px;
+    transform-origin: right bottom;
+    transition: all .5s ease;
+}
+.videos-each-del.active{
+    transform: rotate(-90deg);
+}
+.videos-each-del-content{
+    width: 100%;
+    text-align: center;
+    transition: all .5s ease;
+}
+.videos-each-del:hover .videos-each-del-content{
+    color: #ff5e5e;
+    transform: rotate(90deg);
+}
+
+.videos-each:hover .videos-each-tips{
+    display: block;
+}
+.videos-each:hover .videos-each-title{
+    color: #e3e3e3;
+    bottom: 0px;
+}
+.videos-each-title h1{
+    position: absolute;
+    bottom: 15px;
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+.videos-each-title p{
+    position: absolute;
+    bottom: 5px;
+    font-size: 8px;
 }

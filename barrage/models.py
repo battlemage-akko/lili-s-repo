@@ -48,6 +48,8 @@ class video(models.Model):
                 "v_title": item["v_title"],
                 "v_pic": item["v_pic"],
                 "v_play": item["v_play"],
+                "v_like": item["v_like"],
+                "v_collect": item["v_collect"],
                 "v_note": item["v_note"],
                 "v_duaring": item["v_duaring"],
                 "v_time": {
