@@ -128,10 +128,10 @@
                             <span class="tablelist" @click="changeMode('table',$event)"></span>
                         </div>
                     </div>
-                    <div class="noresult" v-if="count==0">
+                    <div class="noresult" v-if="queen.length==0">
                         <img src="{% static 'images/猫猫叹气.png' %}" alt="">
                     </div>
-                    <div class="search-result-video-list-container">
+                    <div class="search-result-video-list-container" v-if="count!=0">
                         <ul class="search-result-video" v-if="mode.list">
                             <li v-for="(item,index) in queen.slice(listCount.begin,listCount.end)" class="search-result-video-each">
                                 <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'cover'}"
@@ -154,13 +154,13 @@
                             </li>
                             <li></li>
                         </ul>
-                        <div class="search-result-video-list-load">
+                        <div class="search-result-video-list-load" v-if="mode.list">
                             <div v-if="!listCount.all && !is_loading">下滑加载更多~</div>
                             <div class="loading active" v-if="is_loading"></div>
                             <div v-if="listCount.all">到头了~</div>
                         </div>
                     </div>
-                    <div class="search-result-video-table-container">
+                    <div class="search-result-video-table-container" v-if="count!=0">
                         <div v-if="mode.table">
                             <ul class="search-result-table-video" >
                             <li v-for="(item,index) in queen.slice(tablePage.begin,tablePage.end)" class="search-result-table-video-each">
@@ -309,7 +309,7 @@
                 if(this.mode.table == true || this.videosList_isLoading==true || this.listCount.all==true){
                     return
                 }
-                if(document.querySelector('#app').scrollTop + document.querySelector('#app').offsetHeight > document.querySelector('#app').scrollHeight - 15 ){
+                if(document.querySelector('#app').scrollTop + document.querySelector('#app').offsetHeight > document.querySelector('#app').scrollHeight - 13 ){
                     this.is_loading = true
                     this.loadVideoList()
                 }
@@ -326,20 +326,14 @@
                     this.queen.push(item)
                 }
                 this.count = this.result.queen.length
+                if(this.count<=10){
+                    this.listCount.all = true
+                }
             } else {}
 
         },
         watch: {
-            mode:{
-                handler(val, oldval){
-                    if(val.table==true){
-                        while(this.queen.length<20){
-                            this.loadVideoList()
-                        }
-                    }
-                },
-                deep:true,
-            }
+
         },
     })
 </script>
