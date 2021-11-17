@@ -4,7 +4,7 @@ hr {
 
 .profilecontent {
     display: flex;
-    width: 80%;
+    width: 90%;
     max-width: 1500px;
     margin-top: var(--Head-top);
     justify-content: space-evenly;
@@ -13,18 +13,19 @@ hr {
 }
 
 .profile-detail {
-    flex-basis: 1100px;
+    flex-basis: 1050px;
     padding: 20px;
     border-radius: 5px;
 }
 
 .profile-other {
     padding: 20px;
-    flex-basis: 270px;
+    flex-basis: 400px;
     height: 800px;
     flex-grow: 1;
     /*border:5px dashed black;*/
-    max-width: 1100px;
+    min-width: 350px;
+    max-width: 1050px;
 }
 
 .profilefooter {
@@ -121,7 +122,7 @@ hr {
 .profile-message {
     font-family: "微软雅黑 Light";
     background-color: white;
-    height: 380px;
+    height: 400px;
     padding: 10px;
 }
 
@@ -140,6 +141,7 @@ hr {
     display: flex;
     justify-content: space-around;
     transition: all .2s ease;
+    padding-left: 0;
 }
 
 .profile-tools li {
@@ -217,7 +219,7 @@ hr {
     list-style: none;
     display: flex;
     margin: 0px;
-    padding: 10px;
+    padding: 0px;
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
@@ -244,31 +246,11 @@ hr {
     font-family: IcoMoon-Free;
 }
 
-.profile-content-btns li {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: all .5s ease;
-}
-
-.profile-content-btns li.active {
-    color: #e3e3e3;
-    background-color: black;
-}
-
-.profile-content-btns li:hover {
-    color: #e3e3e3;
-    background-color: black;
-}
-
 .profile-content-myvideos-btn {
     font-family: IcoMoon-Free;
-    padding: 10px 0px 0px 0px;
+    padding: 10px 10px 0px 10px;
     display: flex;
-    justify-content: right;
+    justify-content: space-between;
     height: 50px;
 }
 
@@ -290,19 +272,6 @@ hr {
 
 .profile-content-myvideos-btn span:hover {
     color: black;
-}
-
-.page-bar {
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    user-select: none;
-    font-family: IcoMoon-Free;
-    color: rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-}
-
-.page-bar span:hover {
-    color: rgba(0, 0, 0, 1);
 }
 
 .del-warning {

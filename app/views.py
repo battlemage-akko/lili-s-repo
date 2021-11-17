@@ -14,7 +14,7 @@ from django.contrib.auth.backends import ModelBackend
 from django.views.decorators.clickjacking import xframe_options_exempt,xframe_options_sameorigin
 from django.db.models import Q
 from barrage.models import video as videosTable
-from barrage.views import getmyvideo
+
 AllUsers = [Userdatabase.objects.all()]
 realIP = requests.get(url="http://members.3322.org/dyndns/getip").text
 
@@ -182,19 +182,17 @@ def profile(request):
             userdetail["is_me"] = "True"
             return render(request, 'profile.html', {
                 "profile_detail":userdetail,
-                "videosList_mine": getmyvideo(request.user.id),
                 "followornot": 1,
                 "collectvideolist": []
             })
         else:
-            return render(request,'notfound.html')
+            return index_login(request)
     else:
         if user_id=="me":
             userdetail = Userdatabase.getProfile(request.user.id)
             userdetail["is_me"] = "True"
             return render(request, 'profile.html', {
                 "profile_detail": userdetail,
-                "videosList_mine": getmyvideo(request.user.id),
                 "followornot": 1,
                 "collectvideolist": []
             })
@@ -205,14 +203,13 @@ def profile(request):
                     userdetail["is_me"] = str(request.user.id == userdetail["id"])
                     return render(request, 'profile.html', {
                         "profile_detail": userdetail,
-                        "videosList_mine": getmyvideo(userdetail["id"]),
                         "followornot": followtable.follow_check(request.user.id,user_id),
                         "collectvideolist": []
                     })
                 else :
                     return render(request, "notfound.html")
             else:
-                return render(request, "notfound.html")
+                return index_login(request)
 
 def search_page(request):
     q = request.GET.get("q")
@@ -454,7 +451,7 @@ def collect(request):
         video_id = request.POST.get("video_id")
         status = int(request.POST.get("status"))
         print(status,user_id,video_id)
-        msg = {
+        msg = {+
             "msg":"",
             "code": None
         }

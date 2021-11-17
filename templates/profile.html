@@ -17,24 +17,28 @@
             overflow-x: hidden;
             transition: all .5s ease;
         }
+
         @font-face {
             font-family: 'IcoMoon-Free';
             src: url('{% static 'css/IcoMoon-Free.ttf' %}') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
+
         #app {
             width: 100vw;
             height: 100vh;
             position: relative;
             transition: padding-left .5s ease;
         }
+
         .profile {
             display: flex;
             justify-content: center;
             align-content: center;
             min-width: 950px;
         }
+
         .profile-background {
             background: url("{% static "images/background.jpg" %}") round;
         }
@@ -42,154 +46,177 @@
 </head>
 <body>
 {% include 'topbar.html' %}
-    <div id="app">
-        <title>{[profile_detail.username]} 的主页</title>
-        <div class="profile">
-                <div class="profilecontent">
-                    <div class="profile-detail">
-                        <div class="profile-background">
-                            <span v-if="is_me" class="profile-background-change picture"></span>
-                        </div>
-                        <div>
-                            <img :src="this.avatar_url+profile_detail.picture" alt="" class="profile-img">
-                        </div>
-                        <ul class="profile-info">
-                            <li>
-                                <div class="profile-info-name">
-                                    <span v-if="profile_detail.gender == 'male'" class="male"></span>
-                                    <span v-if="profile_detail.gender == 'female'" class="female"></span>
-                                    {[ profile_detail.username ]}
-                                    <span v-if="profile_detail.is_superuser == 'True'">
+<div id="app">
+    <title>{[profile_detail.username]} 的主页</title>
+    <div class="profile">
+        <div class="profilecontent">
+            <div class="profile-detail">
+                <div class="profile-background">
+                    <span v-if="is_me" class="profile-background-change picture"></span>
+                </div>
+                <div>
+                    <img :src="this.avatar_url+profile_detail.picture" alt="" class="profile-img">
+                </div>
+                <ul class="profile-info">
+                    <li>
+                        <div class="profile-info-name">
+                            <span v-if="profile_detail.gender == 'male'" class="male"></span>
+                            <span v-if="profile_detail.gender == 'female'" class="female"></span>
+                            {[ profile_detail.username ]}
+                            <span v-if="profile_detail.is_superuser == 'True'">
                                         (管理员)
                                     </span>
-                                </div>
-                            </li>
-                            <li style="display: flex">
-
-                                <div>
-                                    获赞:0
-                                </div>
-                                <div>
-                                    视频: {[ profile_detail.v_count ]}个
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="profile-info-desc" v-if="profile_detail.desc">
-                            {[profile_detail.desc]}
                         </div>
-                        <ul class="profile-info-other">
-                                <li style="color: rgba(0,0,0,0.5);font-family: 'Segoe UI';font-size: 15px">
-                                    <div style="margin-bottom: 5px">
-                                        <span><span style="font-weight: 700">{[ profile_detail.fans ]}</span> 关注者</span>
-                                        <span style="margin-left: 20px"><span style="font-weight: 700">{[ profile_detail.follow ]}</span> 正在关注</span>
-                                    </div>
-                                    <div>
-                                        <span class="clock"> 加入于 {[ profile_detail.join.year ]}年{[ profile_detail.join.month ]}月{[ profile_detail.join.day ]}日 </span>
-                                    <span class="auther" style="margin-left: 20px"> id号为 <span style="font-weight: 700">{[ profile_detail.id ]}</span></span>
-                                    </div>
-                                </li>
-                                <li class="profile-info-other-btns" v-if="!is_me">
-                                    <span class="follow-text" @click="follow">+关注</span>
-                                    <span>发消息</span>
-                                </li>
-                        </ul>
-                        <div class="profile-content">
-                            <ul class="profile-content-btns">
-                                <li class="active" @click="changeProfileContent('myvideos',$event)">upload</li>
-                                <li @click="changeProfileContent('mycollection',$event)">star-empty</li>
-                            </ul>
-                            <div v-if="profile_content.myvideos" style="width: 100%">
-                                <div class="profile-content-myvideos-btn" v-if="is_me">
-                                    <span @click="active_delbtn">trashcan</span>
-                                    <hr style="margin: 0">
-                                </div>
-                                <ul class="profile-content-myvideos">
-                                    <li v-for="(item,i) in videosList_mine.slice(videosPage.begin,videosPage.end)" class="videos-each" :id="'myvideo_'+item.v_id">
-                                        <div :style="{'background-image': 'url('+video_pic_url+item.v_pic+')','background-size':'cover'}" class="videos-each-background" @click="getVideo(item.v_id)"></div>
-                                        <span class="videos-each-tips" @click="getVideo(item.v_id)">
+                    </li>
+                    <li style="display: flex">
+                        <div>
+                            获赞:0
+                        </div>
+                        <div>
+                            视频: {[ profile_detail.v_count ]}个
+                        </div>
+                    </li>
+                </ul>
+                <div class="profile-info-desc" v-if="profile_detail.desc">
+                    {[profile_detail.desc]}
+                </div>
+                <ul class="profile-info-other">
+                    <li style="color: rgba(0,0,0,0.5);font-family: 'Segoe UI';font-size: 13px;font-weight: 500">
+                        <div style="margin-bottom: 5px">
+                            <span><span style="font-weight: 700">{[ profile_detail.fans ]}</span> 关注者</span>
+                            <span style="margin-left: 20px"><span
+                                    style="font-weight: 700">{[ profile_detail.follow ]}</span> 正在关注</span>
+                        </div>
+                        <div>
+                            <span class="clock"> 加入于 {[ profile_detail.join.year ]}年{[ profile_detail.join.month ]}月{[ profile_detail.join.day ]}日 </span>
+                            <span class="auther" style="margin-left: 20px"> id号为 <span style="font-weight: 700">{[ profile_detail.id ]}</span></span>
+                        </div>
+                    </li>
+                    <li class="profile-info-other-btns" v-if="!is_me">
+                        <span class="follow-text" @click="follow">+关注</span>
+                        <span>发消息</span>
+                    </li>
+                </ul>
+                <div class="profile-content">
+                    <div v-if="profile_content.myvideos" style="width: 100%">
+                        <div class="profile-content-myvideos-btn">
+                            <h2 style="font-size: 20px">最新发布</h2>
+                            <div><span @click="active_delbtn" v-if="is_me">trashcan</span></div>
+                        </div>
+                        <div>
+                            <ul class="profile-content-myvideos">
+                                <li v-for="(item,i) in videosList_mine.slice(videosPage.begin,videosPage.end)"
+                                    class="videos-each" :id="'myvideo_'+item.v_id">
+                                    <div :style="{'background-image': 'url('+video_pic_url+item.v_pic+')','background-size':'cover'}"
+                                         class="videos-each-background" @click="getVideo(item.v_id)"></div>
+                                    <span class="videos-each-tips" @click="getVideo(item.v_id)">
                                             <i class="videos-each-play"></i>
                                         </span>
-                                        <span class="videos-each-title" @click="getVideo(item.v_id)">
+                                    <span class="videos-each-title" @click="getVideo(item.v_id)">
                                             <h1>{[ item.v_title ]}</h1>
                                             <p style="right: 10px">播放 : {[ item.v_play ]}</p>
                                         </span>
-                                        </span>
-                                        <span class="videos-each-del" @click="delVideo($event,item.v_id)">
+                                    </span>
+                                    <span class="videos-each-del" @click="delVideo($event,item.v_id)">
                                             <p class="videos-each-del-content">cancel</p>
                                         </span>
+                                </li>
+                            </ul>
+                            <div style="display: flex;justify-content: center">
+                                <ul class="paging">
+                                    <li>上一页</li>
+                                    <li v-if="videosPage.now>3" @click="changePage(1)">1</li>
+                                    <li v-if="videosPage.now>4">...</li>
+                                    <li v-for="index of videosPage.now" :key="index"
+                                        v-if="index>videosPage.now-3 && index!=videosPage.now"
+                                        @click="changePage(index)">
+                                        {[ index ]}
                                     </li>
+                                    <li class="active">{[ videosPage.now ]}</li>
+                                    <li v-for="index of videosPage.total" :key="index"
+                                        v-if="index>videosPage.now && index<videosPage.now+3"
+                                        @click="changePage(index)">
+                                        {[ index ]}
+                                    </li>
+                                    <li v-if="videosPage.now<videosPage.total-3">...</li>
+                                    <li v-if="videosPage.now<videosPage.total-2" @click="changePage(videosPage.total)">
+                                        {[videosPage.total]}
+                                    </li>
+                                    <li>下一页</li>
                                 </ul>
-                                <div class="page-bar">
-                                    <span @click="myvideosPrepage">arrow-left2</span>
-                                    <span @click="myvideosNextpage">arrow-right2</span>
-                                </div>
-                            </div>
-                            <div v-if="profile_content.mycollection" style="width: 100%">
-                                <ul class="profile-content-mycollection"></ul>
                             </div>
                         </div>
                     </div>
-                    <div class="profile-other" v-if="is_me">
-                        <div class="profile-message">
-                            <ul style="display: flex;list-style: none;justify-content: space-between;margin: 0">
-                                <li>消息 <span style="font-family: IcoMoon-Free;cursor: pointer" @click="refreshmsg"> loop2</span></li>
-                                <li><span style="font-family: IcoMoon-Free;cursor: pointer" @click="clearmsg">trashcan2</span></li>
-                            </ul>
-                            <hr/>
-                            <div class="profile-message-container">
-                                <ul class="profile-message-content">
-                                    <li v-for="(item,i) in messages.msg">
-                                        <p>{[ item ]}</p>
-                                        <hr/>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <ul class="profile-tools">
-                            <li title="消息" class="profile-chat"><i></i></li>
-                            <li title="上传视频" class="profile-upload"><i></i></li>
-                            <li title="云盘" class="profile-cloud" @click="tocloud"><i></i></li>
-                            <li title="更改个人信息" class="profile-set"><i></i></li>
-                            <li title="注销" class="profile-logout" @click="logout"><i></i></li>
+                    <div v-if="profile_content.mycollection" style="width: 100%">
+                        <ul class="profile-content-mycollection"></ul>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-other" v-if="is_me">
+                <div class="profile-message">
+                    <ul style="display: flex;list-style: none;justify-content: space-between;margin: 0;padding-left: 0">
+                        <li>消息 <span style="font-family: IcoMoon-Free;cursor: pointer" @click="refreshmsg"> loop2</span>
+                        </li>
+                        <li><span style="font-family: IcoMoon-Free;cursor: pointer" @click="clearmsg">trashcan2</span>
+                        </li>
+                    </ul>
+                    <hr/>
+                    <div class="profile-message-container">
+                        <ul class="profile-message-content">
+                            <li v-for="(item,i) in messages.msg">
+                                <p>{[ item ]}</p>
+                                <hr/>
+                            </li>
                         </ul>
                     </div>
                 </div>
-                <div v-if="is_me" v-show="showDelMenu" class="del-warning">
-                        <div class="del-warning-content">
-                            <div class="del-warning-title">
-                                <span style="font-size: 15px">删除视频</span>
-                                <span @click="closeDelmenu" style="cursor: pointer">close</span>
-                            </div>
-                            <div class="del-warning-warn">
-                                <span style="color: red;font-size: 20px;margin: 0px 20px">warning</span>
-                                <span style="color: white;display: flex;align-items: center;font-size: 15px">删除的视频与弹幕不可恢复</span>
-                            </div>
-                            <div class="del-warning-detail">
-                                List:
-                                <ul class="del-warning-list">
-                                    <li v-for="(item,index) in delList">
-                                        <a @click="jumpbyv_id(item.v_id)">《 {[item.v_title]} 》</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="del-warning-final">
-                                <div class="input-group">
-                                  <input type="text" class="form-control" placeholder="请输入'y'/'Y'进行确认" aria-label="Recipient's username" aria-describedby="button-addon2" v-model="Del_sure">
-                                  <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="delVideoSure"
-                                  >确认</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <ul class="profile-tools">
+                    <li title="消息" class="profile-chat"><i></i></li>
+                    <li title="上传视频" class="profile-upload"><i></i></li>
+                    <li title="云盘" class="profile-cloud" @click="tocloud"><i></i></li>
+                    <li title="更改个人信息" class="profile-set"><i></i></li>
+                    <li title="注销" class="profile-logout" @click="logout"><i></i></li>
+                </ul>
             </div>
+        </div>
+        <div v-if="is_me" v-show="showDelMenu" class="del-warning">
+            <div class="del-warning-content">
+                <div class="del-warning-title">
+                    <span style="font-size: 15px">删除视频</span>
+                    <span @click="closeDelmenu" style="cursor: pointer">close</span>
+                </div>
+                <div class="del-warning-warn">
+                    <span style="color: red;font-size: 20px;margin: 0px 20px">warning</span>
+                    <span style="color: white;display: flex;align-items: center;font-size: 15px">删除的视频与弹幕不可恢复</span>
+                </div>
+                <div class="del-warning-detail">
+                    List:
+                    <ul class="del-warning-list">
+                        <li v-for="(item,index) in delList">
+                            <a @click="jumpbyv_id(item.v_id)">《 {[item.v_title]} 》</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="del-warning-final">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="请输入'y'/'Y'进行确认"
+                               aria-label="Recipient's username" aria-describedby="button-addon2" v-model="Del_sure">
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="delVideoSure"
+                        >确认
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 </body>
 <script>
     const vm = new Vue({
         el: "#app",
         delimiters: ['{[', ']}'],
         data: {
-            userdetail:{
+            userdetail: {
                 name: "{{ request.user.username }}",
                 id: "{{ request.user.id }}",
                 email: "{{ request.user.email }}",
@@ -198,40 +225,47 @@
                 gender: "{{ request.user.gender }}",
                 picture: "{{ request.user.picture }}",
                 fans: "{{ request.user.fans }}",
-                v_count:"{{ request.user.fans }}",
+                v_count: "{{ request.user.fans }}",
             },
             followornot: {{ followornot }},
             profile_detail:{{ profile_detail | safe }},
             showDelMenu: false,
             videosList_collect:{{ collectvideolist|safe }},
-            videosList_mine:{{ videosList_mine | safe }},
+            videosList_mine: [],
+            videosList_mine_count: 0,
+            delList: [],
             messages: [],
-            delList:[],
-            is_me:false,
-            Del_sure:"",
-            videosPage:{
-                now:"",
-                page:"",
-                total:"",
+            is_me: false,
+            Del_sure: "",
+            videosPage: {
+                now: 1,
+                page: "",
+                total: "",
                 begin: 0,
                 end: 8,
+                each: 8,
             },
             this_user_admin: false,
             is_login: topbar.is_login,
-            profile_content:{
-                "myvideos":true,
-                "mycollection":false
+            profile_content: {
+                "myvideos": true,
+                "mycollection": false
             },
-            q:"",
-            video_url:"{% url "index" %}"+"video/",
-            base_url:"{% url 'index' %}"+"search?q=",
+            q: "",
+            video_url: "{% url "index" %}" + "video/",
+            base_url: "{% url 'index' %}" + "search?q=",
             avatar_url: "{% static 'images/avatar/' %}",
-            logo:"{% static 'images/logo.png' %}",
-            video_pic_url:"{% static 'videos/videopic/' %}",
+            logo: "{% static 'images/logo.png' %}",
+            video_pic_url: "{% static 'videos/videopic/' %}",
         },
-        methods:{
+        methods: {
+            changePage: function (page) {
+                this.videosPage.now = page
+                this.videosPage.begin = page * this.videosPage.each - this.videosPage.each
+                this.videosPage.end = page * this.videosPage.each
+            },
             follow: async function () {
-                if(!this.is_login){
+                if (!this.is_login) {
                     this.login()
                 }
                 let param = new URLSearchParams()
@@ -245,125 +279,122 @@
                 this.followornot = result.data.code
 
             },
-            logout:function (){
+            logout: function () {
                 topbar.logout()
             },
-            getVideo:function (v_id){
-                window.open(this.video_url+v_id)
+            getVideo: function (v_id) {
+                window.open(this.video_url + v_id)
             },
-            search:function (){
-                window.open(this.base_url+this.q)
-                this.q=""
+            search: function () {
+                window.open(this.base_url + this.q)
+                this.q = ""
             },
-            jumpbyv_id:function (v_id){
-                window.open(this.video_url+v_id)
+            jumpbyv_id: function (v_id) {
+                window.open(this.video_url + v_id)
             },
-            delVideo: function(e,v_id){
+            delVideo: function (e, v_id) {
                 this.showDelMenu = true
-                for(let item of this.videosList_mine){
-                    if(item["v_id"] == v_id){
+                for (let item of this.videosList_mine) {
+                    if (item["v_id"] == v_id) {
                         this.delList.push(item)
                     }
                 }
             },
-            delVideoSure:async function (){
+            delVideoSure: async function () {
                 sure = this.Del_sure.toLowerCase()
-                node =  document.querySelector('#myvideo_'+this.delList[0]["v_id"])
+                node = document.querySelector('#myvideo_' + this.delList[0]["v_id"])
                 v_id = this.delList[0]["v_id"]
                 videoIndex = null
-                for(let item of this.videosList_mine){
-                    if(item["v_id"]==v_id){
+                for (let item of this.videosList_mine) {
+                    if (item["v_id"] == v_id) {
                         videoIndex = this.videosList_mine.indexOf(item)
                     }
                 }
-                if(sure=='y'){
+                if (sure == 'y') {
                     let param = new URLSearchParams()
-                    param.append("v_id",v_id)
+                    param.append("v_id", v_id)
                     result = await axios({
-                        method:"POST",
-                        url:"{% url 'delVideo' %}",
+                        method: "POST",
+                        url: "{% url 'delVideo' %}",
                         data: param
                     })
                     this.refreshmsg()
                     node.classList.toggle("dying")
-                    setTimeout(function(){
+                    setTimeout(function () {
                         vm.videosList_mine.splice(videoIndex, 1)
                         node.classList.toggle("dying")
-                    },500);
+                    }, 500);
                     this.Del_sure = ""
                     this.showDelMenu = false
                     this.delList = []
-                }
-                else{
+                } else {
                     console.log("输入的什么JB")
                 }
             },
-            active_delbtn:function (){
+            active_delbtn: function () {
                 document.querySelector(".profile-content-myvideos").classList.toggle('active')
             },
-            closeDelmenu:function (){
+            closeDelmenu: function () {
                 this.showDelMenu = false
                 this.delList = []
             },
-            refreshmsg:async function (){
+            refreshmsg: async function () {
                 let param = new URLSearchParams()
-                param.append("user_id",this.userdetail.id)
+                param.append("user_id", this.userdetail.id)
                 result = await axios({
-                    method:"POST",
-                    url:"{% url 'refreshmsg' %}",
+                    method: "POST",
+                    url: "{% url 'refreshmsg' %}",
                     data: param
                 })
                 this.messages = result.data
             },
-            clearmsg:async function (){
-                if(this.messages.msgcount==0){
+            clearmsg: async function () {
+                if (this.messages.msgcount == 0) {
                     alert("本来就没有")
-                }
-                else{
+                } else {
                     let param = new URLSearchParams()
-                    param.append("user_id",this.userdetail.id)
+                    param.append("user_id", this.userdetail.id)
                     result = await axios({
-                        method:"POST",
-                        url:"{% url 'clearmsg' %}",
+                        method: "POST",
+                        url: "{% url 'clearmsg' %}",
                         data: param
                     })
                     console.log(result)
                     this.refreshmsg()
                 }
             },
-            myvideosNextpage:function(){
-                if(this.videosPage.end <= this.videosPage.total){
-                    this.videosPage.begin += 8
-                    this.videosPage.end += 8
-                }
-                else{
-                    return
-                }
-            },
-            myvideosPrepage:function(){
-                if(this.videosPage.begin > 0){
-                    this.videosPage.begin -= 8
-                    this.videosPage.end -= 8
-                }
-                else{
-                    return
-                }
-            },
             tocloud: function () {
                 window.open("https://cloud.lili-secretbase.com/");
             },
-            getmorecollectvideo :async function(){
+            getmorecollectvideo: async function () {
                 let param = new URLSearchParams()
-                param.append("count",this.videosList_collect.length)
-                param.append("user_id",this.userdetail.id)
+                param.append("count", this.videosList_collect.length)
+                param.append("user_id", this.userdetail.id)
                 result = await axios({
-                    method:"POST",
-                    url:"{% url 'getMoreCollectVideo' %}",
+                    method: "POST",
+                    url: "{% url 'getMoreCollectVideo' %}",
                     data: param
                 })
             },
+            getMyVideo: async function () {
+                let param = new URLSearchParams()
+                param.append("count", this.videosList_mine_count)
+                param.append("user_id", this.profile_detail.id)
+                result = await axios({
+                    method: "POST",
+                    url: "{% url 'getMyVideo' %}",
+                    data: param
+                })
+                for (let item of result.data) {
+                    this.videosList_mine.push(item)
+                }
+            }
         },
-        watch:{
+        watch: {
+            videosList_mine: function () {
+                this.videosList_mine_count = this.videosList_mine.length
+                this.videosPage.total = Math.ceil(this.videosList_mine.length / this.videosPage.each)
+            },
             followornot: function () {
                 if (this.followornot == 1) {
                     document.querySelector('.follow-text').innerHTML = "已关注"
@@ -377,15 +408,16 @@
         },
         mounted: function () {
             if (this.followornot == 1) {
-                    document.querySelector('.follow-text').innerHTML = "已关注"
-                } else if (this.followornot == 2) {
-                    document.querySelector('.follow-text').innerHTML = "+关注"
-                }
-            if(this.profile_detail.is_me == "True"){
+                document.querySelector('.follow-text').innerHTML = "已关注"
+            } else if (this.followornot == 2) {
+                document.querySelector('.follow-text').innerHTML = "+关注"
+            }
+            if (this.profile_detail.is_me == "True") {
                 this.is_me = true
                 this.refreshmsg()
                 this.getmorecollectvideo()
             }
+            this.getMyVideo()
         }
     })
 </script>

@@ -439,9 +439,9 @@
             </ul>
             <div class="login">
                 {% if request.user.is_authenticated %}
-                    <img :src="this.avatar_url+userdetail.picture" alt="" style="border: 4px solid #d3d3d3" @click="toProfile()">
+                    <img :src="this.avatar_url+userdetail.picture" alt="" style="border: 4px solid #d3d3d3" @click="toProfile(userdetail.id)">
                     <span class="logout" @click="logout"><i></i></span>
-                    <p class="loginbtn active" @click="toProfile()">
+                    <p class="loginbtn active" @click="toProfile(userdetail.id)">
                         {[ userdetail.name ]}
                     </p>
                 {% else %}
@@ -467,6 +467,13 @@
             show_more_cat:false,
             show_more_btn:true,
             videosList:[],
+            videosPage:{
+                now:"",
+                page:"",
+                total:"",
+                begin: 0,
+                end: 8,
+            },
             videosList_isLoading:false,
             videosList_new:{{ newvideolist|safe }},
             videosList_hot:{{ hotvideolist|safe }},
@@ -556,9 +563,7 @@
                 this.q=""
             },
             toProfile:function (id='me'){
-                if(id=='me'){
-                   window.open('{% url 'profile' %}')
-                }
+                window.open(this.profile_url+id)
             },
             jumpbyv_id:function (v_id){
                 window.open(this.video_url+v_id)

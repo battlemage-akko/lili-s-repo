@@ -19,7 +19,7 @@
                 <i class="logout"></i>
             </li>
             <li>
-                 <img :src="this.avatar_url+userdetail.picture" alt="" class="video-user-pic" v-if="is_login" @click="toProfile('me')">
+                 <img :src="this.avatar_url+userdetail.picture" alt="" class="video-user-pic" v-if="is_login" @click="toProfile(userdetail.id)">
             </li>
         </ul>
         <ul class="video-user-info" v-if="!is_login">
