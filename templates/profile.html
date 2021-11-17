@@ -136,7 +136,7 @@
                             </ul>
                             <div style="display: flex;justify-content: center" v-if="videosList_mine_count!=0">
                                 <ul class="paging">
-                                    <li>上一页</li>
+                                    <li @click="prePage">上一页</li>
                                     <li v-if="videosPage.now>3" @click="changePage(1)">1</li>
                                     <li v-if="videosPage.now>4">...</li>
                                     <li v-for="index of videosPage.now" :key="index"
@@ -154,7 +154,7 @@
                                     <li v-if="videosPage.now<videosPage.total-2" @click="changePage(videosPage.total)">
                                         {[videosPage.total]}
                                     </li>
-                                    <li>下一页</li>
+                                    <li @click="nextPage">下一页</li>
                                 </ul>
                             </div>
                         </div>
@@ -275,6 +275,22 @@
                 this.videosPage.now = page
                 this.videosPage.begin = page * this.videosPage.each - this.videosPage.each
                 this.videosPage.end = page * this.videosPage.each
+            },
+            nextPage: function (){
+                if(this.videosPage.now == this.videosPage.total){
+                    return
+                }
+                this.videosPage.begin = this.videosPage.begin + this.videosPage.each
+                this.videosPage.end = this.videosPage.begin + this.videosPage.each
+                this.videosPage.now += 1
+            },
+            prePage: function (){
+                if(this.videosPage.now==1){
+                    return
+                }
+                this.videosPage.begin = this.videosPage.begin - this.videosPage.each
+                this.videosPage.end = this.videosPage.begin + this.videosPage.each
+                this.videosPage.now -= 1
             },
             follow: async function () {
                 if (!this.is_login) {

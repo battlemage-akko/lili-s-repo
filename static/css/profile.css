@@ -222,7 +222,6 @@ hr {
     padding: 0px;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    min-height: 440px;
 }
 
 .profile-content-myvideos.active li .videos-each-del {
@@ -380,6 +379,9 @@ hr {
     font-size: 50px;
 }
 .videos-each{
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    user-select:none;
     margin: 10px;
     display: flex;
     flex-direction: column;
@@ -420,9 +422,6 @@ hr {
     background-image: linear-gradient(to bottom, transparent, #000000);
 }
 .videos-each-del{
-    -moz-user-select:none;
-    -webkit-user-select:none;
-    user-select:none;
     display: flex;
     pointer-events:auto;
     justify-content: center;
