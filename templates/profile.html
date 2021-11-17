@@ -107,7 +107,7 @@
                             <div><span @click="active_delbtn" v-if="is_me">trashcan</span></div>
                         </div>
                         <div>
-                            <div class="nothing">
+                            <div class="nothing" v-if="videosList_mine_count==0">
                                 <div>
                                     <img src="{% static 'images/nothing.png' %}" alt="">
                                     <div style="text-align: center;margin-top: 10px;font-weight: 600">什么也没有找到~</div>
