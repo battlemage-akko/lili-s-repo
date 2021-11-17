@@ -281,6 +281,7 @@
     width: 0px;
     transition: all .5s ease;
     pointer-events: auto;
+    max-width: 500px;
 }
 .videolist-input-group-input.active{
     width: 40vw;

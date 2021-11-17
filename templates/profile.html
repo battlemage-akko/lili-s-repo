@@ -82,7 +82,7 @@
                 </div>
                 <ul class="profile-info-other">
                     <li style="color: rgba(0,0,0,0.5);font-family: 'Segoe UI';font-size: 13px;font-weight: 500">
-                        <div style="margin-bottom: 5px">
+                        <div style="margin:15px 0px 5px 0px">
                             <span><span style="font-weight: 700">{[ profile_detail.fans ]}</span> 关注者</span>
                             <span style="margin-left: 20px"><span
                                     style="font-weight: 700">{[ profile_detail.follow ]}</span> 正在关注</span>
@@ -100,11 +100,20 @@
                 <div class="profile-content">
                     <div v-if="profile_content.myvideos" style="width: 100%">
                         <div class="profile-content-myvideos-btn">
-                            <h2 style="font-size: 20px">最新发布</h2>
+                            <h2>
+                                <a>最新发布</a>
+                                <a v-if="is_me">收藏</a>
+                            </h2>
                             <div><span @click="active_delbtn" v-if="is_me">trashcan</span></div>
                         </div>
                         <div>
-                            <ul class="profile-content-myvideos">
+                            <div class="nothing">
+                                <div>
+                                    <img src="{% static 'images/nothing.png' %}" alt="">
+                                    <div style="text-align: center;margin-top: 10px;font-weight: 600">什么也没有找到~</div>
+                                </div>
+                            </div>
+                            <ul class="profile-content-myvideos" v-if="videosList_mine_count!=0">
                                 <li v-for="(item,i) in videosList_mine.slice(videosPage.begin,videosPage.end)"
                                     class="videos-each" :id="'myvideo_'+item.v_id">
                                     <div :style="{'background-image': 'url('+video_pic_url+item.v_pic+')','background-size':'cover'}"
@@ -122,7 +131,7 @@
                                         </span>
                                 </li>
                             </ul>
-                            <div style="display: flex;justify-content: center">
+                            <div style="display: flex;justify-content: center" v-if="videosList_mine_count!=0">
                                 <ul class="paging">
                                     <li>上一页</li>
                                     <li v-if="videosPage.now>3" @click="changePage(1)">1</li>
