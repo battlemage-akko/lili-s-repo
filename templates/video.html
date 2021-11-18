@@ -107,7 +107,9 @@
                 </div>
                 <div class="video-card">
                     <div class="thisvideo">
-                        <div id="barrage"></div>
+                        <div id="barrage" @click="pauseOrPlay">
+                            <img src="{% static 'images/play.png' %}" alt="" class="playImg" v-show="!playing">
+                        </div>
                         <video class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid" id="video_ready">
                         </video>
                     </div>
@@ -131,30 +133,18 @@
                         </ul>
                     </div>
                     <div class="danmucontent">
-                        <div class="video-danmucontent-switch">
-                            <div class="form-check form-switch">
+                        <div class="video-danmucontent-switch" style="width: 200px">
+                            <div class="form-check form-switch" style="display: flex;justify-content: right">
                                 <input class="form-check-input" type="checkbox" role="switch"
                                        id="flexSwitchCheckChecked"
                                        checked>
                                 <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                             </div>
                         </div>
-                        <div class="video-danmucontent-switch">
-                            <div class="input-group">
-                                <button class="btn btn-outline-secondary" type="button"
-                                        id="send_danmu" @click="send_msg_check">发送弹幕
-                                </button>
-                                <input type="text" class="form-control" placeholder="发个弹幕试试吧"
-                                       aria-label="Example text with button addon" aria-describedby="button-addon1"
-                                       style="width: 20vw;min-width: 200px" id="danmu_content" v-model="input">
-                            </div>
-                        </div>
-                        <div class="video-danmucontent-switch">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch"
-                                       id="flexSwitchCheckChecked"
-                                       checked>
-                                <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                        <div class="video-danmucontent-switch" style="flex-grow: 1">
+                            <div class="danmu-input-group">
+                                <button class="danmu-input-group-send" @click="send_msg_check">发送</button>
+                                <input type="text" placeholder="发个弹幕试试吧~" id="danmu_content" v-model="input">
                             </div>
                         </div>
                     </div>
@@ -430,6 +420,7 @@
             fromhere: 0,
             is_login: topbar.is_login,
             AccMenu: false,
+            playing:false,
             AccReason: "",
             AccResult: "",
             username: "",
@@ -773,6 +764,14 @@
                     data: param,
                 })
             },
+            pauseOrPlay: function (){
+                if(this.playing){
+                    this.video_ready.pause()
+                }
+                else{
+                    this.video_ready.play()
+                }
+            },
             delDiscussion: async function (d_id) {
                 let param = new URLSearchParams()
                 param.append('d_id', d_id)
@@ -828,15 +827,18 @@
                 });
                 this.on('pause', function () {
                     console.log("暂停")
+                    that.playing = false
                     for (let i of document.querySelector("#barrage").querySelectorAll("div")) {
                         cancelAnimationFrame(i.timer);
                     }
                 });
                 this.on('play', function () {
                     console.log("播放")
+                    that.playing = true
                     if (vm.oncechance == 1) {
-                        that .played({{ v_id }})
+                        that.played({{ v_id }})
                     }
+                    that
                     for (let i of document.querySelector("#barrage").querySelectorAll("div")) {
                         that .barrageAnimate(i);
                     }
