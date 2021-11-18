@@ -500,12 +500,14 @@
             showAccMenu: function () {
                 if (this.is_login) {
                     this.AccMenu = true
+                    document.querySelector('.videos-accusation').classList.add('active')
                 } else {
                     this.login()
                 }
             },
             closeAccMenu: function () {
                 this.AccMenu = false
+                document.querySelector('.videos-accusation').classList.remove('active')
             },
             sendDiscussion: async function () {
                 if(this.discuss.trim().split(' ') == ""){
