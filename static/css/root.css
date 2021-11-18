@@ -158,7 +158,11 @@ body::-webkit-scrollbar-track { /*滚动条里面轨道*/
     font-family: IcoMoon-Free;
     font-style: normal;
 }
-
+.text-weight:after{
+    content: "\ea5f";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
 .accusation:before {
     content: "\ea07";
     font-family: IcoMoon-Free;

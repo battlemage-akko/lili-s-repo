@@ -133,13 +133,27 @@
                         </ul>
                     </div>
                     <div class="danmucontent">
-                        <div class="video-danmucontent-switch" style="width: 200px">
+                        <div class="video-danmucontent-switch danmu-switch" style="width: 200px">
                             <div class="form-check form-switch" style="display: flex;justify-content: right">
                                 <input class="form-check-input" type="checkbox" role="switch"
                                        id="flexSwitchCheckChecked"
                                        checked>
                                 <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                             </div>
+                            <ul class="danmu-btns">
+                                <li class="text-weight">
+                                    <div class="danmu-setting">
+                                        <div>弹幕模式:</div>
+                                        <ul class="danmu-setting-mode">
+                                            <li class="active" @click="changeBarrageMode('move',$event)"><img src="{% static 'images/barrage_move.svg' %}" type="image/svg+xml" width="40" height="40" /><div>滚动</div></li>
+                                            <li @click="changeBarrageMode('top',$event)"><img src="{% static 'images/barrage_top.svg' %}" type="image/svg+xml" width="40" height="40" /><div>顶部</div></li>
+                                            <li @click="changeBarrageMode('bottom',$event)"><img src="{% static 'images/barrage_bottom.svg' %}" type="image/svg+xml" width="40" height="40" /><div>底部</div></li>
+                                        </ul>
+                                        <div>弹幕颜色:</div>
+                                        <ul></ul>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                         <div class="video-danmucontent-switch" style="flex-grow: 1">
                             <div class="danmu-input-group">
@@ -380,6 +394,11 @@
             followornot: {{ followornot }},
             loveornot:{{ loveornot }},
             collectornot:{{ collectornot }},
+            barrage_mode:{
+                top:false,
+                bottom:false,
+                move:true,
+            },
             video_detail: {
                 "v_id": {{ v_id }},
                 "v_ad": "{{ v_ad }}",
@@ -434,6 +453,17 @@
             videosList_isLoading:false,
         },
         methods: {
+            changeBarrageMode:function (mode,e){
+                for(let key in this.barrage_mode){
+                    this.barrage_mode[mode]=false
+                }
+                this.barrage_mode[mode]=true
+                lis = document.querySelector('.danmu-setting-mode').querySelectorAll('li')
+                for(let li of lis){
+                    li.classList.remove('active')
+                }
+                e.target.classList.add('active')
+            },
             toProfile:function (id){
                 topbar.toProfile(id)
             },
