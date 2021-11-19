@@ -110,6 +110,12 @@
                         <div id="barrage" @click="pauseOrPlay">
                             <img src="{% static 'images/play.png' %}" alt="" class="playImg" v-show="!playing">
                         </div>
+                        <div id="static-barrage-Top">
+                            <div class="barrage-item barrage-Top" v-for="(item,index) in static_barrageArray" :style="{top:(item.top-1)*30+'px'}">
+                                {[ item.content ]}
+                            </div>
+                        </div>
+
                         <video class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid" id="video_ready">
                         </video>
                     </div>
@@ -158,6 +164,7 @@
                         <div class="video-danmucontent-switch" style="flex-grow: 1">
                             <div class="danmu-input-group">
                                 <button class="danmu-input-group-send" @click="send_msg_check">发送</button>
+                                <span style="color: rgba(0,0,0,0.4);width: 70px">模式:{[barrage_mode_now]}</span>
                                 <input type="text" placeholder="发个弹幕试试吧~" id="danmu_content" v-model="input">
                             </div>
                         </div>
@@ -388,7 +395,10 @@
             barrageWidth: document.querySelector('.thisvideo').clientWidth,
             barrageTipWidth: 50,
             screenWidth: document.body.clientWidth,
+
             nextbarrageTop: 0,
+            nextStaticBarrageBottom:0,
+
             screen_choose: "auto",
             oncechance:{{ oncechance }},
             followornot: {{ followornot }},
@@ -399,6 +409,7 @@
                 top:false,
                 bottom:false,
             },
+            barrage_mode_now:"滚动",
             video_detail: {
                 "v_id": {{ v_id }},
                 "v_ad": "{{ v_ad }}",
@@ -433,7 +444,13 @@
             video_ready: "",
             video_nowtime: 0,
             barrageArray: [],
+            static_barrageArray: [],
+            static_barrage_top:"",
+            static_barrage_top_rail:{
+                max:"",
+            },
             barrage_divNode: "",
+            static_barrage_divNodes:[],
             tags: [],
             input: "",
             fromhere: 0,
@@ -458,6 +475,15 @@
                     this.barrage_mode[key]=false
                 }
                 this.barrage_mode[mode]=true
+                if(mode=='move'){
+                    this.barrage_mode_now="滚动"
+                }
+                else if(mode=='top'){
+                    this.barrage_mode_now="顶部"
+                }
+                else if(mode=='bottom'){
+                    this.barrage_mode_now="底部"
+                }
                 lis = document.querySelector('.danmu-setting-mode').querySelectorAll('li')
                 for(let li of lis){
                     li.classList.remove('active')
@@ -570,86 +596,70 @@
                     }
                 }
             },
-            createBarrage: function (msg, isSendMsg) {
+            createBarrage: function (msg,mode,isSendMsg,b_id) {
                 let divNode = document.createElement('div');
                 let spanNode = document.createElement('span');
 
-                divNode.innerHTML = msg;
-                divNode.classList.add('barrage-item');
-                barrageBox.appendChild(divNode);
-                spanNode.innerHTML = '举报';
-                spanNode.classList.add('barrage-tip');
-                divNode.appendChild(spanNode);
-                if (this.fromhere == 1) {
-                    divNode.classList.add('barrage-item-active');
-                    this.fromhere = 0
-                }
-                barrageOffsetLeft = barrageWidth
-                barrageOffsetTop = this.nextbarrageTop
-                this.nextbarrageTop += 30
-                //执行初始化滚动
+                if(mode=="move"){
+                    divNode.innerHTML = msg;
+                    divNode.classList.add('barrage-item');
+                    barrageBox.appendChild(divNode);
+                    spanNode.innerHTML = '举报';
+                    spanNode.classList.add('barrage-tip');
+                    divNode.appendChild(spanNode);
+                    if (this.fromhere == 1) {
+                        divNode.classList.add('barrage-item-active');
+                        this.fromhere = 0
+                    }
+                    barrageOffsetLeft = barrageWidth
+                    barrageOffsetTop = this.nextbarrageTop
+                    this.nextbarrageTop += 30
+                    //执行初始化滚动
 
-                this.barrage_divNode = divNode
-                this.initBarrage.call(divNode, {
-                    left: barrageOffsetLeft,
-                    top: barrageOffsetTop,
-                });
-            },
-            sendMsg: function () {
-                let inputValue = this.input
-                this.fromhere = 1
-                inputValue.replace(/\ +/g, "");
-                if (inputValue.length <= 0) {
-                    alert('空的，尼玛')
-                    return false;
+                    this.barrage_divNode = divNode
+                    this.initBarrage.call(divNode, {
+                        left: barrageOffsetLeft,
+                        top: barrageOffsetTop,
+                    });
                 }
-                mode = ""
-                for(let key in this.barrage_mode){
-                    if(this.barrage_mode[key] == true){
-                        mode = key
+                else{
+                    if(mode=="top"){
+                        rail = null
+                        static_b_id = b_id
+                        for(let key in this.static_barrage_top_rail){
+                            if(this.static_barrage_top_rail[key]==true){
+                                rail = key
+                                this.static_barrage_top_rail[key]=false
+                                break
+                            }
+                        }
+                        this.static_barrageArray.push({
+                            content:msg,
+                            top:rail,
+                            b_id:static_b_id,
+                        })
+                        this.initStaticBarrage(static_b_id,rail)
+                    }
+                    else if(mode=="bottom"){
+                        this.nextStaticBarrageBottom += 30
+                    }
+                    else{
+                        return
                     }
                 }
-                tmp = {
-                    b_mode: mode,
-                    b_content: inputValue,
-                    b_time: Math.ceil(vm.video_ready.currentTime()),
-                }
-                this.send_Msg_to_server(tmp)
-                this.barrageArray.unshift(tmp)
-                this.input = ''
             },
-            send_Msg_to_server: async function (tmp) {
-                let param = new URLSearchParams()
-                param.append('b_auther', this.username)
-                param.append('b_content', tmp.b_content)
-                param.append('b_time', tmp.b_time)
-                param.append('v_id', this.video_detail.v_id)
-                param.append('b_mode', tmp.b_mode)
-                result = await axios({
-                    method: "POST",
-                    data: param,
-                    url: "{% url 'save_barrage' %}"
-                })
-            },
-            move: function (obj) {
-                if (-obj.width == obj.distance && obj.chance == 1) {
-                    obj.distance -= 1
-                    this.nextbarrageTop -= 30
-                }
-                obj.distance--;
-                obj.style.transform = 'translate3D(' + obj.distance + 'px,0px,0px)';
-            },
-            barrageAnimate: function (obj) {
-                this.move(obj);
-                if (Math.abs(obj.distance) < obj.width + obj.offsetLeft) {
-                    obj.timer = requestAnimationFrame(function () {
-                        vm.barrageAnimate(obj);
-                    });
-                } else {
-                    cancelAnimationFrame(obj.timer);
-                    //删除节点
-                    obj.parentNode.removeChild(obj);
-                }
+            initStaticBarrage:function (b_id,rail){
+                that = this
+
+                setTimeout(function (){
+                    that.static_barrage_top_rail[rail] = true
+                    for(let item of that.static_barrageArray){
+                        if(item.b_id == b_id){
+                            index = that.static_barrageArray.indexOf(item)
+                            that.static_barrageArray.splice(index, 1)
+                        }
+                    }
+                },5000)
             },
             initBarrage: function (obj) {
                 this.barrage_divNode.distance = 0;
@@ -685,6 +695,62 @@
                     alert('举报成功');
                 }
             },
+            sendMsg: function () {
+                let inputValue = this.input
+                this.fromhere = 1
+                inputValue.replace(/\ +/g, "");
+                if (inputValue.length <= 0) {
+                    alert('空的，尼玛')
+                    return false;
+                }
+                mode = ""
+                for(let key in this.barrage_mode){
+                    if(this.barrage_mode[key] == true){
+                        mode = key
+                    }
+                }
+                tmp = {
+                    b_mode: mode,
+                    b_content: inputValue,
+                    b_time: Math.ceil(vm.video_ready.currentTime()),
+                }
+                this.send_Msg_to_server(tmp)
+            },
+            send_Msg_to_server: async function (tmp) {
+                let param = new URLSearchParams()
+                param.append('b_auther', this.username)
+                param.append('b_content', tmp.b_content)
+                param.append('b_time', tmp.b_time)
+                param.append('v_id', this.video_detail.v_id)
+                param.append('b_mode', tmp.b_mode)
+                result = await axios({
+                    method: "POST",
+                    data: param,
+                    url: "{% url 'save_barrage' %}"
+                })
+                this.barrageArray.unshift(tmp)
+                this.input = ''
+            },
+            move: function (obj) {
+                if (-obj.width == obj.distance && obj.chance == 1) {
+                    obj.distance -= 1
+                    this.nextbarrageTop -= 30
+                }
+                obj.distance--;
+                obj.style.transform = 'translate3D(' + obj.distance + 'px,0px,0px)';
+            },
+            barrageAnimate: function (obj) {
+                this.move(obj);
+                if (Math.abs(obj.distance) < obj.width + obj.offsetLeft) {
+                    obj.timer = requestAnimationFrame(function () {
+                        vm.barrageAnimate(obj);
+                    });
+                } else {
+                    cancelAnimationFrame(obj.timer);
+                    //删除节点
+                    obj.parentNode.removeChild(obj);
+                }
+            },
             getBarrage: async function () {
                 let param = new URLSearchParams()
                 param.append('v_id', {{ v_id }})
@@ -694,12 +760,6 @@
                     data: param,
                 })
                 this.barrageArray = result.data
-            },
-            test: function () {
-                this.barrageArray.forEach(function (item, index) {
-                    console.log(item.text)
-                    vm.createBarrage(item.text, false)
-                });
             },
             getVideo: function (v_id) {
                 window.open(this.video_url + v_id)
@@ -840,12 +900,11 @@
             listenScroll:function(){
                 if(document.querySelector('.videos').scrollTop + document.querySelector('.videos').offsetHeight > document.querySelector('.videos').scrollHeight - 40 &&  this.videosList_isLoading!=true){
                     this.videosList_isLoading=true
-                    console.log(1)
                 }
             }
         },
         mounted: function () {
-            const that = this
+            that = this
             window.onresize = () => {
                 return (() => {
                     window.screenWidth = document.body.clientWidth
@@ -867,6 +926,13 @@
                 });
                 this.on('timeupdate', function () {
                     that .video_nowtime = Math.floor(vm.video_ready.currentTime())
+                });
+                this.on("canplaythrough",function(){
+                    that.static_barrage_top = document.querySelector("#static-barrage-Top").clientHeight
+                    that.static_barrage_top_rail.max = Math.floor(that.static_barrage_top/30)
+                    for(let rail=1;rail<=that.static_barrage_top_rail.max;rail++){
+                        that.static_barrage_top_rail[rail] = true
+                    }
                 });
                 this.on('pause', function () {
                     console.log("暂停")
@@ -941,9 +1007,9 @@
             },
             video_nowtime: function () {
                 if (vm.barrageArray.length != 0)
-                    while (vm.barrageArray.length != 0 && vm.barrageArray[0].b_time <= vm.video_nowtime) {
+                    while (vm.barrageArray.length != 0 && vm.barrageArray[0].b_time == vm.video_nowtime) {
                         let tmp = vm.barrageArray.shift()
-                        this.createBarrage(tmp.b_content, false)
+                        this.createBarrage(msg=tmp.b_content,mode=tmp.b_mode, isSendMsg=false, b_id=tmp.b_id)
                     }
             },
             screenWidth(val){
