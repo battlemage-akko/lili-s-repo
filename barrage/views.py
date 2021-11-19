@@ -159,12 +159,17 @@ def save_barrage(request):
         b_auther = request.POST.get("b_auther")
         b_mode = request.POST.get("b_mode")
         v_id = request.POST.get("v_id")
-        print(b_content,b_time,b_auther,v_id)
         result = barrageTable(b_content=b_content,b_time=b_time,b_auther=b_auther,v_id=v_id,b_mode=b_mode)
         result.save()
-        return HttpResponse("上传弹幕成功")
+        b_id = barrageTable.objects.filter(b_content=b_content,b_time=b_time,b_auther=b_auther,v_id=v_id,b_mode=b_mode).all().values()[0]['b_id']
+        return JsonResponse({
+            'code':1,
+            'b_id':b_id
+        })
     else:
-        return HttpResponse("上传弹幕失败")
+        return JsonResponse({
+            'code':0,
+        })
 
 @csrf_exempt
 def getmorenewvideo(request):
