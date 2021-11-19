@@ -110,8 +110,11 @@
                         <div id="barrage" @click="pauseOrPlay">
                             <img src="{% static 'images/play.png' %}" alt="" class="playImg" v-show="!playing">
                         </div>
-                        <div id="static-barrage-Top">
-                            <div class="barrage-item barrage-Top" v-for="(item,index) in static_barrageArray" :style="{top:(item.top-1)*30+'px'}" :key="item.b_id">
+                        <div id="static-barrage">
+                            <div class="barrage-item barrage-Top" v-for="(item,index) in static_barrageArray_Top" :style="{top:(item.top-1)*30+'px',color:item.b_color}" :key="item.b_id" :style="{'color':'yellow'}">
+                                {[ item.content ]}
+                            </div>
+                            <div class="barrage-item barrage-Bottom" v-for="(item,index) in static_barrageArray_Bottom" :style="{bottom:(item.bottom-1)*30+'px',color:item.b_color}" :key="item.b_id">
                                 {[ item.content ]}
                             </div>
                         </div>
@@ -156,7 +159,14 @@
                                             <li @click="changeBarrageMode('bottom',$event)"><img src="{% static 'images/barrage_bottom.svg' %}" type="image/svg+xml" width="40" height="40" /><div>底部</div></li>
                                         </ul>
                                         <div>弹幕颜色:</div>
-                                        <ul></ul>
+                                        <ul class="danmu-setting-color">
+                                            <li style="background-color: white" @click="changeBarrageColor('white')"></li>
+                                            <li style="background-color: red" @click="changeBarrageColor('red')"></li>
+                                            <li style="background-color: yellow" @click="changeBarrageColor('yellow')"></li>
+                                            <li style="background-color: dodgerblue" @click="changeBarrageColor('dodgerblue')"></li>
+                                            <li style="background-color: hotpink" @click="changeBarrageColor('hotpink')"></li>
+                                            <li style="background-color: lightseagreen" @click="changeBarrageColor('lightseagreen')"></li>
+                                        </ul>
                                     </div>
                                 </li>
                             </ul>
@@ -168,6 +178,7 @@
                                     <span style="font-weight: 700;color: black">{[barrage_mode_now]}</span>
                                 </span>
                                 <input type="text" placeholder="发个弹幕试试吧~" id="danmu_content" v-model="input">
+                                <span :style="{'width': '20px','height': '20px','margin-right': '5px','display': 'inline-block','background-color': barrage_color,'border-width':'1px','border-color':'black','border-style':'solid'}"></span>
                             </div>
                         </div>
                     </div>
@@ -446,9 +457,14 @@
             video_ready: "",
             video_nowtime: 0,
             barrageArray: [],
-            static_barrageArray: [],
+            barrage_color: 'white',
+            static_barrageArray_Top: [],
+            static_barrageArray_Bottom: [],
             static_barrage_top:"",
             static_barrage_top_rail:{
+                max:"",
+            },
+            static_barrage_bottom_rail:{
                 max:"",
             },
             barrage_divNode: "",
@@ -472,6 +488,9 @@
             videosList_isLoading:false,
         },
         methods: {
+            changeBarrageColor:function (color){
+                this.barrage_color = color
+            },
             changeBarrageMode:function (mode,e){
                 for(let key in this.barrage_mode){
                     this.barrage_mode[key]=false
@@ -598,7 +617,7 @@
                     }
                 }
             },
-            createBarrage: function (msg,mode,isSendMsg,b_id) {
+            createBarrage: function (msg,mode,isSendMsg,b_id,b_color) {
                 let divNode = document.createElement('div');
                 let spanNode = document.createElement('span');
 
@@ -635,33 +654,61 @@
                                 break
                             }
                         }
-                        this.static_barrageArray.push({
+                        this.static_barrageArray_Top.push({
                             content:msg,
                             top:rail,
                             b_id:static_b_id,
+                            b_color:b_color
                         })
-                        this.initStaticBarrage(static_b_id,rail)
+                        this.initStaticBarrage(static_b_id,rail,'top')
                     }
                     else if(mode=="bottom"){
-                        this.nextStaticBarrageBottom += 30
+                        rail = null
+                        static_b_id = b_id
+                        for(let key in this.static_barrage_bottom_rail){
+                            if(this.static_barrage_bottom_rail[key]==true){
+                                rail = key
+                                this.static_barrage_bottom_rail[key]=false
+                                break
+                            }
+                        }
+                        this.static_barrageArray_Bottom.push({
+                            content:msg,
+                            bottom:rail,
+                            b_id:static_b_id,
+                            b_color:b_color
+                        })
+                        this.initStaticBarrage(static_b_id,rail,'bottom')
                     }
                     else{
                         return
                     }
                 }
             },
-            initStaticBarrage:function (b_id,rail){
+            initStaticBarrage:function (b_id,rail,mode){
                 that = this
-
-                setTimeout(function (){
-                    that.static_barrage_top_rail[rail] = true
-                    for(let item of that.static_barrageArray){
-                        if(item.b_id == b_id){
-                            index = that.static_barrageArray.indexOf(item)
-                            that.static_barrageArray.splice(index, 1)
+                if(mode=='top'){
+                    setTimeout(function (){
+                        that.static_barrage_top_rail[rail] = true
+                        for(let item of that.static_barrageArray_Top){
+                            if(item.b_id == b_id){
+                                index = that.static_barrageArray_Top.indexOf(item)
+                                that.static_barrageArray_Top.splice(index, 1)
+                            }
                         }
-                    }
-                },5000)
+                    },5000)
+                }
+                else if(mode=='bottom'){
+                        setTimeout(function (){
+                            that.static_barrage_bottom_rail[rail] = true
+                            for(let item of that.static_barrageArray_Bottom){
+                                if(item.b_id == b_id){
+                                    index = that.static_barrageArray_Bottom.indexOf(item)
+                                    that.static_barrageArray_Bottom.splice(index, 1)
+                                }
+                            }
+                        },5000)
+                }
             },
             initBarrage: function (obj) {
                 this.barrage_divNode.distance = 0;
@@ -715,6 +762,7 @@
                     b_mode: mode,
                     b_content: inputValue,
                     b_time: Math.ceil(vm.video_ready.currentTime()),
+                    b_color:this.barrage_color
                 }
                 this.send_Msg_to_server(tmp)
             },
@@ -725,6 +773,7 @@
                 param.append('b_time', tmp.b_time)
                 param.append('v_id', this.video_detail.v_id)
                 param.append('b_mode', tmp.b_mode)
+                param.append('b_color', tmp.b_color)
                 result = await axios({
                     method: "POST",
                     data: param,
@@ -934,10 +983,17 @@
                     that .video_nowtime = Math.floor(vm.video_ready.currentTime())
                 });
                 this.on("canplaythrough",function(){
-                    that.static_barrage_top = document.querySelector("#static-barrage-Top").clientHeight
+
+                    that.static_barrage_top = document.querySelector("#static-barrage").clientHeight
                     that.static_barrage_top_rail.max = Math.floor(that.static_barrage_top/30)
                     for(let rail=1;rail<=that.static_barrage_top_rail.max;rail++){
                         that.static_barrage_top_rail[rail] = true
+                    }
+
+                    that.static_barrage_bottom = document.querySelector("#static-barrage").clientHeight
+                    that.static_barrage_bottom_rail.max = Math.floor(that.static_barrage_bottom/30)
+                    for(let rail=1;rail<=that.static_barrage_bottom_rail.max;rail++){
+                        that.static_barrage_bottom_rail[rail] = true
                     }
                 });
                 this.on('pause', function () {
@@ -1015,7 +1071,7 @@
                 if (vm.barrageArray.length != 0)
                     while (vm.barrageArray.length != 0 && vm.barrageArray[0].b_time == vm.video_nowtime) {
                         let tmp = vm.barrageArray.shift()
-                        this.createBarrage(msg=tmp.b_content,mode=tmp.b_mode, isSendMsg=false, b_id=tmp.b_id)
+                        this.createBarrage(msg=tmp.b_content,mode=tmp.b_mode, isSendMsg=false, b_id=tmp.b_id,b_color=tmp.b_color)
                     }
             },
             screenWidth(val){

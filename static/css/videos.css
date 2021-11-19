@@ -108,9 +108,12 @@
     -moz-user-select: none;
     -webkit-user-select: none;
     user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 #danmu_content{
-    width: calc(100% - 130px);
+    width: calc(100% - 160px);
     border: none;
     outline: none;
 }
@@ -610,6 +613,19 @@
     display: flex;
     justify-content: center;
 }
+.danmu-setting-color{
+    display: flex;
+    flex-wrap: wrap;
+    width: 160px;
+}
+.danmu-setting-color li{
+    margin: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    box-shadow: 0px 0px 2px white;
+    border: rgba(0, 0, 0, 0.5) 1px solid;
+}
 .danmu-setting-mode li{
     padding: 5px;
     width: 50px;
@@ -647,7 +663,7 @@
     cursor: pointer;
     overflow: hidden;
 }
-#static-barrage-Top{
+#static-barrage{
     position: absolute;
     display: flex;
     align-items: center;
@@ -674,11 +690,16 @@
     color: #ffffff;
     font-weight: 600;
     font-size: 25px;
-    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.8);
+    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.5);
     height: 30px;
     line-height: 30px;
 }
 .barrage-Top{
+    display: block;
+    left: 50%;
+    transform: translate(-50%,0%);
+}
+.barrage-Bottom{
     display: block;
     left: 50%;
     transform: translate(-50%,0%);
