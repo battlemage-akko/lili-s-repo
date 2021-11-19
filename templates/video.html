@@ -111,7 +111,7 @@
                             <img src="{% static 'images/play.png' %}" alt="" class="playImg" v-show="!playing">
                         </div>
                         <div id="static-barrage-Top">
-                            <div class="barrage-item barrage-Top" v-for="(item,index) in static_barrageArray" :style="{top:(item.top-1)*30+'px'}">
+                            <div class="barrage-item barrage-Top" v-for="(item,index) in static_barrageArray" :style="{top:(item.top-1)*30+'px'}" :key="item.b_id">
                                 {[ item.content ]}
                             </div>
                         </div>
@@ -164,7 +164,9 @@
                         <div class="video-danmucontent-switch" style="flex-grow: 1">
                             <div class="danmu-input-group">
                                 <button class="danmu-input-group-send" @click="send_msg_check">发送</button>
-                                <span style="color: rgba(0,0,0,0.4);width: 70px">模式:{[barrage_mode_now]}</span>
+                                <span style="color: rgba(0,0,0,0.4);width: 70px">模式:
+                                    <span style="font-weight: 700;color: black">{[barrage_mode_now]}</span>
+                                </span>
                                 <input type="text" placeholder="发个弹幕试试吧~" id="danmu_content" v-model="input">
                             </div>
                         </div>
@@ -728,6 +730,10 @@
                     data: param,
                     url: "{% url 'save_barrage' %}"
                 })
+                if(result.data.code==1){
+                    tmp['b_id'] = result.data.b_id
+                    console.log(tmp)
+                }
                 this.barrageArray.unshift(tmp)
                 this.input = ''
             },

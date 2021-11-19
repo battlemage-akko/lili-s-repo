@@ -216,7 +216,7 @@
                     </ul>
                 </div>
                 <ul class="videos-list videos-list-new" v-show="videosList_tags.new">
-                    <li v-for="(item,i) in videosList_new" @click="getVideo(item.v_id)" class="videos-each">
+                    <li v-for="(item,i) in videosList_new" @click="getVideo(item.v_id)" class="videos-each" :key="item.v_id">
                         <div :style="{'background-image': 'url('+video_pic_url+item.v_pic+')','background-size':'cover'}" class="videos-each-background"></div>
                         <span class="videos-each-tips">
                             <i class="videos-each-play"></i>
