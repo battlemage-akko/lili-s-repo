@@ -395,9 +395,9 @@
             loveornot:{{ loveornot }},
             collectornot:{{ collectornot }},
             barrage_mode:{
+                move:true,
                 top:false,
                 bottom:false,
-                move:true,
             },
             video_detail: {
                 "v_id": {{ v_id }},
@@ -455,7 +455,7 @@
         methods: {
             changeBarrageMode:function (mode,e){
                 for(let key in this.barrage_mode){
-                    this.barrage_mode[mode]=false
+                    this.barrage_mode[key]=false
                 }
                 this.barrage_mode[mode]=true
                 lis = document.querySelector('.danmu-setting-mode').querySelectorAll('li')
@@ -603,8 +603,14 @@
                     alert('空的，尼玛')
                     return false;
                 }
-                console.log(vm.video_ready.currentTime(), Math.ceil(vm.video_ready.currentTime()))
+                mode = ""
+                for(let key in this.barrage_mode){
+                    if(this.barrage_mode[key] == true){
+                        mode = key
+                    }
+                }
                 tmp = {
+                    b_mode: mode,
                     b_content: inputValue,
                     b_time: Math.ceil(vm.video_ready.currentTime()),
                 }
@@ -618,6 +624,7 @@
                 param.append('b_content', tmp.b_content)
                 param.append('b_time', tmp.b_time)
                 param.append('v_id', this.video_detail.v_id)
+                param.append('b_mode', tmp.b_mode)
                 result = await axios({
                     method: "POST",
                     data: param,
@@ -666,7 +673,11 @@
 
                 this.barrage_divNode.onmouseleave = function () {
                     barrageChileNode.style.display = 'none';
-                    vm.barrageAnimate(this);
+                    if(vm.playing)
+                        vm.barrageAnimate(this);
+                    else{
+                        return
+                    }
                 };
 
                 //举报

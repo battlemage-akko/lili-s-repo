@@ -660,11 +660,14 @@
     color: #ffffff;
     font-weight: 600;
     font-size: 25px;
-    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.5);
+    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.8);
     height: 30px;
     line-height: 30px;
 }
+.barrage-tip{
+    -webkit-text-stroke: 0px black;
 
+}
 .barrage-item-active {
     border: 1px blue solid;
 }
@@ -681,7 +684,6 @@
     white-space: nowrap;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 0 10px 1px rgba(0, 0, 0, .1);
     -webkit-transform-origin: 15px 100%;
     -ms-transform-origin: 15px 100%;
     transform-origin: 15px 100%;

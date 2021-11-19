@@ -9,6 +9,7 @@ class test(models.Model):
     b_color = models.CharField(max_length=20,default="black")
     b_size = models.IntegerField(default=15)
     v_id = models.IntegerField(default=1)
+    b_mode = models.CharField(max_length=10,default="move")
     class Meta:
         app_label = "barrage"
 
