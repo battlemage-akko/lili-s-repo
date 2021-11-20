@@ -422,8 +422,7 @@
                         </div>
                     </div>
                     <div class="nextvideo">
-                        <div style="background: url('
-                                {% static 'videos/videopic/' %}{{ nextvideo.v_pic }}') center center no-repeat;background-size: cover;background-color: black;cursor: pointer"
+                        <div style="background: url('{% static 'videos/videopic/' %}{{ nextvideo.v_pic }}') center center no-repeat;background-size: cover;background-color: black;cursor: pointer"
                              @click="getVideo({{ nextvideo.v_id }})"></div>
                         <div class="videoslist-info">
                             <a href="javascript:" @click="getVideo({{ nextvideo.v_id }})">{{ nextvideo.v_title }}</a>
@@ -435,9 +434,7 @@
                     <ul class="videoslist">
                         {% for item in nextvideolist %}
                             <li>
-                                <div style="background: url('
-                                        {% static 'videos/videopic/' %}{{ item.v_pic }}') center center no-repeat;background-size: cover;background-color: black;cursor: pointer"
-                                     @click="getVideo({{ item.v_id }})"></div>
+                                <div style="background: url('{% static 'videos/videopic/' %}{{ item.v_pic }}') center center no-repeat;background-size: cover;background-color: black;cursor: pointer" @click="getVideo({{ item.v_id }})"></div>
                                 <div class="videoslist-info">
                                     <a href="javascript:" @click="getVideo({{ item.v_id }})">{{ item.v_title }}</a>
                                     <a href="javascript:">作者：{{ item.v_auther }}</a>
