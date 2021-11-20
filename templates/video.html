@@ -513,6 +513,7 @@
             video_ready: "",
             video_nowtime: 0,
             barrageArray: [],
+            barrageHolder:{},
             barrage_color: 'white',
             static_barrageArray_Top: [],
             static_barrageArray_Bottom: [],
@@ -531,7 +532,6 @@
             static_barrage_divNodes: [],
             tags: [],
             input: "",
-            fromhere: 0,
             is_login: topbar.is_login,
             show_barrage: true,
             AccMenu: false,
@@ -714,7 +714,7 @@
                     }
                 }
             },
-            createBarrage: function (msg, mode, isSendMsg, b_id, b_color) {
+            createBarrage: function (msg, mode, isSendMsg, b_id, b_color, from_here) {
                 let divNode = document.createElement('div');
                 let spanNode = document.createElement('span');
 
@@ -725,9 +725,8 @@
                     spanNode.innerHTML = '举报';
                     spanNode.classList.add('barrage-tip');
                     divNode.appendChild(spanNode);
-                    if (this.fromhere == 1) {
+                    if (from_here) {
                         divNode.classList.add('barrage-item-active');
-                        this.fromhere = 0
                     }
                     barrageOffsetLeft = barrageWidth
                     barrageOffsetTop = this.nextbarrageTop
@@ -842,7 +841,6 @@
             },
             sendMsg: function () {
                 let inputValue = this.input
-                this.fromhere = 1
                 inputValue.replace(/\ +/g, "");
                 if (inputValue.length <= 0) {
                     alert('空的，尼玛')
@@ -877,10 +875,17 @@
                 })
                 if (result.data.code == 1) {
                     tmp['b_id'] = result.data.b_id
+                    tmp['from_here'] = true
                     console.log(tmp)
+                    this.barrageArray.unshift(tmp)
+                    if(this.barrageHolder.hasOwnProperty(tmp.b_time)){
+                        this.barrageHolder[tmp.b_time].push(tmp)
+                    }
+                    else{
+                        this.barrageHolder[tmp.b_time] = []
+                        this.barrageHolder[tmp.b_time].push(tmp)
+                    }
                 }
-                this.barrageArray.unshift(tmp)
-                this.input = ''
             },
             move: function (obj) {
                 if (-obj.width == obj.distance && obj.chance == 1) {
@@ -911,6 +916,16 @@
                     data: param,
                 })
                 this.barrageArray = result.data
+                for(let item of result.data){
+                    item['from_here'] = false
+                    if(this.barrageHolder.hasOwnProperty(item.b_time)){
+                        this.barrageHolder[item.b_time].push(item)
+                    }
+                    else{
+                        this.barrageHolder[item.b_time] = []
+                        this.barrageHolder[item.b_time].push(item)
+                    }
+                }
             },
             getVideo: function (v_id) {
                 window.open(this.video_url + v_id)
@@ -1065,6 +1080,7 @@
             } else {
                 this.tags = tagsTmp
             }
+            this.getBarrage()
             this.video_ready = videojs("video_ready", this.video_option, function () {
                 this.on('loadstart', function () {
                     console.log('loadstart')
@@ -1102,7 +1118,6 @@
                     if (vm.oncechance == 1) {
                         that.played({{ v_id }})
                     }
-                    that
                     for (let i of document.querySelector("#barrage").querySelectorAll("div")) {
                         that.barrageAnimate(i);
                     }
@@ -1136,7 +1151,6 @@
             if (this.collectornot == 1) {
                 document.querySelector(".videobtns").querySelector(".collect").classList.toggle("active")
             }
-            this.getBarrage()
             if (this.video_detail.user_id == '{{ request.user.id }}') {
                 document.querySelector(".follow").style.display = "none"
             }
@@ -1167,11 +1181,12 @@
             collectornot: function () {
                 document.querySelector(".videobtns").querySelector(".collect").classList.toggle("active")
             },
-            video_nowtime: function () {
+            video_nowtime: function (val) {
                 if (vm.barrageArray.length != 0)
-                    while (vm.barrageArray.length != 0 && vm.barrageArray[0].b_time == vm.video_nowtime) {
-                        let tmp = vm.barrageArray.shift()
-                        this.createBarrage(msg = tmp.b_content, mode = tmp.b_mode, isSendMsg = false, b_id = tmp.b_id, b_color = tmp.b_color)
+                    if(this.barrageHolder.hasOwnProperty(val)){
+                        for(let tmp of this.barrageHolder[val]){
+                            this.createBarrage(msg = tmp.b_content, mode = tmp.b_mode, isSendMsg = false, b_id = tmp.b_id, b_color = tmp.b_color,from_here=tmp.from_here)
+                        }
                     }
             },
             screenWidth(val) {
