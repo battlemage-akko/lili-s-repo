@@ -107,10 +107,11 @@
                 </div>
                 <div class="video-card">
                     <div class="thisvideo">
+                        <img src="{% static 'images/play.png' %}" alt="" class="playImg" v-show="!playing" @click="pauseOrPlay">
                         <div id="barrage" @click="pauseOrPlay">
-                            <img src="{% static 'images/play.png' %}" alt="" class="playImg" v-show="!playing">
+
                         </div>
-                        <div id="static-barrage">
+                        <div id="static-barrage" v-show="show_barrage">
                             <div class="barrage-item barrage-Top" v-for="(item,index) in static_barrageArray_Top" :style="{top:(item.top-1)*30+'px',color:item.b_color}" :key="item.b_id" :style="{'color':'yellow'}">
                                 {[ item.content ]}
                             </div>
@@ -144,9 +145,7 @@
                     <div class="danmucontent">
                         <div class="video-danmucontent-switch danmu-switch" style="width: 200px">
                             <div class="form-check form-switch" style="display: flex;justify-content: right">
-                                <input class="form-check-input" type="checkbox" role="switch"
-                                       id="flexSwitchCheckChecked"
-                                       checked>
+                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="show_barrage">
                                 <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                             </div>
                             <ul class="danmu-btns">
@@ -460,6 +459,10 @@
             barrage_color: 'white',
             static_barrageArray_Top: [],
             static_barrageArray_Bottom: [],
+            static_barrageArray_timer: {
+                top:[],
+                bottom:[]
+            },
             static_barrage_top:"",
             static_barrage_top_rail:{
                 max:"",
@@ -473,6 +476,7 @@
             input: "",
             fromhere: 0,
             is_login: topbar.is_login,
+            show_barrage:true,
             AccMenu: false,
             playing:false,
             AccReason: "",
@@ -488,6 +492,35 @@
             videosList_isLoading:false,
         },
         methods: {
+            showBarrage:function (){
+                this.show_barrage==true?this.show_barrage=false:this.show_barrage==true
+            },
+            hideTopBarrage:function (){
+                for(let timer in this.static_barrageArray_timer.top){
+                    clearTimeout(timer)
+                }
+                for(let key in this.static_barrage_top_rail){
+                    this.static_barrage_top_rail[key] = true
+                }
+                this.static_barrageArray_timer.top = []
+                this.static_barrageArray_Top = []
+                for(let key in this.static_barrage_top_rail){
+                    this.static_barrage_top_rail[key] = true
+                }
+            },
+            hideBottomBarrage:function (){
+                for(let timer in this.static_barrageArray_timer.bottom){
+                    clearTimeout(timer)
+                }
+                for(let key in this.static_barrage_bottom_rail){
+                    this.static_barrage_bottom_rail[key] = true
+                }
+                this.static_barrageArray_timer.bottom = []
+                this.static_barrageArray_Bottom = []
+                for(let key in this.static_barrage_bottom_rail){
+                        this.static_barrage_top_rail[key] = true
+                    }
+            },
             changeBarrageColor:function (color){
                 this.barrage_color = color
             },
@@ -621,7 +654,7 @@
                 let divNode = document.createElement('div');
                 let spanNode = document.createElement('span');
 
-                if(mode=="move"){
+                if(mode=="move" && this.show_barrage==true){
                     divNode.innerHTML = msg;
                     divNode.classList.add('barrage-item');
                     barrageBox.appendChild(divNode);
@@ -636,15 +669,16 @@
                     barrageOffsetTop = this.nextbarrageTop
                     this.nextbarrageTop += 30
                     //执行初始化滚动
-
+                    console.log(b_color)
                     this.barrage_divNode = divNode
                     this.initBarrage.call(divNode, {
                         left: barrageOffsetLeft,
                         top: barrageOffsetTop,
+                        color: b_color,
                     });
                 }
                 else{
-                    if(mode=="top"){
+                    if(mode=="top" && this.show_barrage==true){
                         rail = null
                         static_b_id = b_id
                         for(let key in this.static_barrage_top_rail){
@@ -662,7 +696,7 @@
                         })
                         this.initStaticBarrage(static_b_id,rail,'top')
                     }
-                    else if(mode=="bottom"){
+                    else if(mode=="bottom" && this.show_barrage==true){
                         rail = null
                         static_b_id = b_id
                         for(let key in this.static_barrage_bottom_rail){
@@ -688,7 +722,7 @@
             initStaticBarrage:function (b_id,rail,mode){
                 that = this
                 if(mode=='top'){
-                    setTimeout(function (){
+                    that.static_barrageArray_timer.top.push(setTimeout(function (){
                         that.static_barrage_top_rail[rail] = true
                         for(let item of that.static_barrageArray_Top){
                             if(item.b_id == b_id){
@@ -696,10 +730,11 @@
                                 that.static_barrageArray_Top.splice(index, 1)
                             }
                         }
-                    },5000)
+                    },5000))
                 }
                 else if(mode=='bottom'){
-                        setTimeout(function (){
+
+                        that.static_barrageArray_timer.bottom.push(setTimeout(function (){
                             that.static_barrage_bottom_rail[rail] = true
                             for(let item of that.static_barrageArray_Bottom){
                                 if(item.b_id == b_id){
@@ -707,12 +742,13 @@
                                     that.static_barrageArray_Bottom.splice(index, 1)
                                 }
                             }
-                        },5000)
+                        },5000))
                 }
             },
             initBarrage: function (obj) {
                 this.barrage_divNode.distance = 0;
                 this.barrage_divNode.chance = 1;
+                this.barrage_divNode.style.color = obj.color;
                 this.barrage_divNode.offsetLeft = obj.left;
                 this.barrage_divNode.style.top = obj.top + 'px';
                 this.barrage_divNode.width = ~~window.getComputedStyle(this.barrage_divNode).width.replace('px', '');
@@ -1049,6 +1085,13 @@
             }
         },
         watch: {
+            show_barrage: function (val){
+                if(val==false){
+                    barrage_node = document.querySelector('#barrage')
+                    this.hideBottomBarrage()
+                    this.hideTopBarrage()
+                }
+            },
             followornot: function () {
                 if (this.followornot == 1) {
                     document.querySelector('.follow-btn').innerHTML = "tick"
