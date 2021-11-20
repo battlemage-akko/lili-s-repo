@@ -54,9 +54,11 @@
         #app {
             transition: padding-left .5s ease;
         }
-        ul{
+
+        ul {
             padding-left: 0;
         }
+
         .videos {
             width: 100vw;
             height: 100vh;
@@ -107,15 +109,21 @@
                 </div>
                 <div class="video-card">
                     <div class="thisvideo">
-                        <img src="{% static 'images/play.png' %}" alt="" class="playImg" v-show="!playing" @click="pauseOrPlay">
-                        <div id="barrage" @click="pauseOrPlay">
+                        <img src="{% static 'images/play.png' %}" alt="" class="playImg" v-show="!playing"
+                             @click="pauseOrPlay">
+                        <div id="barrage" @click="pauseOrPlay" :style="{opacity:barrage_opacity}"
+                             v-show="barrage_show_mode.move">
 
                         </div>
-                        <div id="static-barrage" v-show="show_barrage">
-                            <div class="barrage-item barrage-Top" v-for="(item,index) in static_barrageArray_Top" :style="{top:(item.top-1)*30+'px',color:item.b_color}" :key="item.b_id" :style="{'color':'yellow'}">
+                        <div id="static-barrage" v-show="show_barrage" :style="{opacity:barrage_opacity}">
+                            <div class="barrage-item barrage-Top" v-for="(item,index) in static_barrageArray_Top"
+                                 :style="{top:(item.top-1)*30+'px',color:item.b_color}" :key="item.b_id"
+                                 :style="{'color':'yellow'}" v-show="barrage_show_mode.top">
                                 {[ item.content ]}
                             </div>
-                            <div class="barrage-item barrage-Bottom" v-for="(item,index) in static_barrageArray_Bottom" :style="{bottom:(item.bottom-1)*30+'px',color:item.b_color}" :key="item.b_id">
+                            <div class="barrage-item barrage-Bottom" v-for="(item,index) in static_barrageArray_Bottom"
+                                 :style="{bottom:(item.bottom-1)*30+'px',color:item.b_color}" :key="item.b_id"
+                                 v-show="barrage_show_mode.bottom">
                                 {[ item.content ]}
                             </div>
                         </div>
@@ -129,6 +137,25 @@
                             <li class="play-tools-stop" title="销毁"></li>
                         </ul>
                         <ul class="play-tools-main">
+                            <li class="fullscreen-sets">
+                                <i class="set"></i>
+                                <div class="tools-set-dropdown">
+                                    屏蔽弹幕:
+                                    <ul class="tools-set-barrage" style="justify-content: space-around;margin: 5px 0px">
+                                        <li @click="banBarrage('move',$event)"><img
+                                                src="{% static 'images/barrage_move.svg' %}" type="image/svg+xml"
+                                                width="25" height="25"/></li>
+                                        <li @click="banBarrage('top',$event)"><img
+                                                src="{% static 'images/barrage_top.svg' %}" type="image/svg+xml"
+                                                width="25" height="25"/></li>
+                                        <li @click="banBarrage('bottom',$event)"><img
+                                                src="{% static 'images/barrage_bottom.svg' %}" type="image/svg+xml"
+                                                width="25" height="25"/></li>
+                                    </ul>
+                                    弹幕不透明度:
+                                    <input type="range" max="1" step="0.01" v-model="barrage_opacity">
+                                </div>
+                            </li>
                             <li class="play-tools-choose">
                                 {[ screen_choose ]}
                                 <div class="choose-dropdown">
@@ -138,14 +165,15 @@
                                     <div>auto</div>
                                 </div>
                             </li>
-                            <li class="fullscreen-sets"></li>
+
                             <li class="fullscreen-window"></li>
                         </ul>
                     </div>
                     <div class="danmucontent">
                         <div class="video-danmucontent-switch danmu-switch" style="width: 200px">
                             <div class="form-check form-switch" style="display: flex;justify-content: right">
-                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="show_barrage">
+                                <input class="form-check-input" type="checkbox" role="switch"
+                                       id="flexSwitchCheckChecked" v-model="show_barrage">
                                 <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                             </div>
                             <ul class="danmu-btns">
@@ -153,18 +181,35 @@
                                     <div class="danmu-setting">
                                         <div>弹幕模式:</div>
                                         <ul class="danmu-setting-mode">
-                                            <li class="active" @click="changeBarrageMode('move',$event)"><img src="{% static 'images/barrage_move.svg' %}" type="image/svg+xml" width="40" height="40" /><div>滚动</div></li>
-                                            <li @click="changeBarrageMode('top',$event)"><img src="{% static 'images/barrage_top.svg' %}" type="image/svg+xml" width="40" height="40" /><div>顶部</div></li>
-                                            <li @click="changeBarrageMode('bottom',$event)"><img src="{% static 'images/barrage_bottom.svg' %}" type="image/svg+xml" width="40" height="40" /><div>底部</div></li>
+                                            <li class="active" @click="changeBarrageMode('move',$event)"><img
+                                                    src="{% static 'images/barrage_move.svg' %}" type="image/svg+xml"
+                                                    width="40" height="40"/>
+                                                <div>滚动</div>
+                                            </li>
+                                            <li @click="changeBarrageMode('top',$event)"><img
+                                                    src="{% static 'images/barrage_top.svg' %}" type="image/svg+xml"
+                                                    width="40" height="40"/>
+                                                <div>顶部</div>
+                                            </li>
+                                            <li @click="changeBarrageMode('bottom',$event)"><img
+                                                    src="{% static 'images/barrage_bottom.svg' %}" type="image/svg+xml"
+                                                    width="40" height="40"/>
+                                                <div>底部</div>
+                                            </li>
                                         </ul>
                                         <div>弹幕颜色:</div>
                                         <ul class="danmu-setting-color">
-                                            <li style="background-color: white" @click="changeBarrageColor('white')"></li>
+                                            <li style="background-color: white"
+                                                @click="changeBarrageColor('white')"></li>
                                             <li style="background-color: red" @click="changeBarrageColor('red')"></li>
-                                            <li style="background-color: yellow" @click="changeBarrageColor('yellow')"></li>
-                                            <li style="background-color: dodgerblue" @click="changeBarrageColor('dodgerblue')"></li>
-                                            <li style="background-color: hotpink" @click="changeBarrageColor('hotpink')"></li>
-                                            <li style="background-color: lightseagreen" @click="changeBarrageColor('lightseagreen')"></li>
+                                            <li style="background-color: yellow"
+                                                @click="changeBarrageColor('yellow')"></li>
+                                            <li style="background-color: dodgerblue"
+                                                @click="changeBarrageColor('dodgerblue')"></li>
+                                            <li style="background-color: hotpink"
+                                                @click="changeBarrageColor('hotpink')"></li>
+                                            <li style="background-color: lightseagreen"
+                                                @click="changeBarrageColor('lightseagreen')"></li>
                                         </ul>
                                     </div>
                                 </li>
@@ -220,12 +265,13 @@
                 </div>
                 <div class="video-discuss" v-if="is_login">
                     <div class="video-discuss-content">
-                        <div class="video-discuss-profile" >
+                        <div class="video-discuss-profile">
                             <img :src="avatar_url+userdetail.picture" alt="">
                         </div>
                         <div class="form-floating video-discuss-input">
                           <textarea class="form-control video-discuss-input-area" placeholder="Leave a comment here"
-                                    id="floatingTextarea" @focus="changeInputMode('discuss')" @blur="changeInputMode('discuss')"
+                                    id="floatingTextarea" @focus="changeInputMode('discuss')"
+                                    @blur="changeInputMode('discuss')"
                                     v-model="discuss">
                           </textarea>
                             <label class="video-discuss-input-line" for="floatingTextarea">
@@ -251,11 +297,13 @@
                         :id="'discuss_'+item.d_id">
                         <div class="video-discuss-list-each-div">
                             <div class="video-discuss-list-each-pic">
-                                <img :src="avatar_url+item.userdetail.picture" alt="" @click="toProfile(item.u_id)" style="cursor: pointer">
+                                <img :src="avatar_url+item.userdetail.picture" alt="" @click="toProfile(item.u_id)"
+                                     style="cursor: pointer">
                             </div>
                             <div class="video-discuss-list-each-content">
                                 <div>
-                                    <h2 style="font-size: 12px;letter-spacing: 1px;margin-bottom: 5px;font-weight: 600;cursor: pointer" @click="toProfile(item.u_id)">
+                                    <h2 style="font-size: 12px;letter-spacing: 1px;margin-bottom: 5px;font-weight: 600;cursor: pointer"
+                                        @click="toProfile(item.u_id)">
                                         {[item.userdetail.username]}
                                     </h2>
                                     <p style="white-space: normal;">
@@ -267,17 +315,22 @@
                                     <span class="heart"> 0</span>
                                     <span class="heart-broken"> 0</span>
                                     <span @click="showAnswer(item.d_id)" style="cursor: pointer">回复</span>
-                                    <span @click="delDiscussion(item.d_id)" style="cursor: pointer" v-if="userdetail.id==video_detail.user_id || userdetail.id==item.u_id">删除</span>
+                                    <span @click="delDiscussion(item.d_id)" style="cursor: pointer"
+                                          v-if="userdetail.id==video_detail.user_id || userdetail.id==item.u_id">删除</span>
                                 </div>
                             </div>
                         </div>
                         <div class="video-discuss-list-each-div">
                             <div class="video-answer-container">
                                 <ul class="video-answer-list-container">
-                                    <li v-for="(answer,index) in item.answer" class="video-answer-list-each" >
+                                    <li v-for="(answer,index) in item.answer" class="video-answer-list-each">
                                         <div class="video-answer-list-each-content">
-                                            <img :src="avatar_url+answer.userdetail.picture" alt="" @click="toProfile(answer.u_id)" style="cursor: pointer">
-                                            <div class="video-answer-list-each-word"><span @click="toProfile(answer.u_id)" style="cursor: pointer"> {[ answer.userdetail.username ]}</span> : {[ answer.answer_content ]}</div>
+                                            <img :src="avatar_url+answer.userdetail.picture" alt=""
+                                                 @click="toProfile(answer.u_id)" style="cursor: pointer">
+                                            <div class="video-answer-list-each-word"><span
+                                                    @click="toProfile(answer.u_id)" style="cursor: pointer"> {[ answer.userdetail.username ]}</span>
+                                                : {[ answer.answer_content ]}
+                                            </div>
                                         </div>
                                         <div class="video-answer-list-each-date">
                                             <span>{[ answer.answer_time.answer_time_year ]}年{[ answer.answer_time.answer_time_month ]}月{[ answer.answer_time.answer_time_day ]}日 {[ answer.answer_time.answer_time_hour ]}:{[ answer.answer_time.answer_time_minute ]}:{[ answer.answer_time.answer_time_second ]}
@@ -369,7 +422,8 @@
                         </div>
                     </div>
                     <div class="nextvideo">
-                        <div style="background: url('{% static 'videos/videopic/' %}{{ nextvideo.v_pic }}') center center no-repeat;background-size: cover;background-color: black;cursor: pointer"
+                        <div style="background: url('
+                                {% static 'videos/videopic/' %}{{ nextvideo.v_pic }}') center center no-repeat;background-size: cover;background-color: black;cursor: pointer"
                              @click="getVideo({{ nextvideo.v_id }})"></div>
                         <div class="videoslist-info">
                             <a href="javascript:" @click="getVideo({{ nextvideo.v_id }})">{{ nextvideo.v_title }}</a>
@@ -381,7 +435,8 @@
                     <ul class="videoslist">
                         {% for item in nextvideolist %}
                             <li>
-                                <div style="background: url('{% static 'videos/videopic/' %}{{ item.v_pic }}') center center no-repeat;background-size: cover;background-color: black;cursor: pointer"
+                                <div style="background: url('
+                                        {% static 'videos/videopic/' %}{{ item.v_pic }}') center center no-repeat;background-size: cover;background-color: black;cursor: pointer"
                                      @click="getVideo({{ item.v_id }})"></div>
                                 <div class="videoslist-info">
                                     <a href="javascript:" @click="getVideo({{ item.v_id }})">{{ item.v_title }}</a>
@@ -407,21 +462,26 @@
             barrageWidth: document.querySelector('.thisvideo').clientWidth,
             barrageTipWidth: 50,
             screenWidth: document.body.clientWidth,
-
             nextbarrageTop: 0,
-            nextStaticBarrageBottom:0,
+            nextStaticBarrageBottom: 0,
 
             screen_choose: "auto",
             oncechance:{{ oncechance }},
             followornot: {{ followornot }},
             loveornot:{{ loveornot }},
             collectornot:{{ collectornot }},
-            barrage_mode:{
-                move:true,
-                top:false,
-                bottom:false,
+            barrage_mode: {
+                move: true,
+                top: false,
+                bottom: false,
             },
-            barrage_mode_now:"滚动",
+            barrage_show_mode: {
+                move: true,
+                top: true,
+                bottom: true,
+            },
+            barrage_opacity: 0.80,
+            barrage_mode_now: "滚动",
             video_detail: {
                 "v_id": {{ v_id }},
                 "v_ad": "{{ v_ad }}",
@@ -432,11 +492,11 @@
                 "v_collect": {{ v_collect }},
                 "v_like": {{ v_like }},
                 "user_id": {{ user_id }},
-                "u_pic":"{{ u_pic }}",
+                "u_pic": "{{ u_pic }}",
                 "v_tags": "{{ v_tags }}",
                 "d_content": {{ discuss|safe }},
             },
-            userdetail:topbar.userdetail,
+            userdetail: topbar.userdetail,
             video_option: {
                 controls: true,
                 autoplay: true,
@@ -460,120 +520,127 @@
             static_barrageArray_Top: [],
             static_barrageArray_Bottom: [],
             static_barrageArray_timer: {
-                top:[],
-                bottom:[]
+                top: [],
+                bottom: []
             },
-            static_barrage_top:"",
-            static_barrage_top_rail:{
-                max:"",
+            static_barrage_top: "",
+            static_barrage_top_rail: {
+                max: "",
             },
-            static_barrage_bottom_rail:{
-                max:"",
+            static_barrage_bottom_rail: {
+                max: "",
             },
             barrage_divNode: "",
-            static_barrage_divNodes:[],
+            static_barrage_divNodes: [],
             tags: [],
             input: "",
             fromhere: 0,
             is_login: topbar.is_login,
-            show_barrage:true,
+            show_barrage: true,
             AccMenu: false,
-            playing:false,
+            playing: false,
             AccReason: "",
             AccResult: "",
             username: "",
             q: "",
-            video_url:"{% url "index" %}"+"video/",
-            base_url:"{% url 'index' %}"+"search?q=",
+            video_url: "{% url "index" %}" + "video/",
+            base_url: "{% url 'index' %}" + "search?q=",
             avatar_url: topbar.avatar_url,
             discuss: "",
             discuss_msg: "",
-            answerTmp:{},
-            videosList_isLoading:false,
+            answerTmp: {},
+            videosList_isLoading: false,
         },
         methods: {
-            showBarrage:function (){
-                this.show_barrage==true?this.show_barrage=false:this.show_barrage==true
+            showBarrage: function () {
+                this.show_barrage == true ? this.show_barrage = false : this.show_barrage == true
             },
-            hideTopBarrage:function (){
-                for(let timer in this.static_barrageArray_timer.top){
+            banBarrage: function (mode, e) {
+                e.currentTarget.classList.toggle("barrage-ban")
+                this.barrage_show_mode[mode] = !this.barrage_show_mode[mode]
+            },
+            hideTopBarrage: function () {
+                for (let timer in this.static_barrageArray_timer.top) {
                     clearTimeout(timer)
                 }
-                for(let key in this.static_barrage_top_rail){
+                for (let key in this.static_barrage_top_rail) {
                     this.static_barrage_top_rail[key] = true
                 }
                 this.static_barrageArray_timer.top = []
                 this.static_barrageArray_Top = []
-                for(let key in this.static_barrage_top_rail){
+                for (let key in this.static_barrage_top_rail) {
                     this.static_barrage_top_rail[key] = true
                 }
             },
-            hideBottomBarrage:function (){
-                for(let timer in this.static_barrageArray_timer.bottom){
+            hideBottomBarrage: function () {
+                for (let timer in this.static_barrageArray_timer.bottom) {
                     clearTimeout(timer)
                 }
-                for(let key in this.static_barrage_bottom_rail){
+                for (let key in this.static_barrage_bottom_rail) {
                     this.static_barrage_bottom_rail[key] = true
                 }
                 this.static_barrageArray_timer.bottom = []
                 this.static_barrageArray_Bottom = []
-                for(let key in this.static_barrage_bottom_rail){
-                        this.static_barrage_top_rail[key] = true
-                    }
+                for (let key in this.static_barrage_bottom_rail) {
+                    this.static_barrage_top_rail[key] = true
+                }
             },
-            changeBarrageColor:function (color){
+            hideMoveBarrage: function () {
+                node = document.querySelector('#barrage')
+                while (node.hasChildNodes()) {
+                    node.removeChild(node.firstChild);
+                }
+                this.nextbarrageTop = 0
+            },
+            changeBarrageColor: function (color) {
                 this.barrage_color = color
             },
-            changeBarrageMode:function (mode,e){
-                for(let key in this.barrage_mode){
-                    this.barrage_mode[key]=false
+            changeBarrageMode: function (mode, e) {
+                for (let key in this.barrage_mode) {
+                    this.barrage_mode[key] = false
                 }
-                this.barrage_mode[mode]=true
-                if(mode=='move'){
-                    this.barrage_mode_now="滚动"
-                }
-                else if(mode=='top'){
-                    this.barrage_mode_now="顶部"
-                }
-                else if(mode=='bottom'){
-                    this.barrage_mode_now="底部"
+                this.barrage_mode[mode] = true
+                if (mode == 'move') {
+                    this.barrage_mode_now = "滚动"
+                } else if (mode == 'top') {
+                    this.barrage_mode_now = "顶部"
+                } else if (mode == 'bottom') {
+                    this.barrage_mode_now = "底部"
                 }
                 lis = document.querySelector('.danmu-setting-mode').querySelectorAll('li')
-                for(let li of lis){
+                for (let li of lis) {
                     li.classList.remove('active')
                 }
                 e.currentTarget.classList.add('active')
             },
-            toProfile:function (id){
+            toProfile: function (id) {
                 topbar.toProfile(id)
             },
-            login:function() {
+            login: function () {
                 topbar.login()
             },
-            showAnswer:function (id){
-                    document.querySelector('#answer_'+id).classList.toggle('active')
-                    answerTextarea = document.querySelector('#answer_'+id).querySelector('.video-answer-input').querySelector('textarea')
-                    for(let item of document.querySelector('#answer_'+id).classList){
-                        if(item=='active'){
-                            answerTextarea.focus()
-                            return
-                        }
+            showAnswer: function (id) {
+                document.querySelector('#answer_' + id).classList.toggle('active')
+                answerTextarea = document.querySelector('#answer_' + id).querySelector('.video-answer-input').querySelector('textarea')
+                for (let item of document.querySelector('#answer_' + id).classList) {
+                    if (item == 'active') {
+                        answerTextarea.focus()
+                        return
                     }
-                    answerTextarea.blur()
+                }
+                answerTextarea.blur()
             },
             searchByTag: function (tag) {
                 window.open(this.base_url + tag)
             },
             changeInputMode: function (string) {
-                if(string=='answer'){
+                if (string == 'answer') {
                     document.querySelector(".video-answer-input-area").classList.toggle("active")
                     document.querySelector(".video-answer-input-line").classList.toggle("active")
-                }
-                else if(string=='discuss'){
+                } else if (string == 'discuss') {
                     document.querySelector(".video-discuss-input-area").classList.toggle("active")
                     document.querySelector(".video-discuss-input-line").classList.toggle("active")
-                }
-                else{
+                } else {
                     return
                 }
             },
@@ -590,7 +657,7 @@
                 document.querySelector('.videos-accusation').classList.remove('active')
             },
             sendDiscussion: async function () {
-                if(this.discuss.trim().split(' ') == ""){
+                if (this.discuss.trim().split(' ') == "") {
                     alert("空的")
                     return
                 }
@@ -604,7 +671,7 @@
                     url: "{% url 'sendDiscussion' %}"
                 })
                 this.discuss_msg = result.data.msg
-                if(result.data.result.length == 1){
+                if (result.data.result.length == 1) {
                     this.video_detail.d_content.unshift(result.data.result[0])
                 }
                 this.discuss = ""
@@ -620,8 +687,8 @@
                     data: param,
                     url: "{% url 'sendAnswer' %}"
                 })
-                for(let item of this.video_detail.d_content){
-                    if(result.data.result.d_id == item.d_id){
+                for (let item of this.video_detail.d_content) {
+                    if (result.data.result.d_id == item.d_id) {
                         item.answer.unshift(result.data.result)
                     }
                 }
@@ -650,11 +717,11 @@
                     }
                 }
             },
-            createBarrage: function (msg,mode,isSendMsg,b_id,b_color) {
+            createBarrage: function (msg, mode, isSendMsg, b_id, b_color) {
                 let divNode = document.createElement('div');
                 let spanNode = document.createElement('span');
 
-                if(mode=="move" && this.show_barrage==true){
+                if (mode == "move" && this.show_barrage == true) {
                     divNode.innerHTML = msg;
                     divNode.classList.add('barrage-item');
                     barrageBox.appendChild(divNode);
@@ -676,73 +743,69 @@
                         top: barrageOffsetTop,
                         color: b_color,
                     });
-                }
-                else{
-                    if(mode=="top" && this.show_barrage==true){
+                } else {
+                    if (mode == "top" && this.show_barrage == true) {
                         rail = null
                         static_b_id = b_id
-                        for(let key in this.static_barrage_top_rail){
-                            if(this.static_barrage_top_rail[key]==true){
+                        for (let key in this.static_barrage_top_rail) {
+                            if (this.static_barrage_top_rail[key] == true) {
                                 rail = key
-                                this.static_barrage_top_rail[key]=false
+                                this.static_barrage_top_rail[key] = false
                                 break
                             }
                         }
                         this.static_barrageArray_Top.push({
-                            content:msg,
-                            top:rail,
-                            b_id:static_b_id,
-                            b_color:b_color
+                            content: msg,
+                            top: rail,
+                            b_id: static_b_id,
+                            b_color: b_color
                         })
-                        this.initStaticBarrage(static_b_id,rail,'top')
-                    }
-                    else if(mode=="bottom" && this.show_barrage==true){
+                        this.initStaticBarrage(static_b_id, rail, 'top')
+                    } else if (mode == "bottom" && this.show_barrage == true) {
                         rail = null
                         static_b_id = b_id
-                        for(let key in this.static_barrage_bottom_rail){
-                            if(this.static_barrage_bottom_rail[key]==true){
+                        for (let key in this.static_barrage_bottom_rail) {
+                            if (this.static_barrage_bottom_rail[key] == true) {
                                 rail = key
-                                this.static_barrage_bottom_rail[key]=false
+                                this.static_barrage_bottom_rail[key] = false
                                 break
                             }
                         }
                         this.static_barrageArray_Bottom.push({
-                            content:msg,
-                            bottom:rail,
-                            b_id:static_b_id,
-                            b_color:b_color
+                            content: msg,
+                            bottom: rail,
+                            b_id: static_b_id,
+                            b_color: b_color
                         })
-                        this.initStaticBarrage(static_b_id,rail,'bottom')
-                    }
-                    else{
+                        this.initStaticBarrage(static_b_id, rail, 'bottom')
+                    } else {
                         return
                     }
                 }
             },
-            initStaticBarrage:function (b_id,rail,mode){
+            initStaticBarrage: function (b_id, rail, mode) {
                 that = this
-                if(mode=='top'){
-                    that.static_barrageArray_timer.top.push(setTimeout(function (){
+                if (mode == 'top') {
+                    that.static_barrageArray_timer.top.push(setTimeout(function () {
                         that.static_barrage_top_rail[rail] = true
-                        for(let item of that.static_barrageArray_Top){
-                            if(item.b_id == b_id){
+                        for (let item of that.static_barrageArray_Top) {
+                            if (item.b_id == b_id) {
                                 index = that.static_barrageArray_Top.indexOf(item)
                                 that.static_barrageArray_Top.splice(index, 1)
                             }
                         }
-                    },5000))
-                }
-                else if(mode=='bottom'){
+                    }, 5000))
+                } else if (mode == 'bottom') {
 
-                        that.static_barrageArray_timer.bottom.push(setTimeout(function (){
-                            that.static_barrage_bottom_rail[rail] = true
-                            for(let item of that.static_barrageArray_Bottom){
-                                if(item.b_id == b_id){
-                                    index = that.static_barrageArray_Bottom.indexOf(item)
-                                    that.static_barrageArray_Bottom.splice(index, 1)
-                                }
+                    that.static_barrageArray_timer.bottom.push(setTimeout(function () {
+                        that.static_barrage_bottom_rail[rail] = true
+                        for (let item of that.static_barrageArray_Bottom) {
+                            if (item.b_id == b_id) {
+                                index = that.static_barrageArray_Bottom.indexOf(item)
+                                that.static_barrageArray_Bottom.splice(index, 1)
                             }
-                        },5000))
+                        }
+                    }, 5000))
                 }
             },
             initBarrage: function (obj) {
@@ -768,9 +831,9 @@
 
                 this.barrage_divNode.onmouseleave = function () {
                     barrageChileNode.style.display = 'none';
-                    if(vm.playing)
+                    if (vm.playing)
                         vm.barrageAnimate(this);
-                    else{
+                    else {
                         return
                     }
                 };
@@ -789,8 +852,8 @@
                     return false;
                 }
                 mode = ""
-                for(let key in this.barrage_mode){
-                    if(this.barrage_mode[key] == true){
+                for (let key in this.barrage_mode) {
+                    if (this.barrage_mode[key] == true) {
                         mode = key
                     }
                 }
@@ -798,7 +861,7 @@
                     b_mode: mode,
                     b_content: inputValue,
                     b_time: Math.ceil(vm.video_ready.currentTime()),
-                    b_color:this.barrage_color
+                    b_color: this.barrage_color
                 }
                 this.send_Msg_to_server(tmp)
             },
@@ -815,7 +878,7 @@
                     data: param,
                     url: "{% url 'save_barrage' %}"
                 })
-                if(result.data.code==1){
+                if (result.data.code == 1) {
                     tmp['b_id'] = result.data.b_id
                     console.log(tmp)
                 }
@@ -860,7 +923,7 @@
                 console.log("重载")
             },
             follow: async function () {
-                if(!this.is_login){
+                if (!this.is_login) {
                     this.login()
                 }
                 let param = new URLSearchParams()
@@ -875,7 +938,7 @@
 
             },
             love: async function () {
-                if(!this.is_login){
+                if (!this.is_login) {
                     this.login()
                 }
                 let param = new URLSearchParams()
@@ -889,15 +952,14 @@
                 })
                 console.log(result.data.msg)
                 this.loveornot = result.data.code
-                if(result.data.code==1){
-                    this.video_detail.v_like +=1
-                }
-                else{
-                    this.video_detail.v_like -=1
+                if (result.data.code == 1) {
+                    this.video_detail.v_like += 1
+                } else {
+                    this.video_detail.v_like -= 1
                 }
             },
             collect: async function () {
-                if(!this.is_login){
+                if (!this.is_login) {
                     this.login()
                 }
                 let param = new URLSearchParams()
@@ -911,11 +973,10 @@
                 })
                 console.log(result.data.msg)
                 this.collectornot = result.data.code
-                if(result.data.code==1){
-                    this.video_detail.v_collect +=1
-                }
-                else{
-                    this.video_detail.v_collect -=1
+                if (result.data.code == 1) {
+                    this.video_detail.v_collect += 1
+                } else {
+                    this.video_detail.v_collect -= 1
                 }
             },
             report: async function () {
@@ -958,11 +1019,10 @@
                     data: param,
                 })
             },
-            pauseOrPlay: function (){
-                if(this.playing){
+            pauseOrPlay: function () {
+                if (this.playing) {
                     this.video_ready.pause()
-                }
-                else{
+                } else {
                     this.video_ready.play()
                 }
             },
@@ -975,22 +1035,22 @@
                     data: param,
                 })
                 this.discuss_msg = result.data.msg
-                if(result.data.code==1){
-                    for(let item of this.video_detail.d_content){
-                        if(item.d_id==d_id){
+                if (result.data.code == 1) {
+                    for (let item of this.video_detail.d_content) {
+                        if (item.d_id == d_id) {
                             discussIndex = this.video_detail.d_content.indexOf(item)
-                            document.querySelector('#discuss_'+d_id).classList.add("dying")
-                            setTimeout(function(){
+                            document.querySelector('#discuss_' + d_id).classList.add("dying")
+                            setTimeout(function () {
                                 vm.video_detail.d_content.splice(discussIndex, 1)
-                                document.querySelector('#discuss_'+d_id).classList.remove("dying")
-                            },500);
+                                document.querySelector('#discuss_' + d_id).classList.remove("dying")
+                            }, 500);
                         }
                     }
                 }
             },
-            listenScroll:function(){
-                if(document.querySelector('.videos').scrollTop + document.querySelector('.videos').offsetHeight > document.querySelector('.videos').scrollHeight - 40 &&  this.videosList_isLoading!=true){
-                    this.videosList_isLoading=true
+            listenScroll: function () {
+                if (document.querySelector('.videos').scrollTop + document.querySelector('.videos').offsetHeight > document.querySelector('.videos').scrollHeight - 40 && this.videosList_isLoading != true) {
+                    this.videosList_isLoading = true
                 }
             }
         },
@@ -1016,19 +1076,19 @@
                     console.log('off')
                 });
                 this.on('timeupdate', function () {
-                    that .video_nowtime = Math.floor(vm.video_ready.currentTime())
+                    that.video_nowtime = Math.floor(vm.video_ready.currentTime())
                 });
-                this.on("canplaythrough",function(){
+                this.on("canplaythrough", function () {
 
                     that.static_barrage_top = document.querySelector("#static-barrage").clientHeight
-                    that.static_barrage_top_rail.max = Math.floor(that.static_barrage_top/30)
-                    for(let rail=1;rail<=that.static_barrage_top_rail.max;rail++){
+                    that.static_barrage_top_rail.max = Math.floor(that.static_barrage_top / 30)
+                    for (let rail = 1; rail <= that.static_barrage_top_rail.max; rail++) {
                         that.static_barrage_top_rail[rail] = true
                     }
 
                     that.static_barrage_bottom = document.querySelector("#static-barrage").clientHeight
-                    that.static_barrage_bottom_rail.max = Math.floor(that.static_barrage_bottom/30)
-                    for(let rail=1;rail<=that.static_barrage_bottom_rail.max;rail++){
+                    that.static_barrage_bottom_rail.max = Math.floor(that.static_barrage_bottom / 30)
+                    for (let rail = 1; rail <= that.static_barrage_bottom_rail.max; rail++) {
                         that.static_barrage_bottom_rail[rail] = true
                     }
                 });
@@ -1047,7 +1107,7 @@
                     }
                     that
                     for (let i of document.querySelector("#barrage").querySelectorAll("div")) {
-                        that .barrageAnimate(i);
+                        that.barrageAnimate(i);
                     }
                 });
                 this.on("error", function () {
@@ -1085,11 +1145,11 @@
             }
         },
         watch: {
-            show_barrage: function (val){
-                if(val==false){
-                    barrage_node = document.querySelector('#barrage')
+            show_barrage: function (val) {
+                if (val == false) {
                     this.hideBottomBarrage()
                     this.hideTopBarrage()
+                    this.hideMoveBarrage()
                 }
             },
             followornot: function () {
@@ -1114,29 +1174,27 @@
                 if (vm.barrageArray.length != 0)
                     while (vm.barrageArray.length != 0 && vm.barrageArray[0].b_time == vm.video_nowtime) {
                         let tmp = vm.barrageArray.shift()
-                        this.createBarrage(msg=tmp.b_content,mode=tmp.b_mode, isSendMsg=false, b_id=tmp.b_id,b_color=tmp.b_color)
+                        this.createBarrage(msg = tmp.b_content, mode = tmp.b_mode, isSendMsg = false, b_id = tmp.b_id, b_color = tmp.b_color)
                     }
             },
-            screenWidth(val){
+            screenWidth(val) {
                 // 为了避免频繁触发resize函数导致页面卡顿，使用定时器
-                if(!this.timer){
+                if (!this.timer) {
                     this.screenWidth = val
                     this.timer = true
                     let that = this
-                    setTimeout(function(){
+                    setTimeout(function () {
                         that.timer = false
-                    },200)
+                    }, 200)
                 }
             },
 
         }
     })
     let inputBox = document.querySelector("#danmu_content")
-    let sendBtn = document.querySelector("#send_danmu")
     let video = document.querySelector('.thisvideo')
     let barrage_height = video.clientHeight
     let barrage_width = video.clientWidth
-    let send_btn = document.querySelector("#send_danmu")
     let danmu_content = document.querySelector("#danmu_content")
     let barrageBox = document.querySelector("#barrage")
     let barrageWidth = barrage_width

@@ -195,7 +195,11 @@ body::-webkit-scrollbar-track { /*滚动条里面轨道*/
 .loading {
     display: inline-block;
 }
-
+.set:before{
+    content: "\e994";
+    font-style: normal;
+    font-family: IcoMoon-Free;
+}
 .loading:before {
     font-size: 25px;
     content: "\e97c";
