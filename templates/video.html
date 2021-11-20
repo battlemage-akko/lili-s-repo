@@ -235,6 +235,7 @@
                         <li><i class="play"></i>&nbsp;{[ video_detail.v_play ]}</li>
                         <li><i class="good"></i>&nbsp;{[ video_detail.v_like ]}</li>
                         <li><i class="collect"> </i>&nbsp;{[ video_detail.v_collect ]}</li>
+                        <li><i class="barrage_tag"></i>&nbsp;{[ video_detail.v_barrage ]}</li>
                     </ul>
                     <h1 class="video-title"><span class="play2" style="margin-right: 5px"></span> {{ v_title }}</h1>
                 </div>
@@ -492,6 +493,7 @@
                 "u_pic": "{{ u_pic }}",
                 "v_tags": "{{ v_tags }}",
                 "d_content": {{ discuss|safe }},
+                "v_barrage":{{ v_barrage|safe }}
             },
             userdetail: topbar.userdetail,
             video_option: {
@@ -873,7 +875,9 @@
                     data: param,
                     url: "{% url 'save_barrage' %}"
                 })
+                this.input=""
                 if (result.data.code == 1) {
+                    this.video_detail.v_barrage += 1
                     tmp['b_id'] = result.data.b_id
                     tmp['from_here'] = true
                     console.log(tmp)

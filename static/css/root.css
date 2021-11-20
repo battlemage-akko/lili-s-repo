@@ -206,6 +206,11 @@ body::-webkit-scrollbar-track { /*滚动条里面轨道*/
     font-style: normal;
     font-family: IcoMoon-Free;
 }
+.barrage_tag:before {
+    content: "\e9b9";
+    font-style: normal;
+    font-family: IcoMoon-Free;
+}
 .paging{
     justify-content: center;
     display: flex;

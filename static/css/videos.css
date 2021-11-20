@@ -762,7 +762,8 @@
 }
 
 .barrage-item-active {
-    border: 1px blue solid;
+    border: 1px #0059ff solid;
+    border-radius: 3px;
 }
 
 .barrage-item .barrage-tip {

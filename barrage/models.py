@@ -10,6 +10,7 @@ class test(models.Model):
     b_size = models.IntegerField(default=15)
     v_id = models.IntegerField(default=1)
     b_mode = models.CharField(max_length=15,default="move")
+    send_time = models.DateTimeField(auto_now_add=True)
     class Meta:
         app_label = "barrage"
 
@@ -20,6 +21,8 @@ class test(models.Model):
             return 1
         else:
             return 0
+    def getBarrageByV_id(v_id):
+        return len(test.objects.filter(v_id=v_id).all().values())
 class video(models.Model):
     v_id = models.AutoField(primary_key = True)
     v_title = models.CharField(max_length=50,null=False,default="default title")

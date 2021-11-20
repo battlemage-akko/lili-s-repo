@@ -60,6 +60,7 @@ def video(request,vid):
         "v_like": result["v_like"],
         "user_id": result["user_id"],
         "fans": Userdatabase.getfans(result["user_id"]),
+        "v_barrage":barrageTable.getBarrageByV_id(result["v_id"]),
         "v_time": {
             "v_time_year": result["v_time"].year,
             "v_time_month": result["v_time"].month,
