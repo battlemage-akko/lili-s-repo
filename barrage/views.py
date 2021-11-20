@@ -85,9 +85,26 @@ def loadbarrage(request):
     v_id = request.POST.get("v_id")
     barrage = []
     result = barrageTable.objects.filter(v_id=v_id).order_by('b_time').values()
+    print(result)
     for i in result:
-        barrage.append(i)
-    return JsonResponse(barrage, safe=False)
+        barrage.append({
+            'b_id':i['b_id'],
+            'b_time': i['b_time'],
+            'b_content': i['b_content'],
+            'b_color': i['b_color'],
+            'b_mode': i['b_mode'],
+            'send_time':{
+                "year": i['send_time'].year,
+                "month": i['send_time'].month,
+                "day": i['send_time'].day,
+                "hour": i['send_time'].hour,
+                "minute": i['send_time'].minute,
+                "second":i['send_time'].second,
+            }
+        })
+    return JsonResponse({
+        'result':barrage
+    })
 
 @csrf_exempt
 def getVideosList(request):

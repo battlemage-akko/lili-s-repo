@@ -403,7 +403,8 @@
                             <li v-for="(item,i) in barrageArray">
                                 <span>{[ Math.floor(item.b_time/60)<10?"0"+Math.floor(item.b_time/60):Math.floor(item.b_time/60) ]}:{[item.b_time%60<10?"0"+(item.b_time%60):item.b_time%60]}</span>
                                 <span>{[ item.b_content ]}</span>
-                                <span>null</span>
+                                <span v-if="!item.from_here">{[ item.send_time.year]}-{[ item.send_time.month<10?"0"+item.send_time.month:item.send_time.month]}-{[ item.send_time.day<10?"0"+item.send_time.day:item.send_time.day]} {[ item.send_time.hour<10?"0"+item.send_time.hour:item.send_time.hour]}:{[ item.send_time.minute<10?"0"+item.send_time.minute:item.send_time.minute]}</span>
+                                <span v-if="item.from_here">刚刚</span>
                                 <span><a href="javascript:" style="text-decoration: none">举报</a></span>
                             </li>
                         </ul>
@@ -734,7 +735,6 @@
                     barrageOffsetTop = this.nextbarrageTop
                     this.nextbarrageTop += 30
                     //执行初始化滚动
-                    console.log(b_color)
                     this.barrage_divNode = divNode
                     this.initBarrage.call(divNode, {
                         left: barrageOffsetLeft,
@@ -864,7 +864,7 @@
             },
             send_Msg_to_server: async function (tmp) {
                 let param = new URLSearchParams()
-                param.append('b_auther', this.username)
+                param.append('b_auther', this.userdetail.username)
                 param.append('b_content', tmp.b_content)
                 param.append('b_time', tmp.b_time)
                 param.append('v_id', this.video_detail.v_id)
@@ -880,7 +880,6 @@
                     this.video_detail.v_barrage += 1
                     tmp['b_id'] = result.data.b_id
                     tmp['from_here'] = true
-                    console.log(tmp)
                     this.barrageArray.unshift(tmp)
                     if(this.barrageHolder.hasOwnProperty(tmp.b_time)){
                         this.barrageHolder[tmp.b_time].push(tmp)
@@ -919,8 +918,8 @@
                     url: "{% url "loadbarrage" %}",
                     data: param,
                 })
-                this.barrageArray = result.data
-                for(let item of result.data){
+                this.barrageArray = result.data.result
+                for(let item of result.data.result){
                     item['from_here'] = false
                     if(this.barrageHolder.hasOwnProperty(item.b_time)){
                         this.barrageHolder[item.b_time].push(item)
@@ -936,7 +935,6 @@
             },
             reloadvideo: function () {
                 this.video_ready.load()
-                console.log("重载")
             },
             follow: async function () {
                 if (!this.is_login) {
@@ -966,7 +964,6 @@
                     url: "{% url "love" %}",
                     data: param,
                 })
-                console.log(result.data.msg)
                 this.loveornot = result.data.code
                 if (result.data.code == 1) {
                     this.video_detail.v_like += 1
@@ -987,7 +984,6 @@
                     url: "{% url "collect" %}",
                     data: param,
                 })
-                console.log(result.data.msg)
                 this.collectornot = result.data.code
                 if (result.data.code == 1) {
                     this.video_detail.v_collect += 1
@@ -1087,10 +1083,10 @@
             this.getBarrage()
             this.video_ready = videojs("video_ready", this.video_option, function () {
                 this.on('loadstart', function () {
-                    console.log('loadstart')
+
                 });
                 this.off('timeupdate', function () {
-                    console.log('off')
+
                 });
                 this.on('timeupdate', function () {
                     that.video_nowtime = Math.floor(vm.video_ready.currentTime())
@@ -1110,14 +1106,14 @@
                     }
                 });
                 this.on('pause', function () {
-                    console.log("暂停")
+
                     that.playing = false
                     for (let i of document.querySelector("#barrage").querySelectorAll("div")) {
                         cancelAnimationFrame(i.timer);
                     }
                 });
                 this.on('play', function () {
-                    console.log("播放")
+
                     that.playing = true
                     if (vm.oncechance == 1) {
                         that.played({{ v_id }})
@@ -1127,10 +1123,10 @@
                     }
                 });
                 this.on("error", function () {
-                    console.log("加载错误")
+
                 });
                 this.on("stalled", function () {
-                    console.log("网速异常");
+
                 })
             })
             if (this.video_ready.readyState() == 0) {
