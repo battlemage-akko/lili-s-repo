@@ -877,8 +877,39 @@
     list-style: none;
     cursor: pointer;
     flex-wrap: wrap;
+    margin-bottom: 5px;
 }
-
+.tags-input{
+    margin: 5px 0px;
+    width: 380px!important;
+}
+.tags-input input{
+    width: 100px;
+}
+.tags-input-btns{
+    margin: 15px 0px 10px 0px;
+}
+.tags-input-btns span{
+    padding: 5px 10px;
+    margin: 5px 10px 5px 0px;
+    border-radius: 5px;
+    border: 1px solid black;
+    cursor: pointer;
+}
+.cancel-tag{
+    padding: 2px;
+    border: 1px dashed black;
+    margin-right: 5px;
+    cursor: pointer;
+}
+.cancel-tag:hover{
+    color: red;
+    border: 1px solid #ff0000;
+}
+.tags-input-btns span:hover{
+    background-color: black;
+    color: white;
+}
 .videos-tags-each {
     border: 1px solid #a8a8a8;
     background-color: rgba(112, 112, 112, 0.1);

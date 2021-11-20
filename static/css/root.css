@@ -110,7 +110,11 @@ body::-webkit-scrollbar-track { /*滚动条里面轨道*/
     color: rgb(104, 165, 255);
     font-size: 20px;
 }
-
+.add:before{
+    content: "\ea0a";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
 .female:before {
     content: '\e9dd';
     font-family: IcoMoon-Free;

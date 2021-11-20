@@ -244,7 +244,22 @@
                         <li class="videos-tags-each" v-for="(item,index) in tags" @click="searchByTag(item)">{[ item
                             ]}
                         </li>
+                        <li class="videos-tags-each add" v-if="userdetail.id == video_detail.user_id" @click="showtagsInput"></li>
                     </ul>
+                    <div style="padding: 5px" v-if="show_tags_input">
+                        <div style="margin: 5px 0px 10px 0px">
+                            <span v-for="(item,index) in tags" @click="removeTag(item)" class="cancel-tag">
+                                {[item]}
+                            </span>
+                        </div>
+                        <div class="input-group tags-input">
+                          <input type="text" class="form-control" placeholder="添加标签名，多个标签由空格或逗号分隔" aria-label="Recipient's username" aria-describedby="button-addon2" v-model="tagsInput">
+                          <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="addTags">添加</button>
+                        </div>
+                        <div class="tags-input-btns">
+                            <span @click="updateTags">提交</span><span @click="showtagsInput">取消</span><i>{[tagsInputMessage]}</i>
+                        </div>
+                    </div>
                 </div>
                 <div class="video-profile">
                     <div style="display: flex;width:200px;">
@@ -534,7 +549,10 @@
             barrage_divNode: "",
             static_barrage_divNodes: [],
             tags: [],
+            tagsInput:"",
+            tagsInputMessage:"",
             input: "",
+            show_tags_input:false,
             is_login: topbar.is_login,
             show_barrage: true,
             AccMenu: false,
@@ -552,6 +570,65 @@
             videosList_isLoading: false,
         },
         methods: {
+            showtagsInput: function (){
+                this.show_tags_input = !this.show_tags_input
+                this.tagsInput==""
+            },
+            removeTag:function (tag){
+                this.tags.splice(this.tags.indexOf(tag),1)
+            },
+            addTags: function (){
+                if(this.tagsInput==""||this.tagsInput==null){
+                    this.tagsInputMessage="你添加了个**"
+                    return
+                }
+                else{
+                    if(this.tags[0]=="无标签"){
+                        this.tags = []
+                    }
+                    tmp = this.tags
+                    for(let item of this.tagsInput.trim().split(/\s|，|,/)){
+                        if(item.length>=20){
+                            this.tagsInputMessage = "标签长度不可大于20"
+                            tmp = []
+                            return
+                        }
+                        if(item.length>=20){
+                            this.tagsInputMessage = "标签长度不可大于20"
+                            tmp = []
+                            return
+                        }
+                        if(tmp.length>=5){
+                            this.tagsInputMessage = "标签不可多于5个"
+                            return
+                        }
+                        if(this.tags.length>=5){
+                            this.tagsInputMessage = "标签不可多于5个"
+                            return
+                        }
+                        tmp.push(item)
+                    }
+                    this.tags = this.tags.concat(tmp)
+                    this.tags = [...new Set(this.tags)]
+                    this.tagsInput = ""
+                }
+            },
+            updateTags: async function (){
+                let param = new URLSearchParams()
+                param.append('v_id', this.video_detail.v_id)
+                param.append('tags', this.tags)
+                result = await axios({
+                    method: "POST",
+                    data: param,
+                    url: "{% url 'updateTags' %}"
+                })
+                this.tagsInputMessage="修改成功"
+                that=this
+                setTimeout(function (){
+                    that.showtagsInput()
+                    that.tagsInputMessage=""
+                },1000)
+            },
             showBarrage: function () {
                 this.show_barrage == true ? this.show_barrage = false : this.show_barrage == true
             },
@@ -740,6 +817,7 @@
                         left: barrageOffsetLeft,
                         top: barrageOffsetTop,
                         color: b_color,
+                        from_here:from_here
                     });
                 } else {
                     if (mode == "top" && this.show_barrage == true) {
@@ -756,7 +834,8 @@
                             content: msg,
                             top: rail,
                             b_id: static_b_id,
-                            b_color: b_color
+                            b_color: b_color,
+                            from_here:from_here
                         })
                         this.initStaticBarrage(static_b_id, rail, 'top')
                     } else if (mode == "bottom" && this.show_barrage == true) {

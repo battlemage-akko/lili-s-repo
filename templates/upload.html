@@ -135,7 +135,6 @@
                 添加标签 : <span class="addtags" @click="addtags">add</span>
                 <ul class="tagsList">
                     <li v-for="(item,index) in tags" @click="delTag($event)" class="tagsList-li">
-
                         <div class="tag-each">
                             <span class="tagCancel">cancel</span>
                             <span class="this-tag">{[item]}</span>
@@ -252,6 +251,9 @@ const vm = new Vue({
               alert("请输入“1”确认")
               return
           }
+          if(this.tag!=""){
+              this.submitTag()
+          }
           this.upload_form()
         },
         upload_form:async function (){
@@ -273,18 +275,24 @@ const vm = new Vue({
                     vm.pre = Math.round(progress.loaded / progress.total * 100) + '%';
                     if(vm.pre=="100%"){
                         vm.pre="0%"
-                        document.querySelector('.upload-form').querySelectorAll('input').forEach((item)=>{
-                            item.removeAttribute("disabled")
-                        })
-                        document.querySelector('.btn-sure').removeAttribute("disabled")
-
-                        document.querySelector('.upload-form').querySelectorAll('input').forEach((item)=>{
-                            item.value = null
-                        })
                     }
                 },
                 data: param,
             })
+            this.message = result.data.msg
+            document.querySelector('.upload-form').querySelectorAll('input').forEach((item)=>{
+                item.removeAttribute("disabled")
+            })
+            document.querySelector('.btn-sure').removeAttribute("disabled")
+
+            document.querySelector('.upload-form').querySelectorAll('input').forEach((item)=>{
+                item.value = null
+            })
+            this.message = result.data.msg
+            this.video_title = ""
+            this.tag = ""
+            this.sure = 0
+            this.tags = []
 
         },
         get_file:function (e){

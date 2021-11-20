@@ -16,4 +16,5 @@ urlpatterns = [
     re_path('^sendAnswer/',views.sendAnswer,name="sendAnswer"),
     re_path('^getAllVideoAccusation/',views.getAllVideoAccusation,name="getAllVideoAccusation"),
     re_path('^rejectVideoAccusation/',views.rejectVideoAccusation,name="rejectVideoAccusation"),
+    re_path('^updateTags/',views.updateTags,name="updateTags"),
 ]

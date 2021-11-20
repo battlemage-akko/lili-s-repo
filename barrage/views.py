@@ -234,7 +234,9 @@ def save_video(request):
         if(tmp==""):
             tags = "None"
         finish_save(video_title, video_pic, video_file,username,user_id,tags)
-    return HttpResponse("上传完成")
+    return JsonResponse({
+        "msg":"上传成功"
+    })
 
 def finish_save(video_title,video_pic,video_file,username,user_id,tags):
     video_title_tmp = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+","",video_title)
@@ -341,4 +343,15 @@ def rejectVideoAccusation(request):
         u = Userdatabase.objects.get(id=accusationTable.objects.get(a_id=a_id).u_id)
         accusationTable.delete(a_id=a_id)
         messagesTable.createMessage(m_content="您对《" + v.v_title + "》的举报已被驳回，如有疑问请联系管理员", m_user=u.id)
+    return HttpResponse()
+
+@csrf_exempt
+def updateTags(request):
+    if (request.method == "POST"):
+        tags = request.POST.get("tags")
+        v_id = request.POST.get("v_id")
+        tmp = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", tags)
+        if (tmp == ""):
+            tags = "None"
+        videosTable.objects.filter(v_id=v_id).update(v_tags=tags)
     return HttpResponse()
