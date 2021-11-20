@@ -444,7 +444,7 @@
 }
 
 .thisvideo {
-    min-width: 700px;
+    min-width: 600px;
     max-width: 1000px;
     width: 70vw;
     position: relative;
@@ -618,7 +618,7 @@
 
 .text-weight {
     height: 100%;
-    width: 80px;
+    width: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
