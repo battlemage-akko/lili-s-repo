@@ -109,13 +109,12 @@ def refreshmsg(request):
 @csrf_exempt
 def getNameAndPic(request):
     u_id = request.GET.get("u_id")
-    print(request.session.keys())
     return JsonResponse({
         "username":Userdatabase.getinfo(id=u_id,info="username"),
         "picture": Userdatabase.getinfo(id=u_id, info="picture"),
         "password": Userdatabase.getinfo(id=u_id, info="password"),
         "is_online": str(request.user.is_authenticated),
-        "session_hash":request.session.get("_auth_user_hash"),
+        "session_key":request.session.session_key,
     })
 
 @csrf_exempt
