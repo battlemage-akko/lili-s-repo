@@ -53,6 +53,8 @@
     vertical-align: top;
     background-color: var(--Test-color);
     max-width: 1000px;
+    min-width: 700px;
+    width: 100vw;
     align-content: normal;
 }
 
@@ -444,9 +446,8 @@
 }
 
 .thisvideo {
-    min-width: 600px;
+    min-width: 700px;
     max-width: 1000px;
-    width: 70vw;
     position: relative;
 }
 
@@ -548,12 +549,15 @@
 
 .video-title {
     font-weight: 600;
-    font-size: 20px;
+    font-size: 15px;
     margin: 0px;
     display: flex;
     flex-direction: row;
-    justify-content: center;
     color: rgba(0, 0, 0, 0.5);
+    margin-left: 10px;
+    overflow: hidden; /*自动隐藏文字*/
+    text-overflow: ellipsis;/*文字隐藏后添加省略号*/
+    white-space: nowrap;/*强制不换行*/
 }
 
 .video-title-span {
@@ -566,8 +570,9 @@
 
 .video-title-span li {
     height: 100%;
-    padding: 0px 10px;
+    padding: 0px 0px 0px 10px;
     display: flex;
+    font-size: 15px;
     justify-content: center;
     align-items: center;
 }
