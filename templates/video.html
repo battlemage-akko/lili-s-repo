@@ -426,8 +426,17 @@
 
                     </div>
                 </div>
+                <div class="videos-collection-list" v-if="video_detail.is_collection=='True'">
+                    <div class="videos-collection-list-title">视频列表({[vc_index]}/{[video_detail.vc_ads.length]})</div>
+                        <ul class="videos-collection-list-container">
+                            <li v-for="(item,index) in video_detail.vc_ads" :key="item.vc_id" @click="changeVideo(index)">
+                                <span>{[index+1]}.{[ item.vc_title ]}</span>
+                                <span>{[ Math.floor(item.vc_duaring/60)<10?"0"+Math.floor(item.vc_duaring/60):Math.floor(item.vc_duaring/60) ]}:{[ item.vc_duaring%60<10?"0"+item.vc_duaring%60:item.vc_duaring%60 ]}</span>
+                            </li>
+                        </ul>
+                </div>
                 <div class="videolistcontent">
-                    <div style="margin: 20px 0px;font-size: 16px;display: inline-block;height: 20px">
+                    <div v-if="video_detail.is_collection=='False'" style="margin: 20px 0px;font-size: 16px;display: inline-block;height: 20px">
                         接下来播放
                         <div style="display: inline-block;position:relative;margin-left: 10px">
                             <div class="form-check form-switch">
@@ -438,7 +447,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="nextvideo">
+                    <div v-if="video_detail.is_collection=='False'" class="nextvideo">
                         <div style="background: url('{% static 'videos/videopic/' %}{{ nextvideo.v_pic }}') center center no-repeat;background-size: cover;background-color: black;cursor: pointer"
                              @click="getVideo({{ nextvideo.v_id }})"></div>
                         <div class="videoslist-info">
@@ -509,8 +518,11 @@
                 "u_pic": "{{ u_pic }}",
                 "v_tags": "{{ v_tags }}",
                 "d_content": {{ discuss|safe }},
-                "v_barrage":{{ v_barrage|safe }}
+                "v_barrage":{{ v_barrage|safe }},
+                "is_collection":'{{ is_collection|safe }}',
+                "vc_ads":{{ vc_ads|safe }}
             },
+            vc_index:'',
             userdetail: topbar.userdetail,
             video_option: {
                 controls: true,
@@ -523,10 +535,10 @@
                 poster: '{% static 'images/3.jpg' %}',
                 sources: [
                     {
-                        src: '{% static "videos/" %}{{ v_ad }}',
+                        src: '',
                         type: 'video/mp4',
                     }
-                ]
+                ],
             },
             video_ready: "",
             video_nowtime: 0,
@@ -689,6 +701,14 @@
                     li.classList.remove('active')
                 }
                 e.currentTarget.classList.add('active')
+            },
+            changeVideo:function (index){
+                this.video_ready.src(
+                    {
+                        src:'{% static 'videos/' %}' + this.video_detail.vc_ads[index].vc_ad,
+                        type: 'video/mp4',
+                    })
+                this.vc_index = index+1
             },
             toProfile: function (id) {
                 topbar.toProfile(id)
@@ -1147,6 +1167,14 @@
         },
         mounted: function () {
             that = this
+            if(this.video_detail.is_collection=="False"){
+                this.video_option.sources[0].src = '{% static 'videos/' %}' + this.video_detail.v_ad
+            }
+            else{
+                this.video_option.sources[0].src = '{% static 'videos/' %}' + this.video_detail.vc_ads[0].vc_ad
+                this.vc_index = 1
+            }
+            this.video_option
             window.onresize = () => {
                 return (() => {
                     window.screenWidth = document.body.clientWidth
@@ -1206,6 +1234,10 @@
                 });
                 this.on("stalled", function () {
 
+                });
+                this.on("ended", function () {
+                    that.changeVideo(that.vc_index+1)
+                    this.play()
                 })
             })
             if (this.video_ready.readyState() == 0) {

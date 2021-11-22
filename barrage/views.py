@@ -13,6 +13,7 @@ from app.models import likeVideo as lovetable
 from app.models import AppUser as Userdatabase
 from moviepy.editor import VideoFileClip
 from general.views import time_normalization
+from barrage.models import video_compilation as compilationTable
 import random,os,re
 
 def video(request,vid):
@@ -21,6 +22,7 @@ def video(request,vid):
         return render(request,'notfound.html')
     result = result[0]
     tmp = []
+
     Allvideoslist = videosTable.objects.all().order_by("v_id").values()
     for i in Allvideoslist:
         tmp.append(i)
@@ -50,32 +52,64 @@ def video(request,vid):
                 'username': Userdatabase.getinfo(id=j['u_id'], info="username"),
                 'picture': Userdatabase.getinfo(id=j['u_id'], info="picture")
             }
-    data = {
-        "v_id": result["v_id"],
-        "v_ad": result["v_ad"],
-        "v_pic": result["v_pic"],
-        "v_auther": result["v_auther"],
-        "v_play": result["v_play"],
-        "v_title": result["v_title"],
-        "v_collect": result["v_collect"],
-        "v_like": result["v_like"],
-        "user_id": result["user_id"],
-        "fans": Userdatabase.getfans(result["user_id"]),
-        "v_barrage":barrageTable.getBarrageByV_id(result["v_id"]),
-        "v_time": time_normalization(result["v_time"]),
-        "v_tags": tags,
-        "u_pic": Userdatabase.getinfo(id=result["user_id"],info="picture"),
-        "nextvideo": nextvideo,
-        "nextvideolist": nextvideolist,
-        "oncechance" : 1,
-        "followornot" : followtable.follow_check(request.user.id,result["user_id"]),
-        "loveornot": lovetable.love_check(request.user.id, result["v_id"]),
-        "collectornot": collectTable.collect_check(request.user.id, result["v_id"]),
-        "discuss": [item for item in discuss],
-    }
-    return render(request,'video.html',data)
+    if result['is_collection']:
+        data = {
+            "v_id": result["v_id"],
+            "v_pic": result["v_pic"],
+            "vc_ads":compilationTable.getVc_adsByV_id(v_id=result["v_id"]),
+            "v_auther": result["v_auther"],
+            "v_play": result["v_play"],
+            "v_title": result["v_title"],
+            "v_collect": result["v_collect"],
+            "v_like": result["v_like"],
+            "user_id": result["user_id"],
+            "is_collection": result["is_collection"],
+            "fans": Userdatabase.getfans(result["user_id"]),
+            "v_barrage": barrageTable.getBarrageByV_id(result["v_id"]),
+            "v_time": time_normalization(result["v_time"]),
+            "v_tags": tags,
+            "u_pic": Userdatabase.getinfo(id=result["user_id"], info="picture"),
+            "nextvideo": nextvideo,
+            "nextvideolist": nextvideolist,
+            "oncechance": 1,
+            "followornot": followtable.follow_check(request.user.id, result["user_id"]),
+            "loveornot": lovetable.love_check(request.user.id, result["v_id"]),
+            "collectornot": collectTable.collect_check(request.user.id, result["v_id"]),
+            "discuss": [item for item in discuss],
+        }
+        return render(request, 'video.html', data)
+    else:
+        data = {
+            "v_id": result["v_id"],
+            "v_ad": result["v_ad"],
+            "v_pic": result["v_pic"],
+            "v_auther": result["v_auther"],
+            "v_play": result["v_play"],
+            "v_title": result["v_title"],
+            "v_collect": result["v_collect"],
+            "v_like": result["v_like"],
+            "user_id": result["user_id"],
+            "is_collection":result["is_collection"],
+            "fans": Userdatabase.getfans(result["user_id"]),
+            "v_barrage":barrageTable.getBarrageByV_id(result["v_id"]),
+            "v_time": time_normalization(result["v_time"]),
+            "v_tags": tags,
+            "vc_ads":[],
+            "u_pic": Userdatabase.getinfo(id=result["user_id"],info="picture"),
+            "nextvideo": nextvideo,
+            "nextvideolist": nextvideolist,
+            "oncechance" : 1,
+            "followornot" : followtable.follow_check(request.user.id,result["user_id"]),
+            "loveornot": lovetable.love_check(request.user.id, result["v_id"]),
+            "collectornot": collectTable.collect_check(request.user.id, result["v_id"]),
+            "discuss": [item for item in discuss],
+        }
+        return render(request,'video.html',data)
 @csrf_exempt
 def loadbarrage(request):
+    # compilationTable.create(v_id=54, vc_ad='compilation/flowers/flowers夏', vc_title='flowers夏', vc_duaring=107)
+    # compilationTable.create(v_id=54, vc_ad='compilation/flowers/flowers秋', vc_title='flowers秋', vc_duaring=141)
+    # compilationTable.create(v_id=54, vc_ad='compilation/flowers/flowers冬', vc_title='flowers冬', vc_duaring=116)
     v_id = request.POST.get("v_id")
     barrage = []
     result = barrageTable.objects.filter(v_id=v_id).order_by('b_time').values()
@@ -165,8 +199,16 @@ def save_barrage(request):
         b_mode = request.POST.get("b_mode")
         v_id = request.POST.get("v_id")
         b_color = request.POST.get("b_color")
-        result = barrageTable(b_content=b_content,b_time=b_time,b_auther=b_auther,v_id=v_id,b_mode=b_mode,b_color=b_color)
-        result.save()
+        vc_id = request.POST.get("vc_id")
+        if vc_id:
+            result = barrageTable(b_content=b_content, b_time=b_time, b_auther=b_auther, v_id=v_id, b_mode=b_mode,
+                                  b_color=b_color,vc_id=vc_id)
+            result.save()
+        else :
+            result = barrageTable(b_content=b_content, b_time=b_time, b_auther=b_auther, v_id=v_id, b_mode=b_mode,
+                                  b_color=b_color)
+            result.save()
+
         b_id = barrageTable.objects.filter(b_content=b_content,b_time=b_time,b_auther=b_auther,v_id=v_id,b_mode=b_mode,b_color=b_color).all().values()[0]['b_id']
         return JsonResponse({
             'code':1,

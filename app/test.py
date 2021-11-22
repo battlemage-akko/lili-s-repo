@@ -1,5 +1,6 @@
 import psutil,datetime,requests
 from moviepy.editor import VideoFileClip
+from barrage.models import video_compilation as compilationTable
 import os
 # print(psutil.cpu_count())
 # print(psutil.cpu_count(logical=False))
@@ -17,5 +18,4 @@ import os
 # print(psutil.boot_time())
 # print(datetime.datetime.now().timestamp())
 # print(int(((datetime.datetime.now().timestamp()-psutil.boot_time())/60)%60))
-time = VideoFileClip("../static/videos/未闻花名OP.mp4").duration
-print(time)
+compilationTable.create(v_id=54,vc_ad='compilation/flowers/flowers春',vc_title='flowers春',vc_duaring=104)

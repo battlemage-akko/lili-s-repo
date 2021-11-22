@@ -9,6 +9,7 @@ class test(models.Model):
     b_color = models.CharField(max_length=20,default="black")
     b_size = models.IntegerField(default=15)
     v_id = models.IntegerField(default=1)
+    vc_id = models.IntegerField(null=True)
     b_mode = models.CharField(max_length=15,default="move")
     send_time = models.DateTimeField(auto_now_add=True)
     class Meta:
@@ -26,7 +27,7 @@ class test(models.Model):
 class video(models.Model):
     v_id = models.AutoField(primary_key = True)
     v_title = models.CharField(max_length=50,null=False,default="default title")
-    v_ad = models.CharField(max_length=50,null=False)
+    v_ad = models.CharField(max_length=50,null=True)
     v_pic = models.CharField(max_length=50)
     v_auther = models.CharField(max_length=20,null=False)
     user_id = models.IntegerField(null=False)
@@ -39,6 +40,7 @@ class video(models.Model):
     v_tags = models.CharField(max_length=1000,null=True,default="None")
     v_note = models.CharField(max_length=1000,null=True,default="这个人很懒,什么都没有留下！")
     v_barrage = models.IntegerField(default=0)
+    is_collection =models.BooleanField(default=False)
     class Meta:
         app_label = "barrage"
 
@@ -173,6 +175,25 @@ class video(models.Model):
             "exactness": exactness,
             "indistinct": indistinct,
         }
+class video_compilation(models.Model):
+    vc_id = models.AutoField(primary_key=True)
+    v_id = models.IntegerField(null=False)
+    vc_title = models.CharField(max_length=50, null=False, default="None")
+    vc_ad = models.CharField(max_length=50, null=False)
+    vc_time = models.DateTimeField(auto_now_add=True)
+    vc_duaring = models.IntegerField(default=0)
+    vc_barrage = models.IntegerField(default=0)
+    def create(v_id,vc_title,vc_ad,vc_duaring):
+        video_compilation(v_id=v_id,vc_title=vc_title,vc_ad=vc_ad,vc_duaring=vc_duaring).save()
+        return 1
+    def getVc_adsByV_id(v_id):
+        tmp = video_compilation.objects.filter(v_id=v_id).all().values()
+        result = []
+        for i in tmp:
+            result.append(i)
+        for item in result:
+            item['vc_time'] = time_normalization(item['vc_time'])
+        return result
 class accusation_video(models.Model):
     a_id = models.AutoField(primary_key=True)
     v_id = models.IntegerField()
