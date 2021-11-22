@@ -16,8 +16,8 @@ from django.db.models import Q
 from barrage.models import video as videosTable
 
 AllUsers = [Userdatabase.objects.all()]
-realIP = requests.get(url="http://members.3322.org/dyndns/getip").text
-
+# realIP = requests.get(url="http://members.3322.org/dyndns/getip").text
+realIP = '0.0.0.0'
 class CustomBackend(ModelBackend):
     # 重写authenticate,实现email与username或者更多参数
     def authenticate(self, request, username=None, password=None, **kwargs):

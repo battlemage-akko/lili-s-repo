@@ -1,5 +1,5 @@
 from django.db import models
-
+from general.views import time_normalization
 # Create your models here.
 class test(models.Model):
     b_id = models.AutoField(primary_key = True)
@@ -57,14 +57,7 @@ class video(models.Model):
                 "v_collect": item["v_collect"],
                 "v_note": item["v_note"],
                 "v_duaring": item["v_duaring"],
-                "v_time": {
-                    "v_time_year": item["v_time"].year,
-                    "v_time_month": item["v_time"].month,
-                    "v_time_day": item["v_time"].day,
-                    "v_time_hour": item["v_time"].hour,
-                    "v_time_minute": item["v_time"].minute,
-                    "v_time_second": item["v_time"].second
-                },
+                "v_time": time_normalization(item["v_time"]),
                 "v_type": item["v_type"],
             })
         return videos
@@ -90,14 +83,7 @@ class video(models.Model):
                 "v_auther_id": item["user_id"],
                 "v_play": item["v_play"],
                 "v_title": item["v_title"],
-                "v_time": {
-                    "v_time_year": item["v_time"].year,
-                    "v_time_month": item["v_time"].month,
-                    "v_time_day": item["v_time"].day,
-                    "v_time_hour": item["v_time"].hour,
-                    "v_time_minute": item["v_time"].minute,
-                    "v_time_second": item["v_time"].second
-                },
+                "v_time": time_normalization(item["v_time"]),
                 "v_note": item["v_note"],
                 "v_type": item["v_type"],
             })
@@ -110,14 +96,7 @@ class video(models.Model):
                     "v_auther_id": item["user_id"],
                     "v_play": item["v_play"],
                     "v_title": item["v_title"],
-                    "v_time": {
-                        "v_time_year": item["v_time"].year,
-                        "v_time_month": item["v_time"].month,
-                        "v_time_day": item["v_time"].day,
-                        "v_time_hour": item["v_time"].hour,
-                        "v_time_minute": item["v_time"].minute,
-                        "v_time_second": item["v_time"].second
-                    },
+                    "v_time": time_normalization(item["v_time"]),
                     "v_note": item["v_note"],
                     "v_type": item["v_type"],
                 })
@@ -137,14 +116,7 @@ class video(models.Model):
                 "v_auther_id": item["user_id"],
                 "v_play": item["v_play"],
                 "v_title": item["v_title"],
-                "v_time": {
-                    "v_time_year": item["v_time"].year,
-                    "v_time_month": item["v_time"].month,
-                    "v_time_day": item["v_time"].day,
-                    "v_time_hour": item["v_time"].hour,
-                    "v_time_minute": item["v_time"].minute,
-                    "v_time_second": item["v_time"].second
-                },
+                "v_time": time_normalization(item["v_time"]),
                 "v_note": item["v_note"],
                 "v_type": item["v_type"],
             })
@@ -161,14 +133,7 @@ class video(models.Model):
                 "v_auther_id": item["user_id"],
                 "v_play": item["v_play"],
                 "v_title": item["v_title"],
-                "v_time": {
-                    "v_time_year": item["v_time"].year,
-                    "v_time_month": item["v_time"].month,
-                    "v_time_day": item["v_time"].day,
-                    "v_time_hour": item["v_time"].hour,
-                    "v_time_minute": item["v_time"].minute,
-                    "v_time_second": item["v_time"].second
-                },
+                "v_time": time_normalization(item["v_time"]),
                 "v_note": item["v_note"],
                 "v_type": item["v_type"],
             })
@@ -187,14 +152,7 @@ class video(models.Model):
                 "v_auther_id": item["user_id"],
                 "v_play": item["v_play"],
                 "v_title": item["v_title"],
-                "v_time": {
-                    "v_time_year": item["v_time"].year,
-                    "v_time_month": item["v_time"].month,
-                    "v_time_day": item["v_time"].day,
-                    "v_time_hour": item["v_time"].hour,
-                    "v_time_minute": item["v_time"].minute,
-                    "v_time_second": item["v_time"].second
-                },
+                "v_time": time_normalization(item["v_time"]),
                 "v_note": item["v_note"],
                 "v_type": item["v_type"],
             })
@@ -207,14 +165,7 @@ class video(models.Model):
                     "v_auther_id": item["user_id"],
                     "v_play": item["v_play"],
                     "v_title": item["v_title"],
-                    "v_time": {
-                        "v_time_year": item["v_time"].year,
-                        "v_time_month": item["v_time"].month,
-                        "v_time_day": item["v_time"].day,
-                        "v_time_hour": item["v_time"].hour,
-                        "v_time_minute": item["v_time"].minute,
-                        "v_time_second": item["v_time"].second
-                    },
+                    "v_time": time_normalization(item["v_time"]),
                     "v_note": item["v_note"],
                     "v_type": item["v_type"],
                 })
@@ -328,14 +279,7 @@ class discuss(models.Model):
                 "d_content": item["d_content"],
                 "agreement": item["agreement"],
                 "disagreement": item["disagreement"],
-                "d_time": {
-                    "d_time_year": item["d_time"].year,
-                    "d_time_month": item["d_time"].month,
-                    "d_time_day": item["d_time"].day,
-                    "d_time_hour": item["d_time"].hour,
-                    "d_time_minute": item["d_time"].minute,
-                    "d_time_second": item["d_time"].second
-                },
+                "d_time": time_normalization(item["d_time"]),
             })
         return result
 class answer(models.Model):
@@ -381,14 +325,7 @@ class answer(models.Model):
                 "answer_content": tmp["answer_content"],
                 "agreement": tmp["agreement"],
                 "disagreement": tmp["disagreement"],
-                "answer_time": {
-                    "answer_time_year": tmp["answer_time"].year,
-                    "answer_time_month": tmp["answer_time"].month,
-                    "answer_time_day": tmp["answer_time"].day,
-                    "answer_time_hour": tmp["answer_time"].hour,
-                    "answer_time_minute": tmp["answer_time"].minute,
-                    "answer_time_second": tmp["answer_time"].second
-                },
+                "answer_time": time_normalization(tmp["answer_time"]),
             })
         return result
 
@@ -403,13 +340,6 @@ class answer(models.Model):
                 "answer_content": item["answer_content"],
                 "agreement": item["agreement"],
                 "disagreement": item["disagreement"],
-                "answer_time": {
-                    "answer_time_year": item["answer_time"].year,
-                    "answer_time_month": item["answer_time"].month,
-                    "answer_time_day": item["answer_time"].day,
-                    "answer_time_hour": item["answer_time"].hour,
-                    "answer_time_minute": item["answer_time"].minute,
-                    "answer_time_second": item["answer_time"].second,
-                },
+                "answer_time": time_normalization(item["answer_time"]),
             })
         return result

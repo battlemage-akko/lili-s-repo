@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'order_channels',
-    'barrage'
+    'barrage',
+    'general'
 ]
 
 MIDDLEWARE = [

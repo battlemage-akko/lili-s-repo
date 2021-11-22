@@ -103,8 +103,8 @@
                                                 </div>
                                                 <div>
                                                     <div><i class="play"></i> : {[item.v_play]}</div>
-                                                    <div><i class="date"></i> : {[ item.v_time.v_time_year ]}-{[
-                                                        item.v_time.v_time_month ]}-{[ item.v_time.v_time_day ]}
+                                                    <div><i class="date"></i> : {[ item.v_time.year ]}-{[
+                                                        item.v_time.month ]}-{[ item.v_time.day ]}
                                                     </div>
                                                 </div>
                                             </div>
@@ -146,7 +146,7 @@
                                     </div>
                                     <div class="search-result-video-each-info-info">
                                         <span><i class="play"></i> : {[item.v_play]} </span>
-                                        <span><i class="date"></i> : {[ item.v_time.v_time_year ]}-{[ item.v_time.v_time_month ]}-{[ item.v_time.v_time_day ]} {[ item.v_time.v_time_hour ]}:{[ item.v_time.v_time_minute ]}:{[ item.v_time.v_time_second ]}</span>
+                                        <span><i class="date"></i> : {[ item.v_time.year ]}-{[ item.v_time.month ]}-{[ item.v_time.day ]} {[ item.v_time.hour ]}:{[ item.v_time.minute ]}:{[ item.v_time.second ]}</span>
                                         <span @click="toProfile(item.v_auther_id)" style="cursor: pointer"><i class="auther"></i> : {[item.v_auther]} </span>
                                     </div>
                                 </div>
@@ -174,7 +174,7 @@
                                     </div>
                                     <div class="search-result-table-video-each-info-info">
                                         <span><i class="play"></i> : {[item.v_play]} </span>
-                                        <span><i class="date"></i> : {[ item.v_time.v_time_year ]}-{[ item.v_time.v_time_month ]}-{[ item.v_time.v_time_day ]}</span>
+                                        <span><i class="date"></i> : {[ item.v_time.year ]}-{[ item.v_time.month ]}-{[ item.v_time.day ]}</span>
                                     </div>
                                     <div class="search-result-table-video-each-info-info">
                                         <span @click="toProfile(item.v_auther_id)" style="cursor: pointer"><i class="auther"></i> : {[item.v_auther]} </span>

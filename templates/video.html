@@ -230,7 +230,7 @@
                 <div class="videodetail">
                     <ul class="video-title-span">
                         <li>
-                            <i class="date"></i>&nbsp;{{ v_time.v_time_year }}年{{ v_time.v_time_month }}月{{ v_time.v_time_day }}日 {{ v_time.v_time_hour }}:{{ v_time.v_time_minute }}:{{ v_time.v_time_second }}
+                            <i class="date"></i>&nbsp;{{ v_time.year }}年{{ v_time.month }}月{{ v_time.day }}日 {{ v_time.hour }}:{{ v_time.minute }}:{{ v_time.second }}
                         </li>
                         <li><i class="play"></i>&nbsp;{[ video_detail.v_play ]}</li>
                         <li><i class="good"></i>&nbsp;{[ video_detail.v_like ]}</li>
@@ -327,7 +327,7 @@
                                     </p>
                                 </div>
                                 <div class="video-discuss-list-each-btns">
-                                    <span>{[ item.d_time.d_time_year ]}年{[ item.d_time.d_time_month ]}月{[ item.d_time.d_time_day ]}日 {[ item.d_time.d_time_hour ]}:{[ item.d_time.d_time_minute ]}:{[ item.d_time.d_time_second ]}</span>
+                                    <span>{[ item.d_time.year ]}年{[ item.d_time.month ]}月{[ item.d_time.day ]}日 {[ item.d_time.hour ]}:{[ item.d_time.minute ]}:{[ item.d_time.second ]}</span>
                                     <span class="heart"> 0</span>
                                     <span class="heart-broken"> 0</span>
                                     <span @click="showAnswer(item.d_id)" style="cursor: pointer">回复</span>
@@ -349,7 +349,7 @@
                                             </div>
                                         </div>
                                         <div class="video-answer-list-each-date">
-                                            <span>{[ answer.answer_time.answer_time_year ]}年{[ answer.answer_time.answer_time_month ]}月{[ answer.answer_time.answer_time_day ]}日 {[ answer.answer_time.answer_time_hour ]}:{[ answer.answer_time.answer_time_minute ]}:{[ answer.answer_time.answer_time_second ]}
+                                            <span>{[ answer.answer_time.year ]}年{[ answer.answer_time.month ]}月{[ answer.answer_time.day ]}日 {[ answer.answer_time.hour ]}:{[ answer.answer_time.minute ]}:{[ answer.answer_time.second ]}
                                             </span>
                                             <span class="heart"> 0</span>
                                             <span class="heart-broken"> 0</span>
