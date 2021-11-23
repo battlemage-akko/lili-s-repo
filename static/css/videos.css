@@ -968,8 +968,17 @@
     padding: 8px 5px;
     cursor: pointer;
 }
+.videos-collection-list-container li.active{
+    color: #0da1f0;
+}
+.videos-collection-list-container li.active span:before{
+    content: '\ea1c';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
 .videos-collection-list-container li:hover{
     background-color: #a6a6a6;
+    color: white;
 }
 .videos-collection-list-title{
     font-size: 15px;

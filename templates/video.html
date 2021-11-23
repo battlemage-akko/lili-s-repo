@@ -9,7 +9,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="{% static 'css/videos.css' %}" rel="stylesheet">
+    <link href="{% static 'css/videos.css' %}?version=1.0.0" rel="stylesheet">
     <link href="{% static 'css/topbar.css' %}" rel="stylesheet">
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="shortcut icon" href="{% static 'images/video.PNG' %}">
@@ -432,9 +432,9 @@
                 <div class="videos-collection-list" v-if="video_detail.is_collection=='True'">
                     <div class="videos-collection-list-title">视频列表({[vc_index]}/{[video_detail.vc_ads.length]})</div>
                         <ul class="videos-collection-list-container">
-                            <li v-for="(item,index) in video_detail.vc_ads" :key="item.vc_id" @click="changeVideo(index)">
-                                <span>{[index+1]}.{[ item.vc_title ]}</span>
-                                <span>{[ Math.floor(item.vc_duaring/60)<10?"0"+Math.floor(item.vc_duaring/60):Math.floor(item.vc_duaring/60) ]}:{[ item.vc_duaring%60<10?"0"+item.vc_duaring%60:item.vc_duaring%60 ]}</span>
+                            <li v-for="(item,index) in video_detail.vc_ads" :key="item.vc_id" @click="changeVideo(index,$event)">
+                                <span> {[index+1]}.{[ item.vc_title ]}</span>
+                                <time>{[ Math.floor(item.vc_duaring/60)<10?"0"+Math.floor(item.vc_duaring/60):Math.floor(item.vc_duaring/60) ]}:{[ item.vc_duaring%60<10?"0"+item.vc_duaring%60:item.vc_duaring%60 ]}</time>
                             </li>
                         </ul>
                 </div>
@@ -705,8 +705,13 @@
                 }
                 e.currentTarget.classList.add('active')
             },
-            changeVideo:function (index){
+            changeVideo:function (index,e){
                 console.log(this.video_detail.vc_ads[index].vc_ad)
+                lis = document.querySelector('.videos-collection-list-container').querySelectorAll('li')
+                for(let item of lis){
+                    item.classList.remove('active')
+                }
+                e.currentTarget.classList.add('active')
                 this.video_ready.src(
                     {
                         src:'{% static 'videos/' %}' + this.video_detail.vc_ads[index].vc_ad,
@@ -1209,6 +1214,7 @@
         },
         mounted: function () {
             that = this
+            document.querySelector('.videos-collection-list-container').firstChild.classList.toggle("active")
             if(this.video_detail.is_collection=="False"){
                 this.video_option.sources[0].src = '{% static 'videos/' %}' + this.video_detail.v_ad
             }
