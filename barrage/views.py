@@ -310,7 +310,8 @@ def save_compilation(request):
         v_title = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+","",v_title)
         finish_compilation_save(video_file=video_file,v_id=v_id,v_title=v_title,vc_title=vc_title,vc_index=vc_index)
     return JsonResponse({
-        "msg":"上传成功"
+        "msg":"上传成功",
+        "code": 1
     })
 
 def finish_compilation_save(vc_title,v_title,video_file,v_id,vc_index):

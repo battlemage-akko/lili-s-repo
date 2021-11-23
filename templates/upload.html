@@ -193,7 +193,7 @@
         <div>
             <button type="button" class="btn btn-primary btn-sure" @click="upload_form_check">上传</button>
             <button type="button" class="btn btn-danger" @click="clear_input">取消</button>
-            <button type="button" class="btn btn-danger" @click="changeMode('multi')">切换上传模式(视频合集)</button>
+            <button type="button" class="btn btn-danger btn-mode" @click="changeMode('multi')">切换上传模式(视频合集)</button>
             <button type="button" class="btn btn-danger">{[ pre ]}</button>
             <span class="message">{[message]}</span>
         </div>
@@ -257,9 +257,9 @@
             </tbody>
         </table>
         <div>
-            <button type="button" class="btn btn-primary btn-sure" @click="upload_multi_form_check">上传全部</button>
+            <button type="button" class="btn btn-primary btn-multi-sure" @click="upload_multi_form_check">上传全部</button>
             <button type="button" class="btn btn-danger" @click="clear_input">取消</button>
-            <button type="button" class="btn btn-danger" @click="changeMode('single')">切换上传模式(单个视频)</button>
+            <button type="button" class="btn btn-danger btn-multi-mode" @click="changeMode('single')">切换上传模式(单个视频)</button>
             <span class="message">{[message]}</span>
         </div>
     </form>
@@ -284,9 +284,10 @@
             files_list: [],
 
             tag: "",
+            tags: [],
+            status: [],
             showtagsInput: false,
             pre: "0%",
-            tags: [],
             message: "",
             tagsDamie: ["none", "无标签", "null", "undefined"],
             mode: {
@@ -333,9 +334,24 @@
                 document.querySelector('.upload-form').querySelectorAll('input').forEach((item) => {
                     item.value = null
                 })
+                document.querySelector('.multi-upload-form').querySelectorAll('input').forEach((item) => {
+                    item.value = null
+                })
                 this.compilation_sure = 0
                 this.video_sure = 0
+
+                this.compilation_title = ""
                 this.video_title = ""
+
+                this.video_file = ""
+                this.files_list = []
+
+                this.video_pic = ""
+                this.compilation_pic = ""
+
+                this.tag = ""
+                this.tags = []
+
             },
             submitTag: function () {
                 if (this.tag == "" || this.tag == null) {
@@ -437,6 +453,11 @@
                     data: param,
                 })
                 if(result.data.code==1){
+                    document.querySelector('.multi-upload-form').querySelectorAll('input').forEach((item) => {
+                        item.disabled = "disabled"
+                    })
+                    document.querySelector('.btn-multi-sure').disabled = "disabled"
+                    document.querySelector('.btn-multi-mode').disabled = "disabled"
                     this.mother = result.data.v_id
                     for(let item of this.files_list){
                         this.multi_upload(item,this.files_list.indexOf(item))
@@ -457,10 +478,14 @@
                     },
                     data: param,
                 })
-                this.video_title = ""
-                this.tag = ""
-                this.video_sure = 0
-                this.tags = []
+                this.status.push(result.data.code)
+                if(this.status.length == this.files_list.length){
+                    document.querySelector('.multi-upload-form').querySelectorAll('input').forEach((item) => {
+                        item.removeAttribute("disabled")
+                    })
+                    document.querySelector('.btn-multi-sure').removeAttribute("disabled")
+                    document.querySelector('.btn-multi-mode').removeAttribute("disabled")
+                }
             },
             upload_form: async function () {
                 let param = new FormData()
@@ -474,6 +499,7 @@
                     item.disabled = "disabled"
                 })
                 document.querySelector('.btn-sure').disabled = "disabled"
+                document.querySelector('.btn-mode').disabled = "disabled"
                 result = await axios({
                     method: "POST",
                     url: "{% url 'save_video' %}",
@@ -490,6 +516,7 @@
                     item.removeAttribute("disabled")
                 })
                 document.querySelector('.btn-sure').removeAttribute("disabled")
+                document.querySelector('.btn-mode').removeAttribute("disabled")
 
                 document.querySelector('.upload-form').querySelectorAll('input').forEach((item) => {
                     item.value = null
