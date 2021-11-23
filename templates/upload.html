@@ -485,6 +485,8 @@
                     })
                     document.querySelector('.btn-multi-sure').removeAttribute("disabled")
                     document.querySelector('.btn-multi-mode').removeAttribute("disabled")
+                    this.clear_input()
+                    this.message = "上传合集完毕"
                 }
             },
             upload_form: async function () {
@@ -521,12 +523,8 @@
                 document.querySelector('.upload-form').querySelectorAll('input').forEach((item) => {
                     item.value = null
                 })
+                this.clear_input()
                 this.message = result.data.msg
-                this.video_title = ""
-                this.tag = ""
-                this.video_sure = 0
-                this.tags = []
-
             },
             get_file: function (e) {
                 let file = e.target.files[0]
