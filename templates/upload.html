@@ -448,6 +448,7 @@
                 param.append('video_file', item.file)
                 param.append('video_title', item.title)
                 param.append('v_id',this.mother)
+                param.append('vc_index',index+1)
                 result = await axios({
                     method: "POST",
                     url: "{% url 'save_compilation' %}",

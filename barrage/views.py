@@ -305,14 +305,15 @@ def save_compilation(request):
         vc_title = request.POST.get("video_title")
         video_file = request.FILES.get("video_file")
         v_id = request.POST.get("v_id")
+        vc_index = request.POST.get("vc_index")
         v_title = videosTable.objects.filter(v_id=v_id).all().values()[0]['v_title']
         v_title = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+","",v_title)
-        finish_compilation_save(video_file=video_file,v_id=v_id,v_title=v_title,vc_title=vc_title)
+        finish_compilation_save(video_file=video_file,v_id=v_id,v_title=v_title,vc_title=vc_title,vc_index=vc_index)
     return JsonResponse({
         "msg":"上传成功"
     })
 
-def finish_compilation_save(vc_title,v_title,video_file,v_id):
+def finish_compilation_save(vc_title,v_title,video_file,v_id,vc_index):
     vc_title_tmp = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", vc_title)
     video_file_save_path = 'static/videos/compilation/' +  v_title + '/' + vc_title_tmp + '.mp4'
     with open(video_file_save_path, 'wb+') as f:
@@ -322,7 +323,7 @@ def finish_compilation_save(vc_title,v_title,video_file,v_id):
     time = round(VideoFileClip(video_file_save_path).duration)
     vc_ad = 'compilation/' +  v_title + '/' + vc_title_tmp + '.mp4'
     print(vc_ad)
-    result = compilationTable(v_id=v_id,vc_ad=vc_ad,vc_title=vc_title,vc_duaring=time).save()
+    result = compilationTable(v_id=v_id,vc_ad=vc_ad,vc_title=vc_title,vc_duaring=time,vc_index=vc_index).save()
     user_id = Userdatabase.objects.filter(username=videosTable.objects.filter(v_id=v_id).all().values()[0]['v_auther']).all().values()[0]['id']
     messagesTable.createMessage(m_content="您成功上传了《"+vc_title+"》", m_user=user_id)
     Userdatabase.addvideo(user_id)

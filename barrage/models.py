@@ -190,9 +190,10 @@ class video_compilation(models.Model):
     vc_time = models.DateTimeField(auto_now_add=True)
     vc_duaring = models.IntegerField(default=0)
     vc_barrage = models.IntegerField(default=0)
+    vc_index = models.IntegerField(default=1,null=True)
 
-    def create(v_id,vc_title,vc_ad,vc_duaring):
-        video_compilation(v_id=v_id,vc_title=vc_title,vc_ad=vc_ad,vc_duaring=vc_duaring).save()
+    def create(v_id,vc_title,vc_ad,vc_duaring,vc_index):
+        video_compilation(v_id=v_id,vc_title=vc_title,vc_ad=vc_ad,vc_duaring=vc_duaring,vc_index=vc_index).save()
         return 1
     def deleteByV_id(v_id):
         r = video_compilation.objects.filter(v_id=v_id).all()
@@ -205,7 +206,7 @@ class video_compilation(models.Model):
         return video_compilation.objects.filter(v_id=v_id).count()
 
     def getVc_adsByV_id(v_id):
-        tmp = video_compilation.objects.filter(v_id=v_id).all().values()
+        tmp = video_compilation.objects.filter(v_id=v_id).order_by('vc_index').all().values()
         result = []
         for i in tmp:
             result.append(i)
