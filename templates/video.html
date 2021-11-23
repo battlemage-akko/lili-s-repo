@@ -1217,9 +1217,9 @@
 
             if(this.video_detail.is_collection=="False"){
                 this.video_option.sources[0].src = '{% static 'videos/' %}' + this.video_detail.v_ad
-                document.querySelector('.videos-collection-list-container').firstChild.classList.toggle("active")
             }
             else{
+                document.querySelector('.videos-collection-list-container').firstChild.classList.toggle("active")
                 this.video_option.sources[0].src = '{% static 'videos/' %}' + this.video_detail.vc_ads[0].vc_ad
                 this.vc_index = 1
             }
