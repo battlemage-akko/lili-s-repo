@@ -135,7 +135,13 @@
                         <ul class="search-result-video" v-if="mode.list">
                             <li v-for="(item,index) in queen.slice(listCount.begin,listCount.end)" class="search-result-video-each" :key="item.v_id">
                                 <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'cover'}"
-                                     class="search-result-video-each-back" @click="jumpbyV_id(item.v_id)"></div>
+                                     class="search-result-video-each-back" @click="jumpbyV_id(item.v_id)">
+
+                                    <span class="videos-each-collection" v-if="item.is_collection=='True'">
+                                        <span class="menus"></span>
+                                        {[ item.collection_count ]}
+                                    </span>
+                                </div>
                                 <div class="search-result-video-each-info">
                                     <div>
                                         <h2>
@@ -165,7 +171,12 @@
                             <ul class="search-result-table-video" >
                             <li v-for="(item,index) in queen.slice(tablePage.begin,tablePage.end)" class="search-result-table-video-each" :key="item.v_id">
                                 <div>
-                                    <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'cover'}" class="search-result-table-video-each-back" @click="jumpbyV_id(item.v_id)"></div>
+                                    <div :style="{'background-image': 'url({% static 'videos/videopic/' %}'+item.v_pic+')','background-size':'cover'}" class="search-result-table-video-each-back" @click="jumpbyV_id(item.v_id)">
+                                        <span class="videos-each-collection" v-if="item.is_collection=='True'">
+                                        <span class="menus"></span>
+                                        {[ item.collection_count ]}
+                                    </span>
+                                    </div>
                                 <div class="search-result-video-table-each-info">
                                     <div>
                                         <h2>

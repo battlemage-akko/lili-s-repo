@@ -35,7 +35,7 @@
             display: flex;
             justify-content: center;
             align-content: center;
-            min-width: 950px;
+            min-width: 625px;
         }
 
         .profile-background {
@@ -72,7 +72,7 @@
                             获赞:0
                         </div>
                         <div>
-                            视频: {[ profile_detail.v_count ]}个
+                            视频: {[ videosList_mine_count ]}个
                         </div>
                     </li>
                 </ul>
@@ -120,9 +120,11 @@
                                     <span class="videos-each-tips" @click="getVideo(item.v_id)">
                                             <i class="videos-each-play"></i>
                                         </span>
+                                    <span class="videos-each-collection" v-if="item.is_collection" style="font-weight: 500;font-size: 1rem">视频合集</span>
                                     <span class="videos-each-status" @click="getVideo(item.v_id)">
                                         <p><i class="good active" style="color: deeppink"></i><span> {[ item.v_like ]}</span></p>
                                         <p><i class="collect active" style="color: #ffc900"></i><span> {[ item.v_collect ]}</span></p>
+                                        <p v-if="item.is_collection"><i class="menus" style="color: #00b2ff"></i><span> {[ item.collection_count ]}</span></p>
                                     </span>
                                     <span class="videos-each-title" @click="getVideo(item.v_id)">
                                             <h1>{[ item.v_title ]}</h1>
@@ -204,8 +206,9 @@
                 <div class="del-warning-detail">
                     List:
                     <ul class="del-warning-list">
-                        <li v-for="(item,index) in delList">
+                        <li v-for="(item,index) in delList" style="display: flex;flex-direction: column">
                             <a @click="jumpbyv_id(item.v_id)">《 {[item.v_title]} 》</a>
+                            <span v-for="(appendage,index) in item.collection_list" v-if="item.is_collection">&nbsp;&nbsp;-《 {[appendage]} 》</span>
                         </li>
                     </ul>
                 </div>

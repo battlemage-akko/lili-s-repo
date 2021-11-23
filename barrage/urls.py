@@ -5,6 +5,7 @@ urlpatterns = [
     re_path('^loadbarrage/',views.loadbarrage,name="loadbarrage"),
     re_path('^save_barrage/',views.save_barrage,name="save_barrage"),
     re_path('^save_video/',views.save_video,name="save_video"),
+    re_path('^save_compilation/',views.save_compilation,name="save_compilation"),
     re_path('^report/',views.report,name="report"),
     re_path('^getmorenewvideo/',views.getmorenewvideo,name="getmorenewvideo"),
     re_path('^hasbeenplayed/',views.hasbeenplayed,name="hasbeenplayed"),
@@ -17,4 +18,5 @@ urlpatterns = [
     re_path('^getAllVideoAccusation/',views.getAllVideoAccusation,name="getAllVideoAccusation"),
     re_path('^rejectVideoAccusation/',views.rejectVideoAccusation,name="rejectVideoAccusation"),
     re_path('^updateTags/',views.updateTags,name="updateTags"),
+    re_path('^ApplyForV_id/',views.ApplyForV_id,name="ApplyForV_id"),
 ]

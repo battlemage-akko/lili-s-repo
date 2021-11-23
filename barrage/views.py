@@ -20,6 +20,7 @@ def video(request,vid):
     result = videosTable.objects.filter(v_id=vid).values()
     if(len(result) == 0):
         return render(request,'notfound.html')
+    videosTable.objects.filter(v_id=vid).all().values()[0]['v_title']
     result = result[0]
     tmp = []
 
@@ -111,21 +112,38 @@ def loadbarrage(request):
     # compilationTable.create(v_id=54, vc_ad='compilation/flowers/flowers秋', vc_title='flowers秋', vc_duaring=141)
     # compilationTable.create(v_id=54, vc_ad='compilation/flowers/flowers冬', vc_title='flowers冬', vc_duaring=116)
     v_id = request.POST.get("v_id")
+    vc_id = int(request.POST.get("vc_id"))
     barrage = []
-    result = barrageTable.objects.filter(v_id=v_id).order_by('b_time').values()
-    for i in result:
-
-        barrage.append({
-            'b_id':i['b_id'],
-            'b_time': i['b_time'],
-            'b_content': i['b_content'],
-            'b_color': i['b_color'],
-            'b_mode': i['b_mode'],
-            'send_time': time_normalization(i['send_time'])
+    if vc_id:
+        print("合集")
+        result = barrageTable.objects.filter(vc_id=vc_id).order_by('b_time').values()
+        for i in result:
+            barrage.append({
+                'b_id': i['b_id'],
+                'b_time': i['b_time'],
+                'b_content': i['b_content'],
+                'b_color': i['b_color'],
+                'b_mode': i['b_mode'],
+                'send_time': time_normalization(i['send_time'])
+            })
+        return JsonResponse({
+            'result': barrage
         })
-    return JsonResponse({
-        'result':barrage
-    })
+    else:
+        print("单个")
+        result = barrageTable.objects.filter(v_id=v_id).order_by('b_time').values()
+        for i in result:
+            barrage.append({
+                'b_id': i['b_id'],
+                'b_time': i['b_time'],
+                'b_content': i['b_content'],
+                'b_color': i['b_color'],
+                'b_mode': i['b_mode'],
+                'send_time': time_normalization(i['send_time'])
+            })
+        return JsonResponse({
+            'result': barrage
+        })
 
 @csrf_exempt
 def getVideosList(request):
@@ -229,6 +247,8 @@ def getmorenewvideo(request):
         totag = len(result)
     for i in result[fromtag:totag]:
         i["v_time"] = i["v_time"].strftime('%Y-%m-%d %H:%M:%S')
+        if i["is_collection"]:
+            i["collection_count"] = compilationTable.getNumberByV_id(v_id=i["v_id"])
         newvideos.append(i)
     return JsonResponse(newvideos, safe=False)
 
@@ -239,6 +259,9 @@ def getMyVideo(request):
         u_id = request.POST.get("user_id")
         result = []
         for i in videosTable.getvideosbyid(user_id=u_id,choose="time"):
+            if i["is_collection"]:
+                i["collection_count"] = compilationTable.getNumberByV_id(i["v_id"])
+                i["collection_list"] = compilationTable.getVc_titleByV_id(i["v_id"])
             result.append(i)
         return JsonResponse(result, safe=False)
 
@@ -249,6 +272,61 @@ def getMoreCollectVideo(request):
         count = request.POST.get("count")
         print(user_id,count)
     return HttpResponse()
+@csrf_exempt
+def ApplyForV_id(request):
+    if (request.method == "POST"):
+        video_title = request.POST.get("video_title")
+        video_pic = request.FILES.get("video_pic")
+        username = request.POST.get("username")
+        user_id = request.POST.get("user_id")
+        tags = request.POST.get("tags")
+        tmp = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", tags)
+
+        video_title_tmp = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", video_title)
+        video_pic_save_path = 'static/videos/videopic/' + video_title_tmp + '.jpg'
+        with open(video_pic_save_path, 'wb+') as f:
+            f.write(video_pic.read())
+        print(video_pic.name, "done")
+
+        result = videosTable(v_pic=video_title_tmp + '.jpg', v_auther=username,
+                             user_id=user_id, v_title=video_title, v_like=0, v_play=0, v_collect=0,v_tags=tmp,is_collection=True)
+        result.save()
+        path = 'static/videos/compilation/' + video_title_tmp
+        if not os.path.exists(path):
+            os.makedirs(path)
+        return JsonResponse({
+            "code": 1,
+            "v_id": videosTable.objects.filter(v_pic=video_title_tmp + '.jpg', v_auther=username,
+                             user_id=user_id, v_title=video_title, v_like=0, v_play=0, v_collect=0,v_tags=tmp,is_collection=True).all().values()[0]['v_id']
+        })
+@csrf_exempt
+def save_compilation(request):
+    if(request.method == "POST"):
+        vc_title = request.POST.get("video_title")
+        video_file = request.FILES.get("video_file")
+        v_id = request.POST.get("v_id")
+        v_title = videosTable.objects.filter(v_id=v_id).all().values()[0]['v_title']
+        v_title = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+","",v_title)
+        finish_compilation_save(video_file=video_file,v_id=v_id,v_title=v_title,vc_title=vc_title)
+    return JsonResponse({
+        "msg":"上传成功"
+    })
+
+def finish_compilation_save(vc_title,v_title,video_file,v_id):
+    vc_title_tmp = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", vc_title)
+    video_file_save_path = 'static/videos/compilation/' +  v_title + '/' + vc_title_tmp + '.mp4'
+    with open(video_file_save_path, 'wb+') as f:
+        f.write(video_file.read())
+    print(video_file.name, "done")
+
+    time = round(VideoFileClip(video_file_save_path).duration)
+    vc_ad = 'compilation/' +  v_title + '/' + vc_title_tmp + '.mp4'
+    print(vc_ad)
+    result = compilationTable(v_id=v_id,vc_ad=vc_ad,vc_title=vc_title,vc_duaring=time).save()
+    user_id = Userdatabase.objects.filter(username=videosTable.objects.filter(v_id=v_id).all().values()[0]['v_auther']).all().values()[0]['id']
+    messagesTable.createMessage(m_content="您成功上传了《"+vc_title+"》", m_user=user_id)
+    Userdatabase.addvideo(user_id)
+    return HttpResponse("保存完毕")
 
 @csrf_exempt
 def save_video(request):
@@ -279,6 +357,7 @@ def finish_save(video_title,video_pic,video_file,username,user_id,tags):
     with open(video_file_save_path, 'wb+') as f:
         f.write(video_file.read())
     print(video_file.name, "done")
+
     time = round(VideoFileClip(video_file_save_path).duration)
 
     result = videosTable(v_ad=video_title_tmp + '.mp4',v_pic=video_title_tmp + '.jpg',v_auther=username,user_id=user_id,v_title=video_title,v_like=0,v_play=0,v_collect=0,v_duaring=time,v_tags=tags)
@@ -313,26 +392,50 @@ def del_video(request):
             v_title = v.v_title
             user_id = v.user_id
             v_pic = 'static/videos/videopic/' + v.v_pic
-            v_ad = 'static/videos/' + v.v_ad
+            v_ad = '/null'
+            if v.v_ad:
+                v_ad = 'static/videos/' + v.v_ad
 
-            if os.path.exists(v_ad) or os.path.exists(v_pic):
-
-                os.remove(v_pic)
-                os.remove(v_ad)
-
+            if v.is_collection:
+                v_pic = 'static/videos/videopic/' + v.v_pic
+                if os.path.exists(v_pic):
+                    os.remove(v_pic)
+                appendages = compilationTable.objects.filter(v_id=v_id).all().values()
+                for item in appendages:
+                    print(item)
+                    if os.path.exists('static/videos/'+item["vc_ad"]):
+                        os.remove('static/videos/'+item["vc_ad"])
+                vc_result = compilationTable.deleteByV_id(v_id)
                 v_result = videosTable.delect(v_id)
                 b_result = barrageTable.delect(v_id)
                 l_result = lovetable.delete(v_id)
                 c_result = collectTable.delete(v_id)
-                print([v_result,b_result,l_result,c_result])
                 clearacc = accusationTable.delectAll(v_id=v_id)
-                Userdatabase.delvideo(user_id)
                 discussTable.delByV_id(v_id=v_id)
                 answerTable.delByV_id(v_id=v_id)
-                messagesTable.createMessage(m_content="成功删除视频《"+v_title+"》与视频弹幕,视频id(v_id)为"+v_id,m_user=user_id)
-            else:
-                messagesTable.createMessage(m_content="删除视频《" + v_title + "》失败",
-                                            m_user=user_id)
+                messagesTable.createMessage(m_content="成功删除合集《" + v_title + "》与视频弹幕,视频id(v_id)为" + v_id, m_user=user_id)
+
+            if not v.is_collection:
+                if os.path.exists(v_ad) or os.path.exists(v_pic):
+                    if os.path.exists(v_pic):
+                        os.remove(v_pic)
+                    if os.path.exists(v_ad):
+                        os.remove(v_ad)
+
+                    v_result = videosTable.delect(v_id)
+                    b_result = barrageTable.delect(v_id)
+                    l_result = lovetable.delete(v_id)
+                    c_result = collectTable.delete(v_id)
+                    print([v_result, b_result, l_result, c_result])
+                    clearacc = accusationTable.delectAll(v_id=v_id)
+                    Userdatabase.delvideo(user_id)
+                    discussTable.delByV_id(v_id=v_id)
+                    answerTable.delByV_id(v_id=v_id)
+                    messagesTable.createMessage(m_content="成功删除视频《" + v_title + "》与视频弹幕,视频id(v_id)为" + v_id,
+                                                m_user=user_id)
+                else:
+                    messagesTable.createMessage(m_content="删除视频《" + v_title + "》失败",
+                                                m_user=user_id)
     return HttpResponse("done")
 
 @csrf_exempt
@@ -361,7 +464,6 @@ def getAllVideoAccusation(request):
             "a_reason": i.a_reason,
             "a_time": i.a_time,
         }
-    print(Accusationdata)
     return JsonResponse(Accusationdata)
 
 @csrf_exempt

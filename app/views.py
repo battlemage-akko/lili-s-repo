@@ -14,6 +14,7 @@ from django.contrib.auth.backends import ModelBackend
 from django.views.decorators.clickjacking import xframe_options_exempt,xframe_options_sameorigin
 from django.db.models import Q
 from barrage.models import video as videosTable
+from barrage.models import video_compilation as compilationTable
 
 AllUsers = [Userdatabase.objects.all()]
 # realIP = requests.get(url="http://members.3322.org/dyndns/getip").text
@@ -42,16 +43,8 @@ def null(request):
     response = HttpResponseRedirect(r.url)
     return response
 def index(request):
-    videos = []
-    Newvideos = []
-    result = videosTable.objects.all().order_by('-v_id').values()
-    for i in result:
-        i["v_time"] = i["v_time"].strftime('%Y-%m-%d %H:%M:%S')
-        videos.append(i)
-    for i in range(10):
-        Newvideos.append(videos[i])
     return render(request,'index.html',{
-        "newvideolist": Newvideos,
+        "newvideolist": [],
         "hotvideolist": [],
         "collectvideolist": [],
     })
@@ -257,6 +250,10 @@ def search(q,count):
         #     break
         if item not in queen:
             queen.append(item)
+    for item in queen:
+        if item["is_collection"]:
+            item["collection_count"] = compilationTable.getNumberByV_id(item['v_id'])
+        item["is_collection"] = str(item["is_collection"])
     result = {
         "user": Userdatabase.searchByName(q),
         "queen": queen,

@@ -221,8 +221,12 @@
                         <span class="videos-each-tips">
                             <i class="videos-each-play"></i>
                         </span>
-                        <span class="videos-each-time">
+                        <span class="videos-each-time" v-if="!item.is_collection">
                             <span>{[ Math.floor(item.v_duaring/60)<10?"0"+Math.floor(item.v_duaring/60):Math.floor(item.v_duaring/60) ]}:{[ item.v_duaring%60<10?"0"+item.v_duaring%60:item.v_duaring%60 ]}</span>
+                        </span>
+                        <span class="videos-each-collection" v-if="item.is_collection">
+                            <i class="menus" style="font-weight: 500"></i>
+                            {[ item.collection_count ]}
                         </span>
                         <span class="videos-each-type">
                             {[ item.v_type ]}
@@ -826,6 +830,7 @@
             },
         },
         mounted: function () {
+            this.getmorenewvideo()
             this.is_login_check()
             if (this.this_user_admin) {
                 this.getAllVideoAccusation()

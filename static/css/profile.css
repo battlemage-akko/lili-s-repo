@@ -233,7 +233,7 @@ hr {
     flex-grow: 1;
     min-width: 250px;
     transition: all .5s ease;
-    max-width: 400px;
+    max-width: 450px;
 }
 
 .profile-content-myvideos li div {
@@ -299,6 +299,7 @@ hr {
     width: 100%;
     height: 100%;
     padding: 20px;
+    min-width: 625px;
     background-color: rgba(0, 0, 0, 0.4);
     -moz-user-select: none;
     -webkit-user-select: none;
@@ -398,7 +399,7 @@ hr {
 .videos-each-status{
     position: absolute;
     top: 0;
-    height: 70px;
+    height: 100%;
     color: rgba(255, 255, 255, 0.68);
     width: 100%;
     padding: 10px;

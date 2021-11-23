@@ -68,6 +68,20 @@
     font-family: "微软雅黑 Light";
     letter-spacing:2px;
 }
+.videos-each-collection{
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 30%;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    flex-direction: column;
+}
 .videos-each-play:before{
     content: "\ea15";
     font-family: IcoMoon-Free;

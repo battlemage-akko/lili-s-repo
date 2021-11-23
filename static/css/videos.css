@@ -936,7 +936,6 @@
     position: relative;
 }
 .videos-collection-list-container{
-    background-color: #eaeaea;
     margin: 0;
     max-height: 200px;
     overflow: auto;
@@ -966,7 +965,7 @@
     font-weight: 600;
     color: #757575;
     font-family: "微软雅黑 Light";
-    padding: 3px 5px;
+    padding: 8px 5px;
     cursor: pointer;
 }
 .videos-collection-list-container li:hover{

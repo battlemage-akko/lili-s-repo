@@ -10,26 +10,28 @@
 </head>
 <style>
     @font-face {
-            font-family: 'IcoMoon-Free';
-            src: url('{% static 'css/IcoMoon-Free.ttf' %}') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
-    *{
+        font-family: 'IcoMoon-Free';
+        src: url('{% static 'css/IcoMoon-Free.ttf' %}') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
     }
-     p {
-         margin: 0 !important;
-        }
+
+    p {
+        margin: 0 !important;
+    }
 
     ul {
         margin: 0;
         padding-left: 0;
     }
 
-    #app{
+    #app {
         width: 100%;
         height: 100%;
         display: flex;
@@ -37,68 +39,101 @@
         align-items: center;
         flex-direction: column;
     }
-    .upload-form{
+
+    .upload-form {
         display: flex;
         justify-content: center;
         flex-direction: column;
         width: 500px;
     }
-    .upload-form div{
+
+    .multi-upload-form {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        width: 500px;
+    }
+
+    .multi-upload-form div {
         margin: 20px 0px;
     }
-    body{
+
+    .upload-form div {
+        margin: 20px 0px;
+    }
+
+    body {
         width: 100vw;
         height: 100vh;
     }
-    .addtags{
+
+    .addtags {
         border: 2px dashed black;
         padding: 5px;
         cursor: pointer;
         border-radius: 50px;
         transition: all .5s ease;
     }
-    .addtags:hover{
+
+    .addtags:hover {
         color: deeppink;
         border: 2px solid deeppink;
     }
-    .addtags.active{
+
+    .addtags.active {
         color: deeppink;
         border: 2px solid deeppink;
     }
-    .message{
+
+    .message {
         color: red;
         font-family: "微软雅黑 Light";
         margin-left: 20px;
     }
-    .tagsList{
+
+    .tagsList {
         margin: 15px 0px;
         display: flex;
         flex-wrap: wrap;
         list-style: none;
     }
-    .tagsList li{
+
+    .tagsList li {
         margin-right: 10px;
     }
-    .tagsInput{
+
+    .tagsInput {
         margin: 0px !important;
     }
-    .tag-each{
+
+    .tag-each {
         margin: 0px !important;
         border: 1px dashed black;
         cursor: pointer;
-        -moz-user-select:none;
-        -webkit-user-select:none;
-        user-select:none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
         overflow: hidden;
         position: relative;
     }
-    .tag-each:hover .tagCancel{
+
+    .tag-each:hover .tagCancel {
         top: 0;
     }
-    .tagsList-li{
+
+    .file_name {
+        max-width: 100px;
+        word-break: break-all; /*允许在单词内换行*/
+        text-overflow: ellipsis; /*显示省略符号来代表被修剪的文本*/
+        overflow: hidden;
+        white-space: nowrap; /*不换行 控制单行文本*/
+    }
+
+    .tagsList-li {
         overflow: hidden;
     }
-    .tagCancel{
+
+    .tagCancel {
         position: absolute;
         display: flex;
         justify-content: center;
@@ -111,214 +146,385 @@
         color: rgba(247, 0, 78, 0.7);
         font-size: 10px;
     }
-    .this-tag{
+
+    .this-tag {
         padding: 2px 5px;
     }
 </style>
 <body>
-    <div id="app">
-        <form action="" class="upload-form" @change="clearMessage">
-            <div class="input-group">
-              <label class="input-group-text" for="inputGroupFile01">视频(.mp4)</label>
-              <input type="file" class="form-control" id="inputGroupFile01" @change="get_file($event)">
-            </div>
-            <div class="input-group">
-              <label class="input-group-text" for="inputGroupFile01">封面(.jpg)</label>
-              <input type="file" class="form-control" id="inputGroupFile01" @change="get_file($event)">
-            </div>
-            <div class="input-group">
-              <span class="input-group-text">确认信息</span>
-              <input type="text" aria-label="First name" class="form-control video_title" placeholder="输入标题" name="video_title" v-model="video_title">
-              <input type="text" aria-label="Last name" class="form-control" placeholder="输入'1'确认信息无误" v-model="sure">
-            </div>
-            <div style="font-family: IcoMoon-Free;margin: 5px 0px">
-                添加标签 : <span class="addtags" @click="addtags">add</span>
-                <ul class="tagsList">
-                    <li v-for="(item,index) in tags" @click="delTag($event)" class="tagsList-li">
-                        <div class="tag-each">
-                            <span class="tagCancel">cancel</span>
-                            <span class="this-tag">{[item]}</span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="input-group tagsInput" v-show="showtagsInput">
-                  <input type="text" class="form-control" placeholder="添加标签名，多个标签由空格或逗号分隔" aria-label="Recipient's username" aria-describedby="button-addon2" v-model="tag">
-                  <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="submitTag">添加</button>
-                </div>
-            <select class="form-select form-select-sm" aria-label=".form-select-lg example" style="margin-top: 10px">
-              <option selected>请选择一个标签(默认为二次元)</option>
-              <option value="二次元">二次元</option>
-              <option value="游戏">游戏</option>
-              <option value="音乐">音乐</option>
-            </select>
-            <div>
-                <button type="button" class="btn btn-primary btn-sure" @click="upload_form_check">上传</button>
-                <button type="button" class="btn btn-danger" @click="clear_input">取消</button>
-                <button type="button" class="btn btn-danger">{[ pre ]}</button>
-                <span class="message">{[message]}</span>
-            </div>
-        </form>
-    </div>
+<div id="app">
+    <form action="" v-show="mode.single" class="upload-form" @change="clearMessage">
+        <div class="input-group">
+            <label class="input-group-text" for="inputGroupFile01">视频(.mp4)</label>
+            <input type="file" class="form-control" id="inputGroupFile01" @change="get_file($event)">
+        </div>
+        <div class="input-group">
+            <label class="input-group-text" for="inputGroupFile01">封面(.jpg)</label>
+            <input type="file" class="form-control" id="inputGroupFile01" @change="get_file($event)">
+        </div>
+        <div class="input-group">
+            <span class="input-group-text">确认信息</span>
+            <input type="text" aria-label="First name" class="form-control video_title" placeholder="输入标题"
+                   name="video_title" v-model="video_title">
+            <input type="text" aria-label="Last name" class="form-control" placeholder="输入'1'确认信息无误" v-model="video_sure">
+        </div>
+        <div style="font-family: IcoMoon-Free;margin: 5px 0px">
+            添加标签 : <span class="addtags" @click="addtags">add</span>
+            <ul class="tagsList">
+                <li v-for="(item,index) in tags" @click="delTag($event)" class="tagsList-li">
+                    <div class="tag-each">
+                        <span class="tagCancel">cancel</span>
+                        <span class="this-tag">{[item]}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="input-group tagsInput" v-show="showtagsInput">
+            <input type="text" class="form-control" placeholder="添加标签名，多个标签由空格或逗号分隔" aria-label="Recipient's username"
+                   aria-describedby="button-addon2" v-model="tag">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="submitTag">添加</button>
+        </div>
+        <select class="form-select form-select-sm" aria-label=".form-select-lg example" style="margin-top: 10px">
+            <option selected>请选择一个标签(默认为二次元)</option>
+            <option value="二次元">二次元</option>
+            <option value="游戏">游戏</option>
+            <option value="音乐">音乐</option>
+        </select>
+        <div>
+            <button type="button" class="btn btn-primary btn-sure" @click="upload_form_check">上传</button>
+            <button type="button" class="btn btn-danger" @click="clear_input">取消</button>
+            <button type="button" class="btn btn-danger" @click="changeMode('multi')">切换上传模式(视频合集)</button>
+            <button type="button" class="btn btn-danger">{[ pre ]}</button>
+            <span class="message">{[message]}</span>
+        </div>
+    </form>
+    <form action="" v-show="mode.multi" class="multi-upload-form" @change="clearMessage">
+        <div class="input-group">
+            <label class="input-group-text" for="inputGroupFile01">封面(.jpg)</label>
+            <input type="file" class="form-control" id="inputGroupFile01" @change="get_file($event)">
+        </div>
+        <div class="input-group">
+            <span class="input-group-text">确认信息</span>
+            <input type="text" aria-label="First name" class="form-control video_title" placeholder="输入标题"
+                   name="video_title" v-model="compilation_title">
+            <input type="text" aria-label="Last name" class="form-control" placeholder="输入'1'确认信息无误" v-model="compilation_sure">
+        </div>
+        <div style="font-family: IcoMoon-Free;margin: 5px 0px">
+            添加标签 : <span class="addtags" @click="addtags">add</span>
+            <ul class="tagsList">
+                <li v-for="(item,index) in tags" @click="delTag($event)" class="tagsList-li">
+                    <div class="tag-each">
+                        <span class="tagCancel">cancel</span>
+                        <span class="this-tag">{[item]}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="input-group tagsInput" v-show="showtagsInput">
+            <input type="text" class="form-control" placeholder="添加标签名，多个标签由空格或逗号分隔" aria-label="Recipient's username"
+                   aria-describedby="button-addon2" v-model="tag">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="submitTag">添加</button>
+        </div>
+        <select class="form-select form-select-sm" aria-label=".form-select-lg example" style="margin: 10px 0px">
+            <option selected>请选择一个标签(默认为二次元)</option>
+            <option value="二次元">二次元</option>
+            <option value="游戏">游戏</option>
+            <option value="音乐">音乐</option>
+        </select>
+        <div class="mb-3">
+            <input class="form-control" type="file" id="formFileMultiple" multiple @change="files_ready($event)">
+        </div>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">文件名</th>
+                <th scope="col">文件状态</th>
+                <th scope="col">标题</th>
+                <th scope="col">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(item,index) in files_list">
+                <td>{[ index ]}</td>
+                <td class="file_name">{[ item.file.name ]}</td>
+                <td>{[ item.status ]}</td>
+                <td><input type="text" v-model="item.title"></td>
+                <td>
+                    <button type="button" class="btn btn-danger" @click="cancelThisFile(item.file)">取消</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div>
+            <button type="button" class="btn btn-primary btn-sure" @click="upload_multi_form_check">上传全部</button>
+            <button type="button" class="btn btn-danger" @click="clear_input">取消</button>
+            <button type="button" class="btn btn-danger" @click="changeMode('single')">切换上传模式(单个视频)</button>
+            <span class="message">{[message]}</span>
+        </div>
+    </form>
+</div>
 </body>
 <script>
-const vm = new Vue({
-    el: "#app",
-    delimiters: ['{[', ']}'],
-    data:{
-        sure:0,
-        video_pic:"",
-        video_file:"",
-        video_title:"",
-        tag:"",
-        showtagsInput:false,
-        pre:"0%",
-        tags:[],
-        message:"",
-        tagsDamie:["none","无标签","null","undefined"],
-    },
-    methods:{
-        clearMessage:function (){
-            this.message = ""
+    const vm = new Vue({
+        el: "#app",
+        delimiters: ['{[', ']}'],
+        data: {
+            compilation_sure: 0,
+            video_sure:0,
+            mother:0,
+
+            video_pic: "",
+            compilation_pic: "",
+
+            video_title: "",
+            compilation_title: "",
+
+            video_file: "",
+            files_list: [],
+
+            tag: "",
+            showtagsInput: false,
+            pre: "0%",
+            tags: [],
+            message: "",
+            tagsDamie: ["none", "无标签", "null", "undefined"],
+            mode: {
+                single: true,
+                multi: false,
+            },
         },
-        delTag:function (e){
-            for(let item of this.tags){
-                if(item == e.target.parentNode.children[1].innerText){
-                    let tagIndex = this.tags.indexOf(e.target.parentNode.children[1].innerText)
-                    this.tags.splice(tagIndex, 1)
+        methods: {
+            changeMode:function (mode){
+                mode=='single'?(this.mode.single=true,this.mode.multi=false):(this.mode.single=false,this.mode.multi=true)
+            },
+            files_ready: function (e) {
+                for (let item of e.target.files) {
+                    if (item.type == "video/mp4") {
+                        this.files_list.push({
+                            file:item,
+                            status:"等待上传",
+                            title:item.name,
+                        })
+                    } else {
+                        return
+                    }
                 }
-            }
-        },
-        clear_input:function (){
-            document.querySelector('.upload-form').querySelectorAll('input').forEach((item)=>{
-                item.value = null
-            })
-            this.sure = 0
-            this.video_title = ""
-        },
-        submitTag:function (){
-            if(this.tag==""||this.tag==null){
-                this.message="你添加了个**"
-            }
-            else{
-                tmp = []
-                for(let item of this.tag.trim().split(/\s|，|,/)){
-                    if(item.length>=20){
-                        this.message = "标签长度不可大于20"
-                        tmp = []
-                        return
+            },
+            clearMessage: function () {
+                this.message = ""
+            },
+            cancelThisFile: function (file){
+                for(let item of this.files_list){
+                    if(item.file == file){
+                        this.files_list.splice(this.files_list.indexOf(item),1)
                     }
-                    if(item.length>=20){
-                        this.message = "标签长度不可大于20"
-                        tmp = []
-                        return
+                }
+            },
+            delTag: function (e) {
+                for (let item of this.tags) {
+                    if (item == e.target.parentNode.children[1].innerText) {
+                        let tagIndex = this.tags.indexOf(e.target.parentNode.children[1].innerText)
+                        this.tags.splice(tagIndex, 1)
                     }
-                    for(let damie of this.tagsDamie){
-                        if(item.toLowerCase() == damie){
-                            this.message = "我看你是皮痒了"
+                }
+            },
+            clear_input: function () {
+                document.querySelector('.upload-form').querySelectorAll('input').forEach((item) => {
+                    item.value = null
+                })
+                this.compilation_sure = 0
+                this.video_sure = 0
+                this.video_title = ""
+            },
+            submitTag: function () {
+                if (this.tag == "" || this.tag == null) {
+                    this.message = "你添加了个**"
+                } else {
+                    tmp = []
+                    for (let item of this.tag.trim().split(/\s|，|,/)) {
+                        if (item.length >= 20) {
+                            this.message = "标签长度不可大于20"
+                            tmp = []
                             return
                         }
+                        if (item.length >= 20) {
+                            this.message = "标签长度不可大于20"
+                            tmp = []
+                            return
+                        }
+                        for (let damie of this.tagsDamie) {
+                            if (item.toLowerCase() == damie) {
+                                this.message = "我看你是皮痒了"
+                                return
+                            }
+                        }
+                        if (tmp.length >= 5) {
+                            this.message = "标签不可多于5个"
+                            return
+                        }
+                        if (this.tags.length >= 5) {
+                            this.message = "标签不可多于5个"
+                            return
+                        }
+                        tmp.push(item)
                     }
-                    if(tmp.length>=5){
-                        this.message = "标签不可多于5个"
-                        return
-                    }
-                    if(this.tags.length>=5){
-                        this.message = "标签不可多于5个"
-                        return
-                    }
-                    tmp.push(item)
+                    this.tags = this.tags.concat(tmp)
+                    this.tags = [...new Set(this.tags)]
+                    this.tag = ""
                 }
-                this.tags = this.tags.concat(tmp)
-                this.tags = [...new Set(this.tags)]
-                this.tag = ""
-            }
-        },
-        addtags:function (){
-            document.querySelector('.addtags').classList.toggle("active")
-            if(this.showtagsInput||!this.showtagsInput){
-                this.showtagsInput = !this.showtagsInput
-            }
-        },
-        upload_form_check:function(){
-          if(this.video_file==""){
-              alert("请选择要上传的视频")
-              return
-          }
-          if(this.video_pic==""){
-              alert("请选择要上传的视频封面")
-              return
-          }
-          if(this.video_title==""){
-              alert("请填写视频标题")
-              return
-          }
-          if(this.sure!=1){
-              alert("请输入“1”确认")
-              return
-          }
-          if(this.tag!=""){
-              this.submitTag()
-          }
-          this.upload_form()
-        },
-        upload_form:async function (){
-            let param = new FormData()
-            param.append('video_pic',this.video_pic)
-            param.append('video_file',this.video_file)
-            param.append('video_title',this.video_title)
-            param.append('username', "{{ request.user.username }}")
-            param.append('user_id', "{{ request.user.id }}")
-            param.append('tags',this.tags)
-            document.querySelector('.upload-form').querySelectorAll('input').forEach((item)=>{
-                item.disabled = "disabled"
-            })
-            document.querySelector('.btn-sure').disabled = "disabled"
-            result = await axios({
-                method: "POST",
-                url:"{% url 'save_video' %}",
-                onUploadProgress (progress) {
-                    vm.pre = Math.round(progress.loaded / progress.total * 100) + '%';
-                    if(vm.pre=="100%"){
-                        vm.pre="0%"
+            },
+            addtags: function () {
+                document.querySelector('.addtags').classList.toggle("active")
+                if (this.showtagsInput || !this.showtagsInput) {
+                    this.showtagsInput = !this.showtagsInput
+                }
+            },
+            upload_multi_form_check: function () {
+                if (this.compilation_pic == "") {
+                    alert("请选择要上传的合集封面")
+                    return
+                }
+                if (this.compilation_title == "") {
+                    alert("请填写视频标题")
+                    return
+                }
+                if (this.compilation_sure != 1) {
+                    alert("请输入“1”确认")
+                    return
+                }
+                if (this.tag != "") {
+                    this.submitTag()
+                }
+                if (this.files_list.length == 0) {
+                    alert("请选择要上传的视频")
+                    return
+                }
+                this.upload_multi_form()
+            },
+            upload_form_check: function () {
+                if (this.video_file == "") {
+                    alert("请选择要上传的视频")
+                    return
+                }
+                if (this.video_pic == "") {
+                    alert("请选择要上传的视频封面")
+                    return
+                }
+                if (this.video_title == "") {
+                    alert("请填写视频标题")
+                    return
+                }
+                if (this.video_sure != 1) {
+                    alert("请输入“1”确认")
+                    return
+                }
+                if (this.tag != "") {
+                    this.submitTag()
+                }
+                this.upload_form()
+            },
+            upload_multi_form: async function(){
+                let param = new FormData()
+                param.append('video_pic', this.compilation_pic)
+                param.append('video_title', this.compilation_title)
+                param.append('username', "{{ request.user.username }}")
+                param.append('user_id', "{{ request.user.id }}")
+                param.append('tags', this.tags)
+                result = await axios({
+                    method: "POST",
+                    url: "{% url 'ApplyForV_id' %}",
+                    data: param,
+                })
+                if(result.data.code==1){
+                    this.mother = result.data.v_id
+                    for(let item of this.files_list){
+                        this.multi_upload(item,this.files_list.indexOf(item))
                     }
-                },
-                data: param,
-            })
-            this.message = result.data.msg
-            document.querySelector('.upload-form').querySelectorAll('input').forEach((item)=>{
-                item.removeAttribute("disabled")
-            })
-            document.querySelector('.btn-sure').removeAttribute("disabled")
+                }
+            },
+            multi_upload: async function(item,index){
+                let param = new FormData()
+                param.append('video_file', item.file)
+                param.append('video_title', item.title)
+                param.append('v_id',this.mother)
+                result = await axios({
+                    method: "POST",
+                    url: "{% url 'save_compilation' %}",
+                    onUploadProgress(progress) {
+                        vm.files_list[index].status = Math.round(progress.loaded / progress.total * 100) + '%';
+                    },
+                    data: param,
+                })
+                this.video_title = ""
+                this.tag = ""
+                this.video_sure = 0
+                this.tags = []
+            },
+            upload_form: async function () {
+                let param = new FormData()
+                param.append('video_pic', this.video_pic)
+                param.append('video_file', this.video_file)
+                param.append('video_title', this.video_title)
+                param.append('username', "{{ request.user.username }}")
+                param.append('user_id', "{{ request.user.id }}")
+                param.append('tags', this.tags)
+                document.querySelector('.upload-form').querySelectorAll('input').forEach((item) => {
+                    item.disabled = "disabled"
+                })
+                document.querySelector('.btn-sure').disabled = "disabled"
+                result = await axios({
+                    method: "POST",
+                    url: "{% url 'save_video' %}",
+                    onUploadProgress(progress) {
+                        vm.pre = Math.round(progress.loaded / progress.total * 100) + '%';
+                        if (vm.pre == "100%") {
+                            vm.pre = "0%"
+                        }
+                    },
+                    data: param,
+                })
+                this.message = result.data.msg
+                document.querySelector('.upload-form').querySelectorAll('input').forEach((item) => {
+                    item.removeAttribute("disabled")
+                })
+                document.querySelector('.btn-sure').removeAttribute("disabled")
 
-            document.querySelector('.upload-form').querySelectorAll('input').forEach((item)=>{
-                item.value = null
-            })
-            this.message = result.data.msg
-            this.video_title = ""
-            this.tag = ""
-            this.sure = 0
-            this.tags = []
+                document.querySelector('.upload-form').querySelectorAll('input').forEach((item) => {
+                    item.value = null
+                })
+                this.message = result.data.msg
+                this.video_title = ""
+                this.tag = ""
+                this.video_sure = 0
+                this.tags = []
 
+            },
+            get_file: function (e) {
+                let file = e.target.files[0]
+                let fileName = file.name;
+                let pos = fileName.lastIndexOf(".")
+                let lastName = fileName.substring(pos, fileName.length)
+                console.log(lastName)
+                if (lastName.toLowerCase() == '.jpg' || lastName.toLowerCase() == '.jpeg') {
+                    if(this.mode.single==true){
+                        this.video_pic = file
+                    }
+                    else if(this.mode.multi==true){
+                        this.compilation_pic = file
+                    }
+                }
+                else if (lastName.toLowerCase() == '.mp4') {
+                    if(this.mode.single==true){
+                        this.video_file = file
+                    }
+                }
+                else {
+                    alert('不支持'+lastName+'格式')
+                    e.target.value = null
+                }
+            },
         },
-        get_file:function (e){
-            let file = e.target.files[0]
-            let fileName = file.name;
-            let pos = fileName.lastIndexOf(".")
-            let lastName = fileName.substring(pos, fileName.length)
-            console.log(lastName)
-            if(lastName.toLowerCase()=='.jpg'||lastName.toLowerCase()=='.jpeg'){
-                this.video_pic = file
-            }
-            else if(lastName.toLowerCase()=='.mp4'){
-                this.video_file = file
-            }
-            else{
-                alert('上传的什么玩意？？？')
-                e.target.value = null
-            }
-        },
-    },
-})
+    })
 </script>
 </html>

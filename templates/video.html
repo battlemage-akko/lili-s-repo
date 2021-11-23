@@ -703,12 +703,38 @@
                 e.currentTarget.classList.add('active')
             },
             changeVideo:function (index){
+                console.log(this.video_detail.vc_ads[index].vc_ad)
                 this.video_ready.src(
                     {
                         src:'{% static 'videos/' %}' + this.video_detail.vc_ads[index].vc_ad,
                         type: 'video/mp4',
                     })
                 this.vc_index = index+1
+                this.clearAllBarrage()
+                this.getBarrage()
+            },
+            clearAllBarrage:function (){
+                this.static_barrageArray_Top = []
+                this.static_barrageArray_Bottom = []
+                for (let timer in this.static_barrageArray_timer.top) {
+                    clearTimeout(timer)
+                }
+                for (let key in this.static_barrage_top_rail) {
+                    this.static_barrage_top_rail[key] = true
+                }
+                for (let timer in this.static_barrageArray_timer.bottom) {
+                    clearTimeout(timer)
+                }
+                for (let key in this.static_barrage_bottom_rail) {
+                    this.static_barrage_bottom_rail[key] = true
+                }
+                node = document.querySelector('#barrage')
+                while (node.hasChildNodes()) {
+                    node.removeChild(node.firstChild);
+                }
+                this.nextbarrageTop = 0
+                this.barrageHolder = {}
+                this.barrageArray = []
             },
             toProfile: function (id) {
                 topbar.toProfile(id)
@@ -969,6 +995,12 @@
                 param.append('v_id', this.video_detail.v_id)
                 param.append('b_mode', tmp.b_mode)
                 param.append('b_color', tmp.b_color)
+                if(this.video_detail.vc_ads.length != 0){
+                    param.append('vc_id', this.video_detail.vc_ads[this.vc_index-1].vc_id)
+                }
+                else{
+                    param.append('vc_id', 0)
+                }
                 result = await axios({
                     method: "POST",
                     data: param,
@@ -1012,11 +1044,18 @@
             getBarrage: async function () {
                 let param = new URLSearchParams()
                 param.append('v_id', {{ v_id }})
+                if(this.video_detail.vc_ads.length!=0){
+                    param.append('vc_id', this.video_detail.vc_ads[this.vc_index-1].vc_id)
+                }
+                else{
+                    param.append('vc_id', 0)
+                }
                 result = await axios({
                     method: "POST",
                     url: "{% url "loadbarrage" %}",
                     data: param,
                 })
+
                 this.barrageArray = result.data.result
                 for(let item of result.data.result){
                     item['from_here'] = false
@@ -1236,8 +1275,10 @@
 
                 });
                 this.on("ended", function () {
-                    that.changeVideo(that.vc_index+1)
-                    this.play()
+                    if(that.vc_index<=that.video_detail.length){
+                        that.changeVideo(that.vc_index)
+                        this.play()
+                    }
                 })
             })
             if (this.video_ready.readyState() == 0) {

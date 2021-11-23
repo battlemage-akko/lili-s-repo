@@ -61,6 +61,7 @@ class video(models.Model):
                 "v_duaring": item["v_duaring"],
                 "v_time": time_normalization(item["v_time"]),
                 "v_type": item["v_type"],
+                "is_collection": item["is_collection"],
             })
         return videos
 
@@ -88,6 +89,7 @@ class video(models.Model):
                 "v_time": time_normalization(item["v_time"]),
                 "v_note": item["v_note"],
                 "v_type": item["v_type"],
+                "is_collection": item["is_collection"],
             })
         for item in tmp2:
             if item not in tmp:
@@ -101,6 +103,7 @@ class video(models.Model):
                     "v_time": time_normalization(item["v_time"]),
                     "v_note": item["v_note"],
                     "v_type": item["v_type"],
+                    "is_collection": item["is_collection"],
                 })
         return {
             "exactness": exactness,
@@ -121,6 +124,7 @@ class video(models.Model):
                 "v_time": time_normalization(item["v_time"]),
                 "v_note": item["v_note"],
                 "v_type": item["v_type"],
+                "is_collection": item["is_collection"],
             })
         return result
 
@@ -138,6 +142,7 @@ class video(models.Model):
                 "v_time": time_normalization(item["v_time"]),
                 "v_note": item["v_note"],
                 "v_type": item["v_type"],
+                "is_collection": item["is_collection"],
             })
         return result
 
@@ -157,6 +162,7 @@ class video(models.Model):
                 "v_time": time_normalization(item["v_time"]),
                 "v_note": item["v_note"],
                 "v_type": item["v_type"],
+                "is_collection": item["is_collection"],
             })
         for item in tmp2 :
             if item not in tmp:
@@ -170,6 +176,7 @@ class video(models.Model):
                     "v_time": time_normalization(item["v_time"]),
                     "v_note": item["v_note"],
                     "v_type": item["v_type"],
+                    "is_collection": item["is_collection"],
                 })
         return {
             "exactness": exactness,
@@ -183,9 +190,20 @@ class video_compilation(models.Model):
     vc_time = models.DateTimeField(auto_now_add=True)
     vc_duaring = models.IntegerField(default=0)
     vc_barrage = models.IntegerField(default=0)
+
     def create(v_id,vc_title,vc_ad,vc_duaring):
         video_compilation(v_id=v_id,vc_title=vc_title,vc_ad=vc_ad,vc_duaring=vc_duaring).save()
         return 1
+    def deleteByV_id(v_id):
+        r = video_compilation.objects.filter(v_id=v_id).all()
+        if r:
+            r.delete()
+            return 1
+        else :
+            return 0
+    def getNumberByV_id(v_id):
+        return video_compilation.objects.filter(v_id=v_id).count()
+
     def getVc_adsByV_id(v_id):
         tmp = video_compilation.objects.filter(v_id=v_id).all().values()
         result = []
@@ -193,6 +211,12 @@ class video_compilation(models.Model):
             result.append(i)
         for item in result:
             item['vc_time'] = time_normalization(item['vc_time'])
+
+        return result
+    def getVc_titleByV_id(v_id):
+        result = []
+        for item in video_compilation.objects.filter(v_id=v_id).all().values():
+            result.append(item["vc_title"])
         return result
 class accusation_video(models.Model):
     a_id = models.AutoField(primary_key=True)

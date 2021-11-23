@@ -392,7 +392,20 @@
 .search-result-video-change span.active {
     color: rgba(255, 75, 107, 0.87);
 }
-
+.videos-each-collection{
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 30%;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 600;
+    flex-direction: column;
+}
 .noresult {
     width: 100%;
     display: flex;
