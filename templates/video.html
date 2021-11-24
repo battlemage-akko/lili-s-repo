@@ -523,7 +523,7 @@
                 "d_content": {{ discuss|safe }},
                 "v_barrage":{{ v_barrage|safe }},
                 "is_collection":'{{ is_collection|safe }}',
-                "vc_ads":{{ vc_ads|safe }}
+                "vc_ads":{{ vc_ads|safe }},
             },
             vc_index:'',
             userdetail: topbar.userdetail,
@@ -706,7 +706,6 @@
                 e.currentTarget.classList.add('active')
             },
             changeVideo:function (index,e){
-                console.log(this.video_detail.vc_ads[index].vc_ad)
                 lis = document.querySelector('.videos-collection-list-container').querySelectorAll('li')
                 for(let item of lis){
                     item.classList.remove('active')
@@ -718,6 +717,10 @@
                         type: 'video/mp4',
                     })
                 this.vc_index = index+1
+
+                const url = this.video_url + this.video_detail.v_id + 'p?=' + this.vc_index
+                history.replaceState(null,null,url)
+
                 this.clearAllBarrage()
                 this.getBarrage()
             },
@@ -1219,9 +1222,9 @@
                 this.video_option.sources[0].src = '{% static 'videos/' %}' + this.video_detail.v_ad
             }
             else{
-                document.querySelector('.videos-collection-list-container').firstChild.classList.toggle("active")
-                this.video_option.sources[0].src = '{% static 'videos/' %}' + this.video_detail.vc_ads[0].vc_ad
-                this.vc_index = 1
+                this.vc_index = {{ vc_index }}
+                document.querySelector('.videos-collection-list-container').querySelectorAll('li')[this.vc_index-1].classList.toggle("active")
+                this.video_option.sources[0].src = '{% static 'videos/' %}' + this.video_detail.vc_ads[this.vc_index-1].vc_ad
             }
             this.video_option
             window.onresize = () => {

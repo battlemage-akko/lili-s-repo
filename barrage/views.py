@@ -18,6 +18,7 @@ import random,os,re
 
 def video(request,vid):
     result = videosTable.objects.filter(v_id=vid).values()
+    p = request.GET.get('p')
     if(len(result) == 0):
         return render(request,'notfound.html')
     videosTable.objects.filter(v_id=vid).all().values()[0]['v_title']
@@ -54,6 +55,9 @@ def video(request,vid):
                 'picture': Userdatabase.getinfo(id=j['u_id'], info="picture")
             }
     if result['is_collection']:
+        index = 1
+        if p:
+            index = p
         data = {
             "v_id": result["v_id"],
             "v_pic": result["v_pic"],
@@ -77,6 +81,7 @@ def video(request,vid):
             "loveornot": lovetable.love_check(request.user.id, result["v_id"]),
             "collectornot": collectTable.collect_check(request.user.id, result["v_id"]),
             "discuss": [item for item in discuss],
+            "vc_index":index
         }
         return render(request, 'video.html', data)
     else:
@@ -115,7 +120,6 @@ def loadbarrage(request):
     vc_id = int(request.POST.get("vc_id"))
     barrage = []
     if vc_id:
-        print("合集")
         result = barrageTable.objects.filter(vc_id=vc_id).order_by('b_time').values()
         for i in result:
             barrage.append({
@@ -130,7 +134,6 @@ def loadbarrage(request):
             'result': barrage
         })
     else:
-        print("单个")
         result = barrageTable.objects.filter(v_id=v_id).order_by('b_time').values()
         for i in result:
             barrage.append({
