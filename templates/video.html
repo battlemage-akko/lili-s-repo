@@ -718,7 +718,7 @@
                     })
                 this.vc_index = index+1
 
-                const url = this.video_url + this.video_detail.v_id + 'p?=' + this.vc_index
+                const url = this.video_url + this.video_detail.v_id + '?p=' + this.vc_index
                 history.replaceState(null,null,url)
 
                 this.clearAllBarrage()
