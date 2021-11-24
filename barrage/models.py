@@ -61,7 +61,7 @@ class video(models.Model):
                 "v_duaring": item["v_duaring"],
                 "v_time": time_normalization(item["v_time"]),
                 "v_type": item["v_type"],
-                "is_collection": item["is_collection"],
+                "is_collection": str(item["is_collection"]),
             })
         return videos
 
