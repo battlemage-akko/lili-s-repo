@@ -187,7 +187,26 @@ def sendDiscussion(request):
                 "result": [],
                 "msg": "发送失败"
             })
-
+@csrf_exempt
+def search_video(request):
+    if(request.method == 'POST'):
+        v_id = request.POST.get("v_id")
+        result = videosTable.objects.filter(v_id=v_id).all().values()
+        if result:
+            result = result[0]
+            print(result)
+            return JsonResponse({
+                "result":{
+                    "v_id": result["v_id"],
+                    "v_title":result["v_title"],
+                    "user_id": result["user_id"],
+                    "username": result["v_auther"],
+                }
+            })
+        else :
+            return JsonResponse({
+                "result":[]
+            })
 @csrf_exempt
 def sendAnswer(request):
     if (request.method == "POST"):

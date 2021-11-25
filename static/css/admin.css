@@ -192,3 +192,19 @@
 .layui-layer-title{
     background-color: rgba(245, 240, 240, 0.5);
 }
+.admin-video{
+
+}
+.video-search-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 10px;
+    border: 1px solid black;
+    margin-left: 5px;
+}
+.video-search-btn:hover{
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
