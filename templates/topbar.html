@@ -6,7 +6,7 @@
         </div>
             <div class="input-group videos-top-search">
               <button class="btn btn-outline-secondary" type="button" id="button-addon1" @click="search"><i class="videos-top-search-btn"></i></button>
-              <input type="text" class="form-control" placeholder="搜索" aria-label="Example text with button addon" aria-describedby="button-addon1" v-model="q">
+              <input type="text" class="form-control" placeholder="搜索" aria-label="Example text with button addon" aria-describedby="button-addon1" v-model="q" v-on:keyup.enter="search">
             </div>
         <ul class="video-user-info" v-if="is_login">
             <li>

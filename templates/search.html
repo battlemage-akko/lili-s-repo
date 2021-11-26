@@ -63,7 +63,7 @@
                 <li class="search-content-search-container">
                     <div style="position: relative;width: 100%">
                         <input type="text" placeholder="搜索" class="search-content-search-input" v-model="q"
-                               @focus="inputActive" @blur="inputActive">
+                               @focus="inputActive" @blur="inputActive" @keyup.enter="search">
                         <i class="search-content-search-btn" @mousedown="search"></i>
                         <i class="search-content-search-cancel" @mousedown="clear"></i>
                     </div>
@@ -82,7 +82,11 @@
                             <div class="search-result-user-info">
                                 <div>
                                     <ul style="padding: 0px;margin-left: 5px">
-                                        <li><h2 class="search-result-user-name-name" @click="toProfile(result.user.exactness[0].id)">{[ result.user.exactness[0].username ]}</h2><span class="search-result-user-name-follow">+关注</span></li>
+                                        <li><h2 class="search-result-user-name-name" @click="toProfile(result.user.exactness[0].id)">{[ result.user.exactness[0].username ]}</h2>
+                                            <span class="search-result-user-name-follow">
+                                                <p>+关注</p>
+                                            </span>
+                                        </li>
                                         <li class="search-result-user-other">
                                             <p>{[ result.user.exactness[0].v_count ]} 投稿</p>
                                             <p>|</p>

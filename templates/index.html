@@ -203,7 +203,7 @@
                             <div class="videolist-input-group">
                                 <i class="videolist-input-group-magnifier" @mousedown="search">
                                 </i>
-                                <input type="text" placeholder=" 请输入" class="videolist-input-group-input" @focus="changeVideoslistBack" @blur="changeVideoslistBack" v-model="q">
+                                <input type="text" placeholder=" 请输入" class="videolist-input-group-input" @focus="changeVideoslistBack($event)" @blur="changeVideoslistBack" v-model="q" @keyup.enter="search">
                                 <button class="videolist-input-group-btn" @mousedown="search">提交</button>
                             </div>
                         </div>
@@ -355,7 +355,7 @@
                                             <td><p>{[ item.v_id ]}</p></td>
                                             <td><p @click="jumpbyv_id(item.v_id)" style="color: #0c63e4;cursor: pointer">《{[ item.v_title ]}》</p></td>
                                             <td><p @click="toProfile(item.user_id)" style="cursor: pointer">{[ item.username ]}</p></td>
-                                            <td><span style="background-color: red;color: white;padding: 5px 10px;cursor: pointer" @click="">删除</span></td>
+                                            <td><span style="background-color: red;color: white;padding: 5px 10px;cursor: pointer" @click="delVideo(item.v_id)">删除</span></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -457,7 +457,7 @@
             </div>
             <ul class="searchnav" style="padding: 0px!important">
                 <li>
-                    <input type="search" placeholder="请输入" v-model="q">
+                    <input type="search" placeholder="请输入" v-model="q" @keyup.enter="search">
                     <i class="searchbtn" @click="search"></i>
                 </li>
             </ul>
@@ -618,6 +618,7 @@
                     url: '{% url 'search_video' %}',
                     data: param
                 });
+                this.search_video_data.input = ""
                 this.search_video_data.result = [result.data.result]
                 if(this.search_video_data.result[0].length == 0){
                     this.search_video_data.is_null = true
@@ -650,10 +651,19 @@
                 }
                 vm.flags[Page] = true
             },
-            changeVideoslistBack:function (){
+            changeVideoslistBack:function (e){
                 document.querySelector(".videoslist-title").classList.toggle('active')
                 document.querySelector(".videoslist-search-logo").classList.toggle('active')
                 document.querySelector(".videolist-input-group-input").classList.toggle('active')
+                if(e.currentTarget == document.activeElement){
+                    document.οnkeydοwn=function(event){
+                        e = event ? event :(window.event ? window.event : null);
+                        if(e.keyCode==13){
+                                //执行的方法
+                                alert('全局检测到了回车');
+                        }
+                    }
+                }
             },
             handleScroll:function (){
                 console.log(123)
@@ -815,6 +825,17 @@
             },
             getVideo:function (v_id){
                 window.open(this.video_url+v_id)
+            },
+            delVideo:async function (v_id){
+                let param = new URLSearchParams()
+                    param.append("v_id", v_id)
+                    result = await axios({
+                        method: "POST",
+                        url: "{% url 'delVideo' %}",
+                        data: param
+                    })
+                this.search_video_data.is_null = true
+                this.search_video_data.result = []
             },
             finallytime: function (value) {
                 let sure = prompt("请输入我很他妈确定")
