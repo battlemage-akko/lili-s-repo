@@ -391,7 +391,7 @@
                                     <tbody>
                                         <tr v-for="(item,index) in AllUsers">
                                             <td><p>{[ item.id ]}</p></td>
-                                            <td><p>{[ item.username ]}</p></td>
+                                            <td><p @click="toProfile(item.id)" style="cursor: pointer">{[ item.username ]}</p></td>
                                             <td><p>{[ item.email ]}</p></td>
                                             <td><p>{[ item.last_login ]}</p></td>
                                             <td><p>{[ !item.is_active ]}</p></td>
@@ -433,7 +433,7 @@
                                     <tr v-for="(item,index) in AllVideoAccusation">
                                         <td><p>{[ item.a_id ]}</p></td>
                                         <td><p @click="jumpbyv_id(item.v_id)" style="color: dodgerblue;cursor: pointer">《{[ item.v_title ]}》</p></td>
-                                        <td><p>{[ item.u_name ]}</p></td>
+                                        <td><p @click="toProfile(item.u_id)" style="cursor: pointer">{[ item.u_name ]}</p></td>
                                         <td><p>{[ item.a_time ]}</p></td>
                                         <td style="max-width: 520px"><p>{[ item.a_reason ]}</p></td>
                                         <td><p @click="rejectVideoAcc(item.a_id)" style="cursor: pointer">reply</p></td>

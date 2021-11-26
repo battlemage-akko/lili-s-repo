@@ -202,17 +202,18 @@
                                         </ul>
                                         <div>弹幕颜色:</div>
                                         <ul class="danmu-setting-color">
-                                            <li style="background-color: white"
-                                                @click="changeBarrageColor('white')"></li>
-                                            <li style="background-color: red" @click="changeBarrageColor('red')"></li>
-                                            <li style="background-color: yellow"
-                                                @click="changeBarrageColor('yellow')"></li>
-                                            <li style="background-color: dodgerblue"
-                                                @click="changeBarrageColor('dodgerblue')"></li>
-                                            <li style="background-color: hotpink"
-                                                @click="changeBarrageColor('hotpink')"></li>
-                                            <li style="background-color: lightseagreen"
-                                                @click="changeBarrageColor('lightseagreen')"></li>
+                                            <li style="background-color: #ffffff"
+                                                @click="changeBarrageColor('#fffff')"></li>
+                                            <li style="background-color: #ff0000"
+                                                @click="changeBarrageColor('#ff0000')"></li>
+                                            <li style="background-color: #ffff00"
+                                                @click="changeBarrageColor('#ffff00')"></li>
+                                            <li style="background-color: #007eff"
+                                                @click="changeBarrageColor('#007eff')"></li>
+                                            <li style="background-color: #ff87c1"
+                                                @click="changeBarrageColor('#ff87c1')"></li>
+                                            <li style="background-color: #1be3d7"
+                                                @click="changeBarrageColor('#1be3d7')"></li>
                                         </ul>
                                     </div>
                                 </li>
@@ -225,7 +226,7 @@
                                     <span style="font-weight: 700;color: black">{[barrage_mode_now]}</span>
                                 </span>
                                 <input type="text" placeholder="发个弹幕试试吧~" id="danmu_content" v-model="input">
-                                <span :style="{'width': '20px','height': '20px','margin-right': '5px','display': 'inline-block','background-color': barrage_color,'border-width':'1px','border-color':'black','border-style':'solid'}"></span>
+                                <input type="color" style="width: 20px;height: 20px;margin-right: 5px;cursor: pointer" v-model="barrage_color">
                             </div>
                         </div>
                     </div>
@@ -291,7 +292,7 @@
                           <textarea class="form-control video-discuss-input-area" placeholder="Leave a comment here"
                                     id="floatingTextarea" @focus="changeInputMode('discuss')"
                                     @blur="changeInputMode('discuss')"
-                                    v-model="discuss">
+                                    v-model="discuss" @keyup.enter="sendDiscussion">
                           </textarea>
                             <label class="video-discuss-input-line" for="floatingTextarea">
                                 评论 :
@@ -369,7 +370,7 @@
                                                         placeholder="Leave a comment here"
                                                         id="floatingTextarea" @focus="changeInputMode('answer')"
                                                         @blur="changeInputMode('answer')"
-                                                        v-model="answerTmp[item.d_id]">
+                                                        v-model="answerTmp[item.d_id]" @keyup.enter="sendAnswer(item.d_id)">
                                               </textarea>
                                             <label class="video-answer-input-line" for="floatingTextarea">
                                                 回复 :
@@ -547,7 +548,7 @@
             video_nowtime: 0,
             barrageArray: [],
             barrageHolder:{},
-            barrage_color: 'white',
+            barrage_color: '#FFFFFF',
             static_barrageArray_Top: [],
             static_barrageArray_Bottom: [],
             static_barrageArray_timer: {
@@ -973,7 +974,7 @@
 
                 //举报
                 barrageChileNode.onclick = function () {
-                    this.video_ready.pause()
+                    vm.video_ready.pause()
                 }
             },
             sendMsg: function () {
