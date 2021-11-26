@@ -26,9 +26,16 @@
     padding: 60px;
     display: flex;
     justify-content: center;
+    flex-direction: column;
+}
+.search-content-classify{
+    display: flex;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
-
+.search-content-classify li{
+    padding: 5px 10px;
+    font-size: 20px;
+}
 .search-content-search-input {
     height: 40px;
     width: 100%;

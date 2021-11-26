@@ -173,6 +173,7 @@ class followUser(models.Model):
     id = models.AutoField(primary_key=True)
     follow_id = models.IntegerField(default=0)
     followed_id = models.IntegerField(default=0)
+    follow_time = models.DateTimeField(auto_now_add=True)
 
     def follow_check(from_user, to_user):
         getAllFollow = followUser.objects.filter(follow_id=from_user,followed_id=to_user).all()

@@ -50,7 +50,11 @@ body::-webkit-scrollbar-track { /*滚动条里面轨道*/
     font-family: IcoMoon-Free;
     font-style: normal;
 }
-
+.tool:before {
+    content: "\e991";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
 .logout:before {
     content: "\ea14";
     font-family: IcoMoon-Free;
