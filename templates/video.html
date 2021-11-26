@@ -225,7 +225,7 @@
                                 <span style="color: rgba(0,0,0,0.4);width: 70px">模式:
                                     <span style="font-weight: 700;color: black">{[barrage_mode_now]}</span>
                                 </span>
-                                <input type="text" placeholder="发个弹幕试试吧~" id="danmu_content" v-model="input">
+                                <input type="text" placeholder="发个弹幕试试吧~" id="danmu_content" v-model="input" @keyup.enter="send_msg_check">
                                 <input type="color" style="width: 20px;height: 20px;margin-right: 5px;cursor: pointer" v-model="barrage_color">
                             </div>
                         </div>
