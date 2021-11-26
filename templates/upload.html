@@ -187,11 +187,8 @@
                    aria-describedby="button-addon2" v-model="tag">
             <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="submitTag">添加</button>
         </div>
-        <select class="form-select form-select-sm" aria-label=".form-select-lg example" style="margin-top: 10px">
-            <option selected>请选择一个标签(默认为二次元)</option>
-            <option value="二次元">二次元</option>
-            <option value="游戏">游戏</option>
-            <option value="音乐">音乐</option>
+        <select class="form-select form-select-sm" aria-label=".form-select-lg example" v-model="type" style="margin: 10px 0px">
+            <option v-for="item in types">{[item.title]}</option>
         </select>
         <div>
             <button type="button" class="btn btn-primary btn-sure" @click="upload_form_check">上传</button>
@@ -228,11 +225,8 @@
                    aria-describedby="button-addon2" v-model="tag">
             <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="submitTag">添加</button>
         </div>
-        <select class="form-select form-select-sm" aria-label=".form-select-lg example" style="margin: 10px 0px">
-            <option selected>请选择一个标签(默认为二次元)</option>
-            <option value="二次元">二次元</option>
-            <option value="游戏">游戏</option>
-            <option value="音乐">音乐</option>
+        <select class="form-select form-select-sm" aria-label=".form-select-lg example" v-model="type" style="margin: 10px 0px">
+            <option v-for="item in types">{[item.title]}</option>
         </select>
         <div class="mb-3">
             <input class="form-control" type="file" id="formFileMultiple" multiple @change="files_ready($event)">
@@ -289,6 +283,12 @@
             tag: "",
             tags: [],
             status: [],
+            type:"二次元",
+            types:[
+                {title:'二次元',id:'1'},
+                {title:'游戏',id:'2'},
+                {title:'音乐',id:'3'},
+            ],
             showtagsInput: false,
             pre: "0%",
             message: "",
@@ -450,6 +450,7 @@
                 param.append('username', "{{ request.user.username }}")
                 param.append('user_id', "{{ request.user.id }}")
                 param.append('tags', this.tags)
+                param.append('type', this.type)
                 result = await axios({
                     method: "POST",
                     url: "{% url 'ApplyForV_id' %}",
@@ -495,6 +496,7 @@
             upload_form: async function () {
                 let param = new FormData()
                 param.append('video_pic', this.video_pic)
+                param.append('type', this.type)
                 param.append('video_file', this.video_file)
                 param.append('video_title', this.video_title)
                 param.append('username', "{{ request.user.username }}")

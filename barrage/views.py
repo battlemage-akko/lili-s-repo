@@ -302,6 +302,7 @@ def ApplyForV_id(request):
         username = request.POST.get("username")
         user_id = request.POST.get("user_id")
         tags = request.POST.get("tags")
+        type = request.POST.get("type")
         tmp = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", tags)
 
         video_title_tmp = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", video_title)
@@ -311,7 +312,7 @@ def ApplyForV_id(request):
         print(video_pic.name, "done")
 
         result = videosTable(v_pic=video_title_tmp + '.jpg', v_auther=username,
-                             user_id=user_id, v_title=video_title, v_like=0, v_play=0, v_collect=0,v_tags=tmp,is_collection=True)
+                             user_id=user_id, v_title=video_title, v_like=0, v_play=0, v_collect=0,v_tags=tmp,is_collection=True,v_type=type)
         result.save()
         path = 'static/videos/compilation/' + video_title_tmp
         if not os.path.exists(path):
@@ -361,15 +362,16 @@ def save_video(request):
         username = request.POST.get("username")
         user_id = request.POST.get("user_id")
         tags = request.POST.get("tags")
+        type = request.POST.get("type")
         tmp = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+","",tags)
         if(tmp==""):
             tags = "None"
-        finish_save(video_title, video_pic, video_file,username,user_id,tags)
+        finish_save(video_title, video_pic, video_file,username,user_id,tags,type)
     return JsonResponse({
         "msg":"上传成功"
     })
 
-def finish_save(video_title,video_pic,video_file,username,user_id,tags):
+def finish_save(video_title,video_pic,video_file,username,user_id,tags,type):
     video_title_tmp = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+","",video_title)
 
     video_pic_save_path = 'static/videos/videopic/' +  video_title_tmp + '.jpg'
@@ -384,7 +386,7 @@ def finish_save(video_title,video_pic,video_file,username,user_id,tags):
 
     time = round(VideoFileClip(video_file_save_path).duration)
 
-    result = videosTable(v_ad=video_title_tmp + '.mp4',v_pic=video_title_tmp + '.jpg',v_auther=username,user_id=user_id,v_title=video_title,v_like=0,v_play=0,v_collect=0,v_duaring=time,v_tags=tags)
+    result = videosTable(v_ad=video_title_tmp + '.mp4',v_pic=video_title_tmp + '.jpg',v_auther=username,user_id=user_id,v_title=video_title,v_like=0,v_play=0,v_collect=0,v_duaring=time,v_tags=tags,v_type=type)
     result.save()
 
     messagesTable.createMessage(m_content="您成功上传了《"+video_title+"》", m_user=user_id)
