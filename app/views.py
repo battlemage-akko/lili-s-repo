@@ -230,6 +230,7 @@ def search(q,count):
     searchByTitle = videosTable.searchByTitle(q)
     searchByTag = videosTable.searchByTag(q)
     searchByType = videosTable.searchByType(q)
+    searchByAuther = videosTable.searchByAuther(q)
 
     for item in searchByTitle['exactness']:
         # if (len(queen) > (count+5)):
@@ -246,6 +247,11 @@ def search(q,count):
         if item not in queen:
             queen.append(item)
     for item in searchByTag:
+        # if (len(queen) > (count+5)):
+        #     break
+        if item not in queen:
+            queen.append(item)
+    for item in searchByAuther:
         # if (len(queen) > (count+5)):
         #     break
         if item not in queen:

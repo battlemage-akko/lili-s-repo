@@ -148,11 +148,9 @@ class video(models.Model):
 
     def searchByAuther(user):
         tmp = video.objects.filter(v_auther=user).all().order_by("-v_time").values()
-        tmp2 = video.objects.filter(v_auther__contains=user).all().order_by("-v_time").values()
-        exactness = []
-        indistinct = []
+        result = []
         for item in tmp:
-            exactness.append({
+            result.append({
                 "v_id": item["v_id"],
                 "v_pic": item["v_pic"],
                 "v_auther": item["v_auther"],
@@ -164,24 +162,7 @@ class video(models.Model):
                 "v_type": item["v_type"],
                 "is_collection": item["is_collection"],
             })
-        for item in tmp2 :
-            if item not in tmp:
-                indistinct.append({
-                    "v_id": item["v_id"],
-                    "v_pic": item["v_pic"],
-                    "v_auther": item["v_auther"],
-                    "v_auther_id": item["user_id"],
-                    "v_play": item["v_play"],
-                    "v_title": item["v_title"],
-                    "v_time": time_normalization(item["v_time"]),
-                    "v_note": item["v_note"],
-                    "v_type": item["v_type"],
-                    "is_collection": item["is_collection"],
-                })
-        return {
-            "exactness": exactness,
-            "indistinct": indistinct,
-        }
+        return result
 class video_compilation(models.Model):
     vc_id = models.AutoField(primary_key=True)
     v_id = models.IntegerField(null=False)
