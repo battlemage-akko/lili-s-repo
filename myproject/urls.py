@@ -34,6 +34,7 @@ urlpatterns = [
     path('video/<int:vid>',barrageView.video,name="video"),
     path('search', views.search_page,name="search"),
     path('profile', views.profile,name="profile"),
+    re_path('^setting/', views.setting,name="setting"),
     re_path('^upload_page/', views.upload_page, name="upload_page"),
     re_path('^app_api/', include(app_api)),
     re_path('^video_api/', include(video_api))

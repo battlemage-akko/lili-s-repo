@@ -1,0 +1,21 @@
+.sidebar-menus{
+    width: 240px;
+    height: 100vh;
+    background-color: #dcdce3;
+    padding-top: 60px;
+}
+.setting-container{
+    padding-top: 60px;
+}
+.sidebar-menus li{
+    padding: 20px 25px;
+    font-family: "微软雅黑 Light";
+    font-size: 15px;
+    cursor: pointer;
+}
+.sidebar-menus li.active{
+    background-color: #cacad3;
+}
+.sidebar-menus li:hover{
+    background-color: #cacad3;
+}
