@@ -496,6 +496,8 @@ def collect(request):
                 "msg": "什么玩意",
             }
             return JsonResponse(msg)
+
+@login_required
 def setting(request):
     return render(request,"setting.html")
 
