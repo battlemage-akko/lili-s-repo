@@ -7,8 +7,10 @@ from django.shortcuts import render
 def setting(request):
     return render(request,"setting.html")
 
+@login_required
 def setting_profile(request):
     return render(request,'setting_profile.html')
 
+@login_required
 def setting_avatar(request):
     return render(request,'setting_avatar.html')

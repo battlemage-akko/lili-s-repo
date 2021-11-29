@@ -191,7 +191,7 @@
                     <li title="消息" class="profile-chat"><i></i></li>
                     <li title="上传视频" class="profile-upload"><i></i></li>
                     <li title="云盘" class="profile-cloud" @click="tocloud"><i></i></li>
-                    <li title="更改个人信息" class="profile-set"><i></i></li>
+                    <li title="更改个人信息" class="profile-set" @click="toSetting"><i></i></li>
                     <li title="注销" class="profile-logout" @click="logout"><i></i></li>
                 </ul>
             </div>
@@ -281,6 +281,9 @@
                 this.videosPage.now = page
                 this.videosPage.begin = page * this.videosPage.each - this.videosPage.each
                 this.videosPage.end = page * this.videosPage.each
+            },
+            toSetting:function (){
+                topbar.toSetting()
             },
             nextPage: function (){
                 if(this.videosPage.now == this.videosPage.total){

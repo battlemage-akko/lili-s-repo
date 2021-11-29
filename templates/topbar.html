@@ -16,7 +16,7 @@
                 <i class="msg"></i>
             </li>
             <li>
-                <i class="tool"></i>
+                <i class="tool" @click="toSetting"></i>
             </li>
             <li @click="logout">
                 <i class="logout"></i>
@@ -52,9 +52,13 @@
                 picture: "{{ request.user.picture }}",
                 fans: "{{ request.user.fans }}",
                 v_count:"{{ request.user.fans }}",
+                desc:"{{ request.user.desc }}"
             },
         },
         methods:{
+            toSetting:function (){
+                window.open('{% url 'setting_profile' %}')
+            },
             search: function () {
                 window.open(this.base_url + this.q)
                 this.q = ""

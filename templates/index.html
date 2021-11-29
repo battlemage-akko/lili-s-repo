@@ -491,7 +491,7 @@
                     </p>
                 {% endif %}
             </div>
-            <i class="toolbtn" @click=""></i>
+            <i class="toolbtn" @click="toSetting"></i>
             <a href="#" target=""></a>
         </div>
     </div>
@@ -629,6 +629,9 @@
             },
             toProfile:function (id='me'){
                 window.open(this.profile_url+id)
+            },
+            toSetting:function (){
+                window.open('{% url 'setting_profile' %}')
             },
             jumpbyv_id:function (v_id){
                 window.open(this.video_url+v_id)

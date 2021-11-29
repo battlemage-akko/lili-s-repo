@@ -455,7 +455,15 @@ def love(request):
                 "msg": "什么玩意",
             }
             return JsonResponse(msg)
-
+@csrf_exempt
+def save_profile(request):
+    if(request.method == "POST"):
+        id = request.POST.get("id")
+        name = request.POST.get("name")
+        desc = request.POST.get("desc")
+        gender = request.POST.get("gender")
+        Userdatabase.objects.filter(id=id).update(id=id,username=name,desc=desc,gender=gender)
+        return HttpResponse(1)
 @csrf_exempt
 def collect(request):
     if(request.method=="POST"):

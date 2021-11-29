@@ -4,10 +4,37 @@
     <div class="setting-profile">
         <div class="setting-account">
             <div>账号</div>
-            <ul>
-                <li></li>
-                <li></li>
+            <ul class="setting-email">
+                <li>
+                    <h1>当前登录身份为 {[userdetail.name]}</h1>
+                    <div>邮箱为  {[userdetail.email]}</div>
+                    <div>最后一次登录时间 {{ request.user.last_login }}</div>
+                </li>
+                <li><img src="{% static 'images/cat/1.png' %}" alt=""></li>
             </ul>
+            <div class="setting-info">
+                <div>我的信息</div>
+                <ul class="setting-info-detail">
+                    <li>我的昵称 <input type="text" style="margin:0px 10px;border-radius: 5px;padding: 2px 5px" v-model="userdetail.name"></li>
+                    <li class="setting-info-gender">性别
+                        <span @click="changeGender('male',$event)">男</span>
+                        <span @click="changeGender('female',$event)">女</span>
+                    </li>
+                    <li>
+                         <div class="form-floating">
+                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                                      style="height: 80px" maxlength="100" v-model="userdetail.desc"></textarea>
+                            <label for="floatingTextarea2">个人签名</label>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="setting-info-save">
+                            <span @click="save">保存</span>
+                            <img src="{% static 'images/cat/3.png' %}" alt="">
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 {% endblock %}

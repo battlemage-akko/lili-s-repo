@@ -1,8 +1,17 @@
+@media (max-width: 550px) {
+    .sidebar-menus{
+        display: none;
+    }
+    .setting-profile{
+        padding-left: 20px!important;
+    }
+}
 .sidebar-menus{
     width: 240px;
     height: 100vh;
     background-color: #dcdce3;
     padding-top: 60px;
+    position: fixed;
 }
 .setting-container{
     padding-top: 60px;
@@ -23,11 +32,6 @@
 .sidebar-menus li:hover{
     background-color: #cacad3;
 }
-@media (max-width: 550px) {
-    .sidebar-menus{
-        display: none;
-    }
-}
 .setting-avatar{
     flex-basis: 1200px;
     display: flex;
@@ -37,4 +41,75 @@
     flex-basis: 1200px;
     display: flex;
     padding: 20px;
+    padding-left: 240px;
+}
+.setting-account{
+    position: relative;
+    width: 100%;
+    padding: 0px 20px;
+}
+.setting-email{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 0px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.setting-email img{
+    width: 150px;
+    height: 150px;
+    opacity: .5;
+}
+.setting-email h1{
+    font-size: 25px;
+}
+.setting-email div{
+    font-size: 12px;
+    opacity: .5;
+}
+.setting-info{
+    padding: 30px 0px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.setting-info-detail{
+    padding: 20px 0px 0px 0px;
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.5);
+}
+.setting-info-detail li{
+    margin-top: 25px;
+}
+.setting-info-gender span{
+    padding: 2px 5px;
+    border: 1px black solid;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-left: 20px;
+    transition: all .5s ease;
+}
+.setting-info-gender span.active{
+    background-color: black;
+    color: white;
+}
+.setting-info-save{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 600;
+}
+.setting-info-save img{
+    width: 150px;
+    height: 150px;
+    opacity: .5;
+}
+.setting-info-save span{
+    padding: 3px 6px;
+    border: 2px black solid;
+    color: black;
+    cursor: pointer;
+}
+.setting-info-save span:hover{
+    color: white;
+    background-color: black;
 }
