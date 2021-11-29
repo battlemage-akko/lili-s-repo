@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'app',
     'order_channels',
     'barrage',
-    'general'
+    'general',
+    'setting'
 ]
 
 MIDDLEWARE = [

@@ -497,10 +497,6 @@ def collect(request):
             }
             return JsonResponse(msg)
 
-@login_required
-def setting(request):
-    return render(request,"setting.html")
-
 
 
 

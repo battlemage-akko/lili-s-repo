@@ -62,7 +62,7 @@
 
 @media (max-width: 750px) {
     .videos-top-search {
-        opacity: 0;
+        display: none!important;
     }
 }
 

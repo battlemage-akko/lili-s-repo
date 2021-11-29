@@ -18,6 +18,7 @@ from django.urls import path, include, re_path
 from app import views
 from app import urls as app_api
 from barrage import urls as video_api
+from setting import urls as setting_api
 from django.views.generic import TemplateView
 from order_channels import views as channelsviews
 from barrage import views as barrageView
@@ -34,8 +35,8 @@ urlpatterns = [
     path('video/<int:vid>',barrageView.video,name="video"),
     path('search', views.search_page,name="search"),
     path('profile', views.profile,name="profile"),
-    re_path('^setting/', views.setting,name="setting"),
     re_path('^upload_page/', views.upload_page, name="upload_page"),
     re_path('^app_api/', include(app_api)),
-    re_path('^video_api/', include(video_api))
+    re_path('^video_api/', include(video_api)),
+    path('setting/', include(setting_api))
 ]

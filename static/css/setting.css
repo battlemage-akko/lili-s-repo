@@ -6,6 +6,10 @@
 }
 .setting-container{
     padding-top: 60px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
 }
 .sidebar-menus li{
     padding: 20px 25px;
@@ -18,4 +22,19 @@
 }
 .sidebar-menus li:hover{
     background-color: #cacad3;
+}
+@media (max-width: 550px) {
+    .sidebar-menus{
+        display: none;
+    }
+}
+.setting-avatar{
+    flex-basis: 1200px;
+    display: flex;
+    padding: 20px;
+}
+.setting-profile{
+    flex-basis: 1200px;
+    display: flex;
+    padding: 20px;
 }
