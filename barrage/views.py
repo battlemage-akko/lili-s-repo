@@ -343,7 +343,6 @@ def finish_compilation_save(vc_title,v_title,video_file,v_id,vc_index):
     with open(video_file_save_path, 'wb+') as f:
         f.write(video_file.read())
     print(video_file.name, "done")
-
     time = round(VideoFileClip(video_file_save_path).duration)
     vc_ad = 'compilation/' +  v_title + '/' + vc_title_tmp + '.mp4'
     print(vc_ad)
