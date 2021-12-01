@@ -3,31 +3,18 @@
     {% load static %}
     <div class="setting-profile">
         <div class="setting-account">
-            <div>账号</div>
-            <ul class="setting-email">
-                <li>
-                    <h1>当前登录身份为 {[userdetail.name]}</h1>
-                    <div>邮箱为  {[userdetail.email]}</div>
-                    <div>最后一次登录时间 {{ request.user.last_login }}</div>
-                    <div style="margin-top: 20px">
-                        <img :src="avatar_url+userdetail.picture" alt="" @click="toProfile(userdetail.id)" class="user-avatar">
-                        <a @click="toProfile(userdetail.id)" style="cursor: pointer;color: #0d6efd">进入频道</a>
-                    </div>
-                </li>
-                <li><img src="{% static 'images/cat/1.png' %}" alt=""></li>
-            </ul>
             <div class="setting-info">
                 <div>我的信息</div>
                 <ul class="setting-info-detail">
-                    <li>我的昵称 <input type="text" style="margin:0px 10px;border-radius: 5px;padding: 2px 5px" v-model="userdetail.name"></li>
+                    <li>我的昵称 <input type="text" style="margin:0px 10px;border-radius: 5px;padding: 2px 5px" v-model="userdetail.name" @focus="add_active($event)" @blur="remove_active($event)"></li>
                     <li class="setting-info-gender">性别
                         <span @click="changeGender('male',$event)">男</span>
                         <span @click="changeGender('female',$event)">女</span>
                     </li>
                     <li>
                          <div class="form-floating">
-                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-                                      style="height: 80px" maxlength="100" v-model="userdetail.desc"></textarea>
+                            <textarea class="form-control desc_text" placeholder="Leave a comment here" id="floatingTextarea2"
+                                      style="height: 80px" maxlength="100" v-model="userdetail.desc" @focus="add_active($event)" @blur="remove_active($event)"></textarea>
                             <label for="floatingTextarea2">个人签名</label>
                         </div>
                     </li>

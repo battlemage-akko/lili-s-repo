@@ -43,8 +43,10 @@
 {% include 'topbar.html' %}
 <div id="app">
     <ul class="sidebar-menus">
+        <li onclick="window.location.href='/setting/setting_info/'">信息与隐私</li>
         <li onclick="window.location.href='/setting/setting_profile/'">个人资料</li>
         <li onclick="window.location.href='/setting/setting_avatar/'">头像与背景</li>
+        <li onclick="window.location.href='/setting/setting_password/'">更改密码</li>
     </ul>
     <div class="setting-container">
         {% block content %}
@@ -69,13 +71,25 @@
             cropper: '',
             croppable: false,
             panel: false,
-            url: ''
+            url: '',
+            password_form: {
+                old: "",
+                new: "",
+                again: "",
+            },
+            message: ""
         },
         methods: {
+            add_active: function (e) {
+                e.target.classList.add('active')
+            },
+            remove_active: function (e) {
+                e.target.classList.remove('active')
+            },
             toProfile: function (id) {
                 topbar.toProfile(id)
             },
-            upload_avatar: function (){
+            upload_avatar: function () {
                 document.querySelector('#change').click()
             },
             changeGender: function (gender, e) {
@@ -141,7 +155,7 @@
                 var context = canvas.getContext('2d');
                 var width = sourceCanvas.width;
                 var height = sourceCanvas.height;
-                console.log(width,height)
+                console.log(width, height)
                 canvas.width = width;
                 canvas.height = height;
                 context.imageSmoothingEnabled = true;
@@ -161,27 +175,115 @@
                     url: "{% url 'save_avatar' %}",
                     data: param,
                 })
-                if(result.data.code == 1){
-                    setTimeout(function (){
+                if (result.data.code == 1) {
+                    setTimeout(function () {
                         window.location.reload()
-                    },1000)
+                    }, 1000)
+                }
+            },
+            async old_password_check() {
+                old_span = document.querySelector('.old_span')
+                if (this.password_form.old == '') {
+                    this.message = '旧密码不能为空'
+                    old_span.classList.remove('true')
+                    old_span.classList.remove('false')
+                    old_span.classList.add('false')
+                    return false
+                }
+                let param = new URLSearchParams()
+                param.append('old_password', this.password_form.old)
+                param.append('username', this.userdetail.name)
+                result = await axios({
+                    method: "POST",
+                    url: "{% url 'password_check' %}",
+                    data: param,
+                })
+                if (result.data.code == 1) {
+                    old_span.classList.remove('true')
+                    old_span.classList.remove('false')
+                    old_span.classList.add('true')
+                    this.message = ''
+                    return true
+                } else {
+                    old_span.classList.remove('true')
+                    old_span.classList.remove('false')
+                    old_span.classList.add('false')
+                    this.message = '旧密码不正确'
+                    return false
+                }
+            },
+            new_password_check() {
+                new_span = document.querySelector('.new_span')
+                again_span = document.querySelector('.again_span')
+                if (this.password_form.new == '') {
+                    new_span.classList.remove('true')
+                    new_span.classList.remove('false')
+                    new_span.classList.add('false')
+                    this.message = '新密码不能为空'
+                    return false
+                }
+                if (this.password_form.again == '') {
+                    again_span.classList.remove('true')
+                    again_span.classList.remove('false')
+                    again_span.classList.add('false')
+                    this.message = '请输入确认密码'
+                    return false
+                }
+                if (this.password_form.new != this.password_form.again) {
+                    again_span.classList.remove('true')
+                    again_span.classList.remove('false')
+                    again_span.classList.add('false')
+                    new_span.classList.remove('true')
+                    new_span.classList.remove('false')
+                    new_span.classList.add('false')
+                    this.message = '两次密码不同'
+                    return false
+                }
+                again_span.classList.remove('true')
+                again_span.classList.remove('false')
+                again_span.classList.add('true')
+                new_span.classList.remove('true')
+                new_span.classList.remove('false')
+                new_span.classList.add('true')
+                this.message = ''
+                return true
+            },
+            async change_password() {
+                if(this.new_password_check() && this.old_password_check()){
+                    let param = new URLSearchParams()
+                    param.append('new_password', this.password_form.new)
+                    param.append('username', this.userdetail.name)
+                    result = await axios({
+                        method: "POST",
+                        url: "{% url 'change_password' %}",
+                        data: param,
+                    })
+                    if(result.data.code==1){
+                        setTimeout(function (){
+                            window.location.reload()
+                        },2000)
+                    }
+                    this.message = "密码修改成功"
                 }
             }
         },
         mounted: function () {
             let that = this;
-            let image = document.getElementById('image');
-            this.cropper = new Cropper(image, {
-                aspectRatio: 1,
-                viewMode: 2,
-                background: false,
-                zoomable: false,
-                center: false,
-                highlight: false,
-                ready: function () {
-                    that.croppable = true;
-                }
-            });
+            if (document.getElementById('image')) {
+                let image = document.getElementById('image')
+                this.cropper = new Cropper(image, {
+                    aspectRatio: 1,
+                    viewMode: 2,
+                    background: false,
+                    zoomable: false,
+                    center: false,
+                    highlight: false,
+                    ready: function () {
+                        that.croppable = true;
+                    }
+                });
+            }
+
         },
     })
 </script>

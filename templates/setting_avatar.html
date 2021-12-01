@@ -1,5 +1,6 @@
 {% extends "setting.html" %}
 {% block content %}
+    {% load static %}
     <div class="setting-avatar">
 
         <div class="avatar-container">
@@ -26,5 +27,7 @@
     <div style="text-align: center">
         <span style="padding: 10px 30px;font-size: 15px;border-radius: 5px;background-color: rgba(0,0,0,0.05);color:#99a2aa;cursor: pointer" @click="crop">保存</span>
     </div>
+    <!--<img src="{% static 'images/cat/6.png' %}" alt="" style="position:absolute;width: 150px;height: 150px;opacity: .5;
+;right: 20px;bottom: 20px;pointer-events: none">-->
     </div>
 {% endblock %}
