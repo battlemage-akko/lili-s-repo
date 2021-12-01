@@ -1,4 +1,4 @@
-import json,psutil,re,datetime,socket,requests,os,base64
+import json,psutil,re,datetime,socket,requests,os,base64,hashlib,time
 from django.contrib.auth import authenticate ,login, logout
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render,redirect
@@ -469,16 +469,24 @@ def save_profile(request):
 def save_avatar(request):
     if(request.method == "POST"):
         avatar = request.POST.get("avatar")
-        print(avatar)
         user_id = request.POST.get("user_id")
         image = avatar.split(",")
 
         avatar  = base64.b64decode(image[1])
+        path = 'static/images/avatar/' + user_id
 
-        avatar_save_path = 'static/images/avatar/'+user_id+'.png'
+        if not os.path.exists(path):
+            os.makedirs(path)
+
+        md5 = hashlib.md5()
+        name = str(user_id)+'_'+str(time.asctime( time.localtime(time.time())))
+        md5.update(name.encode(encoding='utf-8'))
+        png_md5 = md5.hexdigest()
+
+        avatar_save_path = path + '/' + png_md5 + '.png'
         with open(avatar_save_path, 'wb+') as f:
             f.write(avatar)
-        Userdatabase.objects.filter(id=user_id).update(picture=user_id+'.png')
+        Userdatabase.objects.filter(id=user_id).update(picture=user_id+'/'+png_md5 + '.png')
     return JsonResponse({
         "code":1,
         "msg":"修改成功"

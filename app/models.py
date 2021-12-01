@@ -9,7 +9,7 @@ class AppUser(AbstractUser):
     fans = models.IntegerField(default=0)
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='male')
     desc = models.TextField(null=True, blank=True, verbose_name="描述",default='这个人很懒,什么也没有留下！')
-    picture = models.CharField(max_length=20,default="default.png")
+    picture = models.CharField(max_length=64,default="default.png")
     v_count = models.IntegerField(default=0)
 
     def getfans(id):
