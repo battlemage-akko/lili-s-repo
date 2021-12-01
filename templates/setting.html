@@ -8,17 +8,23 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="{% static 'css/topbar.css' %}?version=1.0.1" rel="stylesheet">
     <link href="{% static 'css/root.css' %}?version=1.0.0" rel="stylesheet">
-    <link href="{% static 'css/setting.css' %}?version=1.0.6" rel="stylesheet">
+    <link href="{% static 'css/setting.css' %}?version=1.0.8" rel="stylesheet">
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <link href="https://lib.baomitu.com/cropperjs/2.0.0-alpha/cropper.min.css" rel="stylesheet">
+
     <link href="https://lib.baomitu.com/cropperjs/2.0.0-alpha/cropper.min.css" rel="stylesheet">
     <script src="https://lib.baomitu.com/cropperjs/2.0.0-alpha/cropper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://lib.baomitu.com/cropperjs/2.0.0-alpha/cropper.min.js"></script>
+    <script src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js"></script>
     <title>Document</title>
     <style>
-        #app{
+        #app {
             display: flex;
         }
+
         body {
             background-color: var(--Background-color);
             overflow-x: hidden;
@@ -26,7 +32,8 @@
             height: 100vh;
             position: relative;
         }
-        ul{
+
+        ul {
             margin: 0;
             padding: 0;
         }
@@ -50,19 +57,35 @@
     const vm = new Vue({
         el: "#app",
         delimiters: ['{[', ']}'],
-        data:{
-            userdetail:topbar.userdetail,
-            message:"",
+        data: {
+            userdetail: topbar.userdetail,
+            message: "",
+            video_url: "{% url "index" %}" + "video/",
+            base_url: "{% url 'index' %}" + "search?q=",
+            avatar_url: "{% static 'images/avatar/' %}",
+            profile_url: "{% url 'profile' %}" + "?user=",
+            avatar: '',
+            picValue: '',
+            cropper: '',
+            croppable: false,
+            panel: false,
+            url: ''
         },
-        methods:{
-            changeGender:function (gender,e){
+        methods: {
+            toProfile: function (id) {
+                topbar.toProfile(id)
+            },
+            upload_avatar: function (){
+                document.querySelector('#change').click()
+            },
+            changeGender: function (gender, e) {
                 this.userdetail.gender = gender
-                for(let item of document.querySelector('.setting-info-gender').querySelectorAll('span')){
+                for (let item of document.querySelector('.setting-info-gender').querySelectorAll('span')) {
                     item.classList.remove('active')
                 }
                 e.currentTarget.classList.add('active')
             },
-            save:async function (){
+            save: async function () {
                 let param = new URLSearchParams()
                 param.append('id', this.userdetail.id)
                 param.append('name', this.userdetail.name)
@@ -73,17 +96,93 @@
                     url: "{% url 'save_profile' %}",
                     data: param,
                 })
+            },
+            getObjectURL(file) {
+                var url = null;
+                if (window.createObjectURL != undefined) { // basic
+                    url = window.createObjectURL(file);
+                } else if (window.URL != undefined) { // mozilla(firefox)
+                    url = window.URL.createObjectURL(file);
+                } else if (window.webkitURL != undefined) { // webkit or chrome
+                    url = window.webkitURL.createObjectURL(file);
+                }
+                return url;
+            },
+            change(e) {
+                let files = e.target.files || e.dataTransfer.files;
+                if (!files.length) return;
+                this.panel = true;
+                this.picValue = files[0];
+                this.url = this.getObjectURL(this.picValue);
+                //每次替换图片要重新得到新的url
+                if (this.cropper) {
+                    this.cropper.replace(this.url);
+                }
+                this.panel = true;
+            },
+            crop() {
+                this.panel = false;
+                var croppedCanvas;
+                var roundedCanvas;
+                if (!this.croppable) {
+                    return;
+                }
+                // Crop
+                croppedCanvas = this.cropper.getCroppedCanvas();
+                console.log(this.cropper)
+                // Round
+                roundedCanvas = this.getRoundedCanvas(croppedCanvas);
+                this.avatar = croppedCanvas.toDataURL();
+
+                this.postImg()
+            },
+            getRoundedCanvas(sourceCanvas) {
+                var canvas = document.createElement('canvas');
+                var context = canvas.getContext('2d');
+                var width = sourceCanvas.width;
+                var height = sourceCanvas.height;
+                console.log(width,height)
+                canvas.width = width;
+                canvas.height = height;
+                context.imageSmoothingEnabled = true;
+                context.drawImage(sourceCanvas, 0, 0, width, height);
+                context.globalCompositeOperation = 'destination-in';
+                context.beginPath();
+                context.arc(width / 2, height / 2, Math.min(width, height) / 2, 0, 2 * Math.PI, true);
+                context.fill();
+                return canvas;
+            },
+            async postImg() {
+                let param = new FormData()
+                param.append('avatar', this.avatar)
+                param.append('user_id', this.userdetail.id)
+                result = await axios({
+                    method: "POST",
+                    url: "{% url 'save_avatar' %}",
+                    data: param,
+                })
+                if(result.data.code == 1){
+                    setTimeout(function (){
+                        window.location.reload()
+                    },1000)
+                }
             }
         },
-        mounted:function (){
-            if(this.userdetail.gender=='male'){
-                console.log('男的')
-                document.querySelector('.setting-info-gender').firstElementChild.classList.add('active')
-            }
-            else{
-                document.querySelector('.setting-info-gender').childNodes[3].classList.add('active')
-            }
-        }
+        mounted: function () {
+            let that = this;
+            let image = document.getElementById('image');
+            this.cropper = new Cropper(image, {
+                aspectRatio: 1,
+                viewMode: 2,
+                background: false,
+                zoomable: false,
+                center: false,
+                highlight: false,
+                ready: function () {
+                    that.croppable = true;
+                }
+            });
+        },
     })
 </script>
 </html>

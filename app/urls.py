@@ -18,4 +18,5 @@ urlpatterns = [
     re_path('^love/',views.love,name="love"),
     re_path('^collect/',views.collect,name="collect"),
     re_path('^save_profile/',views.save_profile,name="save_profile"),
+    re_path('^save_avatar/',views.save_avatar,name="save_avatar"),
 ]

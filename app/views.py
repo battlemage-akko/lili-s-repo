@@ -1,4 +1,4 @@
-import json,psutil,re,datetime,socket,requests,os
+import json,psutil,re,datetime,socket,requests,os,base64
 from django.contrib.auth import authenticate ,login, logout
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render,redirect
@@ -15,6 +15,7 @@ from django.views.decorators.clickjacking import xframe_options_exempt,xframe_op
 from django.db.models import Q
 from barrage.models import video as videosTable
 from barrage.models import video_compilation as compilationTable
+from imagekit.models import ProcessedImageField
 
 AllUsers = [Userdatabase.objects.all()]
 # realIP = requests.get(url="http://members.3322.org/dyndns/getip").text
@@ -464,6 +465,24 @@ def save_profile(request):
         gender = request.POST.get("gender")
         Userdatabase.objects.filter(id=id).update(id=id,username=name,desc=desc,gender=gender)
         return HttpResponse(1)
+@csrf_exempt
+def save_avatar(request):
+    if(request.method == "POST"):
+        avatar = request.POST.get("avatar")
+        print(avatar)
+        user_id = request.POST.get("user_id")
+        image = avatar.split(",")
+
+        avatar  = base64.b64decode(image[1])
+
+        avatar_save_path = 'static/images/avatar/'+user_id+'.png'
+        with open(avatar_save_path, 'wb+') as f:
+            f.write(avatar)
+        Userdatabase.objects.filter(id=user_id).update(picture=user_id+'.png')
+    return JsonResponse({
+        "code":1,
+        "msg":"修改成功"
+    })
 @csrf_exempt
 def collect(request):
     if(request.method=="POST"):

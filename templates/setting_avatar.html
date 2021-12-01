@@ -1,4 +1,30 @@
 {% extends "setting.html" %}
 {% block content %}
-    <div class="setting-avatar">avatar</div>
+    <div class="setting-avatar">
+
+        <div class="avatar-container">
+            <div class="square" v-show="!panel">
+                    <span class="picture avatar-btn" @click="upload_avatar">
+                        <span style="font-size: 12px">选择头像</span>
+                    </span>
+                <div style="display: none">
+                    <input type="file" id="change" accept="image" @change="change">
+                    <label for="change"></label>
+                </div>
+            </div>
+            <div class="square" v-show="panel">
+                <div class="container">
+                    <img id="image" :src="url" alt="Picture">
+                    <div style="text-align: center;margin-top: 10px;color: rgba(0,0,0,0.4)" @click="upload_avatar">重新选择</div>
+                </div>
+            </div>
+            <div class="square" style="border-left: 1px solid rgba(0,0,0,0.2);flex-direction: column">
+                <img :src="avatar_url+userdetail.picture" alt="" class="avatar-now">
+                <span style="margin-top: 20px;font-size: 14px;color: rgba(0,0,0,0.4)">当前头像</span>
+            </div>
+        </div>
+    <div style="text-align: center">
+        <span style="padding: 10px 30px;font-size: 15px;border-radius: 5px;background-color: rgba(0,0,0,0.05);color:#99a2aa;cursor: pointer" @click="crop">保存</span>
+    </div>
+    </div>
 {% endblock %}

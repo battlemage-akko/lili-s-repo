@@ -9,6 +9,10 @@
                     <h1>当前登录身份为 {[userdetail.name]}</h1>
                     <div>邮箱为  {[userdetail.email]}</div>
                     <div>最后一次登录时间 {{ request.user.last_login }}</div>
+                    <div style="margin-top: 20px">
+                        <img :src="avatar_url+userdetail.picture" alt="" @click="toProfile(userdetail.id)" class="user-avatar">
+                        <a @click="toProfile(userdetail.id)" style="cursor: pointer;color: #0d6efd">进入频道</a>
+                    </div>
                 </li>
                 <li><img src="{% static 'images/cat/1.png' %}" alt=""></li>
             </ul>
