@@ -206,6 +206,11 @@ class followUser(models.Model):
 class setting(models.Model):
     u_id = models.IntegerField(primary_key=True)
     is_search = models.BooleanField(default=True)
+    show_profile = models.BooleanField(default=True)
+    show_desc = models.BooleanField(default=True)
+    show_video = models.BooleanField(default=True)
+    show_collect = models.BooleanField(default=True)
+    show_gender = models.BooleanField(default=True)
 
     def getSettingById(u_id):
         result  = setting.objects.filter(u_id=u_id).all().values()

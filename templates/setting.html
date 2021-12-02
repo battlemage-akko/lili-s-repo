@@ -81,6 +81,11 @@
             },
             setting_form:{
                 is_search:0,
+                show_profile:0,
+                show_desc:0,
+                show_video:0,
+                show_collect:0,
+                show_gender:0,
             },
             message: "",
             loading:false,
@@ -183,7 +188,7 @@
                 if (result.data.code == 1) {
                     setTimeout(function () {
                         window.location.reload()
-                    }, 1000)
+                    }, 500)
                 }
             },
             async old_password_check() {
@@ -290,6 +295,11 @@
                     data: param
                 })
                 this.setting_form.is_search = result.data.is_search?true:false
+                this.setting_form.show_profile = result.data.show_profile?true:false
+                this.setting_form.show_desc = result.data.show_desc?true:false
+                this.setting_form.show_gender = result.data.show_gender?true:false
+                this.setting_form.show_video = result.data.show_video?true:false
+                this.setting_form.show_collect = result.data.show_collect?true:false
             },
             async changeMySetting(option,value){
                 let param = new URLSearchParams()
@@ -325,20 +335,31 @@
 
         },
          watch:{
-             setting_form:{
+             setting_form_new:{
                  handler(val, oldVal){
                      if(!this.loading){
                          this.loading = !this.loading
                      }
+
                      else{
-                         option = Object.keys(val)[0]
-                         value = this.setting_form[option]
-                         this.changeMySetting(option,value)
+                         for(let key in val){
+                             if(val[key]!=oldVal[key]){
+                                 option = key
+                                 value = this.setting_form[option]
+                                 this.changeMySetting(option,value)
+                             }
+                         }
+
                      }
                  },
                  deep:true,
              }
          },
+        computed: {
+          setting_form_new() {
+            return JSON.parse(JSON.stringify(this.setting_form))
+          }
+        }
     })
 </script>
 </html>

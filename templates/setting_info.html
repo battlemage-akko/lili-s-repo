@@ -55,28 +55,35 @@
                 <li>
                     <span>公开个人资料</span>
                     <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="setting_form.show_profile">
+                        <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                    </div>
+                </li>
+                    <li>
+                    <span>公开我的签名</span>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="setting_form.show_desc">
                         <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                     </div>
                 </li>
                 <li>
                     <span>公开我的视频</span>
                     <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="setting_form.show_video">
                         <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                     </div>
                 </li>
                     <li>
                     <span>公开我的收藏</span>
                     <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="setting_form.show_collect">
                         <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                     </div>
                 </li>
                     <li>
                     <span>公开我的性别</span>
                     <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="setting_form.show_gender">
                         <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                     </div>
                 </li>
