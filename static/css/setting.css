@@ -7,7 +7,7 @@
     }
 }
 [v-cloak]{
-    display: none;
+    visibility: hidden !important;
 }
 .sidebar-menus{
     width: 240px;
