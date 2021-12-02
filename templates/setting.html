@@ -239,6 +239,16 @@
                     this.message = '两次密码不同'
                     return false
                 }
+                if (this.password_form.new == this.password_form.old) {
+                    again_span.classList.remove('true')
+                    again_span.classList.remove('false')
+                    again_span.classList.add('false')
+                    new_span.classList.remove('true')
+                    new_span.classList.remove('false')
+                    new_span.classList.add('false')
+                    this.message = '旧密码与新密码相同'
+                    return false
+                }
                 again_span.classList.remove('true')
                 again_span.classList.remove('false')
                 again_span.classList.add('true')
