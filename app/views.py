@@ -6,6 +6,7 @@ from django.http import HttpResponse, JsonResponse,HttpResponseRedirect
 from app.models import AppUser as Userdatabase
 from app.models import followUser as followtable
 from app.models import likeVideo as lovetable
+from app.models import setting as settingTable
 from app.models import collectVideo as collecttable
 from app.models import messages as messageTable
 from django.views.decorators.csrf import csrf_exempt
@@ -140,10 +141,13 @@ def login_check(request):
         username = request.POST.get("username")
         password = request.POST.get("password")
         thisuser = authenticate(username=username,password=password)
-        #print(thisuser,username,password)
         try:
             if thisuser is not None:
+                u_id = Userdatabase.objects.filter(username=thisuser).all().values()[0]['id']
+                if not settingTable.objects.filter(u_id=u_id):
+                    settingTable(u_id=u_id).save()
                 loginthisuser(request,thisuser)
+
                 message = {
                     "code": 1,
                     "url": "index",

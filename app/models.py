@@ -203,3 +203,8 @@ class followUser(models.Model):
         for followeder in getAllFollow:
             user_followed.append(followeder.follow)
         return user_followed
+class setting(models.Model):
+    u_id = models.IntegerField(primary_key=True)
+    is_search = models.BooleanField(default=True)
+
+
