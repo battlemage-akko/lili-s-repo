@@ -6,11 +6,14 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires"  content="0">
+    <link rel="shortcut icon" href="{% static 'images/profile.png' %}">
     <link href="{% static 'css/topbar.css' %}?version=1.0.1" rel="stylesheet">
     <link href="{% static 'css/root.css' %}?version=1.0.0" rel="stylesheet">
     <link href="{% static 'css/setting.css' %}?version=1.0.10" rel="stylesheet">
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-
     <link href="https://lib.baomitu.com/cropperjs/2.0.0-alpha/cropper.min.css" rel="stylesheet">
 
     <link href="https://lib.baomitu.com/cropperjs/2.0.0-alpha/cropper.min.css" rel="stylesheet">
@@ -19,7 +22,6 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://lib.baomitu.com/cropperjs/2.0.0-alpha/cropper.min.js"></script>
     <script src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js"></script>
-    <title>Document</title>
     <style>
         #app {
             display: flex;
@@ -43,7 +45,7 @@
 {% include 'topbar.html' %}
 <div id="app" v-cloak>
     <ul class="sidebar-menus">
-        <li onclick="window.location.href='/setting/setting_info/'">信息与隐私</li>
+        <li onclick="window.location.href='/setting/setting_info/'">隐私设置</li>
         <li onclick="window.location.href='/setting/setting_profile/'">个人资料</li>
         <li onclick="window.location.href='/setting/setting_avatar/'">头像与背景</li>
         <li onclick="window.location.href='/setting/setting_password/'">更改密码</li>
