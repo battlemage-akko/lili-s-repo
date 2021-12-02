@@ -12,6 +12,10 @@
     scroll-behavior: smooth;
 }
 
+[v-cloak]{
+    visibility: hidden !important;
+}
+
 p {
     margin: 0 !important;
 }

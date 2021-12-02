@@ -6,9 +6,6 @@
         padding-left: 20px!important;
     }
 }
-[v-cloak]{
-    visibility: hidden !important;
-}
 .sidebar-menus{
     width: 240px;
     height: 100vh;
