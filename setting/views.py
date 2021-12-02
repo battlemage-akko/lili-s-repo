@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
+from app.models import setting as settingTable
 from django.contrib.auth import get_user_model
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
@@ -55,3 +56,20 @@ def change_password(request):
         return JsonResponse({
             "code":1
         })
+@csrf_exempt
+def getMySetting(request):
+    if(request.method == 'POST'):
+        u_id = request.POST.get('u_id')
+        result = settingTable.getSettingById(u_id=u_id)
+        is_search = 1 if result['is_search'] else 0
+        return JsonResponse({
+            'is_search': is_search
+        })
+@csrf_exempt
+def changeMySetting(request):
+    if (request.method == 'POST'):
+        u_id = request.POST.get('u_id')
+        option = request.POST.get('option')
+        value = request.POST.get('value')
+        settingTable.change(u_id=u_id,option=option,value=value)
+    return HttpResponse()

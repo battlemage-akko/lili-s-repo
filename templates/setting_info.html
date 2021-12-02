@@ -14,8 +14,75 @@
                         <a @click="toProfile(userdetail.id)" style="cursor: pointer;color: #0d6efd">进入频道</a>
                     </div>
                 </li>
-                <li><img src="{% static 'images/cat/1.png' %}" alt=""></li>
+                <li><img src="{% static 'images/cat/1.png' %}" alt="" class="cat"></li>
             </ul>
+        </div>
+        <div class="setting-secret">
+            <div>隐私设置</div>
+            <div style="display: flex;flex-wrap: wrap">
+                <ul class="options">
+                <li>
+                    <span>能否被搜索</span>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="setting_form.is_search">
+                        <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                    </div>
+                </li>
+                <li>
+                    <span>关闭私聊</span>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+                        <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                    </div>
+                </li>
+                    <li>
+                    <span>不允许回复</span>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+                        <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                    </div>
+                </li>
+                    <li>
+                    <span>不允许评论我的视频</span>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+                        <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                    </div>
+                </li>
+            </ul>
+                <ul class="options">
+                <li>
+                    <span>公开个人资料</span>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+                        <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                    </div>
+                </li>
+                <li>
+                    <span>公开我的视频</span>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+                        <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                    </div>
+                </li>
+                    <li>
+                    <span>公开我的收藏</span>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+                        <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                    </div>
+                </li>
+                    <li>
+                    <span>公开我的性别</span>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+                        <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                    </div>
+                </li>
+            </ul>
+            </div>
+            <div style="text-align: right;margin-top: 40px">
+                <img src="{% static 'images/cat/6.png' %}" alt="" class="cat"></div>
         </div>
     </div>
 {% endblock %}

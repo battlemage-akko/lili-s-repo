@@ -207,4 +207,18 @@ class setting(models.Model):
     u_id = models.IntegerField(primary_key=True)
     is_search = models.BooleanField(default=True)
 
+    def getSettingById(u_id):
+        result  = setting.objects.filter(u_id=u_id).all().values()
+        if result:
+            return setting.objects.filter(u_id=u_id).all().values()[0]
+        else:
+            setting(u_id=u_id).save()
+
+    def getStatus(u_id,choose):
+        return setting.objects.filter(u_id=u_id).all().values()[0][choose]
+
+    def change(u_id,option,value):
+        result = setting.objects.filter(u_id=u_id).update(**{option: value})
+        return 1
+
 

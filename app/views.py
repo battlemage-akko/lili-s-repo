@@ -45,6 +45,7 @@ def null(request):
     response = HttpResponseRedirect(r.url)
     return response
 def index(request):
+    print(settingTable.getSettingById(1))
     return render(request,'index.html',{
         "newvideolist": [],
         "hotvideolist": [],
@@ -223,7 +224,11 @@ def search_page(request):
     result = search(q,0)
     print(q)
     if(result['user']['exactness'][0]):
-        result['user']['exactness'][0]['videos'] = videosTable.getvideosbyid(user_id=result['user']['exactness'][0]['id'],choose='time')[0:5]
+        if settingTable.getStatus(u_id=result['user']['exactness'][0]['id'],choose='is_search'):
+            result['user']['exactness'][0]['videos'] = videosTable.getvideosbyid(
+                user_id=result['user']['exactness'][0]['id'], choose='time')[0:5]
+        else:
+            result['user']['exactness'] = []
     else:
         result['user']['exactness'] = []
     return render(request,'search.html',{

@@ -41,8 +41,32 @@
 }
 .setting-profile{
     flex-basis: 1200px;
+    flex-direction: column;
     display: flex;
     padding: 20px;
+}
+.setting-secret{
+    padding: 20px 20px;
+}
+.options{
+    display: flex;
+    flex-direction: column;
+    min-width: 150px;
+    max-width: 220px;
+    margin-top: 20px;
+    flex-grow: 1;
+    margin-right: 30px;
+}
+.options li{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-grow: 1;
+    margin-top: 5px;
+}
+.options li span{
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.5);
 }
 .setting-password{
     flex-basis: 1200px;
@@ -66,7 +90,7 @@
     padding: 30px 0px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
-.setting-email img{
+.cat{
     width: 150px;
     height: 150px;
     opacity: .5;
@@ -137,11 +161,7 @@
     font-size: 18px;
     font-weight: 600;
 }
-.setting-info-save img{
-    width: 150px;
-    height: 150px;
-    opacity: .5;
-}
+
 .setting-info-save span{
     padding: 3px 6px;
     border: 2px black solid;

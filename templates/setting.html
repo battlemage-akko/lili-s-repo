@@ -77,7 +77,11 @@
                 new: "",
                 again: "",
             },
-            message: ""
+            setting_form:{
+                is_search:0,
+            },
+            message: "",
+            loading:false,
         },
         methods: {
             add_active: function (e) {
@@ -155,7 +159,6 @@
                 var context = canvas.getContext('2d');
                 var width = sourceCanvas.width;
                 var height = sourceCanvas.height;
-                console.log(width, height)
                 canvas.width = width;
                 canvas.height = height;
                 context.imageSmoothingEnabled = true;
@@ -275,10 +278,34 @@
                     }
                     this.message = "密码修改成功"
                 }
-            }
+            },
+            async getMySetting() {
+                let param = new URLSearchParams()
+                param.append('u_id', this.userdetail.id)
+                result = await axios({
+                    method: "POST",
+                    url: "{% url 'getMySetting' %}",
+                    data: param
+                })
+                this.setting_form.is_search = result.data.is_search?true:false
+            },
+            async changeMySetting(option,value){
+                let param = new URLSearchParams()
+                param.append('u_id', this.userdetail.id)
+                param.append('option', option)
+                param.append('value', value?1:0)
+                result = await axios({
+                    method: "POST",
+                    url: "{% url 'changeMySetting' %}",
+                    data: param
+                })
+            },
         },
         mounted: function () {
             let that = this;
+            if(document.querySelector('.setting-profile')){
+                this.getMySetting()
+            }
             if (document.getElementById('image')) {
                 let image = document.getElementById('image')
                 this.cropper = new Cropper(image, {
@@ -295,6 +322,21 @@
             }
 
         },
+         watch:{
+             setting_form:{
+                 handler(val, oldVal){
+                     if(!this.loading){
+                         this.loading = !this.loading
+                     }
+                     else{
+                         option = Object.keys(val)[0]
+                         value = this.setting_form[option]
+                         this.changeMySetting(option,value)
+                     }
+                 },
+                 deep:true,
+             }
+         },
     })
 </script>
 </html>
