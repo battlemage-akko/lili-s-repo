@@ -54,7 +54,7 @@
 </head>
 <body>
 {% include 'topbar.html' %}
-<div id="app" @scroll="listenScroll">
+<div id="app" v-cloak @scroll="listenScroll">
     <div class="search-container">
         <div class="search-content">
             <ul class="search-content-search">
