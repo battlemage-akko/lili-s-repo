@@ -167,7 +167,7 @@ class video_compilation(models.Model):
     vc_id = models.AutoField(primary_key=True)
     v_id = models.IntegerField(null=False)
     vc_title = models.CharField(max_length=50, null=False, default="None")
-    vc_ad = models.CharField(max_length=50, null=False)
+    vc_ad = models.CharField(max_length=200, null=False)
     vc_time = models.DateTimeField(auto_now_add=True)
     vc_duaring = models.IntegerField(default=0)
     vc_barrage = models.IntegerField(default=0)

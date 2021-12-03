@@ -190,6 +190,10 @@
         <select class="form-select form-select-sm" aria-label=".form-select-lg example" v-model="type" style="margin: 10px 0px">
             <option v-for="item in types">{[item.title]}</option>
         </select>
+        <div class="form-floating">
+          <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" v-model="v_note"></textarea>
+          <label for="floatingTextarea2">简介</label>
+        </div>
         <div>
             <button type="button" class="btn btn-primary btn-sure" @click="upload_form_check">上传</button>
             <button type="button" class="btn btn-danger" @click="clear_input">取消</button>
@@ -230,6 +234,10 @@
         </select>
         <div class="mb-3">
             <input class="form-control" type="file" id="formFileMultiple" multiple @change="files_ready($event)">
+        </div>
+        <div class="form-floating">
+          <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" v-model="compilation_note"></textarea>
+          <label for="floatingTextarea2">简介</label>
         </div>
         <table class="table table-bordered">
             <thead>
@@ -279,6 +287,9 @@
 
             video_file: "",
             files_list: [],
+
+            v_note:"",
+            compilation_note:"",
 
             tag: "",
             tags: [],
@@ -451,6 +462,8 @@
                 param.append('user_id', "{{ request.user.id }}")
                 param.append('tags', this.tags)
                 param.append('type', this.type)
+                param.append('compilation_note', this.compilation_note)
+
                 result = await axios({
                     method: "POST",
                     url: "{% url 'ApplyForV_id' %}",
@@ -502,6 +515,7 @@
                 param.append('username', "{{ request.user.username }}")
                 param.append('user_id', "{{ request.user.id }}")
                 param.append('tags', this.tags)
+                param.append('v_note', this.v_note)
                 document.querySelector('.upload-form').querySelectorAll('input').forEach((item) => {
                     item.disabled = "disabled"
                 })

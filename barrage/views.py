@@ -18,6 +18,7 @@ import random,os,re
 
 def video(request,vid):
     result = videosTable.objects.filter(v_id=vid).values()
+    print(result)
     p = request.GET.get('p')
     if(len(result) == 0):
         return render(request,'notfound.html')
@@ -68,6 +69,7 @@ def video(request,vid):
             "v_collect": result["v_collect"],
             "v_like": result["v_like"],
             "user_id": result["user_id"],
+            "v_note": result["v_note"],
             "is_collection": result["is_collection"],
             "fans": Userdatabase.getfans(result["user_id"]),
             "v_barrage": barrageTable.getBarrageByV_id(result["v_id"]),
@@ -95,6 +97,7 @@ def video(request,vid):
             "v_collect": result["v_collect"],
             "v_like": result["v_like"],
             "user_id": result["user_id"],
+            "v_note": result["v_note"],
             "is_collection":result["is_collection"],
             "fans": Userdatabase.getfans(result["user_id"]),
             "v_barrage":barrageTable.getBarrageByV_id(result["v_id"]),
@@ -303,7 +306,11 @@ def ApplyForV_id(request):
         user_id = request.POST.get("user_id")
         tags = request.POST.get("tags")
         type = request.POST.get("type")
+        compilation_note = request.POST.get("compilation_note")
         tmp = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", tags)
+        print(tmp)
+        if (len(tmp) == 0):
+            tmp = 'None'
 
         video_title_tmp = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", video_title)
         video_pic_save_path = 'static/videos/videopic/' + video_title_tmp + '.jpg'
@@ -317,10 +324,13 @@ def ApplyForV_id(request):
         path = 'static/videos/compilation/' + video_title_tmp
         if not os.path.exists(path):
             os.makedirs(path)
+        v_id = videosTable.objects.filter(v_pic=video_title_tmp + '.jpg', v_auther=username,
+                             user_id=user_id, v_title=video_title, v_like=0, v_play=0, v_collect=0,v_tags=tmp,is_collection=True).all().values()[0]['v_id']
+        if compilation_note:
+            videosTable.objects.filter(v_id=v_id).update(v_note=compilation_note)
         return JsonResponse({
             "code": 1,
-            "v_id": videosTable.objects.filter(v_pic=video_title_tmp + '.jpg', v_auther=username,
-                             user_id=user_id, v_title=video_title, v_like=0, v_play=0, v_collect=0,v_tags=tmp,is_collection=True).all().values()[0]['v_id']
+            "v_id": v_id
         })
 @csrf_exempt
 def save_compilation(request):
@@ -362,15 +372,16 @@ def save_video(request):
         user_id = request.POST.get("user_id")
         tags = request.POST.get("tags")
         type = request.POST.get("type")
+        v_note = request.POST.get("v_note")
         tmp = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+","",tags)
         if(tmp==""):
             tags = "None"
-        finish_save(video_title, video_pic, video_file,username,user_id,tags,type)
+        finish_save(video_title, video_pic, video_file,username,user_id,tags,type,v_note)
     return JsonResponse({
         "msg":"上传成功"
     })
 
-def finish_save(video_title,video_pic,video_file,username,user_id,tags,type):
+def finish_save(video_title,video_pic,video_file,username,user_id,tags,type,v_note):
     video_title_tmp = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+","",video_title)
 
     video_pic_save_path = 'static/videos/videopic/' +  video_title_tmp + '.jpg'
@@ -387,7 +398,9 @@ def finish_save(video_title,video_pic,video_file,username,user_id,tags,type):
 
     result = videosTable(v_ad=video_title_tmp + '.mp4',v_pic=video_title_tmp + '.jpg',v_auther=username,user_id=user_id,v_title=video_title,v_like=0,v_play=0,v_collect=0,v_duaring=time,v_tags=tags,v_type=type)
     result.save()
-
+    v_id = videosTable.objects.filter(v_ad=video_title_tmp + '.mp4',v_pic=video_title_tmp + '.jpg',v_auther=username,user_id=user_id,v_title=video_title,v_like=0,v_play=0,v_collect=0,v_duaring=time,v_tags=tags,v_type=type).all().values()[0]['v_id']
+    if v_note:
+        videosTable.objects.filter(v_id=v_id).update(v_note=v_note)
     messagesTable.createMessage(m_content="您成功上传了《"+video_title+"》", m_user=user_id)
     Userdatabase.addvideo(user_id)
     return HttpResponse("保存完毕")

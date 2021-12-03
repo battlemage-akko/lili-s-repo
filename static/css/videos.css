@@ -876,7 +876,11 @@
     list-style: none;
     align-items: center;
 }
-
+.videos-note{
+    padding: 0px 10px 10px 10px;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5);
+}
 .videos-tags-list {
     display: flex;
     list-style: none;
@@ -967,6 +971,12 @@
     font-family: "微软雅黑 Light";
     padding: 8px 5px;
     cursor: pointer;
+}
+.videos-collection-list-container li span{
+    width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .videos-collection-list-container li.active{
     color: #0da1f0;
