@@ -18,6 +18,7 @@ class AppUser(AbstractUser):
         return AppUser.objects.filter(id=id).values()[0][info]
     def getProfile(id):
         result = AppUser.objects.filter(id=int(id)).all().values()
+        options = setting.getSettingById(id)
         if result:
             return {
                     "username": result[0]["username"],
@@ -35,6 +36,16 @@ class AppUser(AbstractUser):
                         "day": result[0]["date_joined"].day
                     },
                     "gender":result[0]["gender"],
+                    "setting": {
+                        'u_id':options['u_id'],
+                        'is_search':1 if options['is_search'] else 0,
+                        'show_profile':1 if options['show_profile'] else 0,
+                        'show_desc':1 if options['show_desc'] else 0,
+                        'show_video':1 if options['show_video'] else 0,
+                        'show_collect':1 if options['show_collect'] else 0,
+                        'show_gender':1 if options['show_gender'] else 0,
+                        'show_chat': 1 if options['show_chat'] else 0,
+                    },
                 }
         else:
             return 0
@@ -211,6 +222,7 @@ class setting(models.Model):
     show_video = models.BooleanField(default=True)
     show_collect = models.BooleanField(default=True)
     show_gender = models.BooleanField(default=True)
+    show_chat = models.BooleanField(default=True)
 
     def getSettingById(u_id):
         result  = setting.objects.filter(u_id=u_id).all().values()
@@ -218,6 +230,7 @@ class setting(models.Model):
             return setting.objects.filter(u_id=u_id).all().values()[0]
         else:
             setting(u_id=u_id).save()
+            return setting.objects.filter(u_id=u_id).all().values()[0]
 
     def getStatus(u_id,choose):
         return setting.objects.filter(u_id=u_id).all().values()[0][choose]

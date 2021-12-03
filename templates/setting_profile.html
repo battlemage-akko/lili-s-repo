@@ -12,6 +12,10 @@
                         <span @click="changeGender('male',$event)">男</span>
                         <span @click="changeGender('female',$event)">女</span>
                     </li>
+                    <li  style="display: flex;align-items: center;">
+                        <label for="bday">生日</label>
+                        <input type="date" class="form-control" placeholder="user" style="max-width: 200px;margin-left: 20px" id="bday"/>
+                    </li>
                     <li>
                          <div class="form-floating">
                             <textarea class="form-control desc_text" placeholder="Leave a comment here" id="floatingTextarea2"

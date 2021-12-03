@@ -113,7 +113,7 @@
 }
 .setting-info{
     padding: 30px 0px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
 }
 .setting-info-detail{
     padding: 20px 0px 0px 0px;
@@ -160,6 +160,7 @@
     align-items: end;
     font-size: 18px;
     font-weight: 600;
+    margin-top: 50px;
 }
 
 .setting-info-save span{

@@ -62,8 +62,8 @@
                 <ul class="profile-info">
                     <li>
                         <div class="profile-info-name">
-                            <span v-if="profile_detail.gender == 'male'" class="male"></span>
-                            <span v-if="profile_detail.gender == 'female'" class="female"></span>
+                            <span v-show="profile_detail.gender == 'male'" class="male" v-if="is_me || profile_detail.setting.show_gender"></span>
+                            <span v-show="profile_detail.gender == 'female'" class="female" v-if="is_me || profile_detail.setting.show_gender"></span>
                             {[ profile_detail.username ]}
                             <span v-if="profile_detail.is_superuser == 'True'">
                                 (管理员)
@@ -139,7 +139,7 @@
                                         </span>
                                 </li>
                             </ul>
-                            <div style="display: flex;justify-content: center" v-if="videosList_mine_count!=0">
+                            <div style="display: flex;justify-content: center;margin-top: 30px" v-if="videosList_mine_count!=0">
                                 <ul class="paging">
                                     <li @click="prePage">上一页</li>
                                     <li v-if="videosPage.now>3" @click="changePage(1)">1</li>
@@ -234,17 +234,7 @@
         el: "#app",
         delimiters: ['{[', ']}'],
         data: {
-            userdetail: {
-                name: "{{ request.user.username }}",
-                id: "{{ request.user.id }}",
-                email: "{{ request.user.email }}",
-                is_active: "{{ request.user.is_active }}",
-                date_joined: "{{ request.user.date_joined }}",
-                gender: "{{ request.user.gender }}",
-                picture: "{{ request.user.picture }}",
-                fans: "{{ request.user.fans }}",
-                v_count: "{{ request.user.fans }}",
-            },
+            userdetail: topbar.userdetail,
             followornot: {{ followornot }},
             profile_detail:{{ profile_detail | safe }},
             showDelMenu: false,
@@ -260,8 +250,8 @@
                 page: "",
                 total: "",
                 begin: 0,
-                end: 6,
-                each: 6,
+                end: 12,
+                each: 12,
             },
             this_user_admin: false,
             is_login: topbar.is_login,
