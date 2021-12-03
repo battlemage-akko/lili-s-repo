@@ -68,6 +68,7 @@ def getMySetting(request):
             'show_gender': 1 if result['show_gender'] else 0,
             'show_collect': 1 if result['show_collect'] else 0,
             'show_video': 1 if result['show_video'] else 0,
+            'show_chat': 1 if result['show_video'] else 0,
         })
 @csrf_exempt
 def changeMySetting(request):
