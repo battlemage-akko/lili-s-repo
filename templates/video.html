@@ -244,10 +244,10 @@
                         <li><i class="collect"> </i>&nbsp;{[ video_detail.v_collect ]}</li>
                         <li><i class="barrage_tag"></i>&nbsp;{[ video_detail.v_barrage ]}</li>
                     </ul>
-                    <h1 class="video-title"><span class="play2" style="margin-right: 5px"></span>{{ v_title }}<span style="padding: 2px 5px;border-radius: 3px;background-color: black;color: white;margin-left: 10px;cursor: pointer" @click="searchByTag(video_detail.v_type)">{[ video_detail.v_type ]}</span></h1>
+                    <h1 class="video-title"><span class="play2" style="margin-right: 5px"></span>{{ v_title }}<span style="padding: 2px 5px;border-radius: 3px;background-color: black;color: white;margin-left: 10px;cursor:pointer" @click="searchByTag(video_detail.v_type)">{[ video_detail.v_type ]}</span></h1>
                 </div>
-                <div class="videos-note">
-                    {[ video_detail.v_note ]}
+                <div class="videos-note" v-html="video_detail.v_note">
+
                 </div>
                 <div class="videos-tags">
                     <ul class="videos-tags-list">

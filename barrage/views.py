@@ -62,6 +62,8 @@ def video(request,vid):
                     'picture': Userdatabase.getinfo(id=j['u_id'], info="picture")
                 }
 
+    result['v_note'] = result['v_note'].replace("\n", "<br>")
+
     if result['is_collection']:
         index = 1
         if p:
@@ -77,7 +79,7 @@ def video(request,vid):
             "v_collect": result["v_collect"],
             "v_like": result["v_like"],
             "user_id": result["user_id"],
-            "v_note": result["v_note"],
+            "v_note": result["v_note"].replace("\r\n", ""),
             "is_collection": result["is_collection"],
             "fans": Userdatabase.getfans(result["user_id"]),
             "v_barrage": barrageTable.getBarrageByV_id(result["v_id"]),
@@ -107,7 +109,7 @@ def video(request,vid):
             "v_collect": result["v_collect"],
             "v_like": result["v_like"],
             "user_id": result["user_id"],
-            "v_note": result["v_note"],
+            "v_note": result["v_note"].replace("\r\n", ""),
             "is_collection":result["is_collection"],
             "fans": Userdatabase.getfans(result["user_id"]),
             "v_barrage":barrageTable.getBarrageByV_id(result["v_id"]),
