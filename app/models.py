@@ -10,6 +10,7 @@ class AppUser(AbstractUser):
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='male')
     desc = models.TextField(null=True, blank=True, verbose_name="描述",default='这个人很懒,什么也没有留下！')
     picture = models.CharField(max_length=64,default="default.png")
+    background = models.CharField(max_length=200,default="background.jpg")
     v_count = models.IntegerField(default=0)
 
     def getfans(id):
@@ -24,6 +25,7 @@ class AppUser(AbstractUser):
                     "username": result[0]["username"],
                     "id": result[0]["id"],
                     "picture": result[0]["picture"],
+                    "background": result[0]["background"],
                     "fans": result[0]["fans"],
                     "follow": len(followUser.user_follow(from_user=result[0]["id"])),
                     "v_count": result[0]["v_count"],

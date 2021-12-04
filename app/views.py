@@ -475,6 +475,32 @@ def save_profile(request):
         Userdatabase.objects.filter(id=id).update(id=id,username=name,desc=desc,gender=gender)
         return HttpResponse(1)
 @csrf_exempt
+def save_background(request):
+    if(request.method == "POST"):
+        background = request.POST.get("background")
+        user_id = request.POST.get("user_id")
+        image = background.split(",")
+
+        background = base64.b64decode(image[1])
+        path = 'static/images/background/' + user_id
+
+        if not os.path.exists(path):
+            os.makedirs(path)
+
+        md5 = hashlib.md5()
+        name = str(user_id) + '_' + str(time.asctime(time.localtime(time.time())))
+        md5.update(name.encode(encoding='utf-8'))
+        png_md5 = md5.hexdigest()
+
+        background_save_path = path + '/' + png_md5 + '.png'
+        with open(background_save_path, 'wb+') as f:
+            f.write(background)
+        Userdatabase.objects.filter(id=user_id).update(background=user_id + '/' + png_md5 + '.png')
+        return JsonResponse({
+            "code": 1,
+            "msg": "修改成功"
+        })
+@csrf_exempt
 def save_avatar(request):
     if(request.method == "POST"):
         avatar = request.POST.get("avatar")
