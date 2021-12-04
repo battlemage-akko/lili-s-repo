@@ -61,6 +61,7 @@ def getMySetting(request):
     if(request.method == 'POST'):
         u_id = request.POST.get('u_id')
         result = settingTable.getSettingById(u_id=u_id)
+        print(result)
         return JsonResponse({
             'is_search': 1 if result['is_search'] else 0,
             'show_profile': 1 if result['show_profile'] else 0,
@@ -68,7 +69,8 @@ def getMySetting(request):
             'show_gender': 1 if result['show_gender'] else 0,
             'show_collect': 1 if result['show_collect'] else 0,
             'show_video': 1 if result['show_video'] else 0,
-            'show_chat': 1 if result['show_video'] else 0,
+            'show_chat': 1 if result['show_chat'] else 0,
+            'show_discuss': 1 if result['show_discuss'] else 0,
         })
 @csrf_exempt
 def changeMySetting(request):

@@ -11,6 +11,7 @@ from app.models import collectVideo as collectTable
 from app.models import messages as messagesTable
 from app.models import likeVideo as lovetable
 from app.models import AppUser as Userdatabase
+from app.models import setting as settingTable
 from moviepy.editor import VideoFileClip
 from general.views import time_normalization
 from barrage.models import video_compilation as compilationTable
@@ -43,18 +44,24 @@ def video(request,vid):
         nextvideolist.append(tmp[i])
 
     tags = videosTable.objects.get(v_id=vid).v_tags
-    discuss = discussTable.getDiscussByV_id(v_id=vid)
-    for i in discuss:
-        i["userdetail"] = {
-            'username' : Userdatabase.getinfo(id=i['u_id'],info="username"),
-            'picture' : Userdatabase.getinfo(id=i['u_id'],info="picture")
-        }
-        i["answer"] = answerTable.getAnswerByD_id(i['d_id'])
-        for j in i["answer"]:
-            j["userdetail"] = {
-                'username': Userdatabase.getinfo(id=j['u_id'], info="username"),
-                'picture': Userdatabase.getinfo(id=j['u_id'], info="picture")
+    setting = {
+        'show_discuss': 1 if settingTable.getStatus(u_id=result["user_id"], choose='show_discuss') else 0
+    }
+    discuss = []
+    if setting['show_discuss']:
+        discuss = discussTable.getDiscussByV_id(v_id=vid)
+        for i in discuss:
+            i["userdetail"] = {
+                'username' : Userdatabase.getinfo(id=i['u_id'],info="username"),
+                'picture' : Userdatabase.getinfo(id=i['u_id'],info="picture")
             }
+            i["answer"] = answerTable.getAnswerByD_id(i['d_id'])
+            for j in i["answer"]:
+                j["userdetail"] = {
+                    'username': Userdatabase.getinfo(id=j['u_id'], info="username"),
+                    'picture': Userdatabase.getinfo(id=j['u_id'], info="picture")
+                }
+
     if result['is_collection']:
         index = 1
         if p:
@@ -83,7 +90,8 @@ def video(request,vid):
             "loveornot": lovetable.love_check(request.user.id, result["v_id"]),
             "collectornot": collectTable.collect_check(request.user.id, result["v_id"]),
             "discuss": [item for item in discuss],
-            "vc_index":index
+            "vc_index":index,
+            'setting':setting
         }
         return render(request, 'video.html', data)
     else:
@@ -112,6 +120,7 @@ def video(request,vid):
             "loveornot": lovetable.love_check(request.user.id, result["v_id"]),
             "collectornot": collectTable.collect_check(request.user.id, result["v_id"]),
             "discuss": [item for item in discuss],
+            'setting': setting
         }
         return render(request,'video.html',data)
 @csrf_exempt
@@ -283,11 +292,13 @@ def getMyVideo(request):
         count = int(request.POST.get("count"))
         u_id = request.POST.get("user_id")
         result = []
-        for i in videosTable.getvideosbyid(user_id=u_id,choose="time"):
-            if i["is_collection"]:
-                i["collection_count"] = compilationTable.getNumberByV_id(i["v_id"])
-                i["collection_list"] = compilationTable.getVc_titleByV_id(i["v_id"])
-            result.append(i)
+        print(request.user.id,u_id)
+        if settingTable.getStatus(u_id=u_id,choose='show_video') or int(request.user.id)==int(u_id):
+            for i in videosTable.getvideosbyid(user_id=u_id, choose="time"):
+                if i["is_collection"]:
+                    i["collection_count"] = compilationTable.getNumberByV_id(i["v_id"])
+                    i["collection_list"] = compilationTable.getVc_titleByV_id(i["v_id"])
+                result.append(i)
         return JsonResponse(result, safe=False)
 
 @csrf_exempt

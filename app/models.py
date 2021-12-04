@@ -223,6 +223,7 @@ class setting(models.Model):
     show_collect = models.BooleanField(default=True)
     show_gender = models.BooleanField(default=True)
     show_chat = models.BooleanField(default=True)
+    show_discuss = models.BooleanField(default=True)
 
     def getSettingById(u_id):
         result  = setting.objects.filter(u_id=u_id).all().values()
@@ -236,6 +237,7 @@ class setting(models.Model):
         return setting.objects.filter(u_id=u_id).all().values()[0][choose]
 
     def change(u_id,option,value):
+        print(option,value)
         result = setting.objects.filter(u_id=u_id).update(**{option: value})
         return 1
 

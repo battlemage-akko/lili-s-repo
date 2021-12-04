@@ -881,6 +881,11 @@
     font-size: 12px;
     color: rgba(0, 0, 0, 0.5);
 }
+.video-note-detail{
+    font-size: 12px;
+    background-color: black;
+    height: 100px;
+}
 .videos-tags-list {
     display: flex;
     list-style: none;

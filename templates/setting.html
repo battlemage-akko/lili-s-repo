@@ -87,6 +87,7 @@
                 show_collect:0,
                 show_gender:0,
                 show_chat:0,
+                show_discuss:0,
             },
             message: "",
             loading:false,
@@ -302,6 +303,7 @@
                 this.setting_form.show_video = result.data.show_video?true:false
                 this.setting_form.show_collect = result.data.show_collect?true:false
                 this.setting_form.show_chat = result.data.show_chat?true:false
+                this.setting_form.show_discuss = result.data.show_discuss?true:false
             },
             async changeMySetting(option,value){
                 let param = new URLSearchParams()

@@ -289,7 +289,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="video-discuss" v-if="is_login">
+                <div class="video-discuss" v-if="is_login && video_detail.setting.show_discuss">
                     <div class="video-discuss-content">
                         <div class="video-discuss-profile">
                             <img :src="avatar_url+userdetail.picture" alt="">
@@ -316,7 +316,7 @@
                     <img src="{% static 'images/please.png' %}" alt="">
                     请先<span @click="login">登录</span>再评论哦~
                 </div>
-                <h2 style="padding: 2px 0px 20px 0px;font-size: 20px;border-bottom: 1px solid rgba(0,0,0,0.05);margin: 0">
+                <h2 v-if="video_detail.setting.show_discuss" style="padding: 20px 0px 20px 0px;font-size: 20px;border-bottom: 1px solid rgba(0,0,0,0.05);margin: 0">
                     {[ video_detail.d_content.length ]} 条评论</h2>
                 <ul class="video-discuss-list">
                     <li v-for="(item,index) in video_detail.d_content" class="video-discuss-list-each"
@@ -396,7 +396,8 @@
                         </div>
                     </li>
                 </ul>
-                <div class="video-no-discuss" v-if="video_detail.d_content.length==0">快来发一条评论吧~</div>
+                <div class="video-no-discuss" v-if="video_detail.d_content.length==0 && video_detail.setting.show_discuss">快来发一条评论吧~</div>
+                <div class="video-no-discuss" v-if="!video_detail.setting.show_discuss">作者已关闭评论功能</div>
             </div>
             <div class="danmu">
                 <div class="ad">
@@ -470,7 +471,8 @@
                     <ul class="videoslist">
                         {% for item in nextvideolist %}
                             <li>
-                                <div style="background: url('{% static 'videos/videopic/' %}{{ item.v_pic }}') center center no-repeat;background-size: cover;background-color: black;cursor: pointer" @click="getVideo({{ item.v_id }})"></div>
+                                <div style="background: url('{% static 'videos/videopic/' %}{{ item.v_pic }}') center center no-repeat;background-size: cover;background-color: black;cursor: pointer" @click="getVideo({{ item.v_id }})">
+                                </div>
                                 <div class="videoslist-info">
                                     <a href="javascript:" @click="getVideo({{ item.v_id }})">{{ item.v_title }}</a>
                                     <a href="javascript:">作者：{{ item.v_auther }}</a>
@@ -532,6 +534,7 @@
                 "is_collection":'{{ is_collection|safe }}',
                 "vc_ads":{{ vc_ads|safe }},
                 "v_note":'{{ v_note|safe }}',
+                "setting":{{ setting|safe }},
             },
             vc_index:'',
             userdetail: topbar.userdetail,
