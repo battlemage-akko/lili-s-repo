@@ -9,7 +9,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="{% static 'css/videos.css' %}?version=1.0.2" rel="stylesheet">
+    <link href="{% static 'css/videos.css' %}?version=1.0.3" rel="stylesheet">
     <link href="{% static 'css/topbar.css' %}?version=1.0.2" rel="stylesheet">
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="shortcut icon" href="{% static 'images/video.PNG' %}">
@@ -244,7 +244,7 @@
                         <li><i class="collect"> </i>&nbsp;{[ video_detail.v_collect ]}</li>
                         <li><i class="barrage_tag"></i>&nbsp;{[ video_detail.v_barrage ]}</li>
                     </ul>
-                    <h1 class="video-title"><span class="play2" style="margin-right: 5px"></span> {{ v_title }}</h1>
+                    <h1 class="video-title"><span class="play2" style="margin-right: 5px"></span>{{ v_title }}<span style="padding: 2px 5px;border-radius: 3px;background-color: black;color: white;margin-left: 10px;cursor: pointer" @click="searchByTag(video_detail.v_type)">{[ video_detail.v_type ]}</span></h1>
                 </div>
                 <div class="videos-note">
                     {[ video_detail.v_note ]}
@@ -535,6 +535,7 @@
                 "vc_ads":{{ vc_ads|safe }},
                 "v_note":'{{ v_note|safe }}',
                 "setting":{{ setting|safe }},
+                "v_type":'{{ v_type|safe }}',
             },
             vc_index:'',
             userdetail: topbar.userdetail,

@@ -68,6 +68,7 @@ def video(request,vid):
             index = p
         data = {
             "v_id": result["v_id"],
+            "v_type": result["v_type"],
             "v_pic": result["v_pic"],
             "vc_ads":compilationTable.getVc_adsByV_id(v_id=result["v_id"]),
             "v_auther": result["v_auther"],
@@ -98,6 +99,7 @@ def video(request,vid):
         data = {
             "v_id": result["v_id"],
             "v_ad": result["v_ad"],
+            "v_type": result["v_type"],
             "v_pic": result["v_pic"],
             "v_auther": result["v_auther"],
             "v_play": result["v_play"],
