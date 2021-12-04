@@ -230,9 +230,9 @@ hr {
 }
 
 .profile-content-myvideos li {
-    height: 180px;
+    height: 150px;
     flex-grow: 1;
-    min-width: 220px;
+    min-width: 225px;
     transition: all .5s ease;
     max-width: 450px;
 }
