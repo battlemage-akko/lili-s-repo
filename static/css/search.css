@@ -420,7 +420,15 @@
     padding: 20px 0px;
     opacity: 0.5;
 }
-
+.video-note{
+    font-size: 10px;
+    color: rgba(42,42,42,0.5);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
 @media (max-width: 400px) {
     .search-content-search {
         display: none;

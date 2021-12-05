@@ -57,7 +57,7 @@ class video(models.Model):
                 "v_play": item["v_play"],
                 "v_like": item["v_like"],
                 "v_collect": item["v_collect"],
-                "v_note": item["v_note"],
+                "v_note": item["v_note"].replace("\n", "<br>"),
                 "v_duaring": item["v_duaring"],
                 "v_time": time_normalization(item["v_time"]),
                 "v_type": item["v_type"],
@@ -87,7 +87,7 @@ class video(models.Model):
                 "v_play": item["v_play"],
                 "v_title": item["v_title"],
                 "v_time": time_normalization(item["v_time"]),
-                "v_note": item["v_note"],
+                "v_note": item["v_note"].replace("\n", "<br>"),
                 "v_type": item["v_type"],
                 "is_collection": item["is_collection"],
             })
@@ -101,7 +101,7 @@ class video(models.Model):
                     "v_play": item["v_play"],
                     "v_title": item["v_title"],
                     "v_time": time_normalization(item["v_time"]),
-                    "v_note": item["v_note"],
+                    "v_note": item["v_note"].replace("\n", "<br>"),
                     "v_type": item["v_type"],
                     "is_collection": item["is_collection"],
                 })
@@ -122,7 +122,7 @@ class video(models.Model):
                 "v_play": item["v_play"],
                 "v_title": item["v_title"],
                 "v_time": time_normalization(item["v_time"]),
-                "v_note": item["v_note"],
+                "v_note": item["v_note"].replace("\n", "<br>"),
                 "v_type": item["v_type"],
                 "is_collection": item["is_collection"],
             })
@@ -140,7 +140,7 @@ class video(models.Model):
                 "v_play": item["v_play"],
                 "v_title": item["v_title"],
                 "v_time": time_normalization(item["v_time"]),
-                "v_note": item["v_note"],
+                "v_note": item["v_note"].replace("\n", "<br>"),
                 "v_type": item["v_type"],
                 "is_collection": item["is_collection"],
             })
@@ -158,7 +158,7 @@ class video(models.Model):
                 "v_play": item["v_play"],
                 "v_title": item["v_title"],
                 "v_time": time_normalization(item["v_time"]),
-                "v_note": item["v_note"],
+                "v_note": item["v_note"].replace("\n", "<br>"),
                 "v_type": item["v_type"],
                 "is_collection": item["is_collection"],
             })
