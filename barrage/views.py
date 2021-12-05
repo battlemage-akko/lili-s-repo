@@ -247,6 +247,15 @@ def sendAnswer(request):
                 "msg": "发送失败"
             })
 @csrf_exempt
+def save_note(request):
+    if(request.method == 'POST'):
+        v_id = request.POST.get("v_id")
+        v_note = request.POST.get("v_note")
+        videosTable.objects.filter(v_id=v_id).update(v_note=v_note)
+        return JsonResponse({
+            "code":1
+        })
+@csrf_exempt
 def save_barrage(request):
     if(request.method == 'POST'):
         b_content = request.POST.get("b_content")

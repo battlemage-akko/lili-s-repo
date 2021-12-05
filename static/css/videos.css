@@ -885,7 +885,22 @@
     overflow: hidden;
     height: 100%;
 }
-
+.change-note{
+    padding: 10px;
+}
+.change-note-btns{
+    display: flex;
+    justify-content: right;
+}
+.change-note-btns li{
+    margin:10px 0px 10px 10px;
+    padding: 5px 10px;
+    background-color: black;
+    color: white;
+    font-weight: 400;
+    border-radius: 5px;
+    cursor: pointer;
+}
 .videos-note.hidden{
     height: 80px;
 }
