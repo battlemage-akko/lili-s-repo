@@ -246,9 +246,15 @@
                     </ul>
                     <h1 class="video-title"><span class="play2" style="margin-right: 5px"></span>{{ v_title }}<span style="padding: 2px 5px;border-radius: 3px;background-color: black;color: white;margin-left: 10px;cursor:pointer" @click="searchByTag(video_detail.v_type)">{[ video_detail.v_type ]}</span></h1>
                 </div>
-                <div class="videos-note" v-html="video_detail.v_note">
+                <div>
+                    <p class="videos-note" v-html="video_detail.v_note">
 
+                    </p>
                 </div>
+                <span style="margin:10px;color: dodgerblue;font-size: 14px;cursor: pointer;" @click="showNote" v-if="note_toolong">
+                        <span v-if="!show_note">展开所有</span>
+                        <span v-if="show_note">收起</span>
+                    </span>
                 <div class="videos-tags">
                     <ul class="videos-tags-list">
                         <li class="videos-tags-each" v-for="(item,index) in tags" @click="searchByTag(item)">{[ item
@@ -584,6 +590,8 @@
             show_barrage: true,
             AccMenu: false,
             playing: false,
+            show_note:false,
+            note_toolong:false,
             AccReason: "",
             AccResult: "",
             username: "",
@@ -597,6 +605,10 @@
             videosList_isLoading: false,
         },
         methods: {
+            showNote:function (){
+                this.show_note = this.show_note?false:true
+                document.querySelector('.videos-note').classList.toggle('hidden')
+            },
             showtagsInput: function (){
                 this.show_tags_input = !this.show_tags_input
                 this.tagsInput==""
@@ -1232,7 +1244,10 @@
         },
         mounted: function () {
             that = this
-
+            if(document.querySelector('.videos-note').scrollHeight>80){
+                document.querySelector('.videos-note').classList.toggle('hidden')
+                this.note_toolong = true
+            }
             if(this.video_detail.is_collection=="False"){
                 this.video_option.sources[0].src = '{% static 'videos/' %}' + this.video_detail.v_ad
             }

@@ -881,6 +881,13 @@
     padding: 0px 10px 10px 10px;
     font-size: 12px;
     color: rgba(0, 0, 0, 0.5);
+    white-space: pre-wrap;
+    overflow: hidden;
+    height: 100%;
+}
+
+.videos-note.hidden{
+    height: 80px;
 }
 .video-note-detail{
     font-size: 12px;
