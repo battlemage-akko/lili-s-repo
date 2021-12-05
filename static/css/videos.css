@@ -1286,6 +1286,7 @@
 .video-no-discuss {
     width: 100%;
     padding: 10px;
+    padding-bottom: 50px;
     display: flex;
     justify-content: center;
     align-items: center;

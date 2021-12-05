@@ -267,7 +267,7 @@
 
 .search-result-video-each-back {
     height: 140px;
-    width: 200px;
+    min-width: 200px;
     cursor: pointer;
     position: relative;
 }

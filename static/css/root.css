@@ -93,6 +93,13 @@ body::-webkit-scrollbar-track { /*滚动条里面轨道*/
     font-style: normal;
 }
 
+.ban:before {
+    content: "\ea0e";
+    font-family: IcoMoon-Free;
+    color: #ff0000;
+    font-weight: 700;
+    font-size: 13px;
+}
 .date:before {
     content: '\e953';
     font-family: IcoMoon-Free;
