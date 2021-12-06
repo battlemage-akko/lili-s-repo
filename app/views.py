@@ -220,7 +220,7 @@ def profile(request):
 
 def search_page(request):
     q = request.GET.get("q")
-    q = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+","",q)
+    q = re.sub("[\s+\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+","",q)
     result = search(q,0)
     print(q)
     if(result['user']['exactness'][0]):
