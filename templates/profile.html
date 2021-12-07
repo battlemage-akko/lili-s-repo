@@ -60,7 +60,9 @@
                     </div>
                 </div>
                 <div>
-                    <img :src="this.avatar_url+profile_detail.picture" alt="" class="profile-img">
+                    <span>
+                        <img :src="this.avatar_url+profile_detail.picture" alt="" class="profile-img" @click="change_avatar">
+                    </span>
                 </div>
                 <ul class="profile-info">
                     <li>
@@ -315,6 +317,11 @@
             background_base_url: "{% static 'images/background' %}"+"/",
         },
         methods: {
+            change_avatar:function (){
+                if(this.is_me){
+                    window.open('/setting/setting_avatar/')
+                }
+            },
             toProfile:function (id){
                 topbar.toProfile(id)
             },
