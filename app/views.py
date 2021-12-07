@@ -566,7 +566,13 @@ def collect(request):
                 "msg": "什么玩意",
             }
             return JsonResponse(msg)
-
+@csrf_exempt
+def getFans(request):
+    if(request.method == 'POST'):
+        id = request.POST.get('user_id')
+        return JsonResponse({
+            'data':followtable.user_followed(id)
+        })
 
 
 

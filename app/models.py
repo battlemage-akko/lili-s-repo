@@ -214,7 +214,11 @@ class followUser(models.Model):
         getAllFollow = followUser.objects.filter(followed_id=to_user).all().values()
         user_followed = []
         for followeder in getAllFollow:
-            user_followed.append(followeder.follow)
+            user_followed.append({
+                'id':followeder['follow_id'],
+                'username':AppUser.getinfo(id=followeder['follow_id'],info='username'),
+                'avatar':AppUser.getinfo(id=followeder['follow_id'],info='picture'),
+            })
         return user_followed
 class setting(models.Model):
     u_id = models.IntegerField(primary_key=True)

@@ -305,7 +305,6 @@ def getMyVideo(request):
         count = int(request.POST.get("count"))
         u_id = request.POST.get("user_id")
         result = []
-        print(request.user.id,u_id)
         if settingTable.getStatus(u_id=u_id,choose='show_video') or int(request.user.id)==int(u_id):
             for i in videosTable.getvideosbyid(user_id=u_id, choose="time"):
                 if i["is_collection"]:
@@ -319,7 +318,6 @@ def getMoreCollectVideo(request):
     if(request.method == "POST"):
         user_id = request.POST.get("user_id")
         count = request.POST.get("count")
-        print(user_id,count)
     return HttpResponse()
 @csrf_exempt
 def ApplyForV_id(request):

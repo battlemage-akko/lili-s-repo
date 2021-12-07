@@ -4,7 +4,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta http-equiv="Expires"  content="0">
-<link href="{% static 'css/profile.css' %}?version=1.0.4" rel="stylesheet">
+<link href="{% static 'css/profile.css' %}?version=1.0.5" rel="stylesheet">
 <link href="{% static 'css/topbar.css' %}?version=1.0.2" rel="stylesheet">
 <link href="{% static 'css/root.css' %}?version=1.0.2" rel="stylesheet">
 <link rel="shortcut icon" href="{% static 'images/profile.png' %}">
@@ -200,6 +200,21 @@
                     <li title="更改个人信息" class="profile-set" @click="toSetting"><i></i></li>
                     <li title="注销" class="profile-logout" @click="logout"><i></i></li>
                 </ul>
+                <div class="profile-follow">
+                    我的粉丝
+                    <hr/>
+                    <div class="profile-message-follow">
+                        <div v-for="(item,index) in profile_detail.AllFans" :key="item.id" class="each-fans">
+                            <div>
+                                <img :src="avatar_url+item.avatar" alt="" style="margin-right: 10px" @click="toProfile(item.id)">
+                                <span @click="toProfile(item.id)">{[item.username]}</span>
+                            </div>
+                            <div>
+                                <span>关注</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="cropper-background" v-show="showCropper">
@@ -295,6 +310,9 @@
             background_base_url: "{% static 'images/background' %}"+"/",
         },
         methods: {
+            toProfile:function (id){
+                topbar.toProfile(id)
+            },
             upload_background: function () {
                 document.querySelector('#change_background').value = ''
                 document.querySelector('#change_background').click()
@@ -516,7 +534,17 @@
                 for (let item of result.data) {
                     this.videosList_mine.push(item)
                 }
-            }
+            },
+            getFans:async function (){
+                let param = new URLSearchParams()
+                param.append("user_id", this.profile_detail.id)
+                result = await axios({
+                    method: "POST",
+                    url: "{% url 'getFans' %}",
+                    data: param
+                })
+                this.profile_detail.AllFans = result.data.data
+            },
         },
         watch: {
             videosList_mine: function () {
@@ -536,6 +564,7 @@
         },
         mounted: function () {
             that = this
+            this.profile_detail.AllFans = []
             if (this.followornot == 1) {
                 document.querySelector('.follow-text').innerHTML = "已关注"
             } else if (this.followornot == 2) {
@@ -543,12 +572,13 @@
             }
             if (this.profile_detail.is_me == "True") {
                 this.is_me = true
+
                 this.refreshmsg()
                 this.getmorecollectvideo()
+                this.getFans()
             }
             if (this.is_me) {
                 let image = document.querySelector('#image')
-                console.log(image)
                 this.cropper = new Cropper(image, {
                     aspectRatio: 10 / 4,
                     viewMode: 2,

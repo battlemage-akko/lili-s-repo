@@ -126,6 +126,11 @@ hr {
     height: 400px;
     padding: 10px;
 }
+.profile-follow {
+    font-family: "微软雅黑 Light";
+    background-color: white;
+    padding: 10px;
+}
 
 .profile-message-content {
     list-style: none;
@@ -190,7 +195,10 @@ hr {
     height: 315px;
     overflow-y: auto;
 }
-
+.profile-message-follow{
+    height: 250px;
+    overflow-y: auto;
+}
 .profile-message-container::-webkit-scrollbar {
     width: 5px;
     height: 5px;
@@ -512,4 +520,22 @@ hr {
     position: absolute;
     bottom: 5px;
     font-size: 8px;
+}
+.each-fans{
+    margin: 5px 5px 15px 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+.each-fans img{
+    width: 50px;
+    height: 50px;
+    border-radius: 100px;
+    cursor: pointer;
+}
+.each-fans span{
+    cursor: pointer;
 }
