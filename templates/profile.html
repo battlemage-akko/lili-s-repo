@@ -215,6 +215,9 @@
                                 <span class="each-follow-btn">+关注</span>
                             </div>
                         </div>
+                        <div v-if="!any_fans" style="display: flex;align-items: center;flex-direction: column;opacity: .5">
+                            <img src="{% static 'images/no_fans.png' %}" alt="" style="width: 250px;margin: 20px">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -293,6 +296,7 @@
             delList: [],
             messages: [],
             is_me: false,
+            any_fans: false,
             Del_sure: "",
             videosPage: {
                 now: 1,
@@ -556,6 +560,9 @@
                     data: param
                 })
                 this.profile_detail.AllFans = result.data.data
+                if(this.profile_detail.AllFans.length){
+                    this.any_fans = true
+                }
             },
         },
         watch: {
