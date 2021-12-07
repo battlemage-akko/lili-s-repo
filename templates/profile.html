@@ -210,7 +210,7 @@
                                 <span @click="toProfile(item.id)">{[item.username]}</span>
                             </div>
                             <div>
-                                <span>关注</span>
+                                <span class="each-follow-btn">+关注</span>
                             </div>
                         </div>
                     </div>
@@ -227,8 +227,13 @@
                     <img id="image" :src="background_url" alt="Picture">
                 </li>
                 <li class="cropper-background-btns">
-                    <span @click="crop">确定</span>
-                    <span @click="upload_background">重新选择</span>
+                    <div style="font-size: 15px;opacity: .6">
+                        注意:图片大小不可超过5M!
+                    </div>
+                    <div>
+                        <span @click="crop">确定</span>
+                        <span @click="upload_background">重新选择</span>
+                    </div>
                 </li>
             </ul>
         </div>

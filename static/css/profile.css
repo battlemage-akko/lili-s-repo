@@ -196,9 +196,28 @@ hr {
     overflow-y: auto;
 }
 .profile-message-follow{
-    height: 250px;
+    max-height: 200px;
     overflow-y: auto;
 }
+
+.profile-message-follow::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    scrollbar-arrow-color: red;
+}
+
+.profile-message-follow::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.1);
+    scrollbar-arrow-color: red;
+}
+
+.profile-message-follow::-webkit-scrollbar-track { /*滚动条里面轨道*/
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.05);
+}
+
 .profile-message-container::-webkit-scrollbar {
     width: 5px;
     height: 5px;
@@ -346,7 +365,7 @@ hr {
 }
 .cropper-background-btns{
     display: flex;
-    justify-content: right;
+    justify-content: space-between;
 }
 .cropper-background-btns span{
     padding: 5px 10px;
@@ -538,4 +557,9 @@ hr {
 }
 .each-fans span{
     cursor: pointer;
+}
+.each-follow-btn{
+    padding: 5px 10px;
+    background-color: black;
+    color: white;
 }
