@@ -131,7 +131,9 @@ hr {
     padding: 10px;
     margin-bottom: 30px;
 }
-
+.profile-follow hr{
+    margin-bottom: 0!important;
+}
 .profile-message-content {
     list-style: none;
     padding: 5px;
@@ -209,18 +211,18 @@ hr {
 
 .profile-message-follow::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
     border-radius: 5px;
-    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
     background: rgba(0, 0, 0, 0.1);
     scrollbar-arrow-color: red;
 }
 
 .profile-message-follow::-webkit-scrollbar-track { /*滚动条里面轨道*/
     border-radius: 0;
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(0, 0, 0, 0.0);
 }
 
 .profile-message-container::-webkit-scrollbar {
-    width: 5px;
+    width: 1px;
     height: 5px;
     scrollbar-arrow-color: red;
 }
@@ -234,7 +236,7 @@ hr {
 
 .profile-message-container::-webkit-scrollbar-track { /*滚动条里面轨道*/
     border-radius: 0;
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(0, 0, 0, 0.0);
 }
 
 .profile-content {
@@ -542,7 +544,7 @@ hr {
     font-size: 8px;
 }
 .each-fans{
-    margin: 5px 5px 15px 5px;
+    margin: 15px 5px 15px 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
