@@ -45,7 +45,6 @@ def null(request):
     response = HttpResponseRedirect(r.url)
     return response
 def index(request):
-    print(settingTable.getSettingById(1))
     return render(request,'index.html',{
         "newvideolist": [],
         "hotvideolist": [],
@@ -91,7 +90,7 @@ def refreshmsg(request):
     if not result:
         print("empty")
         return JsonResponse({
-            "msg": ["没有任何消息"],
+            "msg": [],
             "msgcount": 0
         })
 

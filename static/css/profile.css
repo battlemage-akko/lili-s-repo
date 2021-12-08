@@ -26,6 +26,7 @@ hr {
     /*border:5px dashed black;*/
     min-width: 350px;
     max-width: 1050px;
+    margin-bottom: 30px;
 }
 
 .profilefooter {
@@ -136,6 +137,7 @@ hr {
     padding: 5px;
     font-size: 15px;
     margin: 0;
+    height: 100%;
 }
 
 .profile-tools {
