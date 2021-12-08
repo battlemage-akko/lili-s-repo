@@ -257,7 +257,13 @@
     display: flex;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
-
+.search-result-title{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical
+}
 .search-result-table-video-each {
     padding: 5px 5px;
     width: 20%;
