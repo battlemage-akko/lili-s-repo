@@ -21,12 +21,11 @@ hr {
 .profile-other {
     padding: 20px;
     flex-basis: 400px;
-    height: 800px;
     flex-grow: 1;
     /*border:5px dashed black;*/
     min-width: 350px;
     max-width: 1050px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 .profilefooter {
@@ -198,7 +197,7 @@ hr {
     overflow-y: auto;
 }
 .profile-message-follow{
-    max-height: 300px;
+    max-height: 260px;
     overflow-y: auto;
 }
 
