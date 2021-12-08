@@ -204,7 +204,7 @@ hr {
 }
 
 .profile-message-follow::-webkit-scrollbar {
-    width: 5px;
+    width: 1px;
     height: 5px;
     scrollbar-arrow-color: red;
 }
@@ -218,7 +218,7 @@ hr {
 
 .profile-message-follow::-webkit-scrollbar-track { /*滚动条里面轨道*/
     border-radius: 0;
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.0);
 }
 
 .profile-message-container::-webkit-scrollbar {
