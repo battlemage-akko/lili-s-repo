@@ -192,7 +192,7 @@
                                 <p>{[ item ]}</p>
                                 <hr/>
                             </li>
-                            <li style="width: 100%;height: 100%;display: flex;flex-direction: column;justify-content: center;align-items: center;opacity: .5">
+                            <li style="width: 100%;height: 100%;display: flex;flex-direction: column;justify-content: center;align-items: center;opacity: .5" v-if="messages.msg.length==0">
                                 <img src="{% static 'images/no_msg.png' %}" alt="">
                                 <div>没有新消息~</div>
                             </li>
