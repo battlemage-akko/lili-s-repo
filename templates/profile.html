@@ -229,10 +229,13 @@
                     热门
                     <hr/>
                     <ul class="hotvideos-list">
-                        <li v-for="(item,index) in hotestVideos" :key="item.v_id">
+                        <li v-for="(item,index) in hotestVideos" :key="item.v_id" class="hotvideo">
                             <span style="display: flex">
-                                <i>{[index]}</i>
-                                <p>{[item.v_title]}</p>
+                                <i>{[index + 1]}</i>
+                                <p style="cursor: pointer" @click="getVideo(item.v_id)"> 《{[item.v_title]}》</p>
+                            </span>
+                            <span>
+                                {[item.time.year]}-{[item.time.month]}
                             </span>
                         </li>
                     </ul>
