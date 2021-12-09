@@ -129,7 +129,13 @@ hr {
     font-family: "微软雅黑 Light";
     background-color: white;
     padding: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
+}
+.profile-hot{
+    font-family: "微软雅黑 Light";
+    background-color: white;
+    padding: 10px;
+    margin-bottom: 15px;
 }
 .profile-follow hr{
     margin-bottom: 0!important;

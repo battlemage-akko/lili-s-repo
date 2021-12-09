@@ -163,6 +163,10 @@ class video(models.Model):
                 "is_collection": item["is_collection"],
             })
         return result
+
+    def getHotestVideos(n):
+        return video.objects.filter().all().order_by("-v_play").values()[:n]
+
 class video_compilation(models.Model):
     vc_id = models.AutoField(primary_key=True)
     v_id = models.IntegerField(null=False)

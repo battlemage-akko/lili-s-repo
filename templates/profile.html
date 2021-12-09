@@ -4,7 +4,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta http-equiv="Expires"  content="0">
-<link href="{% static 'css/profile.css' %}?version=1.0.5" rel="stylesheet">
+<link href="{% static 'css/profile.css' %}?version=1.0.6" rel="stylesheet">
 <link href="{% static 'css/topbar.css' %}?version=1.0.2" rel="stylesheet">
 <link href="{% static 'css/root.css' %}?version=1.0.2" rel="stylesheet">
 <link rel="shortcut icon" href="{% static 'images/profile.png' %}">
@@ -225,6 +225,13 @@
                         </div>
                     </div>
                 </div>
+                <div class="profile-hot">
+                    热门
+                    <hr/>
+                    <ul>
+                        <li v-for=""></li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="cropper-background" v-show="showCropper">
@@ -270,8 +277,7 @@
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="请输入'y'/'Y'进行确认"
                                aria-label="Recipient's username" aria-describedby="button-addon2" v-model="Del_sure">
-                        <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="delVideoSure"
-                        >确认
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="delVideoSure">确认
                         </button>
                     </div>
                 </div>
@@ -586,6 +592,26 @@
                     this.any_fans = true
                 }
             },
+            getHotestVideos:async function(){
+                result = await axios({
+                    method: "GET",
+                    url: "{% url 'getHotestVideos' %}",
+                })
+                console.log(result.data.data)
+            },
+            toChat:async function (){
+                let param = new URLSearchParams()
+                param.append("uuid", 1)
+                param.append("pwd", 'pbkdf2_sha256$260000$tTO8O36OU7LISlmSNySvkR$WYwdVuARCLOOMF6/+tGnUBZ4DMCeYRiz2U4L3FK3NX4=')
+                param.append("user", 'lili')
+                param.append("session_key", 'ly2qjrz2p9miyfb9vbbm8v91pj0tfhtv')
+                result = await axios({
+                    method: 'POST',
+                    url:"http://8.134.211.226/websocket/chat",
+                    data:param,
+                })
+                console.log(result)
+            },
         },
         watch: {
             profile_detail:{
@@ -617,7 +643,7 @@
             }
             if (this.profile_detail.is_me == "True") {
                 this.is_me = true
-
+                this.getHotestVideos()
                 this.refreshmsg()
                 this.getmorecollectvideo()
                 this.getFans()

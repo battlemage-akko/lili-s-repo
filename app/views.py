@@ -573,5 +573,22 @@ def getFans(request):
             'data':followtable.user_followed(id)
         })
 
+@login_required
+def getHotestVideos(request):
+    if (request.method == 'GET'):
+        tmp = videosTable.getHotestVideos(10)
+        result = []
+        for item in tmp:
+            result.append({
+                'v_id':item['v_id'],
+                'v_title':item['v_title'],
+                'time':{
+                    'year':item['v_time'].year,
+                    'month': item['v_time'].month,
+                }
+            })
+        return JsonResponse({
+            'data': result
+        })
 
 
