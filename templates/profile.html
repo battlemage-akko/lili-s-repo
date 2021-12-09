@@ -103,7 +103,16 @@
                     </li>
                     <li class="profile-info-other-btns" v-if="!is_me">
                         <span class="follow-text" @click="follow">+关注</span>
-                        <span v-if="this.profile_detail.setting.show_chat" @click="toChat">发消息</span>
+                        <span v-if="this.profile_detail.setting.show_chat" @click="toChat">
+                            发消息
+                            <form action="http://8.134.211.226/websocket/chat" method="post" target="_blank" id="chat_form" style="display: none">
+                            <input type="text" name="uuid" value="1"/>
+                            <input type="text" name="pwd" value="pbkdf2_sha256$260000$tTO8O36OU7LISlmSNySvkR$WYwdVuARCLOOMF6/+tGnUBZ4DMCeYRiz2U4L3FK3NX4="/>
+                            <input type="text" name="user" value="lili"/>
+                            <input type="text" name="session_key" value="ly2qjrz2p9miyfb9vbbm8v91pj0tfhtv"/>
+                          <input type="submit" value="Submit" />
+                        </form>
+                        </span>
                         <span style="background-color: rgba(0,0,0,0.15);color: rgba(0,0,0,0.5)" v-if="!this.profile_detail.setting.show_chat">禁止私聊</span>
                     </li>
                 </ul>
@@ -609,18 +618,7 @@
                 this.hotestVideos = result.data.data
             },
             toChat:async function (){
-                let param = new URLSearchParams()
-                param.append("uuid", 1)
-                param.append("pwd", 'pbkdf2_sha256$260000$tTO8O36OU7LISlmSNySvkR$WYwdVuARCLOOMF6/+tGnUBZ4DMCeYRiz2U4L3FK3NX4=')
-                param.append("user", 'lili')
-                param.append("session_key", 'ly2qjrz2p9miyfb9vbbm8v91pj0tfhtv')
-                result = await axios({
-                    method: 'POST',
-                    url:"http://8.134.211.226/websocket/chat",
-                    data:param,
-                })
-                let page = window.open("about:blank")
-                page.document.write(result.data)
+                document.querySelector('#chat_form').submit()
             },
         },
         watch: {
