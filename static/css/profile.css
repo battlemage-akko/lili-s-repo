@@ -577,3 +577,9 @@ hr {
     background-color: #ececec;
     color: #000000;
 }
+.hotvideos-list{
+    padding: 0px;
+}
+.hotvideos-list i{
+    font-style: normal;
+}

@@ -228,8 +228,13 @@
                 <div class="profile-hot">
                     热门
                     <hr/>
-                    <ul>
-                        <li v-for=""></li>
+                    <ul class="hotvideos-list">
+                        <li v-for="(item,index) in hotestVideos" :key="item.v_id">
+                            <span style="display: flex">
+                                <i>{[index]}</i>
+                                <p>{[item.v_title]}</p>
+                            </span>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -318,6 +323,7 @@
                 end: 12,
                 each: 12,
             },
+            hotestVideos:[],
             this_user_admin: false,
             is_login: topbar.is_login,
             profile_content: {
@@ -597,7 +603,7 @@
                     method: "GET",
                     url: "{% url 'getHotestVideos' %}",
                 })
-                console.log(result.data.data)
+                this.hotestVideos = result.data.data
             },
             toChat:async function (){
                 let param = new URLSearchParams()
@@ -610,7 +616,7 @@
                     url:"http://8.134.211.226/websocket/chat",
                     data:param,
                 })
-                console.log(result)
+                window.open(result.data)
             },
         },
         watch: {
