@@ -103,7 +103,7 @@
                     </li>
                     <li class="profile-info-other-btns" v-if="!is_me">
                         <span class="follow-text" @click="follow">+关注</span>
-                        <span v-if="this.profile_detail.setting.show_chat">发消息</span>
+                        <span v-if="this.profile_detail.setting.show_chat" @click="toChat">发消息</span>
                         <span style="background-color: rgba(0,0,0,0.15);color: rgba(0,0,0,0.5)" v-if="!this.profile_detail.setting.show_chat">禁止私聊</span>
                     </li>
                 </ul>
