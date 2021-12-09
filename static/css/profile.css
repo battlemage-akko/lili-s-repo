@@ -566,3 +566,8 @@ hr {
     background-color: black;
     color: white;
 }
+.each-follow-btn.true{
+    padding: 5px 10px;
+    background-color: #ececec;
+    color: #000000;
+}

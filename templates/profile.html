@@ -210,13 +210,14 @@
                     我的粉丝
                     <hr/>
                     <div class="profile-message-follow">
-                        <div v-for="(item,index) in profile_detail.AllFans" :key="item.id" class="each-fans">
+                        <div v-for="(item,index) in AllFans" :key="item.id" class="each-fans">
                             <div>
                                 <img :src="avatar_url+item.avatar" alt="" style="margin-right: 10px" @click="toProfile(item.id)">
                                 <span @click="toProfile(item.id)">{[item.username]}</span>
                             </div>
                             <div>
-                                <span class="each-follow-btn">+关注</span>
+                                <span class="each-follow-btn" @click="follow_fans(AllFans.indexOf(item))" v-if="!item.mutual">+ 关注</span>
+                                <span class="each-follow-btn true" @click="follow_fans(AllFans.indexOf(item))" v-if="item.mutual">已互关</span>
                             </div>
                         </div>
                         <div v-if="!any_fans" style="display: flex;align-items: center;flex-direction: column;opacity: .5">
@@ -284,6 +285,7 @@
         el: "#app",
         delimiters: ['{[', ']}'],
         data: {
+            AllFans:[],
             background:"",
             cropper:'',
             panel: false,
@@ -443,7 +445,23 @@
                     data: param,
                 })
                 this.followornot = result.data.code
-
+            },
+            follow_fans: async function(index){
+                if (!this.is_login) {
+                    this.login()
+                }
+                fans = this.AllFans[index].id
+                let param = new URLSearchParams()
+                param.append('follow_id', this.userdetail.id)
+                param.append('followed_id', fans)
+                result = await axios({
+                    method: "POST",
+                    url: "{% url "follow" %}",
+                    data: param,
+                })
+                if(result.data.code){
+                    this.AllFans[index].mutual = !this.AllFans[index].mutual
+                }
             },
             logout: function () {
                 topbar.logout()
@@ -563,13 +581,19 @@
                     url: "{% url 'getFans' %}",
                     data: param
                 })
-                this.profile_detail.AllFans = result.data.data
-                if(this.profile_detail.AllFans.length){
+                this.AllFans = result.data.data
+                if(this.AllFans.length){
                     this.any_fans = true
                 }
             },
         },
         watch: {
+            profile_detail:{
+                handler:(val,oldval)=>{
+                    console.log(val)
+                },
+                deep:true
+            },
             videosList_mine: function () {
                 this.videosList_mine_count = this.videosList_mine.length
                 this.videosPage.total = Math.ceil(this.videosList_mine.length / this.videosPage.each)
@@ -583,11 +607,9 @@
                     this.profile_detail.fans -= 1
                 }
             },
-
         },
         mounted: function () {
             that = this
-            this.profile_detail.AllFans = []
             if (this.followornot == 1) {
                 document.querySelector('.follow-text').innerHTML = "已关注"
             } else if (this.followornot == 2) {

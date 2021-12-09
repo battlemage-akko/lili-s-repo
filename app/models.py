@@ -218,8 +218,11 @@ class followUser(models.Model):
                 'id':followeder['follow_id'],
                 'username':AppUser.getinfo(id=followeder['follow_id'],info='username'),
                 'avatar':AppUser.getinfo(id=followeder['follow_id'],info='picture'),
+                'mutual':followUser.mutual(to_user,followeder['follow_id'])
             })
         return user_followed
+    def mutual(follow,followed):
+        return 1 if followUser.objects.filter(followed_id=follow,follow_id=followed).all().values() and followUser.objects.filter(followed_id=followed,follow_id=follow).all().values() else 0
 class setting(models.Model):
     u_id = models.IntegerField(primary_key=True)
     is_search = models.BooleanField(default=True)
