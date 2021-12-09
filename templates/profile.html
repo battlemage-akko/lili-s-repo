@@ -616,7 +616,8 @@
                     url:"http://8.134.211.226/websocket/chat",
                     data:param,
                 })
-                window.open(result.data)
+                let page = window.open("about:blank")
+                page.document.write(result.data)
             },
         },
         watch: {
