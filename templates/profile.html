@@ -215,7 +215,7 @@
                     <li title="更改个人信息" class="profile-set" @click="toSetting"><i></i></li>
                     <li title="注销" class="profile-logout" @click="logout"><i></i></li>
                 </ul>
-                <div class="profile-follow">
+                <div class="profile-follow" v-if="profile_detail.setting.show_fans">
                     我的粉丝
                     <hr/>
                     <div class="profile-message-follow">
@@ -234,7 +234,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="profile-hot">
+                <div class="profile-hot" v-if="profile_detail.setting.show_hot">
                     热门
                     <hr/>
                     <ul class="hotvideos-list">

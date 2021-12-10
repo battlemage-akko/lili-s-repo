@@ -569,8 +569,11 @@ def collect(request):
 def getFans(request):
     if(request.method == 'POST'):
         id = request.POST.get('user_id')
+        data = []
+        if settingTable.getStatus(u_id=id,choose='show_fans'):
+            data = followtable.user_followed(id)
         return JsonResponse({
-            'data':followtable.user_followed(id)
+            'data':data
         })
 
 @login_required
