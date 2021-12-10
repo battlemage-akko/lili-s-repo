@@ -86,6 +86,8 @@
                 show_gender:0,
                 show_chat:0,
                 show_discuss:0,
+                show_hot:0,
+                show_fans:0,
             },
             message: "",
             loading:false,
@@ -294,14 +296,11 @@
                     url: "{% url 'getMySetting' %}",
                     data: param
                 })
-                this.setting_form.is_search = result.data.is_search?true:false
-                this.setting_form.show_profile = result.data.show_profile?true:false
-                this.setting_form.show_desc = result.data.show_desc?true:false
-                this.setting_form.show_gender = result.data.show_gender?true:false
-                this.setting_form.show_video = result.data.show_video?true:false
-                this.setting_form.show_collect = result.data.show_collect?true:false
-                this.setting_form.show_chat = result.data.show_chat?true:false
-                this.setting_form.show_discuss = result.data.show_discuss?true:false
+
+                for(let item in result.data){
+                    result.data[item] = result.data[item]?true:false
+                }
+                this.setting_form = result.data
             },
             async changeMySetting(option,value){
                 let param = new URLSearchParams()

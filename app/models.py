@@ -233,6 +233,8 @@ class setting(models.Model):
     show_gender = models.BooleanField(default=True)
     show_chat = models.BooleanField(default=True)
     show_discuss = models.BooleanField(default=True)
+    show_hot = models.BooleanField(default=True)
+    show_fans = models.BooleanField(default=True)
 
     def getSettingById(u_id):
         result  = setting.objects.filter(u_id=u_id).all().values()
