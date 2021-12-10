@@ -88,6 +88,8 @@
                 show_discuss:0,
                 show_hot:0,
                 show_fans:0,
+                show_tools:0,
+                show_message:0,
             },
             message: "",
             loading:false,
@@ -296,7 +298,6 @@
                     url: "{% url 'getMySetting' %}",
                     data: param
                 })
-
                 for(let item in result.data){
                     result.data[item] = result.data[item]?true:false
                 }

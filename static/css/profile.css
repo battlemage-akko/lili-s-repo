@@ -22,12 +22,14 @@ hr {
     padding: 20px;
     flex-basis: 400px;
     flex-grow: 1;
-    /*border:5px dashed black;*/
     min-width: 350px;
     max-width: 1050px;
+    /*border:5px dashed black;*/
     margin-bottom: 10px;
 }
-
+.profile-other.hidden{
+    display: none;
+}
 .profilefooter {
     height: 50px;
 }
@@ -258,7 +260,6 @@ hr {
     margin: 0px;
     padding: 0px;
     flex-wrap: wrap;
-    justify-content: space-evenly;
 }
 
 .profile-content-myvideos.active li .videos-each-del {
@@ -270,7 +271,7 @@ hr {
     flex-grow: 1;
     min-width: 225px;
     transition: all .5s ease;
-    max-width: 450px;
+    max-width: 350px;
 }
 
 .profile-content-myvideos li div {

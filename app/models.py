@@ -20,6 +20,11 @@ class AppUser(AbstractUser):
     def getProfile(id):
         result = AppUser.objects.filter(id=int(id)).all().values()
         options = setting.getSettingById(id)
+        data = {}
+        data['u_id'] = options['u_id']
+        for i in options.keys():
+            if i != 'u_id':
+                data[i] = 1 if options[i] else 0
         if result:
             return {
                     "username": result[0]["username"],
@@ -38,16 +43,7 @@ class AppUser(AbstractUser):
                         "day": result[0]["date_joined"].day
                     },
                     "gender":result[0]["gender"],
-                    "setting": {
-                        'u_id':options['u_id'],
-                        'is_search':1 if options['is_search'] else 0,
-                        'show_profile':1 if options['show_profile'] else 0,
-                        'show_desc':1 if options['show_desc'] else 0,
-                        'show_video':1 if options['show_video'] else 0,
-                        'show_collect':1 if options['show_collect'] else 0,
-                        'show_gender':1 if options['show_gender'] else 0,
-                        'show_chat': 1 if options['show_chat'] else 0,
-                    },
+                    "setting": data
                 }
         else:
             return 0

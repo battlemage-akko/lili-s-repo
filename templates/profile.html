@@ -4,7 +4,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta http-equiv="Expires"  content="0">
-<link href="{% static 'css/profile.css' %}?version=1.0.6" rel="stylesheet">
+<link href="{% static 'css/profile.css' %}?version=1.0.7" rel="stylesheet">
 <link href="{% static 'css/topbar.css' %}?version=1.0.2" rel="stylesheet">
 <link href="{% static 'css/root.css' %}?version=1.0.2" rel="stylesheet">
 <link rel="shortcut icon" href="{% static 'images/profile.png' %}">
@@ -186,8 +186,8 @@
                     </div>
                 </div>
             </div>
-            <div class="profile-other" v-if="is_me">
-                <div class="profile-message">
+            <div class="profile-other" v-if="is_me && show_other">
+                <div class="profile-message" v-if="profile_detail.setting.show_message">
                     <ul style="display: flex;list-style: none;justify-content: space-between;margin: 0;padding-left: 0">
                         <li>消息 <span style="font-family: IcoMoon-Free;cursor: pointer" @click="refreshmsg"> loop2</span>
                         </li>
@@ -208,7 +208,7 @@
                         </ul>
                     </div>
                 </div>
-                <ul class="profile-tools">
+                <ul class="profile-tools" v-if="profile_detail.setting.show_tools">
                     <li title="消息" class="profile-chat"><i></i></li>
                     <li title="上传视频" class="profile-upload"><i></i></li>
                     <li title="云盘" class="profile-cloud" @click="tocloud"><i></i></li>
@@ -325,6 +325,7 @@
             delList: [],
             messages: [],
             is_me: false,
+            show_other:true,
             any_fans: false,
             Del_sure: "",
             videosPage: {
@@ -671,6 +672,9 @@
                         that.croppable = true;
                     }
                 });
+            }
+            if (!this.profile_detail.setting.show_fans && !this.profile_detail.setting.show_hot && !this.profile_detail.setting.show_tools && !this.profile_detail.setting.show_fans){
+                this.show_other = false
             }
             this.getMyVideo()
         }

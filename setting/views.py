@@ -65,6 +65,7 @@ def getMySetting(request):
         for i in result.keys():
             if i != 'u_id':
                 data[i] = 1 if result[i] else 0
+        print(data)
         return JsonResponse(data)
 @csrf_exempt
 def changeMySetting(request):
