@@ -353,6 +353,7 @@ def ApplyForV_id(request):
                              user_id=user_id, v_title=video_title, v_like=0, v_play=0, v_collect=0,v_tags=tmp,is_collection=True).all().values()[0]['v_id']
         if compilation_note:
             videosTable.objects.filter(v_id=v_id).update(v_note=compilation_note)
+        Userdatabase.addvideo(user_id)
         return JsonResponse({
             "code": 1,
             "v_id": v_id
@@ -384,7 +385,6 @@ def finish_compilation_save(vc_title,v_title,video_file,v_id,vc_index):
     result = compilationTable(v_id=v_id,vc_ad=vc_ad,vc_title=vc_title,vc_duaring=time,vc_index=vc_index).save()
     user_id = Userdatabase.objects.filter(username=videosTable.objects.filter(v_id=v_id).all().values()[0]['v_auther']).all().values()[0]['id']
     messagesTable.createMessage(m_content="您成功上传了《"+vc_title+"》", m_user=user_id)
-    Userdatabase.addvideo(user_id)
     return HttpResponse("保存完毕")
 
 @csrf_exempt
@@ -476,6 +476,7 @@ def del_video(request):
                 clearacc = accusationTable.delectAll(v_id=v_id)
                 discussTable.delByV_id(v_id=v_id)
                 answerTable.delByV_id(v_id=v_id)
+                Userdatabase.delvideo(user_id)
                 messagesTable.createMessage(m_content="成功删除合集《" + v_title + "》与视频弹幕,视频id(v_id)为" + v_id, m_user=user_id)
 
             if not v.is_collection:
