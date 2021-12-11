@@ -133,6 +133,24 @@ hr {
     padding: 10px;
     margin-bottom: 15px;
 }
+.profile-follow-btns{
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+.profile-follow-btns li{
+    padding: 5px 5px;
+    cursor: pointer;
+    transition: all .1s ease;
+}
+.profile-follow-btns li:hover{
+    color: #9a9a9a;
+    border-bottom: 3px solid #9a9a9a;
+}
+.profile-follow-btns li.active{
+    color: #0d6efd;
+    border-bottom: 3px solid #0d6efd;
+}
 .profile-hot{
     font-family: "微软雅黑 Light";
     background-color: white;
@@ -140,7 +158,7 @@ hr {
     margin-bottom: 15px;
 }
 .profile-follow hr{
-    margin-bottom: 0!important;
+    margin:0!important ;
 }
 .profile-message-content {
     list-style: none;

@@ -92,7 +92,21 @@ body::-webkit-scrollbar-track { /*滚动条里面轨道*/
     font-family: IcoMoon-Free;
     font-style: normal;
 }
-
+.comments:after{
+    content: '\e970';
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+.comments.new:before{
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    top: 30%;
+    right: 30%;
+    background-color: red;
+    border-radius: 10px;
+}
 .ban:before {
     content: "\ea0e";
     font-family: IcoMoon-Free;

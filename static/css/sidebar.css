@@ -277,4 +277,8 @@
         #logoutform{
             position: absolute;
         }
+        .new_message{
+            font-size: 14px;
+        }
+
 

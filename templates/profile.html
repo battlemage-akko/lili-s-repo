@@ -106,12 +106,12 @@
                         <span v-if="this.profile_detail.setting.show_chat" @click="toChat">
                             发消息
                             <form action="http://8.134.211.226/websocket/chat" method="post" target="_blank" id="chat_form" style="display: none">
-                            <input type="text" name="uuid" value="1"/>
-                            <input type="text" name="pwd" value="pbkdf2_sha256$260000$tTO8O36OU7LISlmSNySvkR$WYwdVuARCLOOMF6/+tGnUBZ4DMCeYRiz2U4L3FK3NX4="/>
-                            <input type="text" name="user" value="lili"/>
-                            <input type="text" name="session_key" value="ly2qjrz2p9miyfb9vbbm8v91pj0tfhtv"/>
-                          <input type="submit" value="Submit" />
-                        </form>
+                                <input type="text" name="uuid" value="1"/>
+                                <input type="text" name="pwd" value="pbkdf2_sha256$260000$tTO8O36OU7LISlmSNySvkR$WYwdVuARCLOOMF6/+tGnUBZ4DMCeYRiz2U4L3FK3NX4="/>
+                                <input type="text" name="user" value="lili"/>
+                                <input type="text" name="session_key" value="ly2qjrz2p9miyfb9vbbm8v91pj0tfhtv"/>
+                              <input type="submit" value="Submit" />
+                            </form>
                         </span>
                         <span style="background-color: rgba(0,0,0,0.15);color: rgba(0,0,0,0.5)" v-if="!this.profile_detail.setting.show_chat">禁止私聊</span>
                     </li>
@@ -216,7 +216,10 @@
                     <li title="注销" class="profile-logout" @click="logout"><i></i></li>
                 </ul>
                 <div class="profile-follow" v-if="profile_detail.setting.show_fans">
-                    我的粉丝
+                    <ul class="profile-follow-btns">
+                        <li class="profile-follow-btns-each active" @click="changeFollow($event)">我的粉丝</li>
+                        <li class="profile-follow-btns-each" @click="changeFollow($event)">我的关注</li>
+                    </ul>
                     <hr/>
                     <div class="profile-message-follow">
                         <div v-for="(item,index) in AllFans" :key="item.id" class="each-fans">
@@ -356,6 +359,12 @@
                 if(this.is_me){
                     window.open('/setting/setting_avatar/')
                 }
+            },
+            changeFollow:function (e){
+                for(let item of document.querySelectorAll('.profile-follow-btns-each')){
+                    item.classList.remove('active')
+                }
+                e.currentTarget.classList.add('active')
             },
             toProfile:function (id){
                 topbar.toProfile(id)

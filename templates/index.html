@@ -20,7 +20,7 @@
     <link href="{% static 'css/profile.css' %}?version=1.0.1" rel="stylesheet">
     <link href="{% static 'css/admin.css' %}?version=1.0.2" rel="stylesheet">
     <link href="{% static 'css/videoslist.css' %}?version=1.0.1" rel="stylesheet">
-    <link href="{% static 'css/root.css' %}?version=1.0.1" rel="stylesheet">
+    <link href="{% static 'css/root.css' %}?version=1.0.2" rel="stylesheet">
     <style>
         @font-face {
             font-family: 'IcoMoon-Free';
@@ -448,6 +448,13 @@
             </div>
         </div>
         <div class="sidebar">
+        <form action="http://8.134.211.226/websocket/chat" method="post" target="_blank" id="chat_form" style="display: none">
+                                <input type="text" name="uuid" value="1"/>
+                                <input type="text" name="pwd" value="pbkdf2_sha256$260000$tTO8O36OU7LISlmSNySvkR$WYwdVuARCLOOMF6/+tGnUBZ4DMCeYRiz2U4L3FK3NX4="/>
+                                <input type="text" name="user" value="lili"/>
+                                <input type="text" name="session_key" value="ly2qjrz2p9miyfb9vbbm8v91pj0tfhtv"/>
+                              <input type="submit" value="Submit" />
+                            </form>
             <div class="logo_content">
                 <div class="logo">
                     <i></i>
@@ -469,6 +476,17 @@
                 <li id="videos" @click="changePage('videos')">
                     <i class="videosbtn"></i>
                     <p>视频</p>
+                </li>
+                <li @click="changePage('chat')">
+                    <i class="comments">
+                    </i>
+                    <p>
+                        消息
+                        <span class="new_message" v-if="new_message>0">
+                            {[new_message]}
+                            <span v-if="new_message==99">+</span>
+                        </span>
+                    </p>
                 </li>
                     {% if request.user.is_superuser == True %}
                         <li id="admin" @click="changePage('admin')">
@@ -571,7 +589,7 @@
             terminal_user: "administrator",
             terminal_password: window.btoa("123456"),
             terminal_cmd:"",
-
+            new_message: 0,
             q:"",
             video_url:"{% url "index" %}"+"video/",
             base_url:"{% url 'index' %}"+"search?q=",
@@ -649,6 +667,10 @@
                 }
             },
             changePage:function (Page){
+                if(Page=='chat'){
+                    document.querySelector('#chat_form').submit()
+                    return
+                }
                 for(let key in vm.flags){
                     this.flags[key] = false
                 }
@@ -909,10 +931,30 @@
                     this.getmorenewvideo()
                 }
             },
+            getNewMessage:async function (){
+
+                result = await axios({
+                    method:"GET",
+                    url:"http://8.134.211.226/websocket/getUnreadAllNum",
+                    params: {
+                        'uuid': 1
+                    }
+                })
+                if(result.data!=0){
+                    document.querySelector('.comments').classList.add('new')
+                    this.new_message = result.data
+                    if(parseInt(this.new_message)>100){
+                        this.new_message = 99
+                    }
+                }
+            },
         },
         mounted: function () {
             this.getmorenewvideo()
             this.is_login_check()
+            if(this.is_login){
+                this.getNewMessage()
+            }
             if (this.this_user_admin) {
                 this.getAllVideoAccusation()
                 this.userDetail()
@@ -928,9 +970,6 @@
                 if (this.serverupdate == true) {
                     this.Interval = setInterval(this.serverDetail, 2000);
                 }
-            },
-            AllUsers: function () {
-                console.log(this.AllUsers.data)
             },
             flags:{
                 handler(val, oldval){

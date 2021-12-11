@@ -305,7 +305,10 @@ def getMyVideo(request):
         count = int(request.POST.get("count"))
         u_id = request.POST.get("user_id")
         result = []
-        if settingTable.getStatus(u_id=u_id,choose='show_video') or int(request.user.id)==int(u_id):
+        tmp = False
+        if request.user.is_authenticated:
+            tmp = int(request.user.id)==int(u_id)
+        if settingTable.getStatus(u_id=u_id,choose='show_video') or tmp:
             for i in videosTable.getvideosbyid(user_id=u_id, choose="time"):
                 if i["is_collection"]:
                     i["collection_count"] = compilationTable.getNumberByV_id(i["v_id"])
