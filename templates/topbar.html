@@ -21,8 +21,57 @@
             <li @click="logout">
                 <i class="logout"></i>
             </li>
-            <li>
+            <li class="pic-father">
                  <img :src="this.avatar_url+userdetail.picture" alt="" class="video-user-pic" v-if="is_login" @click="toProfile(userdetail.id)">
+                <div class="profile-menu">
+                    <div class="triangle">
+
+                    </div>
+                    <div class="profile-menu-content">
+                        <div style="width: 250px">
+                            <div>
+                                <div class="profile-avatar">
+                                    <img :src="this.avatar_url+userdetail.picture" class="profile-menu-pic" alt="" @click="toProfile(userdetail.id)">
+                                    <span style="font-family: '微软雅黑';font-weight: 700;margin-top: 5px;font-size: 20px">{[userdetail.name]}</span>
+                                </div>
+                            </div>
+                            <div style="height: 70px"></div>
+                            <ul class="profile-menu-info">
+                                <li>
+                                    <p>粉丝</p>
+                                    <p>{[userdetail.fans]}</p>
+                                </li>
+                                <li>
+                                    <p>关注</p>
+                                    <p>0</p>
+                                </li>
+                                <li>
+                                    <p>视频</p>
+                                    <p>{[userdetail.v_count]}</p>
+                                </li>
+                            </ul>
+                            <ul class="profile-menu-options">
+                                <li onclick="window.location.href='/setting/setting_profile/'">
+                                    <span class="auther each-tag"></span>
+                                    <a>修改个人资料</a>
+                                </li>
+                                <li onclick="window.location.href='/setting/setting_avatar/'">
+                                    <span class="picture each-tag"></span>
+                                    <a>修改头像</a>
+                                </li>
+                                <li onclick="window.location.href='/setting/setting_info/'">
+                                    <span class="eye each-tag"></span>
+                                    <a>修改隐私设置</a>
+                                </li>
+                                <li @click="logout">
+                                    <span class="logout each-tag"></span>
+                                    <a>登出</a>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
             </li>
         </ul>
         <ul class="video-user-info" v-if="!is_login">
@@ -31,6 +80,7 @@
             </li>
         </ul>
 </div>
+
 <script>
     const topbar = new Vue({
         el: ".warning-myself",
@@ -51,7 +101,7 @@
                 gender: "{{ request.user.gender }}",
                 picture: "{{ request.user.picture }}",
                 fans: "{{ request.user.fans }}",
-                v_count:"{{ request.user.fans }}",
+                v_count:"{{ request.user.v_count }}",
                 desc:"{{ request.user.desc }}",
             },
         },

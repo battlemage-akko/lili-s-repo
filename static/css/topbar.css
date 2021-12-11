@@ -8,7 +8,101 @@
     justify-content: space-between;
     padding: 0px 30px;
 }
-
+.pic-father:hover .profile-menu{
+    display: block;
+}
+.pic-father:hover .video-user-pic{
+    opacity: 0;
+}
+.profile-menu:hover{
+    display: block;
+}
+.profile-menu{
+    position: fixed;
+    display: none;
+    z-index: 11;
+    top: 45px;
+    right: 55px;
+    transition: all .5s ease;
+}
+.profile-menu-pic{
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+    border: 5px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+.profile-menu-options{
+    margin: 0px;
+    padding: 0px;
+    margin-top: 5px;
+}
+.video-user-info .profile-menu-options li{
+    display: flex;
+    font-size: 15px;
+    height: 40px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    padding: 0px;
+    margin: 0px;
+    cursor: pointer;
+}
+.video-user-info .profile-menu-options li:hover{
+    background-color: rgba(0, 0, 0, 0.2);
+}
+.each-tag{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+}
+.profile-menu-content{
+    position: relative;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px -5px rgba(0,0,0,.5);
+    padding: 10px;
+}
+.profile-menu-info{
+    margin: 0;
+    padding: 10px 0px;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+.profile-menu-info li{
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.profile-avatar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    width: calc(100% - 20px);
+    top: -60px;
+}
+.triangle:before{
+    content: '';
+    width: 0;
+    height: 0;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent white transparent;
+}
+.triangle{
+    display: flex;
+    justify-content: right;
+    padding-right:10px ;
+    padding-top:70px;
+}
 .video-user-info {
     display: flex;
     margin: 0px;
@@ -19,7 +113,7 @@
     justify-content: center;
     display: flex;
     flex-direction: column;
-    margin: 0px 20px;
+    padding: 0px 20px;
 }
 
 .video-user-info i {
@@ -32,6 +126,7 @@
     border-radius: 50px;
     cursor: pointer;
     border: 3px solid rgba(0, 0, 0, 0.1);
+    transition: all .5s ease;
 }
 
 .videos-top-search {
@@ -52,7 +147,6 @@
     transition: all .3s ease;
     flex-wrap: nowrap;
     font-size: 15px;
-
 }
 
 .video-user-info-login:hover {

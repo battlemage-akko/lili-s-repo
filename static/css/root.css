@@ -156,11 +156,6 @@ body::-webkit-scrollbar-track { /*滚动条里面轨道*/
     font-size: 20px;
 }
 
-.auther:before {
-    content: '\e971';
-    font-family: IcoMoon-Free;
-    font-style: normal;
-}
 .picture:before{
     content: '\e90d';
     font-family: IcoMoon-Free;
@@ -177,7 +172,11 @@ body::-webkit-scrollbar-track { /*滚动条里面轨道*/
     font-family: IcoMoon-Free;
     font-style: normal;
 }
-
+.eye::before{
+    content:"\e9ce";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
 .pay::before {
     content: "\e93e";
     font-family: IcoMoon-Free;
