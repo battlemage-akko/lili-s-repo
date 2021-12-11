@@ -21,8 +21,9 @@
     position: fixed;
     display: none;
     z-index: 11;
-    top: 45px;
-    right: 55px;
+    top: 35px;
+    right: 30px;
+    padding: 20px;
     transition: all .5s ease;
 }
 .profile-menu-pic{
