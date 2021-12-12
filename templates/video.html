@@ -1063,6 +1063,7 @@
             },
             send_Msg_to_server: async function (tmp) {
                 let param = new URLSearchParams()
+                console.log(this.userdetail)
                 param.append('b_auther', this.userdetail.name)
                 param.append('b_content', tmp.b_content)
                 param.append('b_time', tmp.b_time)
