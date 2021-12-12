@@ -189,6 +189,12 @@ body::-webkit-scrollbar-track { /*滚动条里面轨道*/
     font-style: normal;
 }
 
+.fire::before{
+    content: "\e9a9";
+    font-family: IcoMoon-Free;
+    font-style: normal;
+}
+
 .collect::before {
     content: "\e9d7";
     font-family: IcoMoon-Free;
