@@ -232,7 +232,7 @@
                                 <span class="each-follow-btn true" @click="follow_fans(AllFans.indexOf(item))" v-if="item.mutual">已互关</span>
                             </div>
                         </div>
-                        <div v-if="!any_follow" style="display: flex;align-items: center;flex-direction: column;opacity: .5">
+                        <div v-if="!any_fans" style="display: flex;align-items: center;flex-direction: column;opacity: .5">
                             <img src="{% static 'images/no_fans.png' %}" alt="" style="width: 250px;margin: 20px">
                         </div>
                     </div>
@@ -246,7 +246,7 @@
                                 <span class="each-follow-btn">取消关注</span>
                             </div>
                         </div>
-                        <div v-if="!any_fans" style="display: flex;align-items: center;flex-direction: column;opacity: .5">
+                        <div v-if="!any_follow" style="display: flex;align-items: center;flex-direction: column;opacity: .5">
                             <img src="{% static 'images/no_fans.png' %}" alt="" style="width: 250px;margin: 20px">
                         </div>
                     </div>
