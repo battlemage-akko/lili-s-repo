@@ -200,10 +200,15 @@ class followUser(models.Model):
             f.delete()
 
     def user_follow(from_user): #获取本人关注的所有人
-        getAllFollow = followUser.objects.filter(follow_id=from_user).all()
+        getAllFollow = followUser.objects.filter(follow_id=from_user).all().values()
+
         user_follows = []
         for followeder in getAllFollow:
-            user_follows.append(followeder)
+            user_follows.append({
+                'id': followeder['followed_id'],
+                'username': AppUser.getinfo(id=followeder['followed_id'], info='username'),
+                'avatar': AppUser.getinfo(id=followeder['followed_id'], info='picture'),
+            })
         return user_follows
 
     def user_followed(to_user): #获取这个人都被谁关注了

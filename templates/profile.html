@@ -217,11 +217,11 @@
                 </ul>
                 <div class="profile-follow" v-if="profile_detail.setting.show_fans">
                     <ul class="profile-follow-btns">
-                        <li class="profile-follow-btns-each active" @click="changeFollow($event)">我的粉丝</li>
-                        <li class="profile-follow-btns-each" @click="changeFollow($event)">我的关注</li>
+                        <li class="profile-follow-btns-each active" @click="changeFollow($event,'fans')">我的粉丝</li>
+                        <li class="profile-follow-btns-each" @click="changeFollow($event,'follow')">我的关注</li>
                     </ul>
                     <hr/>
-                    <div class="profile-message-follow">
+                    <div v-show="follow_mode.fans" class="profile-message-follow">
                         <div v-for="(item,index) in AllFans" :key="item.id" class="each-fans">
                             <div>
                                 <img :src="avatar_url+item.avatar" alt="" style="margin-right: 10px" @click="toProfile(item.id)">
@@ -230,6 +230,20 @@
                             <div>
                                 <span class="each-follow-btn" @click="follow_fans(AllFans.indexOf(item))" v-if="!item.mutual">+ 关注</span>
                                 <span class="each-follow-btn true" @click="follow_fans(AllFans.indexOf(item))" v-if="item.mutual">已互关</span>
+                            </div>
+                        </div>
+                        <div v-if="!any_fans" style="display: flex;align-items: center;flex-direction: column;opacity: .5">
+                            <img src="{% static 'images/no_fans.png' %}" alt="" style="width: 250px;margin: 20px">
+                        </div>
+                    </div>
+                    <div v-show="follow_mode.follow" class="profile-message-following">
+                        <div v-for="(item,index) in AllFollow" :key="item.id" class="each-fans">
+                            <div>
+                                <img :src="avatar_url+item.avatar" alt="" style="margin-right: 10px" @click="toProfile(item.id)">
+                                <span @click="toProfile(item.id)">{[item.username]}</span>
+                            </div>
+                            <div>
+                                <span class="each-follow-btn">取消关注</span>
                             </div>
                         </div>
                         <div v-if="!any_fans" style="display: flex;align-items: center;flex-direction: column;opacity: .5">
@@ -312,6 +326,7 @@
         delimiters: ['{[', ']}'],
         data: {
             AllFans:[],
+            AllFollow:[],
             background:"",
             cropper:'',
             panel: false,
@@ -330,6 +345,7 @@
             is_me: false,
             show_other:true,
             any_fans: false,
+            any_follow:false,
             Del_sure: "",
             videosPage: {
                 now: 1,
@@ -338,6 +354,10 @@
                 begin: 0,
                 end: 12,
                 each: 12,
+            },
+            follow_mode:{
+                follow:false,
+                fans:true,
             },
             hotestVideos:[],
             this_user_admin: false,
@@ -360,10 +380,14 @@
                     window.open('/setting/setting_avatar/')
                 }
             },
-            changeFollow:function (e){
+            changeFollow:function (e,mode){
                 for(let item of document.querySelectorAll('.profile-follow-btns-each')){
                     item.classList.remove('active')
                 }
+                for(let key in this.follow_mode){
+                    this.follow_mode[key] = false
+                }
+                this.follow_mode[mode] = true
                 e.currentTarget.classList.add('active')
             },
             toProfile:function (id){
@@ -620,6 +644,19 @@
                     this.any_fans = true
                 }
             },
+            getFollow:async function (){
+                let param = new URLSearchParams()
+                param.append("user_id", this.profile_detail.id)
+                result = await axios({
+                    method: "POST",
+                    url: "{% url 'getFollow' %}",
+                    data: param
+                })
+                this.AllFollow = result.data.data
+                if(this.AllFollow.length){
+                    this.any_follow = true
+                }
+            },
             getHotestVideos:async function(){
                 result = await axios({
                     method: "GET",
@@ -665,6 +702,7 @@
                 this.refreshmsg()
                 this.getmorecollectvideo()
                 this.getFans()
+                this.getFollow()
             }
             if (this.is_me) {
                 let image = document.querySelector('#image')

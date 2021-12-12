@@ -21,5 +21,6 @@ urlpatterns = [
     re_path('^save_background/',views.save_background,name="save_background"),
     re_path('^save_avatar/',views.save_avatar,name="save_avatar"),
     re_path('^getFans/',views.getFans,name="getFans"),
+    re_path('^getFollow/',views.getFollow,name="getFollow"),
     re_path('^getHotestVideos/',views.getHotestVideos,name="getHotestVideos"),
 ]

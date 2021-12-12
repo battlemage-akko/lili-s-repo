@@ -576,6 +576,17 @@ def getFans(request):
             'data':data
         })
 
+@csrf_exempt
+def getFollow(request):
+    if(request.method == 'POST'):
+        id = request.POST.get('user_id')
+        data = []
+        if settingTable.getStatus(u_id=id,choose='show_fans'):
+            data = followtable.user_follow(id)
+        return JsonResponse({
+            'data':data
+        })
+
 @login_required
 def getHotestVideos(request):
     if (request.method == 'GET'):
