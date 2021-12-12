@@ -431,7 +431,7 @@
                                         </ul>
                                     </div>
                                 </li>
-                                <li style="margin-right: 10px">弹幕列表 <i class="danmubtn"></i></li>
+                                <li style="margin-right: 10px">弹幕列表 <i class="danmubtn" @click="show_danmu"></i></li>
                             </ul>
                         </div>
                         <div style="position: relative;height: 25px;font-size: 10px;line-height: 25px;background-color: rgba(0,0,0,0.05)">
@@ -618,7 +618,6 @@
             showNote:function (){
                 this.show_note = this.show_note?false:true
                 document.querySelector('.videos-note').classList.toggle('hidden')
-
             },
             changeBrToEnter:function (){
                 this.note_with_enter = this.video_detail.v_note.replace(/<br>/g,"\n")
@@ -908,6 +907,7 @@
 
                 if (mode == "move" && this.show_barrage == true) {
                     divNode.innerHTML = msg;
+
                     divNode.classList.add('barrage-item');
                     barrageBox.appendChild(divNode);
                     spanNode.innerHTML = '举报';
@@ -1063,7 +1063,7 @@
             },
             send_Msg_to_server: async function (tmp) {
                 let param = new URLSearchParams()
-                param.append('b_auther', this.userdetail.username)
+                param.append('b_auther', this.userdetail.name)
                 param.append('b_content', tmp.b_content)
                 param.append('b_time', tmp.b_time)
                 param.append('v_id', this.video_detail.v_id)
@@ -1276,10 +1276,28 @@
                 if (document.querySelector('.videos').scrollTop + document.querySelector('.videos').offsetHeight > document.querySelector('.videos').scrollHeight - 40 && this.videosList_isLoading != true) {
                     this.videosList_isLoading = true
                 }
+            },
+            show_danmu:function (){
+                let video = document.querySelector('.thisvideo')
+                let danmu = document.querySelector(".danmuholder")
+                let danmulist = document.querySelector('.danmulist')
+                let danmulistbtn = document.querySelector('.danmubtn')
+
+                danmulistbtn.classList.toggle("active")
+                if (!this.show_note) {
+                    this.show_note = true
+                    danmu.style.height = video.clientHeight + 90 + 'px'
+                    danmulist.style.height = video.clientHeight + 90 + 'px'
+                } else {
+                    this.show_note = false
+                    danmu.style.height = 50 + 'px'
+                }
             }
+
         },
         mounted: function () {
             that = this
+
             if(document.querySelector('.videos-note').scrollHeight>80){
                 document.querySelector('.videos-note').classList.toggle('hidden')
                 this.note_toolong = true
@@ -1306,8 +1324,13 @@
                 this.tags = tagsTmp
             }
             this.getBarrage()
+
             this.video_ready = videojs("video_ready", this.video_option, function () {
                 this.on('loadstart', function () {
+
+                });
+
+                this.on('loadedmetadata',function () {
 
                 });
                 this.off('timeupdate', function () {
@@ -1381,6 +1404,7 @@
                     }
                 })
             })
+            that.show_danmu()
             if (this.video_ready.readyState() == 0) {
                 this.video_ready.options_.sources = [
                     {
@@ -1464,19 +1488,6 @@
     let danmulistbtn = document.querySelector('.danmubtn')
     let danmu = document.querySelector(".danmuholder")
     let danmulist = document.querySelector('.danmulist')
-    let danmuflag = 0
-    danmulistbtn.addEventListener("click", (e) => {
-        danmulistbtn.classList.toggle("active")
-        if (!danmuflag) {
-            danmu.style.height = video.clientHeight + 90 + 'px'
-            danmuflag = 1
-            danmulist.style.height = video.clientHeight + 90 + 'px'
-        } else {
-            danmuflag = 0
-            danmu.style.height = 50 + 'px'
-        }
-    })
-    let nextbarrageTop = 0
 
 </script>
-</html>
+</html>..

@@ -137,6 +137,7 @@ def loadbarrage(request):
     barrage = []
     if vc_id:
         result = barrageTable.objects.filter(vc_id=vc_id).order_by('b_time').values()
+        print(result)
         for i in result:
             barrage.append({
                 'b_id': i['b_id'],
