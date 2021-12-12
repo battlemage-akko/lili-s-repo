@@ -32,6 +32,10 @@
     border-radius: 100px;
     border: 5px solid rgba(0, 0, 0, 0.1);
     cursor: pointer;
+    transition: all .2s ease;
+}
+.profile-menu-pic:hover{
+    border: 8px solid rgba(255, 255, 255, 0.3);
 }
 .profile-menu-options{
     margin: 0px;
