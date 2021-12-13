@@ -175,6 +175,7 @@
 }
 
 .danmulist {
+    font-family: 'NotoColorEmoji';
     overflow: scroll;
     overflow-x: hidden;
     height: 0px;

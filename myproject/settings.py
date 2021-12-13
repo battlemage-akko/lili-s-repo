@@ -96,6 +96,7 @@ DATABASES = {
         'PASSWORD': '5daaiMIANMA',
         'HOST': 'localhost',
         'NAME':'secretbase',
+        'OPTIONS': {'charset':'utf8mb4'},
     },
     'barrage': {
         'ENGINE': 'django.db.backends.mysql',
@@ -103,6 +104,7 @@ DATABASES = {
         'PASSWORD': '5daaiMIANMA',
         'HOST': 'localhost',
         'NAME':'barrage',
+        'OPTIONS': {'charset':'utf8mb4'},
     }
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

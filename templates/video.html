@@ -15,6 +15,7 @@
     <link rel="shortcut icon" href="{% static 'images/video.PNG' %}">
     <link href="{% static 'css/root.css' %}?version=1.0.2" rel="stylesheet">
     <link href="https://cdn.bootcdn.net/ajax/libs/video.js/7.15.0/alt/video-js-cdn.min.css" rel="stylesheet">
+    <link href="http://cdn.staticfile.org/emoji/0.2.2/emoji.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.bootcdn.net/ajax/libs/video.js/7.15.0/alt/video.core.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -25,6 +26,11 @@
             src: url('{% static 'css/IcoMoon-Free.ttf' %}') format('truetype');
             font-weight: normal;
             font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'NotoColorEmoji';
+            src: url('{% static 'css/NotoColorEmoji.ttf' %}');
         }
 
         body {
@@ -1421,7 +1427,6 @@
                     if(that.vc_index<=that.video_detail.vc_ads.length){
                         that.changeVideo(that.vc_index)
                         this.play()
-                        that.chatArray = []
                     }
                 })
             })
@@ -1505,6 +1510,7 @@
 
         }
     })
+
     let inputBox = document.querySelector("#danmu_content")
     let video = document.querySelector('.thisvideo')
     let barrage_height = video.clientHeight
