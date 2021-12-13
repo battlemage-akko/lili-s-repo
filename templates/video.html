@@ -1417,10 +1417,10 @@
 
                 });
                 this.on("ended", function () {
-                    console.log('end')
                     if(that.vc_index<=that.video_detail.vc_ads.length){
                         that.changeVideo(that.vc_index)
                         this.play()
+                        that.chatArray = []
                     }
                 })
             })
