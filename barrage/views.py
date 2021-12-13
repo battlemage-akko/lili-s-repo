@@ -145,6 +145,8 @@ def loadbarrage(request):
                 'b_content': i['b_content'],
                 'b_color': i['b_color'],
                 'b_mode': i['b_mode'],
+                'b_auther':i['b_auther'],
+                'avatar':Userdatabase.objects.filter(username=i['b_auther']).all().values()[0]['picture'],
                 'send_time': time_normalization(i['send_time'])
             })
         return JsonResponse({
@@ -159,7 +161,9 @@ def loadbarrage(request):
                 'b_content': i['b_content'],
                 'b_color': i['b_color'],
                 'b_mode': i['b_mode'],
-                'send_time': time_normalization(i['send_time'])
+                'send_time': time_normalization(i['send_time']),
+                'b_auther':i['b_auther'],
+                'avatar':Userdatabase.objects.filter(username=i['b_auther']).all().values()[0]['picture'],
             })
         return JsonResponse({
             'result': barrage
@@ -260,7 +264,7 @@ def save_note(request):
 def save_barrage(request):
     if(request.method == 'POST'):
         b_content = request.POST.get("b_content")
-        b_time = request.POST.get("b_time")
+        b_time = float(request.POST.get("b_time"))
         b_auther = request.POST.get("b_auther")
         b_mode = request.POST.get("b_mode")
         v_id = request.POST.get("v_id")

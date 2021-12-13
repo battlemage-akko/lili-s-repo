@@ -178,39 +178,33 @@
     overflow: scroll;
     overflow-x: hidden;
     height: 0px;
+    margin: 0;
+    transition: all .3s ease;
 }
-
-.danmulist li span {
-    vertical-align: top;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    font-size: 10px;
-    display: inline-block;
-    text-align: center;
+.danmulist.hidden{
+    height: 0!important;
 }
-
-.danmulist li span:nth-child(1) {
-    width: 50px;
-}
-
-.danmulist li span:nth-child(2) {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    width: 100px;
-}
-
-.danmulist li span:nth-child(3) {
-    width: 122px;
-}
-
 .danmu-btns {
     height: 100%;
     margin: 0;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     cursor: pointer;
 }
-
+.danmu-input-btns{
+    height: 54px;
+}
+.danmu-input{
+    padding: 10px;
+    padding-top: 0px;
+    height: 90px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
 .nextvideo img {
     display: inline-block;
     height: 80px;
@@ -225,6 +219,18 @@
     text-decoration: none;
     font-size: 15px;
     color: black;
+}
+
+.each-barrage{
+    min-height: 50px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.each-barrage img{
+    height: 30px;
+    width: 30px;
+    border-radius: 100px;
 }
 
 .nextvideo div {
@@ -636,17 +642,18 @@
 
 .text-weight:hover .danmu-setting {
     display: block;
-    z-index: 2;
 }
 
 .danmu-setting {
     background-color: rgba(0, 0, 0, 0.5);
     display: none;
     position: absolute;
-    bottom: 60px;
-    padding: 10px 15px;
+    bottom: 89px;
+    left: 0px;
+    padding: 5px 15px;
     color: white;
-    font-size: 13px;
+    font-size: 12px;
+
 }
 
 .danmu-setting-mode {
@@ -665,7 +672,7 @@
     width: 20px;
     height: 20px;
     border-radius: 3px;
-    box-shadow: 0px 0px 2px white;
+    box-shfadow: 0px 0px 2px white;
     border: rgba(0, 0, 0, 0.5) 1px solid;
 }
 

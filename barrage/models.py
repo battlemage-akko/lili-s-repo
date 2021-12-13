@@ -3,7 +3,7 @@ from general.views import time_normalization
 # Create your models here.
 class test(models.Model):
     b_id = models.AutoField(primary_key = True)
-    b_time = models.IntegerField()
+    b_time = models.FloatField()
     b_content = models.TextField()
     b_auther = models.CharField(max_length=20,null=True)
     b_color = models.CharField(max_length=20,default="black")
