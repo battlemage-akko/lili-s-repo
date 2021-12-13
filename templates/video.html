@@ -213,8 +213,8 @@
                     </p>
                 </div>
                 <span style="margin:10px;color: dodgerblue;font-size: 14px;cursor: pointer;" @click="showNote" v-if="note_toolong">
-                        <span v-if="!show_note">展开所有</span>
-                        <span v-if="show_note">收起</span>
+                        <span v-if="show_note">展开所有</span>
+                        <span v-if="!show_note">收起</span>
                     </span>
                 <span style="margin:10px;color: dodgerblue;font-size: 14px;cursor: pointer;" v-if="userdetail.id == video_detail.user_id && !change_note" @click="showChangeNote">修改简介</span>
                 <div v-if="userdetail.id == video_detail.user_id && change_note" class="change-note">
@@ -407,6 +407,10 @@
                                     <span style="margin: 0px 10px;">{[item.b_auther]}</span>
                                     <span style="color: black;font-weight: 500">{[item.b_content]}</span>
                                 </p>
+                            </li>
+                            <li style="height: 100%;width: 100%;display: flex;justify-content: center;flex-direction:column;align-items: center;opacity: .6" v-show="barrageArray.length==0">
+                                <img src="{% static 'images/no_barrage.png' %}" alt="">
+                                <span style="font-weight: 200;margin-top: 10px">还没有任何弹幕~</span>
                             </li>
                         </ul>
                         <div class="danmu-input">

@@ -178,6 +178,7 @@
     font-family: 'NotoColorEmoji';
     overflow: scroll;
     overflow-x: hidden;
+    position: relative;
     height: 0px;
     margin: 0;
     transition: all .3s ease;
