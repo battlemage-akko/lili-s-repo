@@ -222,7 +222,7 @@
 }
 
 .each-barrage{
-    min-height: 50px;
+    min-height: 40px;
     position: relative;
     display: flex;
     align-items: center;
