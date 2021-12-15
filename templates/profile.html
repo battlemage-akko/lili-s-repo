@@ -105,8 +105,7 @@
                         <span class="follow-text" @click="follow">+关注</span>
                         <span v-if="this.profile_detail.setting.show_chat" @click="toChat">
                             发消息
-                            <form action="{% url 'printPost' %}" method="post" target="_blank" id="chat_form" style="display: none">
-                                {% csrf_token %}
+                            <form action="http://8.134.211.226/websocket/chat" method="post" target="_blank" id="chat_form" style="display: none">
                                 <input type="text" name="uuid" v-model="userdetail.id"/>
                                 <input type="text" name="pwd" v-model="userdetail.password" />
                                 <input type="text" name="user" v-model="userdetail.name"/>
