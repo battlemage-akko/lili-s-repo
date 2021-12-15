@@ -105,13 +105,13 @@
                         <span class="follow-text" @click="follow">+关注</span>
                         <span v-if="this.profile_detail.setting.show_chat" @click="toChat">
                             发消息
-                            <form action="http://8.134.211.226/websocket/chat" method="post" target="_blank" id="chat_form" style="display: none">
+                            <form action="{% url 'printPost' %}" method="post" target="_blank" id="chat_form" style="display: none">
                                 <input type="text" name="uuid" v-model="userdetail.id"/>
                                 <input type="text" name="pwd" v-model="userdetail.password" />
                                 <input type="text" name="user" v-model="userdetail.name"/>
                                 <input type="text" name="session_key" v-model="userdetail.session_key"/>
                                 <input type="text" name="r_id" v-model="profile_detail.id"/>
-                              <input type="submit" value="Submit" />
+                                <input type="submit" value="Submit" />
                             </form>
                         </span>
                         <span style="background-color: rgba(0,0,0,0.15);color: rgba(0,0,0,0.5)" v-if="!this.profile_detail.setting.show_chat">禁止私聊</span>

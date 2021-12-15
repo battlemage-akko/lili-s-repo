@@ -604,5 +604,8 @@ def getHotestVideos(request):
         return JsonResponse({
             'data': result
         })
-
+def printPost(request):
+    if (request.method == "POST"):
+        print(request.POST.get("session_key"))
+        return HttpResponse()
 

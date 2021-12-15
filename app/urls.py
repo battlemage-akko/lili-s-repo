@@ -16,6 +16,7 @@ urlpatterns = [
     re_path('^clearmsg/',views.clearmsg,name="clearmsg"),
     re_path('^follow/',views.follow,name="follow"),
     re_path('^love/',views.love,name="love"),
+    re_path('^printPost/',views.printPost,name="printPost"),
     re_path('^collect/',views.collect,name="collect"),
     re_path('^save_profile/',views.save_profile,name="save_profile"),
     re_path('^save_background/',views.save_background,name="save_background"),
