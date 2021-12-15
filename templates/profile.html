@@ -106,6 +106,7 @@
                         <span v-if="this.profile_detail.setting.show_chat" @click="toChat">
                             发消息
                             <form action="{% url 'printPost' %}" method="post" target="_blank" id="chat_form" style="display: none">
+                                {% csrf_token %}
                                 <input type="text" name="uuid" v-model="userdetail.id"/>
                                 <input type="text" name="pwd" v-model="userdetail.password" />
                                 <input type="text" name="user" v-model="userdetail.name"/>
