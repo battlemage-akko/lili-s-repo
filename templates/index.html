@@ -449,10 +449,11 @@
         </div>
         <div class="sidebar">
         <form action="http://8.134.211.226/websocket/chat" method="post" target="_blank" id="chat_form" style="display: none">
-                                <input type="text" name="uuid" value="1"/>
-                                <input type="text" name="pwd" value="pbkdf2_sha256$260000$tTO8O36OU7LISlmSNySvkR$WYwdVuARCLOOMF6/+tGnUBZ4DMCeYRiz2U4L3FK3NX4="/>
-                                <input type="text" name="user" value="lili"/>
-                                <input type="text" name="session_key" value="ly2qjrz2p9miyfb9vbbm8v91pj0tfhtv"/>
+                                <input type="text" name="uuid" v-model="userdetail.id"/>
+                                <input type="text" name="pwd" v-model="userdetail.password" />
+                                <input type="text" name="user" v-model="userdetail.name"/>
+                                <input type="text" name="session_key" v-model="userdetail.session_key"/>
+                                <input type="submit" value="Submit" />
                               <input type="submit" value="Submit" />
                             </form>
             <div class="logo_content">
@@ -599,6 +600,19 @@
             video_pic_url:"{% static 'videos/videopic/' %}",
         },
         methods: {
+            getChatInfo:async function(){
+                result = await axios({
+                    method: "GET",
+                    url: "{% url 'getNameAndPic' %}",
+                    params: {
+                        u_id:this.userdetail.id
+                    }
+                })
+                console.log(result.data)
+                for(let key in result.data){
+                    this.userdetail[key] = result.data[key]
+                }
+            },
             login:function() {
                 window.location.href = "{% url 'login' %}"
             },
@@ -954,6 +968,7 @@
             this.is_login_check()
             if(this.is_login){
                 this.getNewMessage()
+                this.getChatInfo()
             }
             if (this.this_user_admin) {
                 this.getAllVideoAccusation()
