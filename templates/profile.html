@@ -4,7 +4,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta http-equiv="Expires"  content="0">
-<link href="{% static 'css/profile.css' %}?version=1.0.9" rel="stylesheet">
+<link href="{% static 'css/profile.css' %}?version=1.0.10" rel="stylesheet">
 <link href="{% static 'css/topbar.css' %}?version=1.0.4" rel="stylesheet">
 <link href="{% static 'css/root.css' %}?version=1.0.4" rel="stylesheet">
 <link rel="shortcut icon" href="{% static 'images/profile.png' %}">
@@ -69,7 +69,7 @@
                         <div class="profile-info-name">
                             <span v-show="profile_detail.gender == 'male'" class="male" v-if="is_me || profile_detail.setting.show_gender"></span>
                             <span v-show="profile_detail.gender == 'female'" class="female" v-if="is_me || profile_detail.setting.show_gender"></span>
-                            <span style="max-width: 100px;overflow: hidden;text-overflow: ellipsis;text-align: center">{[ profile_detail.username ]}</span>
+                            <span class="username">{[ profile_detail.username ]}</span>
                             <span v-if="profile_detail.is_superuser == 'True'">
                                 (管理员)
                             </span>

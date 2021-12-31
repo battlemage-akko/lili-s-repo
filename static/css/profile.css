@@ -629,3 +629,14 @@ hr {
     align-items: center;
 
 }
+.username{
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+@media (max-width: 1000px) {
+    .username{
+        max-width: 50px;
+    }
+}
