@@ -610,7 +610,6 @@
                         u_id:this.userdetail.id
                     }
                 })
-                console.log(result.data)
                 for(let key in result.data){
                     this.userdetail[key] = result.data[key]
                 }
@@ -705,9 +704,6 @@
                         }
                     }
                 }
-            },
-            handleScroll:function (){
-                console.log(123)
             },
             hidden_user_modify(){
                 document.querySelector(".UserModify").classList.toggle("active")
@@ -835,7 +831,6 @@
 
             },
             terminal:function(){
-                console.log("terminal ready")
                 layer.open({
                     type: 2,
                     title: '建立webssh连接',
@@ -995,7 +990,6 @@
                         setTimeout(function (){
                             that.videos_holder_clientHeight = document.querySelector('.videos-holder').clientHeight
                             that.videos_new_scrollHeight = document.querySelector('.videos-list-new').scrollHeight
-                            console.log(that.videos_holder_clientHeight,that.videos_new_scrollHeight)
                         },200)
                     }
                 },
