@@ -637,6 +637,7 @@ hr {
 }
 @media (max-width: 1000px) {
     .username{
-        max-width: 50px;
+        max-width: 20px;
+        font-size: 12px;
     }
 }
