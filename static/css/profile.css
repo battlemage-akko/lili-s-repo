@@ -305,6 +305,7 @@ hr {
 }
 .profile-content-mode a{
     margin-right: 20px;
+    cursor: pointer;
 }
 .profile-content-myvideos-btn {
     font-family: IcoMoon-Free;
