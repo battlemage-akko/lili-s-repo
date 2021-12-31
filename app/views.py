@@ -100,7 +100,6 @@ def refreshmsg(request):
     result = messageTable.getMessagesByUser(request.POST.get("user_id"))
     messages = []
     if not result:
-        print("empty")
         return JsonResponse({
             "msg": [],
             "msgcount": 0
@@ -211,7 +210,7 @@ def profile(request):
             return render(request, 'profile.html', {
                 "profile_detail": userdetail,
                 "followornot": 1,
-                "collectvideolist": []
+                "collectvideolist":videosTable.returnList(collecttable.user_collected(request.user.id))
             })
         else:
             return index_login(request)
@@ -222,17 +221,20 @@ def profile(request):
             return render(request, 'profile.html', {
                 "profile_detail": userdetail,
                 "followornot": 1,
-                "collectvideolist": []
+                "collectvideolist": videosTable.returnList(collecttable.user_collected(request.user.id))
             })
         else:
             if user_id.isdigit():
                 userdetail = Userdatabase.getProfile(user_id)
                 if userdetail:
                     userdetail["is_me"] = str(request.user.id == userdetail["id"])
+                    collectList = []
+                    if userdetail["is_me"] == 'True':
+                        collectList = videosTable.returnList(collecttable.user_collected(request.user.id))
                     return render(request, 'profile.html', {
                         "profile_detail": userdetail,
                         "followornot": followtable.follow_check(request.user.id, user_id),
-                        "collectvideolist": []
+                        "collectvideolist": collectList
                     })
                 else:
                     return render(request, "notfound.html")

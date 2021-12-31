@@ -167,6 +167,22 @@ class video(models.Model):
     def getHotestVideos(n):
         return video.objects.filter().all().order_by("-v_play").values()[:n]
 
+    def returnList(videoList):
+        tmp = []
+        for i in videoList:
+            for item in video.objects.filter(v_id=i).all().values():
+                tmp.append({
+                    "v_id": item["v_id"],
+                    "v_pic": item["v_pic"],
+                    "v_auther": item["v_auther"],
+                    "v_auther_id": item["user_id"],
+                    "v_play": item["v_play"],
+                    "v_title": item["v_title"],
+                    "v_time": time_normalization(item["v_time"]),
+                    "is_collection": 1 if item["is_collection"] else 0,
+                })
+        return tmp
+
 class video_compilation(models.Model):
     vc_id = models.AutoField(primary_key=True)
     v_id = models.IntegerField(null=False)

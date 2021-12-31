@@ -124,7 +124,7 @@
                                 <a @click="changeVideoMode('mine')">最新发布</a>
                                 <a @click="changeVideoMode('collect')" v-if="is_me">收藏</a>
                             </h2>
-                            <div><span @click="active_delbtn" v-if="is_me">trashcan</span></div>
+                            <div><span @click="active_delbtn" v-if="is_me && video_mode.mine">trashcan</span></div>
                         </div>
                         <div v-if="video_mode.mine">
                             <div class="nothing" v-if="videosList_mine_count==0">
@@ -188,6 +188,22 @@
                                     <div style="text-align: center;margin-top: 10px;font-weight: 600">什么也没有找到~</div>
                                 </div>
                             </div>
+                            <ul class="profile-content-myvideos" v-if="videosList_mine_count!=0">
+                                <li v-for="(item,i) in videosList_collect"
+                                    class="videos-each" :id="'myvideo_'+item.v_id" :key="item.v_id">
+                                    <div :style="{'background-image': 'url('+video_pic_url+item.v_pic+')','background-size':'cover'}"
+                                         class="videos-each-background" @click="getVideo(item.v_id)"></div>
+                                    <span class="videos-each-tips" @click="getVideo(item.v_id)">
+                                            <i class="videos-each-play"></i>
+                                        </span>
+                                    <span class="videos-each-collection" v-if="item.is_collection=='True'" style="font-weight: 600;font-size: 1rem">视频合集</span>
+                                    <span class="videos-each-title" @click="getVideo(item.v_id)">
+                                            <h1>{[ item.v_title ]}</h1>
+                                            <p style="right: 10px">播放 : {[ item.v_play ]}</p>
+                                        </span>
+                                    </span>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     <div v-if="profile_content.mycollection" style="width: 100%">
@@ -348,8 +364,6 @@
             showCropper:false,
             videosList_collect:{{ collectvideolist|safe }},
             videosList_mine: [],
-            videosList_mine_count: 0,
-            videosList_collect_count: 0,
             delList: [],
             messages: [],
             is_me: false,
@@ -358,6 +372,14 @@
             any_follow:false,
             Del_sure: "",
             videosPage: {
+                now: 1,
+                page: "",
+                total: "",
+                begin: 0,
+                end: 24,
+                each: 24,
+            },
+            collectPage: {
                 now: 1,
                 page: "",
                 total: "",
@@ -702,6 +724,14 @@
                 }
             },
         },
+        computed: {
+            videosList_collect_count(){
+                return this.videosList_collect.length
+            },
+            videosList_mine_count(){
+                return this.videosList_mine.length
+            }
+        },
         watch: {
             profile_detail:{
                 handler:(val,oldval)=>{
@@ -710,7 +740,6 @@
                 deep:true
             },
             videosList_mine: function () {
-                this.videosList_mine_count = this.videosList_mine.length
                 this.videosPage.total = Math.ceil(this.videosList_mine.length / this.videosPage.each)
             },
             followornot: function () {
