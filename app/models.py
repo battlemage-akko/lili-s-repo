@@ -82,6 +82,7 @@ class AppUser(AbstractUser):
         AppUser.objects.filter(id=id).update(v_count=AppUser.objects.filter(id=id).values()[0]["v_count"]+1)
     def delvideo(id):
         AppUser.objects.filter(id=id).update(v_count=AppUser.objects.filter(id=id).values()[0]["v_count"]-1)
+
 class messages(models.Model):
     m_id = models.AutoField(primary_key=True)
     m_content = models.CharField(max_length=400,null=False)

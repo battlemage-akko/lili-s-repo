@@ -138,9 +138,7 @@
                                     class="videos-each" :id="'myvideo_'+item.v_id" :key="item.v_id">
                                     <div :style="{'background-image': 'url('+video_pic_url+item.v_pic+')','background-size':'cover'}"
                                          class="videos-each-background" @click="getVideo(item.v_id)"></div>
-                                    <span class="videos-each-tips" @click="getVideo(item.v_id)">
-                                            <i class="videos-each-play"></i>
-                                        </span>
+
                                     <span class="videos-each-collection" v-if="item.is_collection=='True'" style="font-weight: 600;font-size: 1rem">视频合集</span>
                                     <span class="videos-each-status" @click="getVideo(item.v_id)">
                                         <p><i class="good active" style="color: deeppink"></i><span> {[ item.v_like ]}</span></p>
@@ -193,9 +191,6 @@
                                     class="videos-each" :id="'myvideo_'+item.v_id" :key="item.v_id">
                                     <div :style="{'background-image': 'url('+video_pic_url+item.v_pic+')','background-size':'cover'}"
                                          class="videos-each-background" @click="getVideo(item.v_id)"></div>
-                                    <span class="videos-each-tips" @click="getVideo(item.v_id)">
-                                            <i class="videos-each-play"></i>
-                                        </span>
                                     <span class="videos-each-collection" v-if="item.is_collection=='True'" style="font-weight: 600;font-size: 1rem">视频合集</span>
                                     <span class="videos-each-title" @click="getVideo(item.v_id)">
                                             <h1>{[ item.v_title ]}</h1>
