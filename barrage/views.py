@@ -45,7 +45,8 @@ def video(request,vid):
 
     tags = videosTable.objects.get(v_id=vid).v_tags
     setting = {
-        'show_discuss': 1 if settingTable.getStatus(u_id=result["user_id"], choose='show_discuss') else 0
+        # 'show_discuss': 1 if settingTable.getStatus(u_id=result["user_id"], choose='show_discuss') else 0
+        'show_discuss': 1,
     }
     discuss = []
     if setting['show_discuss']:
